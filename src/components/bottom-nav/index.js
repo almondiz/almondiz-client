@@ -22,8 +22,10 @@ const ButtomNav = () => {
     const makeIcon = (component, index) => {
         const focus = index === currentIndex;
         return (
-            <li key={index} className={`icon ${focus ? "focus" : ""}`} onClick={() => setCurrentIndex(index)}>
-                {component[focus ? 1 : 0]()}
+            <li key={index} className="icon-wrapper" onClick={() => setCurrentIndex(index)}>
+                <div className={`icon ${focus ? "focus" : ""}`}>
+                    {component[focus ? 1 : 0]()}
+                </div>
             </li>
         )
     };

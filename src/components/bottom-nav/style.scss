@@ -35,32 +35,6 @@
         padding: 0;
         list-style: none;
 
-        .icon {
-            flex: 1;
-            height: 1.5rem;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            svg {
-                width: 1.5rem;
-                height: 1.5rem;
-            }
-
-            svg {
-                fill: var(--primary-text-color);
-            }
-
-            &.focus {
-                svg {
-                    fill: var(--content-text-color);
-                }
-            }
-        }
-
         &::after {
             z-index: -1;
             content: "";
@@ -72,6 +46,42 @@
 
             background: var(--background-color);
             opacity: .25;
+        }
+
+        .icon-wrapper {
+            flex: 1;
+            height: 1.5rem;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .icon {
+                svg {
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+
+                svg {
+                    fill: var(--primary-text-color);
+                }
+
+                position: relative;
+
+                &::after {
+                    position: absolute;
+                    top: -.3125rem;
+                    right: -.3125rem;
+
+                    content: "";
+                    width: .5rem;
+                    height: .5rem;
+                    background-color: var(--content-text-color);
+                    border-radius: 100%;
+                }
+            }
         }
     }
 }
