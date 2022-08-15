@@ -14,7 +14,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       {/*<App />*/}
-      <div style={{ width: "50%", height: 2700, backgroundColor: "rgba(0, 255, 0, .5)" }} />
+      <div style={{ width: "50%", height: 2700, backgroundColor: "rgba(0, 255, 0, .5)" }}>
+        <p style={{ fontSize: "2rem", fontWeight: 600 }}>안녕하세요</p>
+      </div>
       <ButtomNav />
     </Provider>
   </React.StrictMode>

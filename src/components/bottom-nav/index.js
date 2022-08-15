@@ -48,7 +48,7 @@ const ButtomNav = () => {
 
     return (
         <nav className="buttom-nav-wrapper">
-            <div className="buttom-nav-border" style={{ background: gradientStyle }}></div>
+            <div className="buttom-nav-border" style={{ background: gradientStyle }} />
             <ul className="buttom-nav">
                 {iconList.map(makeIcon)}
             </ul>

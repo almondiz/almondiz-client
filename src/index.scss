@@ -1,7 +1,10 @@
 @import "./variables";
+@import "./pretendardvariable";
 
 body {
   margin: 0;
+
+  box-sizing: border-box;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
