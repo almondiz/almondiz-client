@@ -8,7 +8,7 @@ import GoogleSocialImage from "../../asset/social/google.svg";
 import NaverSocialImage from "../../asset/social/naver.svg";
 import KakaoSocialImage from "../../asset/social/kakao.svg";
 
-import "./style.scss";
+import "./style.scoped.scss";
 
 const LoginPage = () => {
   return (
