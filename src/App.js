@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import LoginPage from "./pages/login";
 import SignupPage from "./pages/signup";
+import FeedList from "./pages/feed-list";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         {/*<Route path="/" element={<Layout />}>*/}
         <Route path="/" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/feed" element={<FeedList />} />
           {/*<Route index element={<Home />} />*/}
           {/*<Route path="blogs" element={<Blogs />} />*/}
           {/*<Route path="contact" element={<Contact />} />*/}
