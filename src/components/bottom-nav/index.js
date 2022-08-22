@@ -9,7 +9,7 @@ import BookmarkIconBorder from "../../asset/icons/bookmark-icon-border";
 import AccountCircleIconFill from "../../asset/icons/account-circle-icon-fill";
 import AccountCircleIconBorder from "../../asset/icons/account-circle-icon-border";
 
-import "./style.scss";
+import "./style.scoped.scss";
 
 const ButtomNav = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
