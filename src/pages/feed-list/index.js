@@ -4,6 +4,8 @@ import "./style.scoped.scss";
 
 import FeedContent from "../../components/feed-content";
 
+import IconImg from "../../asset/logo/symbol.png";
+
 const FeedList = () => {
   const dummyFeedData = [
     {
@@ -15,10 +17,10 @@ const FeedList = () => {
       scrapCount: 2,
       commentCount: 2,
       firstComment: "",
-      postIamges: [
+      postImages: [
         ""
       ],
-      postDescription: "아주대 근처에있는 팔ㅈ달 수제맥주."
+      postDescription: "아주대 근처에있는 팔달 수제맥주."
     },
     {
       nickname: "닭발피스타치오",
@@ -29,10 +31,10 @@ const FeedList = () => {
       scrapCount: 2,
       commentCount: 2,
       firstComment: "",
-      postIamges: [
+      postImages: [
         ""
       ],
-      postDescription: "아주대 근처에있는 팔ㅈ달 수제맥주."
+      postDescription: "아주대 근처에있는 팔달 수제맥주."
     },
   ];
 
@@ -42,6 +44,16 @@ const FeedList = () => {
 
   return (
     <main>
+      <div className="feed-list-head">
+        <p className="feed-list-head-title">Feed</p>
+        <div className="feed-list-head-wrap">
+          <div className="feed-list-head-wrap column">
+            <p>수원 팔달구</p>
+            <p>우만동</p>
+          </div>
+          <img className="feed-list-head-wrap-icon" alt="location" src={IconImg} />
+        </div>
+      </div>
       {dummyFeedData.map(makePosts)}
     </main>
   );

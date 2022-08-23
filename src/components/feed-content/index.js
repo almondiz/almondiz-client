@@ -24,10 +24,30 @@ const FeedContent = ({ post }) => {
         </div>
       </div>
       <div className="feed-description">
-        <text className="feed-description-text">Feed 입니다.</text>
+        <text className="feed-description-text">아주대 근처에 있는 팔달수제맥주.
+        
+        테이블 3~4개 있는 조그만 가게. 주방이랑 손님석 구분이 없어서 신기
+        ...
+        </text>
       </div>
       <div className="feed-card"></div>
-      <div className="feed-bottom"></div>
+      <div className="feed-bottom">
+        <div className="feed-bottom-buttons">
+          <div className="feed-bottom-buttons-wrap">
+            <img className="feed-bottom-buttons-icon" alt="comment" src={FooImage} />
+            <p>1</p>
+          </div>
+          <img className="feed-bottom-buttons-icon" alt="share" src={FooImage} />
+          <div className="feed-bottom-buttons-wrap right">
+            <img className="feed-bottom-buttons-icon" alt="scrap" src={FooImage} />
+            <p>1</p>
+          </div>
+        </div>
+        <div className="feed-bottom-comment">
+          <img alt="comment-profile" src={FooImage} />
+          <p>나만의 작은 가게였는데 글 내려주세요.</p>
+        </div>
+      </div>
     </main>
   );
 }

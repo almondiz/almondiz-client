@@ -4,7 +4,7 @@ main {
   position: relative;
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  margin: 1rem auto;
 }
 
 p {
@@ -27,6 +27,9 @@ p {
     &-img {
       width: 2.5rem;
       height: 2.5rem;
+      margin-right: 10px;
+      background-color: bisque;
+      border-radius: 100%;
     }
 
     &-wrap {
@@ -91,8 +94,63 @@ p {
 
 .feed-description {
   width: 100%;
-  
+  margin-bottom: 1rem;
+
   &-text {
-    color: --primary-text-color;
+    color: var(--primary-text-color);
+    white-space: pre-line;
+    font-size: 0.875rem;
   }
+}
+
+.feed-bottom {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &-buttons {
+    width: 100%;
+    display: flex;
+    margin-bottom: 1.375rem;
+
+    &-icon {
+      width: 1.5rem;
+      height: 1.5rem;
+      line-height: 1.5rem;
+    }
+
+    &-wrap {
+      display: flex;
+
+      & > p {
+        line-height: 1.5rem;
+        font-size: 0.688rem;
+      }
+
+      & > img + p {
+        margin: 0 0.5rem;
+      }
+    }
+  }
+
+  &-comment {
+    display: flex;
+    width: 100%;
+  
+    & > img {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 0.5rem;
+    }
+  
+    & > p {
+      font-weight: 400;
+      font-size: 0.75rem;
+      line-height: 1.5rem;
+    }
+  }
+}
+
+.right {
+  margin-left: auto;
 }
