@@ -11,7 +11,7 @@ import AccountCircleIconBorder from "../../asset/icons/account-circle-icon-borde
 
 import "./style.scoped.scss";
 
-const ButtomNav = () => {
+const BottomNav = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const iconList = [
         [ExploreIconBorder, ExploreIconFill],
@@ -24,7 +24,7 @@ const ButtomNav = () => {
         return (
             <li key={index} className="icon-wrapper" onClick={() => setCurrentIndex(index)}>
                 <div className={`icon ${focus ? "focus" : ""}`}>
-                    {component[focus ? 1 : 0]()}
+                    {component[focus ? 1 : 0]("1.5rem", "var(--primary-text-color)")}
                 </div>
             </li>
         )
@@ -47,13 +47,13 @@ const ButtomNav = () => {
     }
 
     return (
-        <nav className="buttom-nav-wrapper">
-            <div className="buttom-nav-border" style={{ background: gradientStyle }} />
-            <ul className="buttom-nav">
+        <nav className="bottom-nav-wrapper">
+            <div className="bottom-nav-border" style={{ background: gradientStyle }} />
+            <ul className="bottom-nav">
                 {iconList.map(makeIcon)}
             </ul>
         </nav>
     );
 };
 
-export default ButtomNav;
+export default BottomNav;

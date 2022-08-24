@@ -6,6 +6,8 @@ import FeedContent from "../../components/feed-content";
 
 import IconImg from "../../asset/logo/symbol.png";
 
+import BottomNav from '../../components/bottom-nav';
+
 const FeedList = () => {
   const dummyFeedData = [
     {
@@ -55,6 +57,7 @@ const FeedList = () => {
         </div>
       </div>
       {dummyFeedData.map(makePosts)}
+      <BottomNav />
     </main>
   );
 }
