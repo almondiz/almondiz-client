@@ -139,6 +139,10 @@ main {
       }
     }
   }
+
+  &-feeds {
+    overflow: auto;
+  }
 }
 
 .line {

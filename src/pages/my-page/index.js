@@ -1,10 +1,59 @@
 import React from "react";
 
 import "./style.scoped.scss";
+import FeedContent from "../../components/feed-content";
 
 import IconImg from "../../asset/logo/symbol.png";
 
 const MyPage = () => {
+  const dummyFeedData = [
+    {
+      nickname: "닭발피스타치오",
+      profileImage: "",
+      storeName: "팔달수제맥주",
+      storeImage: "",
+      createdAt: "20220820H20:20",
+      scrapCount: 2,
+      commentCount: 2,
+      firstComment: "",
+      postImages: [
+        ""
+      ],
+      postDescription: "아주대 근처에있는 팔달 수제맥주."
+    },
+    {
+      nickname: "닭발피스타치오",
+      profileImage: "",
+      storeName: "팔달수제맥주",
+      storeImage: "",
+      createdAt: "20220820H20:20",
+      scrapCount: 2,
+      commentCount: 2,
+      firstComment: "",
+      postImages: [
+        ""
+      ],
+      postDescription: "아주대 근처에있는 팔달 수제맥주."
+    },
+    {
+      nickname: "닭발피스타치오",
+      profileImage: "",
+      storeName: "팔달수제맥주",
+      storeImage: "",
+      createdAt: "20220820H20:20",
+      scrapCount: 2,
+      commentCount: 2,
+      firstComment: "",
+      postImages: [
+        ""
+      ],
+      postDescription: "아주대 근처에있는 팔달 수제맥주."
+    },
+  ];
+  const makeFeeds = () => {
+    return (<FeedContent />);
+  }
+
   return (
     <main>
       <div className="mypage-header">
@@ -52,8 +101,8 @@ const MyPage = () => {
           </div>
         </div>
       </div>
-      <div className="mypage-feed">
-        
+      <div className="mypage-feeds">
+        {dummyFeedData.map(makeFeeds)}
       </div>
     </main>
   )
