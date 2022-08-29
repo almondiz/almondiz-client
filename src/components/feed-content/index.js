@@ -24,11 +24,11 @@ const FeedContent = ({ post }) => {
         </div>
       </div>
       <div className="feed-description">
-        <text className="feed-description-text">아주대 근처에 있는 팔달수제맥주.
+        <div className="feed-description-text">아주대 근처에 있는 팔달수제맥주.
         
         테이블 3~4개 있는 조그만 가게. 주방이랑 손님석 구분이 없어서 신기
         ...
-        </text>
+        </div>
       </div>
       <div className="feed-card"></div>
       <div className="feed-bottom">

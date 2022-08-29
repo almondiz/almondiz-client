@@ -10,23 +10,36 @@ import AccountCircleIconFill from "../../asset/icons/account-circle-icon-fill";
 import AccountCircleIconBorder from "../../asset/icons/account-circle-icon-border";
 
 import "./style.scoped.scss";
+import { Link } from "react-router-dom";
 
 const BottomNav = () => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const iconList = [
-        [ExploreIconBorder, ExploreIconFill],
-        [SearchIconBorder, SearchIconFill],
-        [BookmarkIconBorder, BookmarkIconFill],
-        [AccountCircleIconBorder, AccountCircleIconFill],
+        {
+            icon: [ExploreIconBorder, ExploreIconFill],
+            path: "/feed",
+        },
+        {
+            icon: [SearchIconBorder, SearchIconFill],
+            path: "/",
+        },
+        {
+            icon: [BookmarkIconBorder, BookmarkIconFill],
+            path: "/",
+        },
+        {
+            icon: [AccountCircleIconBorder, AccountCircleIconFill],
+            path: "/my-page",
+        },
     ];
-    const makeIcon = (component, index) => {
+    const makeIcon = ({ icon, path }, index) => {
         const focus = index === currentIndex;
         return (
-            <li key={index} className="icon-wrapper" onClick={() => setCurrentIndex(index)}>
+            <Link to={path} key={index} className="icon-wrapper" onClick={() => setCurrentIndex(index)}>
                 <div className={`icon ${focus ? "focus" : ""}`}>
-                    {component[focus ? 1 : 0]("1.5rem", "var(--primary-text-color)")}
+                    {icon[focus ? 1 : 0]("1.5rem", "var(--primary-text-color)")}
                 </div>
-            </li>
+            </Link>
         )
     };
 

@@ -10,7 +10,7 @@ import "./style.scoped.scss";
 
 import FooImage from "../../asset/logo/symbol.png";
 
-import BottomNav from '../../components/bottom-nav';
+
 
 const DetailPage = () => {
   return (
@@ -61,7 +61,6 @@ const DetailPage = () => {
           </div>
         </div>
       </div>
-      <BottomNav />
     </main>
   );
 }
