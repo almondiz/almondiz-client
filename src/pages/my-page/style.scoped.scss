@@ -4,4 +4,147 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+}
+
+.mypage {
+  &-header {
+    display: flex;
+    width: 90%;
+    height: 5%;
+    justify-content: center;
+    align-items: end;
+    margin-bottom: 1.75rem;
+
+    & > img {
+      display: flex;
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    &-logo {
+      margin-right: auto;
+    }
+    &-notification {
+      margin-right: 1.5rem;
+    }
+  }
+
+  &-profile {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    position: relative;
+
+    &-box {
+      display: flex;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    &-image {
+      display: flex;
+      width: 2.25rem;
+      height: 2.25rem;
+      margin-right: 0.75rem;
+    }
+    &-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    &-row {
+      display: flex;
+      align-items: center;
+    }
+
+    &-name {
+      display: flex;
+      font-size: 0.875rem;
+      font-weight: 700;
+      line-height: 1rem;
+      margin: 0;
+      margin-right: 5px;
+      align-items: center;
+    }
+    &-tag {
+      width: 1.25rem;
+      height: 1rem;
+      border: 1px solid #999999;
+      border-radius: 1rem;
+      line-height: 1rem;
+      font-size: 0.5rem;
+      font-weight: 400;
+      text-align: center;
+      color: #999999;
+      margin: 0;
+    }
+
+    &-nickname {
+      color: #999999;
+      font-size: 0.675rem;
+      font-weight: 400;
+      line-height: 0.75rem;
+      margin: 0;
+      margin-top: 2px;
+      align-items: center;
+    }
+
+    &-wrap {
+      display: flex;
+      width: 50%;
+    }
+
+    &-key {
+      display: flex;
+      font-size: 0.75rem;
+      font-weight: 400;
+      line-height: 1rem;
+      margin-right: 4px;
+      align-items: center;
+    }
+
+    &-following {
+      display: flex;
+      margin-left: 0.875rem;
+
+      & > img {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin: auto 0;
+        margin-right: 2px;
+      }
+    }
+
+    &-button {
+      font-size: 0.75rem;
+      font-weight: 700;
+      width: 3.5rem;
+      height: 1.5rem;
+      display: flex;
+      justify-content: center;
+      margin-left: auto;
+      border-radius: 1rem;
+      color: calc(#ffffff - var(--primary-text-color));
+      background-color: var(--primary-text-color);
+      align-items: center;
+    }
+
+    &-icon {
+      display: flex;
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-left: auto;
+
+      & + & {
+        margin-left: 5px;
+      }
+    }
+  }
+}
+
+.line {
+  border-bottom: 1px solid #424242;
+}
+
+.right {
+  margin-left: auto;
 }
