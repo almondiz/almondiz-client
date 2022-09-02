@@ -11,15 +11,14 @@ body,
   width: 100%;
 }
 
-body {
+* {
   box-sizing: border-box;
-
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   font-family: $font-family;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 
   background-color: var(--background-color);
 }

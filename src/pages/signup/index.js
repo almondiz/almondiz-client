@@ -12,7 +12,7 @@ const SignupPage = () => {
   const moveStep = (val) => {
     if (curStep + val >= maxStep || curStep + val < 0) return;
     return () => setCurStep(curStep + val);
-  }
+  };
 
   const pages = [
     <CheckSocialLogin moveStep={moveStep} />,

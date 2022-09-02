@@ -9,6 +9,7 @@ import SignupPage from "./pages/signup";
 import FeedList from "./pages/feed-list";
 import DetailPage from "./pages/detail-page";
 import MyPage from "./pages/my-page";
+import ReviewEditor from "./pages/review-editor";
 
 const MainLayout = () => {
   return (
@@ -31,6 +32,7 @@ const App = () => {
           <Route path="/feed" element={<FeedList />} />
           <Route path="/detail-page" element={<DetailPage />} />
           <Route path="/my-page" element={<MyPage />} />
+          <Route path="/review-editor" element={<ReviewEditor />} />
         </Route>
         {/*<Route index element={<Home />} />*/}
         {/*<Route path="blogs" element={<Blogs />} />*/}
