@@ -4,11 +4,12 @@ import "./style.scoped.scss";
 
 import Writer from "./writer";
 import Tagger from "./tagger";
+import StoreSearch from "./store-search";
 
 const ReviewEditor = () => {
   const [ curStep, setCurStep ] = useState(0);
 
-  const moveStep = (val) => {
+  const moveStep = val => {
     if (curStep + val >= maxStep || curStep + val < 0) return;
     return () => setCurStep(curStep + val);
   };
@@ -16,7 +17,8 @@ const ReviewEditor = () => {
   const pages = [
     <Writer moveStep={moveStep} />,
     <Tagger moveStep={moveStep} />,
-  ]
+    <StoreSearch moveStep={moveStep} />,
+  ];
   const maxStep = pages.length;
 
   return (pages[curStep]);

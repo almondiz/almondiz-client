@@ -5,32 +5,27 @@ import "./style.scoped.scss";
 import IconImg from "../../asset/logo/symbol.png";
 import BackIcon from "../../asset/icons/back-icon";
 
-const Tagger = ({ moveStep }) => {
+const StoreSearch = ({ moveStep }) => {
+  console.log(2);
   return (
     <div className="page-wrapper">
       <header>
         <div className="header-back-button" onClick={moveStep(-1)}>
           {BackIcon("1.5rem", "var(--background-color)")}
         </div>
-        <div className="header-next-button">
-          완료
-        </div>
-        리뷰 작성
+        <input className="text-box" type="text" placeholder="장소 검색"/>
       </header>
       <main>
+        <div id="map"><h2>지도 화면</h2></div>
         <div className="menu-item">
-          <h3>점포</h3>
+          <h3>원하는 점포 결과가 없으신가요?</h3>
           <div className="text-button" onClick={moveStep(1)}>
-            <p>선택</p>
+            <p>직접 등록</p>
           </div>
-        </div>
-        <div className="menu-item">
-          <h3>태그</h3>
-          <input className="text-box" type="text" placeholder="태그 추가" />
         </div>
       </main>
     </div>
   )
 }
 
-export default Tagger;
+export default StoreSearch;
