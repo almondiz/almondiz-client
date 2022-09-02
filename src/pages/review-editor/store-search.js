@@ -6,7 +6,6 @@ import IconImg from "../../asset/logo/symbol.png";
 import BackIcon from "../../asset/icons/back-icon";
 
 const StoreSearch = ({ moveStep }) => {
-  console.log(2);
   return (
     <div className="page-wrapper">
       <header>

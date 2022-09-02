@@ -5,6 +5,7 @@ import "./style.scoped.scss";
 import Writer from "./writer";
 import Tagger from "./tagger";
 import StoreSearch from "./store-search";
+import DirectRegister from "./direct-register";
 
 const ReviewEditor = () => {
   const [ curStep, setCurStep ] = useState(0);
@@ -18,6 +19,7 @@ const ReviewEditor = () => {
     <Writer moveStep={moveStep} />,
     <Tagger moveStep={moveStep} />,
     <StoreSearch moveStep={moveStep} />,
+    <DirectRegister moveStep={moveStep} />,
   ];
   const maxStep = pages.length;
 

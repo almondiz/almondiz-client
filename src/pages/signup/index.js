@@ -4,7 +4,7 @@ import "./style.scoped.scss";
 
 import CheckSocialLogin from "./check-social-login";
 import SelectNickName from "./select-nick-name";
-import ConfrimSignup from "./confrim-signup";
+import ConfirmSignup from "./confirm-signup";
 
 const SignupPage = () => {
   const [ curStep, setCurStep ] = useState(0);
@@ -17,7 +17,7 @@ const SignupPage = () => {
   const pages = [
     <CheckSocialLogin moveStep={moveStep} />,
     <SelectNickName moveStep={moveStep} />,
-    <ConfrimSignup moveStep={moveStep} />,
+    <ConfirmSignup moveStep={moveStep} />,
   ]
   const maxStep = pages.length;
 
