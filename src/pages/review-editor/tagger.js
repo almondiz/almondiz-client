@@ -10,7 +10,7 @@ const Tagger = ({ moveStep }) => {
     <div className="page-wrapper">
       <header>
         <div className="header-back-button" onClick={moveStep(-1)}>
-          {BackIcon("1.5rem", "var(--background-color)")}
+          <BackIcon height="1.5rem" fill="var(--background-color)" />
         </div>
         <div className="header-next-button">
           완료

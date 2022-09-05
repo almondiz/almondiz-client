@@ -4,7 +4,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import store from './store';
 import { Provider } from 'react-redux';
-import BottomNav from './components/bottom-nav';
 
 import './index.scss';
 import './color.scss';
@@ -14,10 +13,6 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <App />
-      {/*<div style={{ width: "50%", height: 2700, backgroundColor: "rgba(0, 255, 0, .5)" }}>
-        <p style={{ fontSize: "2rem", fontWeight: 600 }}>안녕하세요</p>
-</div>*/}
-      {/*<BottomNav />*/}
     </Provider>
   </React.StrictMode>
 );

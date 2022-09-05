@@ -37,7 +37,7 @@ const BottomNav = () => {
         return (
             <Link to={path} key={index} className="icon-wrapper" onClick={() => setCurrentIndex(index)}>
                 <div className={`icon ${focus ? "focus" : ""}`}>
-                    {icon[focus ? 1 : 0]("1.5rem", "var(--primary-text-color)")}
+                    {icon[focus ? 1 : 0]({ height: "1.5rem", fill: "var(--primary-text-color)" })}
                 </div>
             </Link>
         )

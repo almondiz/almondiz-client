@@ -10,7 +10,7 @@ const StoreSearch = ({ moveStep }) => {
     <div className="page-wrapper">
       <header>
         <div className="header-back-button" onClick={moveStep(-1)}>
-          {BackIcon("1.5rem", "var(--background-color)")}
+          <BackIcon height="1.5rem" fill="var(--background-color)" />
         </div>
         <input className="text-box" type="text" placeholder="장소 검색"/>
       </header>

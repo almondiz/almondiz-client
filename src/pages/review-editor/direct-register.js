@@ -10,7 +10,7 @@ const DirectRegister = ({ moveStep }) => {
     <div className="page-wrapper">
       <header>
         <div className="header-back-button" onClick={moveStep(-1)}>
-          {BackIcon("1.5rem", "var(--background-color)")}
+          <BackIcon height="1.5rem" fill="var(--background-color)" />
         </div>
         <div className="text-button" onClick={moveStep(-1)}>
           <p>확인</p>

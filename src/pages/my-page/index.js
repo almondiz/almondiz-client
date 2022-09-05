@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./style.scoped.scss";
-import FeedContent from "../../components/feed-content";
+import FeedItem from "../../components/feed-item";
 
 import IconImg from "../../asset/logo/symbol.png";
 
@@ -50,9 +50,9 @@ const MyPage = () => {
       postDescription: "아주대 근처에있는 팔달 수제맥주."
     },
   ];
-  const makeFeeds = () => {
-    return (<FeedContent />);
-  }
+  /*const makeFeeds = () => {
+    return (<FeedItem />);
+  }*/
 
   return (
     <main>
@@ -102,7 +102,7 @@ const MyPage = () => {
         </div>
       </div>
       <div className="mypage-feeds">
-        {dummyFeedData.map(makeFeeds)}
+        {/*dummyFeedData.map(makeFeeds)*/}
       </div>
     </main>
   )
