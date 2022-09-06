@@ -3,14 +3,14 @@ import React, { useRef, useState } from "react";
 import "./style.scoped.scss";
 
 const ImageSlider = ({ images }) => {
-  const _slide = document.querySelector(".slides");
   const makeImages = (src, index) => (
     <div key={`image-${index}`}><img src={src} alt="" /></div>
   );
 
   const scrollToElement = ({ target }) => {
+    const slide = document.querySelector(".slides");
     const index = parseInt(target.dataset.id, 10);
-    _slide.scrollTo(index * _slide.clientWidth, 0);
+    slide.scrollTo(index * slide.clientWidth, 0);
     setHighLight(target);
   };
 
@@ -36,7 +36,8 @@ const ImageSlider = ({ images }) => {
   }
 
   const scrollEvent = () => {
-    const index = Math.floor(_slide.scrollLeft / _slide.clientWidth);
+    const slide = document.querySelector(".slides");
+    const index = Math.floor(slide.scrollLeft / slide.clientWidth);
     setHighLight(document.querySelector(`div[data-id="${index}"]`));
   }
   

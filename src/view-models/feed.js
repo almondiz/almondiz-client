@@ -4,7 +4,6 @@ export default class FeedViewModel {
   }
 
   getAllFeedList() {
-    console.log(this.model)
     return this.model.getAllFeedData();
   }
 }
