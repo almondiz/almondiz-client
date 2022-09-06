@@ -1,58 +1,10 @@
 import React from "react";
 
 import "./style.scoped.scss";
-import FeedItem from "../../components/feed-item";
 
 import IconImg from "../../asset/logo/symbol.png";
 
-const MyPage = () => {
-  const dummyFeedData = [
-    {
-      nickname: "닭발피스타치오",
-      profileImage: "",
-      storeName: "팔달수제맥주",
-      storeImage: "",
-      createdAt: "20220820H20:20",
-      scrapCount: 2,
-      commentCount: 2,
-      firstComment: "",
-      postImages: [
-        ""
-      ],
-      postDescription: "아주대 근처에있는 팔달 수제맥주."
-    },
-    {
-      nickname: "닭발피스타치오",
-      profileImage: "",
-      storeName: "팔달수제맥주",
-      storeImage: "",
-      createdAt: "20220820H20:20",
-      scrapCount: 2,
-      commentCount: 2,
-      firstComment: "",
-      postImages: [
-        ""
-      ],
-      postDescription: "아주대 근처에있는 팔달 수제맥주."
-    },
-    {
-      nickname: "닭발피스타치오",
-      profileImage: "",
-      storeName: "팔달수제맥주",
-      storeImage: "",
-      createdAt: "20220820H20:20",
-      scrapCount: 2,
-      commentCount: 2,
-      firstComment: "",
-      postImages: [
-        ""
-      ],
-      postDescription: "아주대 근처에있는 팔달 수제맥주."
-    },
-  ];
-  /*const makeFeeds = () => {
-    return (<FeedItem />);
-  }*/
+const MyPageView = () => {
 
   return (
     <main>
@@ -102,10 +54,9 @@ const MyPage = () => {
         </div>
       </div>
       <div className="mypage-feeds">
-        {/*dummyFeedData.map(makeFeeds)*/}
       </div>
     </main>
   )
 }
 
-export default MyPage;
+export default MyPageView;

@@ -1,15 +1,18 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+
+import { FeedModel, UserModel } from "./models";
+
+
 
 import BottomNav from './components/bottom-nav';
 
-import LoginPage from "./pages/login";
-import SignupPage from "./pages/signup";
-import Feed from "./pages/feed";
-import DetailPage from "./pages/detail-page";
-import MyPage from "./pages/my-page";
-import ReviewEditor from "./pages/review-editor";
+import LoginPage from "./views/login";
+import SignupPage from "./views/signup";
+import Feed from "./views/feed";
+import DetailPage from "./views/detail-page";
+import MyPage from "./views/my-page";
+import ReviewEditor from "./views/review-editor";
 
 const MainLayout = () => {
   return (
@@ -21,6 +24,7 @@ const MainLayout = () => {
 };
 
 const App = () => {
+  
   return (
     <BrowserRouter>
       <Routes>

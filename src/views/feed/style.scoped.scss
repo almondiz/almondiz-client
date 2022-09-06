@@ -5,7 +5,7 @@ main {
 }
 
 .feed-list-head {
-  width: 100%;
+  width: 80%;
   height: 13%;
   margin-top: 7%;
   display: flex;
@@ -26,6 +26,10 @@ main {
     display: flex;
     margin-left: auto;
     align-items: center;
+    
+    & > & {
+      margin-right: 0.5rem;
+    }
 
     & > p {
       display: flex;

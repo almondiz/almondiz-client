@@ -6,7 +6,7 @@ import ChatBubbleIconBorder from "../../asset/icons/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/bookmark-icon-border";
 import ShareIconBorder from "../../asset/icons/share-icon-border";
 
-import ImageIndicator from "../image-indicator";
+import ImageSlider from "../image-slider";
 
 
 const getDistance = (location_1, location_2) => {  // generally used geo measurement function
@@ -42,7 +42,7 @@ const FeedItem = ({ post, user }) => {
 
       <main>
         <div className="text">{post.content.text}</div>
-        <ImageIndicator className="images" images={post.content.images} />
+        <ImageSlider className="images" images={post.content.images} />
       </main>
 
       <footer>
@@ -51,8 +51,9 @@ const FeedItem = ({ post, user }) => {
             <ChatBubbleIconBorder alt="comment" height="1.5rem" fill="var(--primary-text-color)" />
             <p>{post.reaction.commentCount}</p>
           </div>
-          <ShareIconBorder alt="share" height="1.5rem" fill="var(--primary-text-color)" />
-
+          <div className="button-wrap">
+            <ShareIconBorder alt="share" height="1.5rem" fill="var(--primary-text-color)" />
+          </div>
           <div className="button-wrap right">
             <BookmarkIconBorder alt="scrap" height={"1.5rem"} fill={"var(--primary-text-color)"} />
             <p>{post.reaction.scrapCount}</p>
