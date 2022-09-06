@@ -34,7 +34,14 @@ module.exports = {
             }
           },
           { loader: 'scoped-css-loader' },
-          { loader: 'sass-loader' },
+          {
+            loader: 'sass-loader',
+            options: {
+              additionalData: `
+                @import "./src/variables.scss";
+              `,
+            }
+          },
         ]
       },
       {
