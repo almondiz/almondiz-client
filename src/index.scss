@@ -29,5 +29,17 @@ h4,
 h5,
 h6,
 p {
+  font-weight: 400;
+
   color: var(--primary-text-color);
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+
+/* custom */
+
+.right:not(.right + .right) {
+  margin-left: auto !important;
 }

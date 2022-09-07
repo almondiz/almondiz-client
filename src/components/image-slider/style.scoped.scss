@@ -1,4 +1,4 @@
-.gallery-container {
+.image-slider {
   position: relative;
   display: flex;
   justify-content: center;
@@ -8,32 +8,31 @@
 
 .thumbnails {
   position: absolute;
-  bottom: 8px;
+  bottom: -1.25rem;
   display: flex;
-  flex-direction: row;
-  gap: 6px;
+  align-items: center;
+  gap: .5rem;
 }
 
 .thumbnails div {
-  width: 8px;
-  height: 8px;
+  width: .3125rem;
+  height: .3125rem;
   cursor: pointer;
-  background: #aaa;
+  background: #ccc;
   border-radius: 100%;
 }
 
 .thumbnails div.highlighted {
-  background-color: #777;
+  width: .4375rem;
+  height: .4375rem;
+  background-color: var(--content-text-color);
 }
 
 .slides {
-  //margin: 0 16px;
   display: grid;
   grid-auto-flow: column;
-  //gap: 1rem;
   width: 100vw;
-  //padding: 0 0.25rem;
-  height: 360px;
+  height: 17.5rem;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;

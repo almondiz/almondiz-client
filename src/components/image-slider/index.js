@@ -42,7 +42,7 @@ const ImageSlider = ({ images }) => {
   }
   
   return (
-    <div className="gallery-container">
+    <div className="image-slider">
       <div className="thumbnails">
         {makeThumbnails(images)}
       </div>
