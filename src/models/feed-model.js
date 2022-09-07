@@ -21,8 +21,8 @@ export default class FeedModel {
       tags: [ "바(Bar)", "맥주" ],
       content: {
         text: `아주대 근처에 있는 팔달수제맥주.
-          테이블 3~4개 있는 조그만 가게. 주방이랑 손님석 구분이 없어서 신기.
-          다음에 또 와야겠다.`,
+테이블 3~4개 있는 조그만 가게. 주방이랑 손님석 구분이 없어서 신기.
+다음에 또 와야겠다.`,
         images: [
           "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200512_270%2F1589240248177WIr4l_JPEG%2FKakaoTalk_Photo_2019-11-15-21-09-35.jpeg",
           "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20160222_124%2F1456108689766cGsT8_JPEG%2F176172516828220_1.jpeg",
@@ -41,8 +41,9 @@ export default class FeedModel {
               name: "마라탕 아몬드",
               thumb: "https://picsum.photos/200",
               link: "<PROFILE LINK>",
+              isFollower: false,
             },
-            content: "나만의 작은 가게였는데 글 내려주세요.",
+            content: `나만의 작은 가게였는데 글 내려주세요.`,
             likeCount: 2,
             replied: [
               {
@@ -51,8 +52,9 @@ export default class FeedModel {
                   name: "닭발 피스타치오",
                   thumb: "https://picsum.photos/200",
                   link: "<PROFILE LINK>",
+                  isFollower: false,
                 },
-                content: "죄송합니다",
+                content: `죄송합니다`,
                 likeCount: 0,
               },
             ],
