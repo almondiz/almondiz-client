@@ -9,19 +9,11 @@ const ImageSlider = ({ images }) => {
     </div>
   );
 
-  const scrollToElement = ({ target }) => {
-    const slideDom = target.parentNode.querySelector(".slides");
-    const index = parseInt(target.dataset.id, 10);
-    slideDom.scrollTo(index * slideDom.clientWidth, 0);
-    setHighLight(target.parentNode, target);
-  };
-
   const makeThumbnails = (images) => {
     const thumbnails = [];
     images.forEach((_, index) => {
       thumbnails.push(
         <div
-          onClick={scrollToElement}
           data-id={index}
           className={index === 0 ? "highlighted" : ""}
           key={`thumbnails-${index}`}
