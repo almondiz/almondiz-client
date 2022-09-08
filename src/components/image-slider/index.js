@@ -10,10 +10,10 @@ const ImageSlider = ({ images }) => {
   );
 
   const scrollToElement = ({ target }) => {
-    const slide = document.querySelector(".slides");
+    const slideDom = target.parentNode.querySelector(".slides");
     const index = parseInt(target.dataset.id, 10);
-    slide.scrollTo(index * slide.clientWidth, 0);
-    setHighLight(target);
+    slideDom.scrollTo(index * slideDom.clientWidth, 0);
+    setHighLight(target.parentNode, target);
   };
 
   const makeThumbnails = (images) => {
@@ -31,17 +31,17 @@ const ImageSlider = ({ images }) => {
     return (thumbnails);
   };
 
-  const setHighLight = (target) => {
-    if (document.querySelector(".highlighted") === target) return;
-    document.querySelector(".highlighted").classList.remove("highlighted");
+  const setHighLight = (dom, target) => {
+    if (dom.querySelector(".highlighted") === target) return;
+    dom.querySelector(".highlighted").classList.remove("highlighted");
     target.classList.add("highlighted");
   };
 
-  const scrollEvent = () => {
-    const slide = document.querySelector(".slides");
-    const index = Math.round(slide.scrollLeft / slide.clientWidth);
+  const scrollEvent = ({ target }) => {
+    const index = Math.round(target.scrollLeft / target.clientWidth);
     if (index < 0 || index >= images.length) return;
-    setHighLight(document.querySelector(`div[data-id="${index}"]`));
+    const thumbnailsDom = target.parentNode.querySelector(".thumbnails");
+    setHighLight(thumbnailsDom, thumbnailsDom.querySelector(`div[data-id="${index}"]`));
   };
   
   return (
