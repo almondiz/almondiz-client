@@ -1,11 +1,11 @@
-main {
+.page-wrap {
   display: flex;
   flex-direction: column;
 
   padding-bottom: $bottom-nav-height;
 }
 
-.feed-list-head {
+.page-header {
   width: 100%;
   padding-left: $padding-horiz;
   padding-right: $padding-horiz;

@@ -18,7 +18,7 @@ export default class FeedModel {
         },
         link: "https://map.naver.com/v5/search/%ED%8C%94%EB%8B%AC%EC%88%98%EC%A0%9C%EB%A7%A5%EC%A3%BC/place/36786112?c=14136086.2802149,4478566.8609065,12,0,0,0,dh&placePath=%3Fentry%253Dbmp",
       },
-      tags: [ "바(Bar)", "맥주" ],
+      tags: [ "맥주", "호프맥주" ],
       content: {
         text: `아주대 근처에 있는 팔달수제맥주.
 테이블 3~4개 있는 조그만 가게. 주방이랑 손님석 구분이 없어서 신기.

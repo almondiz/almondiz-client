@@ -27,19 +27,19 @@ const ImageSlider = ({ images }) => {
       );
     });
     return (thumbnails);
-  }
+  };
 
   const setHighLight = (target) => {
     if (document.querySelector(".highlighted") === target) return;
     document.querySelector(".highlighted").classList.remove("highlighted");
     target.classList.add("highlighted");
-  }
+  };
 
   const scrollEvent = () => {
     const slide = document.querySelector(".slides");
     const index = Math.floor(slide.scrollLeft / slide.clientWidth);
     setHighLight(document.querySelector(`div[data-id="${index}"]`));
-  }
+  };
   
   return (
     <div className="image-slider">
@@ -48,7 +48,7 @@ const ImageSlider = ({ images }) => {
       </div>
       <div className="slides" onScroll={scrollEvent}>{images.map(makeImages)}</div>
     </div>
-  )
+  );
 };
 
 export default ImageSlider;

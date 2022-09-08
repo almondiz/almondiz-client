@@ -17,7 +17,7 @@ const Feed = () => {
 
   return (
     <FeedView
-      posts={feedViewModel.getAllFeedList()}
+      items={feedViewModel.getAllFeedList()}
       makeItems={makeItems}
     />
   );

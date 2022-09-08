@@ -7,10 +7,10 @@ import BackIcon from "../../asset/icons/back-icon";
 
 const StoreSearch = ({ moveStep }) => {
   return (
-    <div className="page-wrapper">
+    <div className="page-wrap">
       <header>
         <div className="header-back-button" onClick={moveStep(-1)}>
-          <BackIcon height="1.5rem" fill="var(--background-color)" />
+          <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
         </div>
         <input className="text-box" type="text" placeholder="장소 검색"/>
       </header>

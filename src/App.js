@@ -10,9 +10,9 @@ import BottomNav from './components/bottom-nav';
 import LoginPage from "./views/login";
 import SignupPage from "./views/signup";
 import Feed from "./views/feed";
-import DetailPage from "./views/detail-page";
+import Post from "./views/post";
 import MyPage from "./views/my-page";
-import ReviewEditor from "./views/review-editor";
+import EditPost from "./views/edit-post";
 
 const MainLayout = () => {
   return (
@@ -35,8 +35,8 @@ const App = () => {
           <Route path="/feed" element={<Feed />} />
           <Route path="/my-page" element={<MyPage />} />
 
-          <Route path="/detail-page" element={<DetailPage />} />
-          <Route path="/review-editor" element={<ReviewEditor />} />
+          <Route path="/post" element={<Post index={0} />} />
+          <Route path="/edit-post" element={<EditPost />} />
         </Route>
       </Routes>
     </BrowserRouter>

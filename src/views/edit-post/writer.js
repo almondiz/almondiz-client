@@ -7,10 +7,10 @@ import BackIcon from "../../asset/icons/back-icon";
 
 const Writer = ({ moveStep }) => {
   return (
-    <div className="page-wrapper">
+    <div className="page-wrap">
       <header>
         <div className="header-back-button">
-          <BackIcon height="1.5rem" fill="var(--background-color)" />
+          <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
         </div>
         <div className="header-next-button" onClick={moveStep(1)}>
           다음

@@ -7,7 +7,7 @@ import Tagger from "./tagger";
 import StoreSearch from "./store-search";
 import DirectRegister from "./direct-register";
 
-const ReviewEditor = () => {
+const EditPost = () => {
   const [ curStep, setCurStep ] = useState(0);
 
   const moveStep = val => {
@@ -26,4 +26,4 @@ const ReviewEditor = () => {
   return (pages[curStep]);
 }
 
-export default ReviewEditor;
+export default EditPost;

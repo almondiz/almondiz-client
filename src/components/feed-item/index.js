@@ -8,6 +8,7 @@ import MoreHorizIcon from "../../asset/icons/more-horiz-icon";
 import SellIconBorder from "../../asset/icons/sell-icon-border";
 
 import ImageSlider from "../image-slider";
+import { Link } from "react-router-dom";
 
 
 const getDistance = (location_1, location_2) => {  // generally used geo measurement function
@@ -20,7 +21,6 @@ const getDistance = (location_1, location_2) => {  // generally used geo measure
   let d = R * c;
   return Math.round(d); // kilometers
 };
-
 const getTime = epoch => {
   const now = new Date().valueOf();
 
@@ -38,60 +38,62 @@ const getTime = epoch => {
   return `${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
-const FeedItem = ({ post, user }) => {
+const FeedItem = ({ index, post, user }) => {
   const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>)
 
   return (
-    <article className="feed-item">
-      <header className="header">
-        <div className="profile">
-          <img className="thumb" alt="profile" src={post.profile.thumb}/>
-          <div className="text-wrap">
-            <p className={`name ${post.profile.isFollower ? "follower" : ""}`}>{post.profile.name}</p>
-            <p className="date">{getTime(post.createdAt)} · {post.profile.isFollower ? "팔로잉" : "근처"}</p>
+    <Link to={`/post`}>
+      <article className="feed-item">
+        <header className="header">
+          <div className="profile">
+            <img className="thumb" alt="profile" src={post.profile.thumb}/>
+            <div className="text-wrap">
+              <p className={`name ${post.profile.isFollower ? "follower" : ""}`}>{post.profile.name}</p>
+              <p className="date">{getTime(post.createdAt)} · {post.profile.isFollower ? "팔로잉" : "근처"}</p>
+            </div>
           </div>
-        </div>
-        <div className="shop">
-          <div className="shop-icon">
-            <img className="thumb" alt="shop" src={post.shop.thumb} />
-            <p className="name">{post.shop.name}</p>
+          <div className="shop">
+            <div className="shop-icon">
+              <img className="thumb" alt="shop" src={post.shop.thumb} />
+              <p className="name">{post.shop.name}</p>
+            </div>
+            <p className="location">{post.shop.location.address} · {getDistance(user.location, post.shop.location)}km</p>
           </div>
-          <p className="location">{post.shop.location.address} · {getDistance(user.location, post.shop.location)}km</p>
-        </div>
-      </header>
+        </header>
 
-      <nav className="tags-wrap">
-        <SellIconBorder height="1.25rem" fill="#999" />
-        <ul className="tags">{post.tags.map(makeTags)}</ul>
-      </nav>
+        <nav className="tags-wrap">
+          <SellIconBorder height="1.25rem" fill="#999" />
+          <ul className="tags">{post.tags.map(makeTags)}</ul>
+        </nav>
 
-      <main className="content">
-        <div className="text">{post.content.text}</div>
-        <div className="images">
-          <ImageSlider images={post.content.images} />
-        </div>
-      </main>
+        <main className="content">
+          <div className="text">{post.content.text}</div>
+          <div className="images">
+            <ImageSlider images={post.content.images} />
+          </div>
+        </main>
 
-      <footer className="footer">
-        <div className="buttons">
-          <div className="button-wrap">
-            <ChatBubbleIconBorder alt="comment" height="1.5rem" fill="var(--primary-text-color)" />
-            <p>{post.reaction.commentCount}</p>
+        <footer className="footer">
+          <div className="buttons">
+            <div className="button-wrap">
+              <ChatBubbleIconBorder alt="comment" height="1.5rem" fill="var(--primary-text-color)" />
+              <p>{post.reaction.commentCount}</p>
+            </div>
+            <div className="button-wrap right">
+              <MoreHorizIcon alt="more" height="1.5rem" fill="var(--primary-text-color)" />
+            </div>
+            <div className="button-wrap right">
+              <BookmarkIconBorder alt="scrap" height={"1.5rem"} fill={"var(--primary-text-color)"} />
+              <p>{post.reaction.scrapCount}</p>
+            </div>
           </div>
-          <div className="button-wrap right">
-            <MoreHorizIcon alt="more" height="1.5rem" fill="var(--primary-text-color)" />
+          <div className="comment">
+            <img className="thumb" alt="comment" src={post.reaction.comments[0].profile.thumb} />
+            <p>{post.reaction.comments[0].content}</p>
           </div>
-          <div className="button-wrap right">
-            <BookmarkIconBorder alt="scrap" height={"1.5rem"} fill={"var(--primary-text-color)"} />
-            <p>{post.reaction.scrapCount}</p>
-          </div>
-        </div>
-        <div className="comment">
-          <img className="thumb" alt="comment" src={post.reaction.comments[0].profile.thumb} />
-          <p>{post.reaction.comments[0].content}</p>
-        </div>
-      </footer>
-    </article>
+        </footer>
+      </article>
+    </Link>
   );
 }
 

@@ -8,15 +8,13 @@ import UserViewModel from "../../view-models/user";
 import LocationSearchingIcon from "../../asset/icons/location-searching-icon";
 
 
-const Feed = (props) => {
-  const { posts, makeItems } = props;
-
+const Feed = ({ items, makeItems }) => {
   const userViewModel = new UserViewModel(new UserModel());
   const address = userViewModel.getUserLocation().location.address.split(" ");
 
   return (
-    <main>
-      <div className="feed-list-head">
+    <div className="page-wrap">
+      <header className="page-header">
         <p className="title">Feed</p>
         <div className="right">
           <div className="location">
@@ -25,9 +23,9 @@ const Feed = (props) => {
           </div>
           <LocationSearchingIcon height="1.5rem" fill="var(--primary-text-color)" />
         </div>
-      </div>
-      {posts.map(makeItems)}
-    </main>
+      </header>
+      {items.map(makeItems)}
+    </div>
   );
 };
 
