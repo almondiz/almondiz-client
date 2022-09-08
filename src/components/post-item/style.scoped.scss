@@ -197,8 +197,42 @@
   display: grid;
   gap: .125rem;
 
-  div {
+  .image {
     background-size: cover;
     background-position: center;
+  }
+  .shop-link {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      color: #fff;
+      //box-shadow: 0 1px 3px rgba(0, 0, 0, .375); 
+    }
+    
+    .image {
+      z-index: -1;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+
+      &::after {
+        content: "";
+        display: block;
+
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, .25);
+        backdrop-filter: blur(.5rem);
+        -webkit-backdrop-filter: blur(.5rem);
+      }
+    }
   }
 }

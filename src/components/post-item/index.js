@@ -21,17 +21,23 @@ const getDistance = (location_1, location_2) => {  // generally used geo measure
   return Math.round(d); // kilometers
 };
 const getTime = epoch => {
+  const SECOND = 1000;
+  const MINUTE = 60 * SECOND;
+  const HOUR = 60 * MINUTE;
+  const DAY = 24 * HOUR;
+  const WEEK = 7 * DAY;
+
   const now = new Date().valueOf();
 
-  let minutes = Math.floor((now - epoch) / (1000 * 60));
-  if (minutes < 1)
+  const dt = Math.floor(now - epoch);
+  if (dt < MINUTE)
     return `방금`;
-  else if (minutes < 60)            // 1 ~ 59분
-    return `${minutes}분 전`;
-  else if (minutes < 60 * 24)       // 1 ~ 23시간
-    return `${Math.floor(minutes / 60)}시간 전`;
-  else if (minutes < 60 * 24 * 8)   // 1 ~ 7일
-    return `${Math.floor(minutes / (60 * 24))}일 전`;
+  else if (dt < HOUR)            // 1 ~ 59분
+    return `${Math.floor(dt / MINUTE)}분 전`;
+  else if (dt < DAY)       // 1 ~ 23시간
+    return `${Math.floor(dt / HOUR)}시간 전`;
+  else if (dt < WEEK)   // 1 ~ 7일
+    return `${Math.floor(dt / DAY)}일 전`;
   
   const date = new Date(epoch);
   return `${date.getMonth() + 1}월 ${date.getDate()}일`;
@@ -140,6 +146,7 @@ const generateRandomGrid = (Y, X, TILES) => {
     return s;
   };
 
+  map[Y - 1][X - 2] = map[Y - 1][X - 1] = `grid-${TILES + 1}`;
   init();
   let tile;
   for (tile = 1; tile <= TILES; tile++)   expand(tile);
@@ -149,7 +156,7 @@ const generateRandomGrid = (Y, X, TILES) => {
 const PostItem = ({ index, post, user }) => {
   const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
   
-  const makeImageGrid = (src, index) => (<div key={index} style={{ gridArea: `grid-${index + 1}` , backgroundImage: `url(${src})` }} />);
+  const makeImageGrid = (src, index) => (<div key={index} className="image" style={{ gridArea: `grid-${index + 1}`, backgroundImage: `url(${src})` }} />);
 
   const makeImageGridStyle = () => {
     let N = Math.max(2, Math.round(post.content.images.length * 1.5 / 3));
@@ -161,7 +168,7 @@ const PostItem = ({ index, post, user }) => {
       height: `${8 * N}rem`,
       gridTemplateAreas: generateRandomGrid(N, M, post.content.images.length),
     };
-    console.log(ImageGridStyle.gridTemplateAreas)
+    //console.log(ImageGridStyle.gridTemplateAreas)
     return ImageGridStyle;
   };
 
@@ -192,7 +199,14 @@ const PostItem = ({ index, post, user }) => {
       <main className="content">
         <div className="text">{post.content.text}</div>
         <div className="images">
-          <div className="image-grid" style={makeImageGridStyle()}>{post.content.images.map(makeImageGrid)}</div>
+          <div className="image-grid" style={makeImageGridStyle()}>
+            {post.content.images.map(makeImageGrid)}
+            <div className="shop-link" style={{ gridArea: `grid-${post.content.images.length + 1}` }}>
+              <p>{post.shop.name}</p>
+              <p>{post.shop.location.address} · {getDistance(user.location, post.shop.location)}km</p>
+              <div className="image" style={{ backgroundImage: `url(${post.shop.thumb})` }} />
+            </div>
+          </div>
         </div>
       </main>
 
