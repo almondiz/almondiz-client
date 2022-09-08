@@ -40,7 +40,7 @@ const ImageSlider = ({ images }) => {
   const scrollEvent = () => {
     const slide = document.querySelector(".slides");
     const index = Math.round(slide.scrollLeft / slide.clientWidth);
-    if (index < 0) return;
+    if (index < 0 || index >= images.length) return;
     setHighLight(document.querySelector(`div[data-id="${index}"]`));
   };
   
