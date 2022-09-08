@@ -32,7 +32,6 @@
   display: grid;
   grid-auto-flow: column;
   width: 100vw;
-  height: 17.5rem;
   overflow-y: hidden;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
@@ -43,9 +42,11 @@
   scroll-snap-align: start;
 }
 
-.slides img {
+.slides .image {
   width: 100vw;
-  object-fit: contain;
+  height: 17.5rem;
+  background-size: cover;
+  background-position: center;
 }
 
 .slides::-webkit-scrollbar {

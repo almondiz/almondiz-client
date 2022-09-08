@@ -4,7 +4,9 @@ import "./style.scoped.scss";
 
 const ImageSlider = ({ images }) => {
   const makeImages = (src, index) => (
-    <div key={`image-${index}`}><img src={src} alt="" /></div>
+    <div key={`image-${index}`}>
+      <div className="image" style={{backgroundImage: `url(${src})` }} />
+    </div>
   );
 
   const scrollToElement = ({ target }) => {
