@@ -157,7 +157,7 @@
       display: flex;
       margin-bottom: 1.375rem;
   
-      .button-wrap {
+      .button-label {
         display: flex;
         align-items: center;
   
@@ -166,7 +166,7 @@
           margin-left: .25rem;
         }
 
-        & + .button-wrap {
+        & + .button-label {
           margin-left: .875rem;
         }
       }

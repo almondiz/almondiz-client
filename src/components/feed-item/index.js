@@ -75,17 +75,17 @@ const FeedItem = ({ index, post, user }) => {
 
       <footer className="footer">
         <div className="buttons">
-          <div className="button-wrap">
+          <button className="button-label">
             <ChatBubbleIconBorder height="1.5rem" fill="var(--primary-text-color)" />
             <p>{post.reaction.commentCount}</p>
-          </div>
-          <div className="button-wrap right">
+          </button>
+          <button className="button-label right">
             <MoreHorizIcon height="1.5rem" fill="var(--primary-text-color)" />
-          </div>
-          <div className="button-wrap">
+          </button>
+          <button className="button-label">
             <BookmarkIconBorder height={"1.5rem"} fill={"var(--primary-text-color)"} />
             <p>{post.reaction.scrapCount}</p>
-          </div>
+          </button>
         </div>
         <div className="comment">
           <img className="thumb" alt="profile" src={post.reaction.comments[0].profile.thumb} />

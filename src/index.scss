@@ -49,6 +49,10 @@ a {
   text-decoration: none;
 }
 
+button {
+  all: unset;
+}
+
 
 /* custom */
 
@@ -59,8 +63,26 @@ a {
   margin-left: auto !important;
 }*/
 
-.icon {
+.icon,
+[class*="icon"] {
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &.icon-xs {
+    min-height: 1rem;
+    min-width: 1rem;
+  }
+  &.icon-sm {
+    min-height: 2rem;
+    min-width: 2rem;
+  }
+  &.icon-md {
+    min-height: 3rem;
+    min-width: 3rem;
+  }
+  &.icon-lg {
+    min-height: 4rem;
+    min-width: 4rem;
+  }
 }

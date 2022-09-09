@@ -28,30 +28,30 @@ const FloatMenu = () => {
   const FloatMenuMain = ({ moveFrame }) => {
     return (
       <section className="frame-main">
-        <div className="button-comment" onClick={moveFrame(1)} >
-          <div className="icon">
+        <button className="button-comment" onClick={moveFrame(1)} >
+          <div className="icon-sm">
             <ChatBubbleIconBorder height="1.5rem" fill="var(--primary-text-color)" />
           </div>
           <p>댓글 쓰기</p>
-        </div>
+        </button>
   
-        <div className="button-scrap icon right">
+        <button className="button-scrap icon-md">
           <BookmarkIconBorder height="1.5rem" fill="var(--primary-text-color)" />
-        </div>
+        </button>
       </section>
     );
   };
   const FloatMenuComment = ({ moveFrame }) => {
     return (
       <section className="frame-comment">
-        <div className="button-back icon" onClick={moveFrame(-1)}>
+        <button className="button-back icon-sm" onClick={moveFrame(-1)}>
           <ArrowBackIosIcon height="1.5rem" fill="var(--primary-text-color)" />
-        </div>
+        </button>
         <div className="comment-input-box">
           <input type="text" autoFocus />
-          <div className="button-send icon right">
+          <button className="button-send icon-sm right">
             <SendIconBorder height="1.5rem" fill="var(--primary-text-color)" />
-          </div>
+          </button>
         </div>
       </section>
     );
@@ -71,14 +71,14 @@ const Post = ({ post, makePost }) => {
   return (
     <div className="page-wrap">
       <header className="header float">
-        <Link to={"/"} className="icon">
+        <Link to={"/"} className="button-back icon">
           <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
         </Link>
       </header>
       <header className="header">
-        <div className="icon right">
+        <button className="button-more icon-sm right">
           <MoreHorizIcon height="1.5rem" fill="var(--primary-text-color)" />
-        </div>
+        </button>
       </header>
       {makePost(post)}
 

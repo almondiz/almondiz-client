@@ -14,7 +14,7 @@ const Feed = ({ items, makeItems }) => {
 
   return (
     <div className="page-wrap">
-      <header className="page-header">
+      <header className="header">
         <h1 className="title">Feed</h1>
         <div className="right">
           <div className="location">

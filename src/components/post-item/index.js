@@ -194,10 +194,10 @@ const CommentItem = ({ commentIndex, comment }) => {
         <div className="icon more-icon">
           <MoreHorizIcon height="1rem" fill="#666" />
         </div>
-        <div className="button-favorite right">
+        <button className="button-favorite right">
           <FavoriteIconBorder height="1rem" fill="#666" />
           <p>{comment.likeCount}</p>
-        </div>
+        </button>
       </header>
       <p className="body">{comment.content}</p>
 

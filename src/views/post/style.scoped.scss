@@ -10,6 +10,27 @@
       top: 0;
       left: 0;
       right: 0;
+
+      .button-back {
+        position: absolute;
+        left: 1rem;
+      
+        width: 3rem;
+        height: 3rem;
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      
+        border-radius: 1.5rem;
+        background-color: rgba(255, 255, 255, .625);
+        backdrop-filter: blur(1rem);
+        -webkit-backdrop-filter: blur(1rem);
+        border: 1px solid rgba(238, 238, 238, .5);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+      
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+      }
     }
   
     width: 100%;
@@ -17,7 +38,7 @@
     padding-right: $padding-horiz;
   
     height: 5rem;
-    margin-top: 1.5rem;
+    margin-top: .5rem;
   
     display: flex;
     justify-content: space-between;
@@ -33,56 +54,30 @@
   }
 }
 
-a.icon {
-  position: absolute;
-  left: 1.625rem;
-
-  width: 2.25rem;
-  height: 2.25rem;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  border-radius: 100%;
-  border: 1px solid rgba(238, 238, 238, .625);
-  background-color: rgba(255, 255, 255, .625);
-  backdrop-filter: blur(1rem);
-  -webkit-backdrop-filter: blur(1rem);
-
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-}
-
 .float-menu {
   z-index: 10;
 
   position: fixed;
   left: 1rem;
   right: 1rem;
-  bottom: 6.5rem;
-  height: 3.25rem;
+  bottom: 5.5rem;
+  height: 3rem;
 
-  box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-  background-color: rgba(255, 255, 255, .625);
-  border: 1px solid rgba(238, 238, 238, .625);
-  border-radius: 1.625rem;
-
-  backdrop-filter: blur(1rem);
-  -webkit-backdrop-filter: blur(1rem);
-
-  &>[class|="frame"] {
+  &>[class*="frame"] {
     height: 100%;
-
-    .icon {
-      width: 2rem;
-      height: 2rem;
-    }
 
     &.frame-main {
       display: flex;
-      align-items: center;
-      padding-left: 1rem;
-      padding-right: 1rem;
+      justify-content: space-between;
+
+      &>* {
+        border-radius: 1.5rem;
+        background-color: rgba(255, 255, 255, .625);
+        backdrop-filter: blur(1rem);
+        -webkit-backdrop-filter: blur(1rem);
+        border: 1px solid rgba(238, 238, 238, .5);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+      }
   
       .button-comment {
         display: flex;
@@ -90,20 +85,32 @@ a.icon {
 
         p {
           margin-left: .25rem;
+          margin-right: .25rem;
           font-size: .875rem;
         }
+
+        padding-left: 1rem;
+        padding-right: 1rem;
       }
     }
 
     &.frame-comment {
       display: flex;
-      align-items: center;
+      align-items: stretch;
       padding-left: .625rem;
       padding-right: .625rem;
+
+      border-radius: 1.5rem;
+      background-color: rgba(255, 255, 255, .625);
+      backdrop-filter: blur(1rem);
+      -webkit-backdrop-filter: blur(1rem);
+      border: 1px solid rgba(238, 238, 238, .5);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
   
       .comment-input-box {
         margin-left: .375rem;
-
+        margin-top: auto;
+        margin-bottom: auto;
         flex: 1;
 
         display: flex;
