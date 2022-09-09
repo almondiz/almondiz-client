@@ -9,8 +9,6 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
 
-import { Link } from "react-router-dom";
-
 
 const getDistance = (location_1, location_2) => {  // generally used geo measurement function
   let R = 6378.137; // Radius of earth in KM
@@ -212,10 +210,17 @@ const CommentItem = ({ commentIndex, comment }) => {
   );
 };
 
-const PostItem = ({ index, post, user }) => {
+const PostItem = ({ index, post, user, setShownImageIndex }) => {
   const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
   
-  const makeImageGrid = (src, index) => (<div key={index} className="grid image" style={{ gridArea: `grid-${index + 1}`, backgroundImage: `url(${src})` }} />);
+  const makeImageGrid = (src, index) => (
+    <div
+      key={index}
+      className="grid image"
+      style={{ gridArea: `grid-${index + 1}`, backgroundImage: `url(${src})` }}
+      onClick={() => setShownImageIndex(index)}
+    />
+  );
 
   const makeImageGridStyle = () => {
     let N = Math.round(post.content.images.length / 2) + 1;   // # of rows

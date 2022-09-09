@@ -59,9 +59,6 @@ button {
 .right {
   margin-left: auto !important;
 }
-/*.right:not(.right + .right) {
-  margin-left: auto !important;
-}*/
 
 .icon,
 [class*="icon"] {
@@ -84,5 +81,9 @@ button {
   &.icon-lg {
     min-height: 4rem;
     min-width: 4rem;
+  }
+  &.icon-xl {
+    min-height: 5rem;
+    min-width: 5rem;
   }
 }

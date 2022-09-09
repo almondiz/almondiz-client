@@ -79,7 +79,7 @@ const FloatFooter = () => {
   const FloatFooterComment = ({ moveFrame }) => {
     return (
       <section className="frame-comment">
-        <button className="button-back icon-sm" onClick={moveFrame(-1)}>
+        <button className="button-back icon-md" onClick={moveFrame(-1)}>
           <ArrowBackIosIcon height="1.5rem" fill="var(--primary-text-color)" />
         </button>
         <div className="comment-input-box">
@@ -102,7 +102,7 @@ const FloatFooter = () => {
   );
 };
 
-const Post = ({ post, makePost }) => {
+const Post = ({ post, makePost, makeImageViewer }) => {
   return (
     <div className="page-wrap">
       <FloatHeader />
@@ -112,9 +112,12 @@ const Post = ({ post, makePost }) => {
           <MoreHorizIcon height="1.5rem" fill="var(--primary-text-color)" />
         </button>
       </header>
+      
       {makePost(post)}
 
       <FloatFooter />
+
+      {makeImageViewer(post.content.images)}
     </div>
   );
 };

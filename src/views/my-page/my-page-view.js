@@ -26,6 +26,7 @@ const MyPageView = () => {
         </div>
         <div className="mypage-profile-box line">
           <div className="mypage-profile-wrap">
+          <img src={"https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"}/>
             <p className="mypage-profile-key">팔로워</p>
             <p className="mypage-profile-key">0</p>
           </div>
