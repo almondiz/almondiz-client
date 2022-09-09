@@ -2,11 +2,12 @@ import React from "react";
 
 import "./style.scoped.scss";
 
-import ChatBubbleIconBorder from "../../asset/icons/chat-bubble-icon-border";
-import BookmarkIconBorder from "../../asset/icons/bookmark-icon-border";
-import MoreHorizIcon from "../../asset/icons/more-horiz-icon";
-import SellIconBorder from "../../asset/icons/sell-icon-border";
-import NavigateNextIcon from "../../asset/icons/navigate-next-icon";
+import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
+import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
+import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
+import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
+import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
+import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
 
 import { Link } from "react-router-dom";
 
@@ -181,20 +182,51 @@ const generateRandomGrid = (Y, X, TILES) => {
   return _draw();
 };
 
+
+const makeCommentItem = (comment, index) => (<CommentItem key={index} commentIndex={index} comment={comment} />);
+const CommentItem = ({ commentIndex, comment }) => {
+  return (
+    <article className="comment-item">
+      <header className="header">
+        <img className="thumb" alt="profile" src={comment.profile.thumb} />
+        <p className={`name ${comment.profile.isFollower ? "follower" : ""}`}>{comment.profile.name}</p>
+        <p className="date">{getTime(comment.createdAt)}</p>
+        <div className="icon more-icon">
+          <MoreHorizIcon height="1rem" fill="#666" />
+        </div>
+        <div className="right favorite-button button-wrap">
+          <FavoriteIconBorder height="1rem" fill="#666" />
+          <p>{comment.likeCount}</p>
+        </div>
+      </header>
+      <p className="body">{comment.content}</p>
+
+      {
+        comment.reply && (
+          <section className="reply comment-list">
+            {comment.reply.map(makeCommentItem)}
+          </section>
+        )
+      }
+    </article>
+  );
+};
+
 const PostItem = ({ index, post, user }) => {
   const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
   
   const makeImageGrid = (src, index) => (<div key={index} className="grid image" style={{ gridArea: `grid-${index + 1}`, backgroundImage: `url(${src})` }} />);
 
   const makeImageGridStyle = () => {
-    let N = Math.round(post.content.images.length / 2) + 1;
-    let M = 3;
+    let N = Math.round(post.content.images.length / 2) + 1;   // # of rows
+    let M = 3;                                                // # of columns
+    let TILES = post.content.images.length + 1;               // # of tiles (including a shop link tile)
 
     const ImageGridStyle = {
-      gridTemplateRows: `repeat(${N} 1fr)`,
+      gridTemplateRows: `repeat(${N}, 1fr)`,
       gridTemplateColumns: `repeat(${M}, 1fr)`,
       height: `${8 * N}rem`,
-      gridTemplateAreas: generateRandomGrid(N, M, post.content.images.length + 1),
+      gridTemplateAreas: generateRandomGrid(N, M, TILES),
     };
     return ImageGridStyle;
   };
@@ -223,7 +255,7 @@ const PostItem = ({ index, post, user }) => {
         <ul className="tags">{post.tags.map(makeTags)}</ul>
       </nav>
 
-      <main className="content">
+      <main className="body">
         <p className="text">{post.content.text}</p>
         <div className="images">
           <div className="image-grid" style={makeImageGridStyle()}>
@@ -244,10 +276,9 @@ const PostItem = ({ index, post, user }) => {
 
       <footer className="footer">
         <p className="counts">{`댓글 ${post.reaction.commentCount} · 스크랩 ${post.reaction.scrapCount}`}</p>
-        <div className="comment">
-          <img className="thumb" alt="comment" src={post.reaction.comments[0].profile.thumb} />
-          <p>{post.reaction.comments[0].content}</p>
-        </div>
+        <section className="comment-list">
+          {post.reaction.comments.map(makeCommentItem)}
+        </section>
       </footer>
     </article>
   );

@@ -5,7 +5,7 @@ import "./style.scoped.scss";
 import { FeedModel, UserModel } from "../../models";
 import UserViewModel from "../../view-models/user";
 
-import LocationSearchingIcon from "../../asset/icons/location-searching-icon";
+import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
 
 
 const Feed = ({ items, makeItems }) => {
@@ -15,7 +15,7 @@ const Feed = ({ items, makeItems }) => {
   return (
     <div className="page-wrap">
       <header className="page-header">
-        <p className="title">Feed</p>
+        <h1 className="title">Feed</h1>
         <div className="right">
           <div className="location">
             <p>{address.slice(0, -1).join(" ")}</p>
@@ -24,7 +24,9 @@ const Feed = ({ items, makeItems }) => {
           <LocationSearchingIcon height="1.5rem" fill="var(--primary-text-color)" />
         </div>
       </header>
-      {items.map(makeItems)}
+      <section className="feed-list">
+        {items.map(makeItems)}
+      </section>
     </div>
   );
 };

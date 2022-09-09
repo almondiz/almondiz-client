@@ -6,18 +6,18 @@ import "./style.scoped.scss";
 import { FeedModel, UserModel } from "../../models";
 import UserViewModel from "../../view-models/user";
 
-import BackIcon from "../../asset/icons/back-icon";
-import MoreHorizIcon from "../../asset/icons/more-horiz-icon";
+import BackIcon from "../../asset/icons/mui/back-icon";
+import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
-import ChatBubbleIconBorder from "../../asset/icons/chat-bubble-icon-border";
-import BookmarkIconBorder from "../../asset/icons/bookmark-icon-border";
+import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
+import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 
 
 const Post = ({ post, makePost }) => {
   return (
     <div className="page-wrap">
       <header className="page-header float">
-        <Link to={"/feed"} className="icon">
+        <Link to={"/"} className="icon">
           <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
         </Link>
       </header>

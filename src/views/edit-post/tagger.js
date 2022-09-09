@@ -3,7 +3,7 @@ import React from "react";
 import "./style.scoped.scss";
 
 import IconImg from "../../asset/logo/symbol.png";
-import BackIcon from "../../asset/icons/back-icon";
+import BackIcon from "../../asset/icons/mui/back-icon";
 
 const Tagger = ({ moveStep }) => {
   return (

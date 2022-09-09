@@ -38,14 +38,14 @@ export default class FeedModel {
           {
             createdAt: 1660993260000,
             profile: {
-              name: "마라탕 아몬드",
+              name: "후루룩챱챱",
               thumb: "https://picsum.photos/200",
               link: "<PROFILE LINK>",
-              isFollower: false,
+              isFollower: true,
             },
             content: `나만의 작은 가게였는데 글 내려주세요.`,
             likeCount: 2,
-            replied: [
+            reply: [
               {
                 createdAt: 1660993320000,
                 profile: {
@@ -54,7 +54,7 @@ export default class FeedModel {
                   link: "<PROFILE LINK>",
                   isFollower: false,
                 },
-                content: `죄송합니다`,
+                content: `유감입니다`,
                 likeCount: 0,
               },
             ],

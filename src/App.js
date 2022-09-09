@@ -28,11 +28,11 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         
         <Route element={<MainLayout />}>
-          <Route path="/feed" element={<Feed />} />
+          <Route path="/" element={<Feed />} />
           <Route path="/my-page" element={<MyPage />} />
 
           <Route path="/post" element={<Post index={0} />} />

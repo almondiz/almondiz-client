@@ -5,11 +5,24 @@
 
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
+
+  & + & {
+    border-top: 1px solid #eee;
+  }
 
   display: flex;
   flex-direction: column;
   overflow: auto;
+
+  position: relative;
+  &>.link {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
 
   &>.header {
     margin-bottom: 1rem;
@@ -43,7 +56,7 @@
         .date {
           margin-top: .375rem;
           font-size: .75rem;
-          color: #888888;
+          color: #666;
         }
       }
     }
@@ -79,8 +92,8 @@
 
       .location {
         font-size: .75rem;
-        margin-top: 4px;
-        color: #888;
+        margin-top: .25rem;
+        color: #666;
       }
     }
   }
@@ -117,13 +130,12 @@
     }
   }
 
-  &>.content {
+  &>.body {
     margin-bottom: 2rem;
 
     .text {
       color: var(--primary-text-color);
 
-      white-space: pre-line;
       font-size: .875rem;
 
       line-height: 1.4;

@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 
-import ExploreIconFill from "../../asset/icons/explore-icon-fill";
-import ExploreIconBorder from "../../asset/icons/explore-icon-border";
-import SearchIconFill from "../../asset/icons/search-icon-fill";
-import SearchIconBorder from "../../asset/icons/search-icon-border";
-import BookmarkIconFill from "../../asset/icons/bookmark-icon-fill";
-import BookmarkIconBorder from "../../asset/icons/bookmark-icon-border";
-import AccountCircleIconFill from "../../asset/icons/account-circle-icon-fill";
-import AccountCircleIconBorder from "../../asset/icons/account-circle-icon-border";
+import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
+import ExploreIconBorder from "../../asset/icons/mui/explore-icon-border";
+import SearchIconFill from "../../asset/icons/mui/search-icon-fill";
+import SearchIconBorder from "../../asset/icons/mui/search-icon-border";
+import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
+import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
+import AccountCircleIconFill from "../../asset/icons/mui/account-circle-icon-fill";
+import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-border";
 
 import "./style.scoped.scss";
 import { Link } from "react-router-dom";
@@ -17,7 +17,7 @@ const BottomNav = () => {
     const iconList = [
         {
             icon: [ExploreIconBorder, ExploreIconFill],
-            path: "/feed",
+            path: "/",
         },
         {
             icon: [SearchIconBorder, SearchIconFill],
