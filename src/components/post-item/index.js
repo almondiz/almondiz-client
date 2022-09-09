@@ -186,7 +186,7 @@ const generateRandomGrid = (Y, X, TILES) => {
 const makeCommentItem = (comment, index) => (<CommentItem key={index} commentIndex={index} comment={comment} />);
 const CommentItem = ({ commentIndex, comment }) => {
   return (
-    <article className="comment-item">
+    <article className={`comment-item ${comment.reply ? "" : "reply"}`}>
       <header className="header">
         <img className="thumb" alt="profile" src={comment.profile.thumb} />
         <p className={`name ${comment.profile.isFollower ? "follower" : ""}`}>{comment.profile.name}</p>
@@ -203,7 +203,7 @@ const CommentItem = ({ commentIndex, comment }) => {
 
       {
         comment.reply && (
-          <section className="reply comment-list">
+          <section className="comment-list reply">
             {comment.reply.map(makeCommentItem)}
           </section>
         )

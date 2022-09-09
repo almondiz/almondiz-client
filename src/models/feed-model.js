@@ -58,9 +58,21 @@ export default class FeedModel {
                 likeCount: 0,
               },
             ],
+          },
+          {
+            createdAt: 1662700320000,
+            profile: {
+              name: "마라탕 아몬드",
+              thumb: "https://picsum.photos/200",
+              link: "<PROFILE LINK>",
+              isFollower: false,
+            },
+            content: `굿`,
+            likeCount: 0,
+            reply: [],
           }
         ],
-        commentCount: 2,
+        commentCount: 3,
         scrapCount: 7,
       },
     }
