@@ -20,8 +20,7 @@
       right: 0;
       bottom: 0;
 
-      background: var(--background-color);
-      opacity: .75;
+      background: rgba(238, 238, 238, .625);
     }
   }
 
@@ -31,8 +30,8 @@
     display: flex;
     justify-content: space-around;
 
-    backdrop-filter: blur(2rem);
-    -webkit-backdrop-filter: blur(2rem);
+    backdrop-filter: blur(1rem);
+    -webkit-backdrop-filter: blur(1rem);
 
     margin: 0;
     padding: 0;
@@ -47,8 +46,8 @@
       right: 0;
       bottom: 0;
 
-      background: var(--background-color);
-      opacity: .375;
+      background: var(--background-color);  // #fff 
+      opacity: .625;
     }
 
     .icon-wrapper {

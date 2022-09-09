@@ -178,7 +178,7 @@ const generateRandomGrid = (Y, X, TILES) => {
   let tile;
   for (tile = 1; tile <= TILES; tile++)   _grow(tile);
   _sort();
-  //console.log(_draw());
+  console.log(_draw());   //
   return _draw();
 };
 
@@ -194,7 +194,7 @@ const CommentItem = ({ commentIndex, comment }) => {
         <div className="icon more-icon">
           <MoreHorizIcon height="1rem" fill="#666" />
         </div>
-        <div className="right favorite-button button-wrap">
+        <div className="button-favorite right">
           <FavoriteIconBorder height="1rem" fill="#666" />
           <p>{comment.likeCount}</p>
         </div>
