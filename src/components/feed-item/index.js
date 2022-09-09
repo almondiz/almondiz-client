@@ -67,7 +67,7 @@ const FeedItem = ({ index, post, user }) => {
         </nav>
 
         <main className="content">
-          <div className="text">{post.content.text}</div>
+          <p className="text">{post.content.text}</p>
           <div className="images">
             <ImageSlider images={post.content.images} />
           </div>

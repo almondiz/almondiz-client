@@ -32,11 +32,6 @@
       }
   
       .text-wrap {
-        p {
-          line-height: 1rem;
-          letter-spacing: -0.333333px;
-        }
-
         .name {
           width: fit-content;
           font-size: .875rem;
@@ -46,7 +41,7 @@
           }
         }
         .date {
-          margin-top: 3px;
+          margin-top: .375rem;
           font-size: .75rem;
           color: #888888;
         }
