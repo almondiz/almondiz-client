@@ -8,7 +8,7 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 import ImageSlider from "../image-slider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 
 const getDistance = (location_1, location_2) => {  // generally used geo measurement function
@@ -39,6 +39,8 @@ const getTime = epoch => {
 };
 
 const FeedItem = ({ index, post, user }) => {
+  const navigate = useNavigate();
+
   const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>)
 
   return (
@@ -68,7 +70,7 @@ const FeedItem = ({ index, post, user }) => {
 
       <main className="body">
         <p className="text">{post.content.text}</p>
-        <div className="images">
+        <div className="images" onClick={() => navigate(`/post`)}>
           <ImageSlider images={post.content.images} />
         </div>
       </main>

@@ -17,7 +17,7 @@ const LoginPage = () => {
       <p style={{ fontSize: "1.25rem", marginBottom: 0 }}>나만의 맛있는 스크랩북</p>
       <div className="logotype" alt="logotype" style={{ backgroundColor: "var(--secondary-text-color)" }} />
 
-      <div className="socials-wrapper">
+      <div className="socials-wrap">
         <p style={{ fontSize: "0.75rem", marginBottom: "1rem" }}>소셜 계정으로 시작하기</p>
         <ul className="socials">
           <li className="icon">

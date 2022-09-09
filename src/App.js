@@ -3,16 +3,15 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 import { FeedModel, UserModel } from "./models";
 
-
-
-import BottomNav from './components/bottom-nav';
-
 import LoginPage from "./views/login";
 import SignupPage from "./views/signup";
 import Feed from "./views/feed";
 import Post from "./views/post";
 import MyPage from "./views/my-page";
 import EditPost from "./views/edit-post";
+
+import BottomNav from './components/bottom-nav';
+
 
 const MainLayout = () => {
   return (
@@ -24,7 +23,6 @@ const MainLayout = () => {
 };
 
 const App = () => {
-  
   return (
     <BrowserRouter>
       <Routes>
