@@ -78,6 +78,11 @@ button {
   &.icon-sm {
     min-height: 2rem;
     min-width: 2rem;
+
+    &>svg {
+      height: 1.5rem;
+      width: 1.5rem;
+    }
   }
   &.icon-md {
     min-height: 3rem;

@@ -18,10 +18,14 @@ const Feed = ({ items, makeItems }) => {
         <h1 className="title">Feed</h1>
         <div className="right">
           <div className="location">
-            <p>{address.slice(0, -1).join(" ")}</p>
-            <p>{address[address.length - 1]}</p>
+            <div className="text-wrap">
+              <p>{address.slice(0, -1).join(" ")}</p>
+              <p>{address[address.length - 1]}</p>
+            </div>
+            <button className="icon-sm">
+              <LocationSearchingIcon height="1.5rem" fill="var(--primary-text-color)" />
+            </button>
           </div>
-          <LocationSearchingIcon height="1.5rem" fill="var(--primary-text-color)" />
         </div>
       </header>
       <section className="feed-list">

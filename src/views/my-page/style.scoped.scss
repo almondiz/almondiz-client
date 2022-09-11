@@ -9,7 +9,7 @@
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
   
-    height: 5rem;
+    height: $page-header-height;
     margin-top: .5rem;
   
     display: flex;
@@ -17,7 +17,7 @@
     align-items: center;
   
     .brand {
-      height: 1.75rem;
+      height: 2rem;
     }
 
     .right {
@@ -44,26 +44,26 @@
       }
     }
     .button-settings {
-      margin-left: .5rem;
+      margin-left: .75rem;
     }
   }
 
   &>.profile-wrap {
-    padding-top: 1.5rem;
+    padding-top: 1rem;
 
     width: 100%;
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
     .profile {
-      margin-bottom: 1rem;
+      margin-bottom: .75rem;
 
       display: flex;
       align-items: center;
   
       .thumb {
-        width: 2.5rem;
-        height: 2.5rem;
+        width: 3rem;
+        height: 3rem;
         margin-right: .625rem;
         border-radius: 100%;
 
@@ -73,7 +73,7 @@
       .text-wrap {
         .id {
           width: fit-content;
-          font-size: .875rem;
+          font-size: 1rem;
           font-weight: 700;
 
           display: flex;
@@ -82,17 +82,17 @@
           &::after {
             content: "나";
             font-weight: 400;
-            font-size: .625rem;
+            font-size: .6825rem;
             color: #666;
             border: 1px solid #666;
             border-radius: 1rem;
-            padding: .125rem .3125rem;
-            margin-left: .25rem;
+            padding: .125rem .375rem;
+            margin-left: .3125rem;
           }
         }
         .name {
-          margin-top: .375rem - .125rem;
-          font-size: .75rem;
+          margin-top: .3125rem;
+          font-size: .8125rem;
           color: #666;
         }
       }
@@ -113,7 +113,7 @@
         justify-content: stretch;
 
         &>* {
-          font-size: .75rem;
+          font-size: .8125rem;
         }
         p {
           margin-left: .25rem;
