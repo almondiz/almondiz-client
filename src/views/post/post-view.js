@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { FeedModel, UserModel } from "../../models";
-import UserViewModel from "../../view-models/user";
+import { useSelector } from "react-redux";
 
 import "./style.scoped.scss";
 
@@ -14,35 +13,13 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import SendIconBorder from "../../asset/icons/mui/send-icon-border";
 
 
-const useScrollDirection = () => {
-  const [scrollDirection, setScrollDirection] = useState(null);
-
-  useEffect(() => {
-    let lastScrollY = window.pageYOffset;
-
-    const updateScrollDirection = () => {
-      const scrollY = window.pageYOffset;
-      const direction = scrollY > lastScrollY ? "down" : "up";
-      if (direction !== scrollDirection && Math.abs(scrollY - lastScrollY) >= 5) {
-        setScrollDirection(direction);
-      }
-      lastScrollY = scrollY > 0 ? scrollY : 0;
-    };
-    window.addEventListener("scroll", updateScrollDirection); // add event listener
-    return () => {
-      window.removeEventListener("scroll", updateScrollDirection); // clean up
-    }
-  }, [scrollDirection]);
-
-  return scrollDirection;
-};
-
-
 const FloatHeader = () => {
-  const scrollDirection = useScrollDirection();
+  const { scrollDirection } = useSelector(state => ({
+    scrollDirection: state.global.scrollDirection,
+  }));
 
   return (
-    <header className={`float-header ${scrollDirection === "down" ? "hide" : ""}`}>
+    <header className={`float-header ${scrollDirection === 1 ? "hide" : ""}`}>
       <Link to={"/"} className="button-back icon">
         <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
       </Link>
@@ -50,7 +27,9 @@ const FloatHeader = () => {
   );
 };
 const FloatFooter = () => {
-  const scrollDirection = useScrollDirection();
+  const { scrollDirection } = useSelector(state => ({
+    scrollDirection: state.global.scrollDirection,
+  }));
 
   const [ currentFrameIndex, setCurrentFrameIndex ] = useState(0);
   const moveFrame = inc => {
@@ -96,7 +75,7 @@ const FloatFooter = () => {
     <FloatFooterComment moveFrame={moveFrame} />,
   ];
   return (
-    <aside className={`float-footer ${scrollDirection === "up" ? "hide" : ""}`}>
+    <aside className={`float-footer ${scrollDirection === -1 ? "hide" : ""}`}>
       {frames[currentFrameIndex]}
     </aside>
   );

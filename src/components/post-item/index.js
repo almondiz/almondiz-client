@@ -160,13 +160,13 @@ const generateRandomGrid = (Y, X, TILES) => {
       }
     }
   };
-  const _draw = () => {
+  const _draw = (prefix="") => {
     let s = ``;
     let y, x;
     for (y = 0; y < Y; y++) {
       s += `"`;
       for (x = 0; x < X; x++)
-        s += `grid-${map[y][x]} `;
+        s += `${prefix}${map[y][x]} `;
       s += `"\n`;
     }
     return s;
@@ -177,7 +177,7 @@ const generateRandomGrid = (Y, X, TILES) => {
   for (tile = 1; tile <= TILES; tile++)   _grow(tile);
   _sort();
   console.log(_draw());   //
-  return _draw();
+  return _draw("grid-");
 };
 
 

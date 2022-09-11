@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
+import { useSelector } from "react-redux";
 
 import "./style.scoped.scss";
 
@@ -13,31 +15,10 @@ import AccountCircleIconFill from "../../asset/icons/mui/account-circle-icon-fil
 import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-border";
 
 
-const useScrollDirection = () => {
-  const [scrollDirection, setScrollDirection] = useState(null);
-
-  useEffect(() => {
-    let lastScrollY = window.pageYOffset;
-
-    const updateScrollDirection = () => {
-      const scrollY = window.pageYOffset;
-      const direction = scrollY > lastScrollY ? "down" : "up";
-      if (direction !== scrollDirection && Math.abs(scrollY - lastScrollY) >= 5) {
-        setScrollDirection(direction);
-      }
-      lastScrollY = scrollY > 0 ? scrollY : 0;
-    };
-    window.addEventListener("scroll", updateScrollDirection); // add event listener
-    return () => {
-      window.removeEventListener("scroll", updateScrollDirection); // clean up
-    }
-  }, [scrollDirection]);
-
-  return scrollDirection;
-};
-
 const BottomNav = () => {
-  const scrollDirection = useScrollDirection();
+  const { scrollDirection } = useSelector(state => ({
+    scrollDirection: state.global.scrollDirection,
+  }));
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const makeIcon = ({ icon, path }, index) => {
@@ -86,7 +67,7 @@ const BottomNav = () => {
   })(currentIndex);
 
   return (
-    <nav className={`bottom-nav-wrap ${scrollDirection === "up" ? "hide" : ""}`}>
+    <nav className={`bottom-nav-wrap ${scrollDirection === -1 ? "hide" : ""}`}>
       <div className="bottom-nav-border" style={gradientStyle} />
       <ul className="bottom-nav">
         {iconList.map(makeIcon)}
