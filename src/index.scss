@@ -8,6 +8,8 @@ body,
   padding: 0;
   height: 100%;
   width: 100%;
+
+  font-size: 16px;
 }
 
 * {
@@ -76,8 +78,8 @@ button {
     min-width: 1rem;
   }
   &.icon-sm {
-    min-height: 2rem;
-    min-width: 2rem;
+    min-height: 2.5rem;
+    min-width: 2.5rem;
 
     &>svg {
       height: 1.5rem;

@@ -71,7 +71,7 @@
       }
   
       .text-wrap {
-        .id {
+        .name {
           width: fit-content;
           font-size: 1rem;
           font-weight: 700;
@@ -87,10 +87,10 @@
             border: 1px solid #666;
             border-radius: 1rem;
             padding: .125rem .375rem;
-            margin-left: .3125rem;
+            margin-left: .375rem;
           }
         }
-        .name {
+        .email {
           margin-top: .3125rem;
           font-size: .8125rem;
           color: #666;

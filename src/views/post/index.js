@@ -20,7 +20,7 @@ const ImageViewer = ({ images, shownImageIndex, setShownImageIndex }) => {
 
   return shownImageIndex !== null && (
     <div className="image-viewer">
-      <div className="background" style={{ backgroundImage: `url(${image})`}} />
+      <div className="background" style={{ /*backgroundImage: `url(${image})`*/ }} />
       <img className="image" src={image}></img>
       <button className="button-close icon-xl" onClick={() => setShownImageIndex(null)}>
         <CloseIcon height="2rem" fill="#fff" />
