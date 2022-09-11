@@ -1,7 +1,6 @@
 import React from "react";
 
 import "./style.scoped.scss";
-
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
@@ -43,214 +42,181 @@ const getTime = epoch => {
   return `${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
-const generateRandomGrid = (Y, X, TILES) => {
-  let ret;
-
-  while (true) {
-    const map = Array.from(Array(Y), () => Array(X).fill(0));
-    const seed = new Array(TILES + 1);
-
-    const _plant = () => {
-      map[Y - 1][X - 2] = map[Y - 1][X - 1] = -TILES, seed[TILES] = { y: Y - 1, x: X - 2 };   // for shop-link
-
-      let tile;
-      let y, x, tmp;
-      for (tile = 1; tile <= TILES - 1; tile++) {
-        while (true) {
-          tmp = Math.floor(Math.random() * (Y * X));
-          y = Math.floor(tmp / X), x = tmp % X;
-          if (map[y][x]) continue;
-          map[y][x] = -tile, seed[tile] = { y: y, x: x };
-          break;
-        }
-      }
-    };
-    const _shuffleArray = arr => {
-      let i, j, tmp;
-      for (i = 0; i < arr.length - 1; i++) {
-        j = (i + 1) + Math.floor(Math.random() * (arr.length - i - 1));
-        tmp = arr[i], arr[i] = arr[j], arr[j] = tmp;
-      }
-    };
-    const _grow = tile => {
-      let { y, x } = seed[tile];
-      let y_m = y, y_M = y;
-      let x_m = x, x_M = x;
-      if (tile === TILES)   x_M = x + 1;
-
-      let order = [ 0, 1, 2, 3 ];
-      _shuffleArray(order);
-
-      let i, b;
-      for (i = 0; i < order.length; i++) {
-        switch (order[i]) {
-        case 0:     // to +X
-          for (x = x_M + 1; x < X; x++) {
-            b = true;
-            for (y = y_m; y <= y_M; y++)
-              if (map[y][x]) {
-                b = false;
-                break;
-              }
-            if (!b) break;
-            for (y = y_m; y <= y_M; y++)    map[y][x] = -tile;
-            x_M = x;
-          }
-          break;
-        case 1:     // to +Y
-          for (y = y_M + 1; y < Y; y++) {
-            b = true;
-            for (x = x_m; x <= x_M; x++)
-              if (map[y][x]) {
-                b = false;
-                break;
-              }
-            if (!b) break;
-            for (x = x_m; x <= x_M; x++)    map[y][x] = -tile;
-            y_M = y;
-          }
-          break;
-        case 2:     // to -X
-          for (x = x_m - 1; x >= 0; x--) {
-            b = true;
-            for (y = y_m; y <= y_M; y++)
-              if (map[y][x]) {
-                b = false;
-                break;
-              }
-            if (!b) break;
-            for (y = y_m; y <= y_M; y++)    map[y][x] = -tile;
-            x_m = x;
-          }
-          break;
-        case 3:     // to -Y
-          for (y = y_m - 1; y >= 0; y--) {
-            b = true;
-            for (x = x_m; x <= x_M; x++)
-              if (map[y][x]) {
-                b = false;
-                break;
-              }
-            if (!b) break;
-            for (x = x_m; x <= x_M; x++)    map[y][x] = -tile;
-            y_m = y;
-          }
-          break;
-        }
-      }
-
-      if (tile === TILES) {
-        for (x = x_m; x <= x_M; x++)
-          for (y = y_m; y <= y_M; y++)
-            if (map[y][x] !== -tile)
-              map[y][x];
-      }
-    };
-    const _isFullGrown = () => {
-      let x, y;
-      if (tile === TILES)
-        for (x = 0; x < X; x++)
-          for (y = 0; y < Y; y++)
-            if (map[y][x] === 0)
-              return false;
-      return true;
-    };
-    const _sort = () => {
-      let new_tile = 1, tile;
-      let y, x, y1, x1;
-      for (y = 0; y < Y; y++) {
-        for (x = 0; x < X; x++) {
-          if ((tile = map[y][x]) < 0) {
-            if (tile === -TILES) {    // for shop-link
-              map[y][x] *= -1;
-              continue;
-            }
-
-            for (y1 = y; y1 < Y; y1++) {
-              if (map[y1][x] !== tile)   break;
-              map[y1][x] = new_tile;
-              for (x1 = x + 1; x1 < X; x1++) {
-                if (map[y1][x1] !== tile)  break;
-                map[y1][x1] = new_tile;
-              }
-            }
-            new_tile++;
-            if (x1 < X)   x = x1 - 1;
-          }
-        }
-      }
-    };
-    const _draw = (prefix="") => {
-      let s = ``;
-      let y, x;
-      for (y = 0; y < Y; y++) {
-        s += `"`;
-        for (x = 0; x < X; x++)
-          s += `${prefix}${map[y][x]} `;
-        s += `"\n`;
-      }
-      return s;
-    };
-
-    _plant();
-    let tile;
-    for (tile = 1; tile <= TILES; tile++)   _grow(tile);
-    if (_isFullGrown()) {
-      _sort();
-      ret = _draw("grid-");
-      break;
-    }
-  }
-  //console.log(ret);
-  return ret;
-};
-
-
-const makeCommentItem = (comment, index) => (<CommentItem key={index} commentIndex={index} comment={comment} />);
-const CommentItem = ({ commentIndex, comment }) => {
-  return (
-    <article className={`comment-item ${comment.reply ? "" : "reply"}`}>
-      <header className="header">
-        <img className="thumb" alt="profile" src={comment.profile.thumb} />
-        <p className={`name ${comment.profile.isFollower ? "follower" : ""}`}>{comment.profile.name}</p>
-        <p className="date">{getTime(comment.createdAt)}</p>
-        <div className="icon more-icon">
-          <MoreHorizIcon height="1.25rem" fill="#666" />
-        </div>
-        <button className="button-favorite right">
-          <FavoriteIconBorder height="1.25rem" fill="#666" />
-          <p>{comment.likeCount}</p>
-        </button>
-      </header>
-      <p className="body">{comment.content}</p>
-
-      {
-        comment.reply && (
-          <section className="comment-list reply">
-            {comment.reply.map(makeCommentItem)}
-          </section>
-        )
-      }
-    </article>
-  );
-};
-
-const PostItem = ({ index, post, user, setShownImageIndex }) => {
-  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
+const ImageGrid = ({ images, shop, action }) => {
+  const generateRandomGrid = (Y, X, TILES) => {
+    let ret;
   
-  const makeImageGrid = (src, index) => (
+    while (true) {
+      const map = Array.from(Array(Y), () => Array(X).fill(0));
+      const seed = new Array(TILES + 1);
+  
+      const _plant = () => {
+        map[Y - 1][X - 2] = map[Y - 1][X - 1] = -TILES, seed[TILES] = { y: Y - 1, x: X - 2 };   // for shop-link
+  
+        let tile;
+        let y, x, tmp;
+        for (tile = 1; tile <= TILES - 1; tile++) {
+          while (true) {
+            tmp = Math.floor(Math.random() * (Y * X));
+            y = Math.floor(tmp / X), x = tmp % X;
+            if (map[y][x]) continue;
+            map[y][x] = -tile, seed[tile] = { y: y, x: x };
+            break;
+          }
+        }
+      };
+      const _shuffleArray = arr => {
+        let i, j, tmp;
+        for (i = 0; i < arr.length - 1; i++) {
+          j = (i + 1) + Math.floor(Math.random() * (arr.length - i - 1));
+          tmp = arr[i], arr[i] = arr[j], arr[j] = tmp;
+        }
+      };
+      const _grow = tile => {
+        let { y, x } = seed[tile];
+        let y_m = y, y_M = y;
+        let x_m = x, x_M = x;
+        if (tile === TILES)   x_M = x + 1;
+  
+        let order = [ 0, 1, 2, 3 ];
+        _shuffleArray(order);
+  
+        let i, b;
+        for (i = 0; i < order.length; i++) {
+          switch (order[i]) {
+          case 0:     // to +X
+            for (x = x_M + 1; x < X; x++) {
+              b = true;
+              for (y = y_m; y <= y_M; y++)
+                if (map[y][x]) {
+                  b = false;
+                  break;
+                }
+              if (!b) break;
+              for (y = y_m; y <= y_M; y++)    map[y][x] = -tile;
+              x_M = x;
+            }
+            break;
+          case 1:     // to +Y
+            for (y = y_M + 1; y < Y; y++) {
+              b = true;
+              for (x = x_m; x <= x_M; x++)
+                if (map[y][x]) {
+                  b = false;
+                  break;
+                }
+              if (!b) break;
+              for (x = x_m; x <= x_M; x++)    map[y][x] = -tile;
+              y_M = y;
+            }
+            break;
+          case 2:     // to -X
+            for (x = x_m - 1; x >= 0; x--) {
+              b = true;
+              for (y = y_m; y <= y_M; y++)
+                if (map[y][x]) {
+                  b = false;
+                  break;
+                }
+              if (!b) break;
+              for (y = y_m; y <= y_M; y++)    map[y][x] = -tile;
+              x_m = x;
+            }
+            break;
+          case 3:     // to -Y
+            for (y = y_m - 1; y >= 0; y--) {
+              b = true;
+              for (x = x_m; x <= x_M; x++)
+                if (map[y][x]) {
+                  b = false;
+                  break;
+                }
+              if (!b) break;
+              for (x = x_m; x <= x_M; x++)    map[y][x] = -tile;
+              y_m = y;
+            }
+            break;
+          }
+        }
+  
+        if (tile === TILES) {
+          for (x = x_m; x <= x_M; x++)
+            for (y = y_m; y <= y_M; y++)
+              if (map[y][x] !== -tile)
+                map[y][x];
+        }
+      };
+      const _isFullGrown = () => {
+        let x, y;
+        if (tile === TILES)
+          for (x = 0; x < X; x++)
+            for (y = 0; y < Y; y++)
+              if (map[y][x] === 0)
+                return false;
+        return true;
+      };
+      const _sort = () => {
+        let new_tile = 1, tile;
+        let y, x, y1, x1;
+        for (y = 0; y < Y; y++) {
+          for (x = 0; x < X; x++) {
+            if ((tile = map[y][x]) < 0) {
+              if (tile === -TILES) {    // for shop-link
+                map[y][x] *= -1;
+                continue;
+              }
+  
+              for (y1 = y; y1 < Y; y1++) {
+                if (map[y1][x] !== tile)   break;
+                map[y1][x] = new_tile;
+                for (x1 = x + 1; x1 < X; x1++) {
+                  if (map[y1][x1] !== tile)  break;
+                  map[y1][x1] = new_tile;
+                }
+              }
+              new_tile++;
+              if (x1 < X)   x = x1 - 1;
+            }
+          }
+        }
+      };
+      const _draw = (prefix="") => {
+        let s = ``;
+        let y, x;
+        for (y = 0; y < Y; y++) {
+          s += `"`;
+          for (x = 0; x < X; x++)
+            s += `${prefix}${map[y][x]} `;
+          s += `"\n`;
+        }
+        return s;
+      };
+  
+      _plant();
+      let tile;
+      for (tile = 1; tile <= TILES; tile++)   _grow(tile);
+      if (_isFullGrown()) {
+        _sort();
+        ret = _draw("grid-");
+        break;
+      }
+    }
+    //console.log(ret);
+    return ret;
+  };
+
+  const makeCell = (src, index) => (
     <div
       key={index}
       className="grid image"
       style={{ gridArea: `grid-${index + 1}`, backgroundImage: `url(${src})` }}
-      onClick={() => setShownImageIndex(index)}
+      onClick={() => action(index)}
     />
   );
-
-  const makeImageGridStyle = () => {
-    let N = Math.round(post.content.images.length / 2) + 1;   // # of rows
-    let M = 3;                                                // # of columns
-    let TILES = post.content.images.length + 1;               // # of tiles (including a shop link tile)
+  const makeGridStyle = () => {
+    let N = Math.round(images.length / 2) + 1;  // # of rows
+    let M = 3;                                  // # of columns
+    let TILES = images.length + 1;              // # of tiles (including a shop link tile)
 
     const ImageGridStyle = {
       gridTemplateRows: `repeat(${N}, 1fr)`,
@@ -259,6 +225,54 @@ const PostItem = ({ index, post, user, setShownImageIndex }) => {
       gridTemplateAreas: generateRandomGrid(N, M, TILES),
     };
     return ImageGridStyle;
+  };
+
+  return (
+    <div className="image-grid" style={makeGridStyle()}>
+      {images.map(makeCell)}
+      <div className="grid shop-link" style={{ gridArea: `grid-${images.length + 1}` }}>
+        <div className="content">
+          <div>
+            <p className="name">{shop.name}</p>
+            <p className="address">{shop.location.address}</p>
+          </div>
+          <NavigateNextIcon height="2.5rem" fill="#fff" />
+        </div>
+        <div className="image" style={{ backgroundImage: `url(${shop.thumb})` }} />
+      </div>
+    </div>
+  );
+};
+
+
+const PostItem = ({ index, post, user, setImageViewerIndex }) => {
+  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
+  const makeComments = (comment, index) => {
+    return (
+      <article key={index} className={`comment-item ${comment.reply ? "" : "reply"}`}>
+        <header className="header">
+          <img className="thumb" alt="profile" src={comment.profile.thumb} />
+          <p className={`name ${comment.profile.isFollower ? "follower" : ""}`}>{comment.profile.name}</p>
+          <p className="date">{getTime(comment.createdAt)}</p>
+          <div className="icon more-icon">
+            <MoreHorizIcon height="1.25rem" fill="#666" />
+          </div>
+          <button className="button-favorite right">
+            <FavoriteIconBorder height="1.25rem" fill="#666" />
+            <p>{comment.likeCount}</p>
+          </button>
+        </header>
+        <p className="body">{comment.content}</p>
+  
+        {
+          comment.reply && (
+            <section className="comment-list reply">
+              {comment.reply.map(makeComments)}
+            </section>
+          )
+        }
+      </article>
+    );
   };
 
   return (
@@ -288,26 +302,18 @@ const PostItem = ({ index, post, user, setShownImageIndex }) => {
       <main className="body">
         <p className="text">{post.content.text}</p>
         <div className="images">
-          <div className="image-grid" style={makeImageGridStyle()}>
-            {post.content.images.map(makeImageGrid)}
-            <div className="grid shop-link" style={{ gridArea: `grid-${post.content.images.length + 1}` }}>
-              <div className="content">
-                <div>
-                  <p className="name">{post.shop.name}</p>
-                  <p className="address">{post.shop.location.address}</p>
-                </div>
-                <NavigateNextIcon height="2.5rem" fill="#fff" />
-              </div>
-              <div className="image" style={{ backgroundImage: `url(${post.shop.thumb})` }} />
-            </div>
-          </div>
+          <ImageGrid images={post.content.images} shop={post.shop} action={setImageViewerIndex} />
+        </div>
+
+        <div className="images">
+          
         </div>
       </main>
 
       <footer className="footer">
         <p className="counts">{`댓글 ${post.reaction.commentCount} · 스크랩 ${post.reaction.scrapCount}`}</p>
         <section className="comment-list">
-          {post.reaction.comments.map(makeCommentItem)}
+          {post.reaction.comments.map(makeComments)}
         </section>
       </footer>
     </article>

@@ -1,4 +1,7 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import ImageSlider from "../image-slider";
 
 import "./style.scoped.scss";
 
@@ -6,9 +9,6 @@ import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border"
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
-
-import ImageSlider from "../image-slider";
-import { Link, useNavigate } from "react-router-dom";
 
 
 const getDistance = (location_1, location_2) => {  // generally used geo measurement function
