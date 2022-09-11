@@ -190,10 +190,10 @@ const CommentItem = ({ commentIndex, comment }) => {
         <p className={`name ${comment.profile.isFollower ? "follower" : ""}`}>{comment.profile.name}</p>
         <p className="date">{getTime(comment.createdAt)}</p>
         <div className="icon more-icon">
-          <MoreHorizIcon height="1rem" fill="#666" />
+          <MoreHorizIcon height="1.25rem" fill="#666" />
         </div>
         <button className="button-favorite right">
-          <FavoriteIconBorder height="1rem" fill="#666" />
+          <FavoriteIconBorder height="1.25rem" fill="#666" />
           <p>{comment.likeCount}</p>
         </button>
       </header>

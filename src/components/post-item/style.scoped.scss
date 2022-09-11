@@ -107,7 +107,7 @@
         border-radius: .625rem;
         color: #666;
   
-        font-size: .75rem;
+        font-size: .8125rem;
   
         display: flex;
         align-items: center;
@@ -117,14 +117,13 @@
   }
 
   &>.body {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 
     .text {
       color: var(--primary-text-color);
 
       font-size: .875rem;
-
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .images {
@@ -212,10 +211,15 @@
     flex-direction: column;
 
     .counts {
-      font-size: .75rem;
+      height: 2.5rem;
+
+      display: flex;
+      align-items: center;
+
+      font-size: .8125rem;
       color: #666;
 
-      margin-bottom: 1.25rem;
+      margin-bottom: .5rem;
     }
   
     .comment-list {
@@ -241,7 +245,7 @@
             //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
           }
           .name {
-            font-size: .8125rem;
+            font-size: .875rem;
 
             display: flex;
             align-items: center;
@@ -254,7 +258,7 @@
               color: #666;
               border: 1px solid #666;
               border-radius: 1rem;
-              padding: .125rem .25rem;
+              padding: .125rem .3125rem;
               margin-left: .25rem;
             }
 
@@ -263,19 +267,19 @@
             }
           }
           .date {
-            font-size: .75rem;
+            font-size: .8125rem;
             color: #666;
-            margin-left: .625rem;
+            margin-left: .75rem;
           }
           .more-icon {
-            margin-left: .625rem;
+            margin-left: .75rem;
           }
           .button-favorite {
             display: flex;
             align-items: center;
       
             p {
-              font-size: .75rem;
+              font-size: .8125rem;
               margin-left: .25rem;
 
               color: #666;
@@ -283,11 +287,11 @@
           }
         }
         &>.body {
-          padding-top: .625rem;
-          padding-bottom: 1.125rem;
+          padding-top: .5rem;
+          padding-bottom: 1rem;
 
-          font-size: .8125rem;
-          line-height: 1.125rem;
+          font-size: .875rem;
+          line-height: 1.25rem;
         }
       }
     }

@@ -22,29 +22,45 @@
 
     .right {
       display: flex;
-      align-items: center; 
-    }
+      align-items: center;
 
-    .button-noti {
-      &, //
-      &.badge {
-        position: relative;
+      &>*:not(:first-of-type) {
+        margin-left: .5rem;
+      }
 
-        &::after {
-          position: absolute;
-          top: -.0625rem;
-          right: -.0625rem;
-
-          content: "";
-          width: .5rem;
-          height: .5rem;
-          background-color: var(--content-text-color);
-          border-radius: 100%;
+      .button-noti {
+        &, //
+        &.badge {
+          position: relative;
+  
+          &::after {
+            position: absolute;
+            top: -.3125rem + .5rem;
+            right: -.3125rem + .5rem;
+  
+            content: "";
+            width: .5rem;
+            height: .5rem;
+            background-color: var(--content-text-color);
+            border-radius: 100%;
+          }
+        }
+  
+        ::v-deep {
+          svg {
+            fill: #666;
+          }
         }
       }
-    }
-    .button-settings {
-      margin-left: .75rem;
+      .button-settings {
+        margin-right: -.5rem;
+  
+        ::v-deep {
+          svg {
+            fill: #666;
+          }
+        }
+      }
     }
   }
 
@@ -56,7 +72,7 @@
     padding-right: $padding-horiz;
 
     .profile {
-      margin-bottom: .75rem;
+      margin-bottom: .25rem;
 
       display: flex;
       align-items: center;
@@ -101,7 +117,7 @@
     .row + .row {
       border-top: 1px solid #eee;
     }
-    .row {
+    .row {      
       display: flex;
       align-items: center;
 
@@ -135,7 +151,7 @@
       }
 
       .button-following {
-        font-size: .75rem;
+        font-size: .8125rem;
         font-weight: 700;
         color: var(--background-color);
         background-color: var(--content-text-color);

@@ -9,7 +9,7 @@ const Writer = ({ moveStep }) => {
     <div className="page-wrap">
       <header>
         <div className="header-back-button">
-          <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
+          <BackIcon />
         </div>
         <div className="header-next-button" onClick={moveStep(1)}>
           다음

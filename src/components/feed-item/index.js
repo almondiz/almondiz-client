@@ -19,7 +19,7 @@ const getDistance = (location_1, location_2) => {  // generally used geo measure
     Math.cos(location_1.lat * Math.PI / 180) * Math.cos(location_2.lat * Math.PI / 180) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
   let c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   let d = R * c;
-  return Math.round(d); // kilometers
+  return Math.round(d); // KM
 };
 const getTime = epoch => {
   const now = new Date().valueOf();
@@ -27,11 +27,11 @@ const getTime = epoch => {
   let minutes = Math.floor((now - epoch) / (1000 * 60));
   if (minutes < 1)
     return `방금`;
-  else if (minutes < 60)            // 1 ~ 59분
+  else if (minutes < 60)            // 1 ~ 59 mins
     return `${minutes} 분 전`;
-  else if (minutes < 60 * 24)       // 1 ~ 23시간
+  else if (minutes < 60 * 24)       // 1 ~ 23 hours
     return `${Math.floor(minutes / 60)}시간 전`;
-  else if (minutes < 60 * 24 * 8)   // 1 ~ 7일
+  else if (minutes < 60 * 24 * 8)   // 1 ~ 7 days
     return `${Math.floor(minutes / (60 * 24))}일 전`;
   
   const date = new Date(epoch);
@@ -77,15 +77,21 @@ const FeedItem = ({ index, post, user }) => {
 
       <footer className="footer">
         <div className="buttons">
-          <button className="button-label">
-            <ChatBubbleIconBorder height="1.5rem" fill="var(--primary-text-color)" />
+          <button className="button">
+            <div className="icon-sm">
+              <ChatBubbleIconBorder />
+            </div>
             <p>{post.reaction.commentCount}</p>
           </button>
-          <button className="button-label right">
-            <MoreHorizIcon height="1.5rem" fill="var(--primary-text-color)" />
+          <button className="button right">
+            <div className="icon-sm icon-container">
+              <MoreHorizIcon />
+            </div>
           </button>
-          <button className="button-label">
-            <BookmarkIconBorder height={"1.5rem"} fill={"var(--primary-text-color)"} />
+          <button className="button">
+            <div className="icon-sm">
+              <BookmarkIconBorder />
+            </div>
             <p>{post.reaction.scrapCount}</p>
           </button>
         </div>

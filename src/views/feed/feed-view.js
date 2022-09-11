@@ -17,15 +17,15 @@ const Feed = ({ items, makeItems }) => {
       <header className="header">
         <h1 className="title">Feed</h1>
         <div className="right">
-          <div className="location">
+          <button className="button-location">
             <div className="text-wrap">
               <p>{address.slice(0, -1).join(" ")}</p>
               <p>{address[address.length - 1]}</p>
             </div>
-            <button className="icon-sm">
-              <LocationSearchingIcon height="1.5rem" fill="var(--primary-text-color)" />
-            </button>
-          </div>
+            <div className="icon-sm">
+              <LocationSearchingIcon />
+            </div>
+          </button>
         </div>
       </header>
       <section className="feed-list">

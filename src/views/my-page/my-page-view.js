@@ -14,11 +14,11 @@ const MyPageView = () => {
       <header className="header">
         <img className="brand" alt="brand" src={LogotypeImage}/>
         <div className="right">
-          <button className="button-noti icon-sm">
-            <NotificationsIconFill height="1.5rem" fill="#666" />
+          <button className="button-noti icon-sm icon-container">
+            <NotificationsIconFill />
           </button>
-          <button className="button-settings icon-sm">
-            <SettingsIconFill height="1.5rem" fill="#666" />
+          <button className="button-settings icon-sm icon-container">
+            <SettingsIconFill />
           </button>
         </div>
       </header>

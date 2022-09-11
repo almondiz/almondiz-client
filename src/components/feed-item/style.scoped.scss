@@ -119,7 +119,7 @@
         border-radius: .625rem;
         color: #666;
   
-        font-size: .75rem;
+        font-size: .8125rem;
   
         display: flex;
         align-items: center;
@@ -129,14 +129,13 @@
   }
 
   &>.body {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 
     .text {
       color: var(--primary-text-color);
 
       font-size: .875rem;
-
-      line-height: 1.4;
+      line-height: 1.5;
     }
 
     .images {
@@ -155,17 +154,21 @@
       display: flex;
       margin-bottom: 1.375rem;
   
-      .button-label {
+      .button {
+        &:not(:first-child) {
+          margin-left: .5rem;
+        }
+
         display: flex;
         align-items: center;
+        justify-content: center;
+
+        min-width: 2.5rem;
+        height: 2.5rem;
   
         p {
           font-size: .8125rem;
           margin-left: .25rem;
-        }
-
-        & + .button-label {
-          margin-left: .875rem;
         }
       }
     }
@@ -186,7 +189,7 @@
       
       p {
         font-size: .8125rem;
-        line-height: 1.125rem;
+        line-height: 1.25rem;
       }
     }
   }

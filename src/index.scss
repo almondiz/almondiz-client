@@ -74,28 +74,37 @@ button {
   align-items: center;
 
   &.icon-xs {
-    min-height: 1rem;
-    min-width: 1rem;
+    &>svg {
+      height: 1rem;
+      width: 1rem;
+    }
   }
   &.icon-sm {
-    min-height: 2.5rem;
-    min-width: 2.5rem;
-
     &>svg {
       height: 1.5rem;
       width: 1.5rem;
     }
+    &.icon-container {
+      min-height: 2.5rem;
+      min-width: 2.5rem;
+    }
   }
   &.icon-md {
-    min-height: 3rem;
-    min-width: 3rem;
+    &>svg {
+      height: 3rem;
+      width: 3rem;
+    }
   }
   &.icon-lg {
-    min-height: 4rem;
-    min-width: 4rem;
+    &>svg {
+      height: 4rem;
+      width: 4rem;
+    }
   }
   &.icon-xl {
-    min-height: 5rem;
-    min-width: 5rem;
+    &>svg {
+      height: 5rem;
+      width: 5rem;
+    }
   }
 }

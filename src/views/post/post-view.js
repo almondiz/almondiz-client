@@ -20,8 +20,8 @@ const FloatHeader = () => {
 
   return (
     <header className={`float-header ${scrollDirection === 1 ? "hide" : ""}`}>
-      <Link to={"/"} className="button-back icon">
-        <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
+      <Link to={"/"} className="button-back icon-sm">
+        <BackIcon />
       </Link>
     </header>
   );
@@ -44,13 +44,13 @@ const FloatFooter = () => {
       <section className="frame-main">
         <button className="button-comment" onClick={moveFrame(1)} >
           <div className="icon-sm">
-            <ChatBubbleIconBorder height="1.5rem" fill="var(--primary-text-color)" />
+            <ChatBubbleIconBorder />
           </div>
           <p>댓글 쓰기</p>
         </button>
   
-        <button className="button-scrap icon-md">
-          <BookmarkIconBorder height="1.5rem" fill="var(--primary-text-color)" />
+        <button className="button-scrap icon-sm">
+          <BookmarkIconBorder />
         </button>
       </section>
     );
@@ -58,13 +58,13 @@ const FloatFooter = () => {
   const FloatFooterComment = ({ moveFrame }) => {
     return (
       <section className="frame-comment">
-        <button className="button-back icon-md" onClick={moveFrame(-1)}>
-          <ArrowBackIosIcon height="1.5rem" fill="var(--primary-text-color)" />
+        <button className="button-back icon-sm" onClick={moveFrame(-1)}>
+          <ArrowBackIosIcon />
         </button>
         <div className="comment-input-box">
           <input type="text" autoFocus />
           <button className="button-send icon-sm right">
-            <SendIconBorder height="1.5rem" fill="var(--primary-text-color)" />
+            <SendIconBorder />
           </button>
         </div>
       </section>
@@ -87,9 +87,11 @@ const Post = ({ post, makePost, makeImageViewer }) => {
       <FloatHeader />
 
       <header className="header">
-        <button className="button-more icon-sm right">
-          <MoreHorizIcon height="1.5rem" fill="var(--primary-text-color)" />
-        </button>
+        <div className="right">
+          <button className="button-more icon-sm icon-container">
+            <MoreHorizIcon />
+          </button>
+        </div>
       </header>
       
       {makePost(post)}

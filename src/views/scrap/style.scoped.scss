@@ -17,36 +17,12 @@
     align-items: center;
   
     .title {
-      margin: 0;
-  
-      font-size: 2rem;
-  
-      color: var(--primary-text-color);
+      font-size: 1.75rem;
     }
   
     .right {
       display: flex;
       align-items: center;
-      
-      .location {
-        margin-right: .6125rem;
-  
-        display: flex;
-        flex-direction: column;
-  
-        p {
-          align-self: flex-end;
-  
-          margin: 0;
-          line-height: 1.25rem;
-  
-          white-space: pre;
-  
-          &:first-child {
-            font-size: .8125rem;
-          }
-        }
-      }
     }
   }
 

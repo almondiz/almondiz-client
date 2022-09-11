@@ -23,10 +23,11 @@ const BottomNav = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const makeIcon = ({ icon, path }, index) => {
     const focus = index === currentIndex;
+    const Icon = icon[focus ? 1 : 0];
     return (
       <Link to={path} key={index} className="icon-wrap" onClick={() => setCurrentIndex(index)}>
-        <div className={`icon ${focus ? "focus" : ""} ${index === 3 ? "badge" : ""}`}>
-          {icon[focus ? 1 : 0]({ height: "1.5rem", fill: "var(--primary-text-color)" })}
+        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${index === 3 ? "badge" : ""}`}>
+          <Icon />
         </div>
       </Link>
     )

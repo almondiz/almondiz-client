@@ -9,7 +9,7 @@ const Tagger = ({ moveStep }) => {
     <div className="page-wrap">
       <header>
         <div className="header-back-button" onClick={moveStep(-1)}>
-          <BackIcon height="1.5rem" fill="var(--primary-text-color)" />
+          <BackIcon />
         </div>
         <div className="header-next-button">
           완료
