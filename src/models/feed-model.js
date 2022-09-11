@@ -3,10 +3,10 @@ export default class FeedModel {
     return {
       createdAt: 1660993200000,
       profile: {
+        uid: 2,
         name: "닭발 피스타치오",
-        thumb: "https://picsum.photos/200",
-        link: "<PROFILE LINK>",
-        isFollower: false,
+        thumb: "https://picsum.photos/id/20/200",
+        isFollowed: false,
       },
       shop: {
         name: "팔달수제맥주",
@@ -38,10 +38,11 @@ export default class FeedModel {
           {
             createdAt: 1660993260000,
             profile: {
-              name: "후루룩챱챱",
-              thumb: "https://picsum.photos/200",
-              link: "<PROFILE LINK>",
-              isFollower: true,
+              uid: 3,
+              name: "달고나 마카다미아",
+              thumb: "https://picsum.photos/id/30/200",
+              isFollowed: true,
+              alias: "후루룩챱챱",
             },
             content: `나만의 작은 가게였는데 글 내려주세요.`,
             likeCount: 2,
@@ -49,12 +50,12 @@ export default class FeedModel {
               {
                 createdAt: 1660993320000,
                 profile: {
+                  uid: 2,
                   name: "닭발 피스타치오",
-                  thumb: "https://picsum.photos/200",
-                  link: "<PROFILE LINK>",
-                  isFollower: false,
+                  thumb: "https://picsum.photos/id/20/200",
+                  isFollowed: false,
                 },
-                content: `유감입니다`,
+                content: `유감이네용`,
                 likeCount: 0,
               },
             ],
@@ -62,10 +63,10 @@ export default class FeedModel {
           {
             createdAt: 1662700320000,
             profile: {
-              name: "마라탕 아몬드",
-              thumb: "https://picsum.photos/200",
-              link: "<PROFILE LINK>",
-              isFollower: false,
+              uid: 1,
+              name: "마제멘 호두",
+              thumb: "https://picsum.photos/id/10/200",
+              isFollowed: false,
             },
             content: `굿`,
             likeCount: 0,
@@ -77,7 +78,7 @@ export default class FeedModel {
       },
     }
   }
-  getAllFeedData() {
+  getAllData() {
     return [
       this.getDummyData(),
       this.getDummyData(),

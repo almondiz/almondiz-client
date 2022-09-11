@@ -4,13 +4,16 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
 
+import { UserModel } from "./models";
+import UserViewModel from "./view-models/user";
+
 import LoginPage from "./views/login";
 import SignupPage from "./views/signup";
 import Feed from "./views/feed";
 import Post from "./views/post";
 import Search from "./views/search";
 import Scrap from "./views/scrap";
-import MyPage from "./views/my-page";
+import Profile from "./views/profile";
 import EditPost from "./views/edit-post";
 
 import BottomNav from "./components/bottom-nav";
@@ -45,6 +48,11 @@ const Monitor = () => {
   };
   initScrollHandler();
 
+  // gps handler
+  const initLocationHandler = () => {
+  };
+  initLocationHandler();
+
   return <></>;
 };
 
@@ -59,6 +67,9 @@ const MainLayout = () => {
 };
 
 const App = () => {
+  const userViewModel = new UserViewModel(new UserModel());
+  const me = userViewModel.getMyData();
+
   return (
     <>
       <BrowserRouter>
@@ -67,12 +78,12 @@ const App = () => {
           <Route path="/signup" element={<SignupPage />} />
           
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Feed />} />
-            <Route path="/post" element={<Post index={0} />} />
+            <Route path="/" element={<Feed me={me} />} />
+            <Route path="/post" element={<Post index={0} me={me} />} />
 
             <Route path="/search" element={<Search />} />
             <Route path="/scrap" element={<Scrap />} />
-            <Route path="/my-page" element={<MyPage />} />
+            <Route path="/my-page" element={<Profile uid={me.profile.uid} me={me} />} />
           </Route>
           <Route path="/edit-post" element={<EditPost />} />
         </Routes>

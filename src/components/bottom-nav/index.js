@@ -16,9 +16,7 @@ import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-b
 
 
 const BottomNav = () => {
-  const { scrollDirection } = useSelector(state => ({
-    scrollDirection: state.global.scrollDirection,
-  }));
+  const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const makeIcon = ({ icon, path }, index) => {

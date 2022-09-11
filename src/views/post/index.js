@@ -42,9 +42,7 @@ const ImageViewer = ({ images, setIndex, index }) => {
 };
 
 const FloatHeader = () => {
-  const { scrollDirection } = useSelector(state => ({
-    scrollDirection: state.global.scrollDirection,
-  }));
+  const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   return (
     <header className={`float-header ${scrollDirection === 1 ? "hide" : ""}`}>
@@ -55,9 +53,7 @@ const FloatHeader = () => {
   );
 };
 const FloatFooter = () => {
-  const { scrollDirection } = useSelector(state => ({
-    scrollDirection: state.global.scrollDirection,
-  }));
+  const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const [ currentFrameIndex, setCurrentFrameIndex ] = useState(0);
   const moveFrame = inc => {
@@ -110,14 +106,12 @@ const FloatFooter = () => {
   );
 };
 
-const Post = ({ index }) => {
+const Post = ({ me, index }) => {
   const feedViewModel = new FeedViewModel(new FeedModel());
-  const userViewModel = new UserViewModel(new UserModel());
+  const post = feedViewModel.getPost(index);
 
   // for image viewer
   const [imageViewerIndex, setImageViewerIndex] = useState(null);
-
-  const post = feedViewModel.getPost(index);
 
   return (
     <div className="page-wrap">
@@ -131,7 +125,7 @@ const Post = ({ index }) => {
         </div>
       </header>
 
-      <PostItem index={index} post={post} user={userViewModel.getUserLocation()} setImageViewerIndex={setImageViewerIndex} />
+      <PostItem index={index} post={post} me={me} setImageViewerIndex={setImageViewerIndex} />
 
       <FloatFooter />
 

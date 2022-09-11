@@ -3,7 +3,6 @@ export default class UserViewModel {
     this.model = model;
   }
 
-  getUserLocation() {
-    return this.model.getUserLocation();
-  }
+  getData(uid) { return this.model.getData(uid); }
+  getMyData() { return this.model.getMyData(); }
 }

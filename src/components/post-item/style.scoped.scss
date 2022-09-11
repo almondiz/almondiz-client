@@ -4,7 +4,7 @@
   padding-right: $padding-horiz;
 
   padding-top: 1.5rem;
-  padding-bottom: 5.5rem;
+  padding-bottom: 1.5rem;
 
   display: flex;
   flex-direction: column;
@@ -34,15 +34,20 @@
         .name {
           width: fit-content;
           font-size: .875rem;
-
-          &.follower {
-            font-weight: 700;
-          }
         }
         .date {
           margin-top: .375rem;
           font-size: .75rem;
           color: #666;
+        }
+      }
+
+      &.me,
+      &.follower {
+        .text-wrap {
+          .name {
+            font-weight: 700;
+          }
         }
       }
     }
@@ -130,79 +135,6 @@
       margin-top: 1.25rem;
       margin-left: -$padding-horiz;
       margin-right: -$padding-horiz;
-
-      .image-grid {
-        display: grid;
-        gap: .125rem;
-      
-        .grid {
-          &.image {
-            background-size: cover;
-            background-position: center;
-          }
-          &.shop-link {
-            position: relative;
-        
-            .content {
-              position: absolute;
-              bottom: 0;
-              left: 0;
-              right: 0;
-              height: 5rem;
-              
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
-        
-              padding-left: 1rem;
-              background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .75));
-              
-              p {
-                text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
-        
-                &.name {
-                  font-size: 1.25rem;
-                }
-                &.address {
-                  margin-top: .5rem;
-                  font-size: .875rem;
-                }
-              }
-              ::v-deep {
-                svg {
-                  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 1));
-                }
-              }
-            }
-        
-            p {
-              color: #fff;
-              text-shadow: 0 1px 3px rgba(0, 0, 0, .375); 
-            }
-            
-            .image {
-              z-index: -1;
-              position: absolute;
-              left: 0;
-              right: 0;
-              top: 0;
-              bottom: 0;
-              background-color: #aaa;
-        
-              &::after {
-                content: "";
-                display: block;
-        
-                z-index: 1;
-                width: 100%;
-                height: 100%;
-                backdrop-filter: blur(.25rem);
-                -webkit-backdrop-filter: blur(.25rem);
-              }
-            }
-          } 
-        }
-      }
     }
   }
 
@@ -236,34 +168,43 @@
           display: flex;
           align-items: center;
 
-          .thumb {
-            width: 1.5rem;
-            height: 1.5rem;
-            margin-right: .5rem;
-            border-radius: 100%;
-
-            //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-          }
-          .name {
-            font-size: .875rem;
-
+          .profile {
             display: flex;
             align-items: center;
 
-            &::after, //
-            &.writer::after {
-              content: "작성자";
-              font-weight: 400;
-              font-size: .625rem;
-              color: #666;
-              border: 1px solid #666;
-              border-radius: 1rem;
-              padding: .125rem .3125rem;
-              margin-left: .25rem;
+            .thumb {
+              width: 1.5rem;
+              height: 1.5rem;
+              margin-right: .5rem;
+              border-radius: 100%;
+
+              //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+            }
+            .name {
+              font-size: .875rem;
+
+              display: flex;
+              align-items: center;
             }
 
+            &.me,
             &.follower {
-              font-weight: 700;
+              .name {
+                font-weight: 700;
+              }
+            }
+
+            &.writer {
+              .name::after {
+                content: "글쓴이";
+                font-weight: 400;
+                font-size: .625rem;
+                color: #666;
+                border: 1px solid #666;
+                border-radius: 1rem;
+                padding: .125rem .3125rem;
+                margin-left: .25rem;
+              }
             }
           }
           .date {

@@ -1,8 +1,8 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-import { FeedModel, UserModel } from "../../models";
+import { FeedModel } from "../../models";
 import FeedViewModel from "../../view-models/feed";
-import UserViewModel from "../../view-models/user";
 
 import FeedItem from "../../components/feed-item";
 
@@ -10,14 +10,13 @@ import "./style.scoped.scss";
 import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
 
 
-const Feed = () => {
-  const feedViewModel = new FeedViewModel(new FeedModel());
-  const userViewModel = new UserViewModel(new UserModel());
-  
-  const address = userViewModel.getUserLocation().location.address.split(" ");
+const Feed = ({ me }) => {
+  const location = useSelector(state => state.global.location);
+  const address = location.address.split(" ");
 
-  const items = feedViewModel.getAllFeedList();
-  const makeItems = (post, index) => (<FeedItem key={index} post={post} user={userViewModel.getUserLocation()}></FeedItem>);
+  const feedViewModel = new FeedViewModel(new FeedModel());
+  const feedItems = feedViewModel.getAllFeedList();
+  const makeFeedItems = (post, index) => (<FeedItem key={index} post={post} me={me}></FeedItem>);
 
   return (
     <div className="page-wrap">
@@ -36,7 +35,7 @@ const Feed = () => {
         </div>
       </header>
       <section className="feed-list">
-        {items.map(makeItems)}
+        {feedItems.map(makeFeedItems)}
       </section>
     </div>
   );

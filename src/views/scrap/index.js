@@ -10,11 +10,12 @@ import "./style.scoped.scss";
 
 
 const Scrap = () => {
-  const feedViewModel = new FeedViewModel(new FeedModel());
   const userViewModel = new UserViewModel(new UserModel());
+  const me = userViewModel.getMyData();
 
-  const items = feedViewModel.getAllFeedList();
-  const makeItems = (post, index) => (<FeedItem key={index} post={post} user={userViewModel.getUserLocation()}></FeedItem>);
+  const feedViewModel = new FeedViewModel(new FeedModel());
+  const feedItems = feedViewModel.getAllFeedList();
+  const makeFeedItems = (post, index) => (<FeedItem key={index} post={post} me={me}></FeedItem>);
 
   return (
     <div className="page-wrap">
@@ -22,8 +23,8 @@ const Scrap = () => {
         <h1 className="title">Scrapped</h1>
         <div className="right" />
       </header>
-      <section className="scrap-list">
-        {items.map(makeItems)}
+      <section className="feed-list">
+        {feedItems.map(makeFeedItems)}
       </section>
     </div>
   );

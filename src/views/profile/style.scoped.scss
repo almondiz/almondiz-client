@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
 
-  padding-bottom: $bottom-nav-height;
+  padding-bottom: $bottom-nav-height + 1.5rem + 3rem;
 
   &>.header {
     width: 100%;
@@ -85,31 +85,67 @@
 
         //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
       }
+    }
+
+    &.me {
+      .profile {
+        .text-wrap {
+          .name {
+            width: fit-content;
+            font-size: 1rem;
+            font-weight: 700;
   
-      .text-wrap {
-        .name {
-          width: fit-content;
-          font-size: 1rem;
-          font-weight: 700;
-
-          display: flex;
-          align-items: center;
-
-          &::after {
-            content: "나";
-            font-weight: 400;
-            font-size: .6825rem;
+            display: flex;
+            align-items: center;
+  
+            &::after {
+              content: "나";
+              
+              font-weight: 400;
+              font-size: .6825rem;
+              color: #666;
+              border: 1px solid #666;
+              border-radius: 1rem;
+              padding: .125rem .375rem;
+              margin-left: .375rem;
+            }
+          }
+          .email {
+            margin-top: .3125rem;
+            font-size: .8125rem;
             color: #666;
-            border: 1px solid #666;
-            border-radius: 1rem;
-            padding: .125rem .375rem;
-            margin-left: .375rem;
           }
         }
-        .email {
-          margin-top: .3125rem;
-          font-size: .8125rem;
-          color: #666;
+      }
+    }
+    &.following {
+      .profile {
+        .text-wrap {
+          .alias {
+            width: fit-content;
+            font-size: 1rem;
+            font-weight: 700;
+  
+            display: flex;
+            align-items: center;
+  
+            &::after {
+              content: "팔로잉";
+
+              font-weight: 400;
+              font-size: .6825rem;
+              color: #666;
+              border: 1px solid #666;
+              border-radius: 1rem;
+              padding: .125rem .375rem;
+              margin-left: .375rem;
+            }
+          }
+          .name {
+            margin-top: .3125rem;
+            font-size: .8125rem;
+            color: #666;
+          }
         }
       }
     }
@@ -163,6 +199,10 @@
         margin-left: auto;
       }
     }
+  }
+
+  .feed-list {
+    padding-bottom: 1rem;
   }
 }
 

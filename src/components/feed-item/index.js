@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import ImageSlider from "../image-slider";
 
@@ -22,24 +23,33 @@ const getDistance = (location_1, location_2) => {  // generally used geo measure
   return Math.round(d); // KM
 };
 const getTime = epoch => {
+  const SECOND = 1000;
+  const MINUTE = 60 * SECOND;
+  const HOUR = 60 * MINUTE;
+  const DAY = 24 * HOUR;
+  const WEEK = 7 * DAY;
+
   const now = new Date().valueOf();
 
-  let minutes = Math.floor((now - epoch) / (1000 * 60));
-  if (minutes < 1)
+  const dt = Math.floor(now - epoch);
+  if (dt < MINUTE)
     return `방금`;
-  else if (minutes < 60)            // 1 ~ 59 mins
-    return `${minutes} 분 전`;
-  else if (minutes < 60 * 24)       // 1 ~ 23 hours
-    return `${Math.floor(minutes / 60)}시간 전`;
-  else if (minutes < 60 * 24 * 8)   // 1 ~ 7 days
-    return `${Math.floor(minutes / (60 * 24))}일 전`;
+  else if (dt < HOUR)   // 1 ~ 59 mins
+    return `${Math.floor(dt / MINUTE)}분 전`;
+  else if (dt < DAY)    // 1 ~ 23 hours
+    return `${Math.floor(dt / HOUR)}시간 전`;
+  else if (dt < WEEK)   // 1 ~ 7 days
+    return `${Math.floor(dt / DAY)}일 전`;
   
   const date = new Date(epoch);
   return `${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
-const FeedItem = ({ index, post, user }) => {
+
+const FeedItem = ({ index, post, me }) => {
   const navigate = useNavigate();
+
+  const location = useSelector(state => state.global.location);
 
   const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>)
 
@@ -47,11 +57,11 @@ const FeedItem = ({ index, post, user }) => {
     <article className="feed-item">
       <Link to={`/post`} className="link" />
       <header className="header">
-        <div className="profile">
+        <div className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}>
           <img className="thumb" alt="profile" src={post.profile.thumb}/>
           <div className="text-wrap">
-            <p className={`name ${post.profile.isFollower ? "follower" : ""}`}>{post.profile.name}</p>
-            <p className="date">{getTime(post.createdAt)} · {post.profile.isFollower ? "팔로잉" : "근처"}</p>
+            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
+            <p className="date">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "팔로잉" : "근처"}`}</p>
           </div>
         </div>
         <div className="shop">
@@ -59,7 +69,7 @@ const FeedItem = ({ index, post, user }) => {
             <img className="thumb" alt="shop" src={post.shop.thumb} />
             <p className="name">{post.shop.name}</p>
           </div>
-          <p className="location">{post.shop.location.address} · {getDistance(user.location, post.shop.location)}km</p>
+          <p className="location">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
         </div>
       </header>
 
@@ -95,10 +105,13 @@ const FeedItem = ({ index, post, user }) => {
             <p>{post.reaction.scrapCount}</p>
           </button>
         </div>
-        <div className="comment">
-          <img className="thumb" alt="profile" src={post.reaction.comments[0].profile.thumb} />
-          <p>{post.reaction.comments[0].content}</p>
-        </div>
+        { post.reaction.comments.length > 0 && (
+            <div className="comment">
+              <img className="thumb" alt="profile" src={post.reaction.comments[0].profile.thumb} />
+              <p>{post.reaction.comments[0].content}</p>
+            </div>
+          )
+        }
       </footer>
     </article>
   );

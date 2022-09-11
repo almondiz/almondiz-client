@@ -24,10 +24,10 @@ const Writer = ({ moveStep }) => {
           <p>사진 추가</p>
           <p>4/10</p>
         </div>
-        <div className="thumb" style={{backgroundImage: "url(https://picsum.photos/200/200)"}} />
-        <div className="thumb" style={{backgroundImage: "url(https://picsum.photos/200/200)"}} />
-        <div className="thumb" style={{backgroundImage: "url(https://picsum.photos/200/200)"}} />
-        <div className="thumb" style={{backgroundImage: "url(https://picsum.photos/200/200)"}} />
+        <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/210/200)" }} />
+        <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/220/200)" }} />
+        <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/230/200)" }} />
+        <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/210/240)" }} />
       </aside>
     </div>
   )

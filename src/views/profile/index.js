@@ -18,9 +18,7 @@ import EditIconFill from "../../asset/icons/mui/edit-icon-fill";
 const FloatFooter = () => {
   const navigate = useNavigate();
 
-  const { scrollDirection } = useSelector(state => ({
-    scrollDirection: state.global.scrollDirection,
-  }));
+  const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const [ currentFrameIndex, setCurrentFrameIndex ] = useState(0);
   const moveFrame = inc => {
@@ -53,12 +51,13 @@ const FloatFooter = () => {
   );
 };
 
-const MyPage = () => {
-  const feedViewModel = new FeedViewModel(new FeedModel());
+const Profile = ({ me, uid }) => {
   const userViewModel = new UserViewModel(new UserModel());
+  const user = userViewModel.getData(uid);
 
-  const items = feedViewModel.getAllFeedList();
-  const makeItems = (post, index) => (<FeedItem key={index} post={post} user={userViewModel.getUserLocation()}></FeedItem>);
+  const feedViewModel = new FeedViewModel(new FeedModel());
+  const feedItems = feedViewModel.getAllFeedList();
+  const makeFeedItems = (post, index) => (<FeedItem key={index} post={post} me={me}></FeedItem>);
 
   return (
     <div className="page-wrap">
@@ -73,33 +72,50 @@ const MyPage = () => {
           </button>
         </div>
       </header>
-      <div className="profile-wrap">
+      <div className={`profile-wrap ${user.profile.uid === me.profile.uid ? "me" : user.profile.isFollowed ? "following" : ""}`}>
         <div className="profile">
-          <img className="thumb" alt="profile" src={"https://picsum.photos/200"} />
-          <div className="text-wrap">
-            <p className="name">마제멘 호두</p>
-            <p className="email">almondiz.95@gmail.com</p>
-          </div>
+          <img className="thumb" alt="profile" src={user.profile.thumb} />
+          {
+            user.profile.uid === me.profile.uid ?
+            (
+              <div className="text-wrap">
+                <p className={"name"}>{user.profile.name}</p>
+                <p className={"email"}>{user.profile.email}</p>
+              </div>
+            ) :
+            user.profile.isFollowed ?
+            (
+              <div className="text-wrap">
+                <p className={"alias"}>{user.profile.alias}</p>
+                <p className={"name"}>{user.profile.name}</p>
+              </div>
+            ) :
+            (
+              <div className="text-wrap">
+                <p className={"name"}>{user.profile.name}</p>
+              </div>
+            )
+          }
         </div>
         <div className="row">
           <div className="count half">
             <h5>팔로워</h5>
-            <p>0</p>
+            <p>{me.counts.follower}</p>
           </div>
           <div className="count half">
             <h5>스크랩된 수</h5>
-            <p>0</p>
+            <p>{me.counts.scrap}</p>
           </div>
         </div>
         <div className="row">
           <div className="count">
             <h5>팔로잉</h5>
-            <p>0</p>
+            <p>{me.counts.following}</p>
           </div>
           <div className="thumb-wrap">
-            <img className="thumb" alt="following" src={"https://picsum.photos/200"} />
-            <img className="thumb" alt="following" src={"https://picsum.photos/200"} />
-            <img className="thumb" alt="following" src={"https://picsum.photos/200"} />
+            <img className="thumb" alt="following" src={"https://picsum.photos/id/110/200"} />
+            <img className="thumb" alt="following" src={"https://picsum.photos/id/120/200"} />
+            <img className="thumb" alt="following" src={"https://picsum.photos/id/130/200"} />
           </div>
           <button className="button-following">관리</button>
         </div>
@@ -112,7 +128,7 @@ const MyPage = () => {
         </div>
       </div>
       <section className="feed-list">
-        {items.map(makeItems)}
+        {feedItems.map(makeFeedItems)}
       </section>
 
       <FloatFooter />
@@ -120,4 +136,4 @@ const MyPage = () => {
   );
 };
 
-export default MyPage;
+export default Profile;

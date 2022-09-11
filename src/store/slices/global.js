@@ -2,6 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     scrollDirection: 0,
+    location: {
+      address: "수원 팔달구 우만동",
+      lat: 37.284018,
+      lng: 127.030147,
+    },
 };
 
 const globalSlice = createSlice({
@@ -9,8 +14,9 @@ const globalSlice = createSlice({
   initialState,
   reducers: {
     setScrollDirection: (state, action) => { state.scrollDirection = action.payload; },
+    setLocation: (state, action) => { state.location = action.payload; },
   }
 });
 
-export const { setScrollDirection, } = globalSlice.actions;
+export const { setScrollDirection, setLocation, } = globalSlice.actions;
 export default globalSlice.reducer;
