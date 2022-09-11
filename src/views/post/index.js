@@ -30,7 +30,7 @@ const ImageViewer = ({ images, shownImageIndex, setShownImageIndex }) => {
       <button className="button-next icon-xl" onClick={() => setShownImageIndex((shownImageIndex + 1) % images.length)}>
         <NavigateNextIcon height="3rem" fill="#fff" />
       </button>
-      <p className="state">{`${shownImageIndex + 1} / ${images.length}`}</p>
+      <p className="index">{`${shownImageIndex + 1} / ${images.length}`}</p>
     </div>
   );
 };
