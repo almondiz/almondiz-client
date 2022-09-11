@@ -1,3 +1,6 @@
+.feed-item + .feed-item {
+  border-top: 1px solid #eee;
+}
 .feed-item {
   width: 100%;
   padding-left: $padding-horiz;
@@ -5,10 +8,6 @@
 
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
-
-  & + & {
-    border-top: 1px solid #eee;
-  }
 
   display: flex;
   flex-direction: column;
@@ -40,7 +39,7 @@
         margin-right: .625rem;
         border-radius: 100%;
 
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
       }
   
       .text-wrap {
@@ -80,7 +79,7 @@
           height: 1rem;
           border-radius: 100%;
 
-          box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+          //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
         }
         
         .name {
@@ -182,7 +181,7 @@
         margin-right: .625rem;
         border-radius: 100%;
 
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
       }
       
       p {

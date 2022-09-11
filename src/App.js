@@ -8,6 +8,8 @@ import LoginPage from "./views/login";
 import SignupPage from "./views/signup";
 import Feed from "./views/feed";
 import Post from "./views/post";
+import Search from "./views/search";
+import Scrap from "./views/scrap";
 import MyPage from "./views/my-page";
 import EditPost from "./views/edit-post";
 
@@ -43,7 +45,7 @@ const Monitor = () => {
   };
   initScrollHandler();
 
-  return (<></>);
+  return <></>;
 };
 
 
@@ -66,11 +68,13 @@ const App = () => {
           
           <Route element={<MainLayout />}>
             <Route path="/" element={<Feed />} />
-            <Route path="/my-page" element={<MyPage />} />
-
             <Route path="/post" element={<Post index={0} />} />
-            <Route path="/edit-post" element={<EditPost />} />
+
+            <Route path="/search" element={<Search />} />
+            <Route path="/scrap" element={<Scrap />} />
+            <Route path="/my-page" element={<MyPage />} />
           </Route>
+          <Route path="/edit-post" element={<EditPost />} />
         </Routes>
       </BrowserRouter>
 

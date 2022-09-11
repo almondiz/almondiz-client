@@ -14,6 +14,7 @@ import CloseIcon from "../../asset/icons/mui/close-icon";
 import NavigateBeforeIcon from "../../asset/icons/mui/navigate-before-icon";
 import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
+
 const ImageViewer = ({ images, shownImageIndex, setShownImageIndex }) => {
   const image = images[shownImageIndex];
 
@@ -67,7 +68,6 @@ const Post = ({ index }) => {
       makeImageViewer={makeImageViewer}
     />
   );
-}
-
+};
 
 export default Post;

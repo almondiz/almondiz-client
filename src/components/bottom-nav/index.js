@@ -39,11 +39,11 @@ const BottomNav = () => {
     },
     {
       icon: [SearchIconBorder, SearchIconFill],
-      path: "/",
+      path: "/search",
     },
     {
       icon: [BookmarkIconBorder, BookmarkIconFill],
-      path: "/",
+      path: "/scrap",
     },
     {
       icon: [AccountCircleIconBorder, AccountCircleIconFill],

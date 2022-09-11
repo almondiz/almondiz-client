@@ -9,6 +9,7 @@ import FeedView from "./feed-view.js";
 
 import FeedItem from "../../components/feed-item";
 
+
 const Feed = () => {
   const feedViewModel = new FeedViewModel(new FeedModel());
   const userViewModel = new UserViewModel(new UserModel());
@@ -21,7 +22,6 @@ const Feed = () => {
       makeItems={makeItems}
     />
   );
-}
-
+};
 
 export default Feed;

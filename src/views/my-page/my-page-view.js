@@ -2,62 +2,66 @@ import React from "react";
 
 import "./style.scoped.scss";
 
-import IconImg from "../../asset/logo/symbol.png";
+import BrandLogotype from "../../asset/logo/brand-logotype.svg";
+
+import NotificationsIconFill from "../../asset/icons/mui/notifications-icon-fill";
+import SettingsIconFill from "../../asset/icons/mui/settings-icon-fill";
+
 
 const MyPageView = () => {
-
   return (
-    <main>
-      <div className="mypage-header">
-        <img className="mypage-header-logo" alt="logo" src={IconImg}/>
-        <img className="mypage-header-notification" alt="notification" src={IconImg}/>
-        <img className="mypage-header-setting" alt="setting" src={IconImg}/>
+    <>
+      <header className="header">
+        <img className="brand" alt="brand" src={BrandLogotype}/>
+        <div className="right">
+          <button className="button-noti icon-sm right">
+            <NotificationsIconFill height="1.5rem" fill="#666" />
+          </button>
+          <button className="button-settings icon-sm">
+            <SettingsIconFill height="1.5rem" fill="#666" />
+          </button>
+        </div>
+      </header>
+      <div className="profile-wrap">
+        <div className="profile">
+          <img className="thumb" alt="profile" src={"https://picsum.photos/200"} />
+          <div className="text-wrap">
+            <p className="id">almondiz</p>
+            <p className="name">마제멘 호두</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="count half">
+            <h5>팔로워</h5>
+            <p>0</p>
+          </div>
+          <div div className="count half">
+            <h5>스크랩된 수</h5>
+            <p>0</p>
+          </div>
+        </div>
+        <div className="row">
+          <div className="count">
+            <h5>팔로잉</h5>
+            <p>0</p>
+          </div>
+          <div className="thumb-wrap">
+            <img className="thumb" alt="following" src={"https://picsum.photos/200"} />
+            <img className="thumb" alt="following" src={"https://picsum.photos/200"} />
+            <img className="thumb" alt="following" src={"https://picsum.photos/200"} />
+          </div>
+          <button className="button-following">관리</button>
+        </div>
+        <div className="row">
+          <div className="count">
+            <h5>글</h5>
+            <p>0</p>
+          </div>
+          <div className="right" />
+        </div>
       </div>
-      <div className="mypage-profile">
-        <div className="mypage-profile-box">
-          <img className="mypage-profile-image" alt="profile" src={IconImg} />
-          <div className="mypage-profile-col">
-            <div className="mypage-profile-row">
-              <p className="mypage-profile-name">almondiz</p>
-              <p className="mypage-profile-tag">나</p>
-            </div>
-            <p className="mypage-profile-nickname">마제멘 호두</p>
-          </div>
-        </div>
-        <div className="mypage-profile-box line">
-          <div className="mypage-profile-wrap">
-          <img src={"https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png"}/>
-            <p className="mypage-profile-key">팔로워</p>
-            <p className="mypage-profile-key">0</p>
-          </div>
-          <div className="mypage-profile-wrap">
-            <p className="mypage-profile-key">스크랩된 수</p>
-            <p className="mypage-profile-key">0</p>
-          </div>
-        </div>
-        <div className="mypage-profile-box line">
-          <p className="mypage-profile-key">팔로잉</p>
-          <p className="mypage-profile-key">0</p>
-          <div className="mypage-profile-following">
-            <img alt="follower" src={IconImg} />
-            <img alt="follower" src={IconImg} />
-            <img alt="follower" src={IconImg} />
-          </div>
-          <p className="mypage-profile-button">관리</p>
-        </div>
-        <div className="mypage-profile-box">
-          <p className="mypage-profile-key">글</p>
-          <p className="mypage-profile-key">0</p>
-          <div className="mypage-profile-row right">
-            <img className="mypage-profile-icon" alt="icon" src={IconImg} />
-            <img className="mypage-profile-icon" alt="icon" src={IconImg} />
-          </div>
-        </div>
-      </div>
-      <div className="mypage-feeds">
-      </div>
-    </main>
+    </>
   )
-}
+};
 
 export default MyPageView;
