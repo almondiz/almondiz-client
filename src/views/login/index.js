@@ -1,7 +1,7 @@
 import React from "react";
 
-//import SymbolImage from "../../asset/logo/symbol.png";
-//import LogotypeImage from "../../asset/logo/logotype.png";
+import SymbolImage from "../../asset/logo/symbol.png";
+import LogotypeImage from "../../asset/logo/logotype.svg";
 
 import AppleSocialImage from "../../asset/social/apple.svg";
 import GoogleSocialImage from "../../asset/social/google.svg";
@@ -13,9 +13,11 @@ import "./style.scoped.scss";
 const LoginPage = () => {
   return (
     <main>
-      <div className="symbol" alt="symbol" style={{ backgroundColor: "var(--secondary-text-color)" }} />
-      <p style={{ fontSize: "1.25rem", marginBottom: 0 }}>나만의 맛있는 스크랩북</p>
-      <div className="logotype" alt="logotype" style={{ backgroundColor: "var(--secondary-text-color)" }} />
+      <div class="brand">
+        <div className="symbol" alt="symbol" style={{ backgroundImage: `url(${SymbolImage}` }} />
+        <div className="logotype" alt="logotype" style={{ backgroundImage: `url(${LogotypeImage}` }} />
+        <p className="description">나만의 맛있는 스크랩북</p>
+      </div>
 
       <div className="socials-wrap">
         <p style={{ fontSize: "0.75rem", marginBottom: "1rem" }}>소셜 계정으로 시작하기</p>

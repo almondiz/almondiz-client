@@ -2,7 +2,7 @@ import React from "react";
 
 import "./style.scoped.scss";
 
-import BrandLogotype from "../../asset/logo/brand-logotype.svg";
+import LogotypeImage from "../../asset/logo/logotype.svg";
 
 import NotificationsIconFill from "../../asset/icons/mui/notifications-icon-fill";
 import SettingsIconFill from "../../asset/icons/mui/settings-icon-fill";
@@ -12,7 +12,7 @@ const MyPageView = () => {
   return (
     <>
       <header className="header">
-        <img className="brand" alt="brand" src={BrandLogotype}/>
+        <img className="brand" alt="brand" src={LogotypeImage}/>
         <div className="right">
           <button className="button-noti icon-sm right">
             <NotificationsIconFill height="1.5rem" fill="#666" />
