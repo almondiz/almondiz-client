@@ -46,18 +46,22 @@ const getTime = epoch => {
 };
 
 
-const FeedItem = ({ index, post, me }) => {
+const CardItem = ({ index, post, me }) => {
   const navigate = useNavigate();
 
   const location = useSelector(state => state.global.location);
 
-  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>)
+  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
 
   return (
-    <article className="feed-item">
-      <Link to={`/post`} className="link" />
+    <article className="card-item">
+      <div className="link" onClick={() => navigate(`/post`)} />
+
       <header className="header">
-        <div className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}>
+        <div
+          className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}
+          onClick={() => navigate(`/profile/${post.profile.uid}`)}
+        >
           <img className="thumb" alt="profile" src={post.profile.thumb}/>
           <div className="text-wrap">
             <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
@@ -117,4 +121,4 @@ const FeedItem = ({ index, post, me }) => {
   );
 }
 
-export default FeedItem;
+export default CardItem;

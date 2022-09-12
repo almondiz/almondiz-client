@@ -1,7 +1,7 @@
-.feed-item + .feed-item {
+.card-item + .card-item {
   border-top: 1px solid #eee;
 }
-.feed-item {
+.card-item {
   width: 100%;
   padding-left: $padding-horiz;
   padding-right: $padding-horiz;
@@ -14,7 +14,6 @@
 
   position: relative;
   &>.link {
-    content: "";
     position: absolute;
     left: 0;
     right: 0;
@@ -30,6 +29,8 @@
     justify-content: space-between;
   
     .profile {
+      z-index: 1;
+
       display: flex;
       align-items: center;
   

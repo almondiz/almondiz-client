@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { FeedModel, UserModel } from "../../models";
 import FeedViewModel from "../../view-models/feed";
 import UserViewModel from "../../view-models/user";
 
-import FeedItem from "../../components/feed-item";
+import CardItem from "../../components/card-item";
 
 import "./style.scoped.scss";
 import LogotypeImage from "../../asset/logo/logotype.svg";
@@ -51,13 +51,15 @@ const FloatFooter = () => {
   );
 };
 
-const Profile = ({ me, uid }) => {
+const Profile = ({ me }) => {
+  const { uid } = useParams();
+
   const userViewModel = new UserViewModel(new UserModel());
   const user = userViewModel.getData(uid);
 
   const feedViewModel = new FeedViewModel(new FeedModel());
-  const feedItems = feedViewModel.getAllFeedList();
-  const makeFeedItems = (post, index) => (<FeedItem key={index} post={post} me={me}></FeedItem>);
+  const posts = feedViewModel.getAllFeedList();
+  const makeCards = (post, index) => (<CardItem key={index} post={post} me={me}></CardItem>);
 
   return (
     <div className="page-wrap">
@@ -73,7 +75,7 @@ const Profile = ({ me, uid }) => {
         </div>
       </header>
       <div className={`profile-wrap ${user.profile.uid === me.profile.uid ? "me" : user.profile.isFollowed ? "following" : ""}`}>
-        <div className="profile">
+        <div className="profile" >
           <img className="thumb" alt="profile" src={user.profile.thumb} />
           {
             user.profile.uid === me.profile.uid ?
@@ -127,8 +129,8 @@ const Profile = ({ me, uid }) => {
           <div className="right" />
         </div>
       </div>
-      <section className="feed-list">
-        {feedItems.map(makeFeedItems)}
+      <section className="card-list">
+        {posts.map(makeCards)}
       </section>
 
       <FloatFooter />

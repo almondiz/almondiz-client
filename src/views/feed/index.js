@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { FeedModel } from "../../models";
 import FeedViewModel from "../../view-models/feed";
 
-import FeedItem from "../../components/feed-item";
+import CardItem from "../../components/card-item";
 
 import "./style.scoped.scss";
 import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
@@ -15,8 +15,8 @@ const Feed = ({ me }) => {
   const address = location.address.split(" ");
 
   const feedViewModel = new FeedViewModel(new FeedModel());
-  const feedItems = feedViewModel.getAllFeedList();
-  const makeFeedItems = (post, index) => (<FeedItem key={index} post={post} me={me}></FeedItem>);
+  const posts = feedViewModel.getAllFeedList();
+  const makeCards = (post, index) => (<CardItem key={index} post={post} me={me}></CardItem>);
 
   return (
     <div className="page-wrap">
@@ -34,8 +34,8 @@ const Feed = ({ me }) => {
           </button>
         </div>
       </header>
-      <section className="feed-list">
-        {feedItems.map(makeFeedItems)}
+      <section className="card-list">
+        {posts.map(makeCards)}
       </section>
     </div>
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import ImageGrid from "../image-grid";
@@ -44,6 +45,8 @@ const getTime = epoch => {
 
 
 const PostItem = ({ index, post, me, setImageViewerIndex }) => {
+  const navigate = useNavigate();
+
   const location = useSelector(state => state.global.location);
 
   const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
@@ -51,7 +54,10 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
     return (
       <article key={index} className={`comment-item ${comment.reply ? "" : "reply"}`}>
         <header className="header">
-          <div className={`profile ${comment.profile.uid === me.profile.uid ? "me" : (comment.profile.isFollowed ? "follower" : "")} ${comment.profile.uid === post.profile.uid ? "writer" : ""}`}>
+          <div
+            className={`profile ${comment.profile.uid === me.profile.uid ? "me" : (comment.profile.isFollowed ? "follower" : "")} ${comment.profile.uid === post.profile.uid ? "writer" : ""}`}
+            onClick={() => navigate(`/profile/${comment.profile.uid}`)}
+          >
             <img className="thumb" alt="profile" src={comment.profile.thumb} />
             <p className="name">{comment.profile.uid === me.profile.uid ? "나" : comment.profile[comment.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
@@ -80,7 +86,10 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
   return (
     <article className="post-item">
       <header className="header">
-        <div className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}>
+        <div
+          className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}
+          onClick={() => navigate(`/profile/${post.profile.uid}`)}
+        >
           <img className="thumb" alt="profile" src={post.profile.thumb}/>
           <div className="text-wrap">
             <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>

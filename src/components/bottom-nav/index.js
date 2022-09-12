@@ -46,7 +46,7 @@ const BottomNav = () => {
     },
     {
       icon: [AccountCircleIconBorder, AccountCircleIconFill],
-      path: "/my-page",
+      path: "/me",
     },
   ];
 

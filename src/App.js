@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { Navigate, BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
@@ -15,6 +15,7 @@ import Search from "./views/search";
 import Scrap from "./views/scrap";
 import Profile from "./views/profile";
 import EditPost from "./views/edit-post";
+import NotFound from "./404";
 
 import BottomNav from "./components/bottom-nav";
 
@@ -69,23 +70,30 @@ const MainLayout = () => {
 const App = () => {
   const userViewModel = new UserViewModel(new UserModel());
   const me = userViewModel.getMyData();
+  const myUid = me.profile.uid;
 
   return (
     <>
       <BrowserRouter>
         <Routes>
+          <Route exact path="/" element={<Navigate to="feed" />} />
+
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           
           <Route element={<MainLayout />}>
-            <Route path="/" element={<Feed me={me} />} />
+            <Route path="/feed" element={<Feed me={me} />} />
             <Route path="/post" element={<Post index={0} me={me} />} />
 
             <Route path="/search" element={<Search />} />
             <Route path="/scrap" element={<Scrap />} />
-            <Route path="/my-page" element={<Profile uid={me.profile.uid} me={me} />} />
+            <Route path="/me" element={<Navigate to={`/profile/${myUid}`} />} />
+            <Route path="/profile/:uid" element={<Profile me={me} />} />
           </Route>
+
           <Route path="/edit-post" element={<EditPost />} />
+
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
 
