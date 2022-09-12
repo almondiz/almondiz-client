@@ -192,7 +192,7 @@ const ImageGrid = ({ images, shop, action }) => {
   return (
     <div className="image-grid" style={makeGridStyle()}>
       {images.map(makeCell)}
-      <div className="grid shop-link" style={{ gridArea: `grid-${images.length + 1}` }}>
+      <a href={shop.link} className="grid shop-link" style={{ gridArea: `grid-${images.length + 1}` }}>
         <div className="content">
           <div>
             <p className="name">{shop.name}</p>
@@ -201,7 +201,7 @@ const ImageGrid = ({ images, shop, action }) => {
           <NavigateNextIcon height="2.5rem" fill="#fff" />
         </div>
         <div className="image" style={{ backgroundImage: `url(${shop.thumb})` }} />
-      </div>
+      </a>
     </div>
   );
 };

@@ -96,13 +96,13 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
             <p className="date">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "팔로잉" : "근처"}`}</p>
           </div>
         </div>
-        <div className="shop">
+        <a href={post.shop.link} className="shop">
           <div className="shop-icon">
             <img className="thumb" alt="shop" src={post.shop.thumb} />
             <p className="name">{post.shop.name}</p>
           </div>
           <p className="location">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
-        </div>
+        </a>
       </header>
 
       <nav className="tags-wrap">
