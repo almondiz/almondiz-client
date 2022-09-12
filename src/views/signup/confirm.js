@@ -31,7 +31,7 @@ const ConfirmFrame = ({ moveFrame }) => {
 
       <footer className="footer">
         <p className="help">연동된 소셜 계정은 타인에게 공개되지 않습니다.</p>
-        <button className="button-next" onClick={() => !moveFrame(1) && navigate(`/feed`)}>다음</button>
+        <button className="button-next" onClick={() => !moveFrame(1) && navigate(`/feed`)}>가입하기</button>
       </footer>
     </div>
   );
