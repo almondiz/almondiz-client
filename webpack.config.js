@@ -6,7 +6,7 @@ const port = process.env.PORT || 8080;
 
 module.exports = {
   mode: "development",
-  entry: "/src/index.js",
+  entry: "./src/index.js",
   output: {
     path: `${__dirname}/dist`,
     filename: "bundle.[hash].js"
@@ -38,7 +38,7 @@ module.exports = {
             loader: "sass-loader",
             options: {
               additionalData: `
-                @import "/src/variables.scss";
+                @import "./src/variables.scss";
               `,
             }
           },
@@ -57,8 +57,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "/public/index.html",
-      favicon: "/public/favicon.ico"
+      template: "./public/index.html",
+      favicon: "./public/favicon.ico"
     }),
     new EnvironmentPlugin({
       NODE_ENV: "development",
