@@ -7,15 +7,15 @@ import { setScrollDirection } from "./store/slices/global";
 import { UserModel } from "./models";
 import UserViewModel from "./view-models/user";
 
-import LoginPage from "./views/login";
-import SignupPage from "./views/signup";
+import Login from "./views/login";
+import Signup from "./views/signup";
 import Feed from "./views/feed";
 import Post from "./views/post";
 import Search from "./views/search";
 import Scrap from "./views/scrap";
 import Profile from "./views/profile";
 import EditPost from "./views/edit-post";
-import NotFound from "./404";
+import NotFound from "./views/not-found";
 
 import BottomNav from "./components/bottom-nav";
 
@@ -76,10 +76,10 @@ const App = () => {
     <>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Navigate to="feed" />} />
+          <Route exact path="/" element={<Navigate to="/login" />} />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
           
           <Route element={<MainLayout />}>
             <Route path="/feed" element={<Feed me={me} />} />

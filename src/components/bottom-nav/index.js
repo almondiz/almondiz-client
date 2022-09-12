@@ -33,7 +33,7 @@ const BottomNav = () => {
   const iconList = [
     {
       icon: [ExploreIconBorder, ExploreIconFill],
-      path: "/",
+      path: "/feed",
     },
     {
       icon: [SearchIconBorder, SearchIconFill],

@@ -1,17 +1,21 @@
-.page-wrap {
-  min-height: 100%;
+.content {
+  padding-bottom: 3.5rem;
+
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
 
   .brand {
-    padding: 4rem 0;
-  
     display: flex;
     flex-direction: column;
     align-items: center;
-  
+
     .symbol {
       height: 8rem;
     }
@@ -25,16 +29,26 @@
       margin-top: 1.5rem;
     }
   }
-  
+}
+
+.footer {
+  margin-bottom: 4rem;
+
+  z-index: 10;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  flex-direction: column;
+
   .social {
-    padding: 1rem 0;
-  
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-  
-    .description {
+
+    .help {
       font-size: .875rem;
       margin-bottom: 1.25rem;
     }
@@ -51,13 +65,11 @@
         margin-left: 1.5rem;
       }
       .social-icon {
+        height: 3.5rem;
+        width: 3.5rem;
+
         border-radius: 100%;
         box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-  
-        img {
-          height: 3.5rem;
-          width: 3.5rem;
-        }
       }
     }
   }

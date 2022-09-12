@@ -46,7 +46,7 @@ const FloatHeader = () => {
 
   return (
     <header className={`float-header ${scrollDirection === 1 ? "hide" : ""}`}>
-      <Link to={"/"} className="button-back icon-sm">
+      <Link to={"/feed"} className="button-back icon-sm">
         <BackIcon />
       </Link>
     </header>
@@ -60,8 +60,9 @@ const FloatFooter = () => {
     let _currentFrameIndex = currentFrameIndex;
     _currentFrameIndex += inc;
     _currentFrameIndex = Math.min(Math.max(_currentFrameIndex, 0), frames.length - 1);
-    if (_currentFrameIndex === currentFrameIndex)   return;
-    return setCurrentFrameIndex(_currentFrameIndex);
+    if (_currentFrameIndex === currentFrameIndex)   return false;
+    setCurrentFrameIndex(_currentFrameIndex);
+    return true;
   };
 
   const FloatFooterMain = ({ moveFrame }) => {
