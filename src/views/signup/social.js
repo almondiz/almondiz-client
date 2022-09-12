@@ -20,7 +20,7 @@ const SocialFrame = ({ moveFrame }) => {
 
       <main className="content">
         <p className="description">{`아래의 소셜 계정으로\n가입을 진행합니다.`}</p>
-        <img className="social-icon" alt="Google" src={GoogleSocialImage} />
+        <img className="social-icon google" alt="Google" src={GoogleSocialImage} />
         <p className="email">{`almondiz.ajou@gmail.com`}</p>
       </main>
 

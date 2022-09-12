@@ -28,9 +28,9 @@ const LoginPage = () => {
           <p className="help">소셜 계정으로 시작하기</p>
           <nav className="social-icons">
             {/*<img className="social-icon" alt="Apple" src={AppleSocialImage} onClick={() => navigate(`/signup`)} />*/}
-            <img className="social-icon" alt="Naver" src={NaverSocialImage} onClick={() => navigate(`/signup`)} />
-            <img className="social-icon" alt="Google" src={GoogleSocialImage} onClick={() => navigate(`/signup`)} />
-            <img className="social-icon" alt="Kakao" src={KakaoSocialImage} onClick={() => navigate(`/signup`)} />
+            <img className="social-icon naver" alt="Naver" src={NaverSocialImage} onClick={() => navigate(`/signup`)} />
+            <img className="social-icon google" alt="Google" src={GoogleSocialImage} onClick={() => navigate(`/signup`)} />
+            <img className="social-icon kakao" alt="Kakao" src={KakaoSocialImage} onClick={() => navigate(`/signup`)} />
           </nav>
         </div>
       </footer>

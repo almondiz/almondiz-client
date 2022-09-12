@@ -49,6 +49,7 @@
     align-items: center;
 
     .help {
+      color: #666;
       font-size: .875rem;
       margin-bottom: 1.25rem;
     }
@@ -69,7 +70,11 @@
         width: 3.5rem;
 
         border-radius: 100%;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+
+        &.google {
+          border: 2px solid #ddd;
+        }
       }
     }
   }

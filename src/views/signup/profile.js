@@ -37,7 +37,7 @@ const ProfileFrame = ({ moveFrame }) => {
         <div className="menu-name">
           <div className="name">
             <div className="name-first">
-              <input className="field" placeholder="좋아하는 음식" />
+              <input className="field" placeholder="좋아하는 음식" autoFocus />
             </div>
             <div className="name-last">
               <select className="field" defaultValue="default">
@@ -59,7 +59,7 @@ const ProfileFrame = ({ moveFrame }) => {
         </div>
 
         <footer className="footer">
-          <p className="help">한번 결정한 프로필은 나중에 수정할 수 없습니다.</p>
+          <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
           <button className="button-next" onClick={() => !moveFrame(1) && navigate(`/feed`)}>다음</button>
         </footer>
       </main>
