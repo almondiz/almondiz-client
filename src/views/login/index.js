@@ -24,14 +24,14 @@ const LoginPage = () => {
       <section className="social">
         <p className="description">소셜 계정으로 시작하기</p>
         <ul className="social-icons">
-          <li className="social-icon">
+          {/*<li className="social-icon">
             <img alt="apple" src={AppleSocialImage} onClick={() => navigate(`/signup`)} />
+          </li>*/}
+          <li className="social-icon">
+            <img alt="naver" src={NaverSocialImage} onClick={() => navigate(`/signup`)} />
           </li>
           <li className="social-icon">
             <img alt="google" src={GoogleSocialImage} onClick={() => navigate(`/signup`)} />
-          </li>
-          <li className="social-icon">
-            <img alt="naver" src={NaverSocialImage} onClick={() => navigate(`/signup`)} />
           </li>
           <li className="social-icon">
             <img alt="kakao" src={KakaoSocialImage} onClick={() => navigate(`/signup`)} />
