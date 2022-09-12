@@ -99,32 +99,60 @@ const Profile = ({ me }) => {
             )
           }
         </div>
+
+        {
+          user.profile.uid === me.profile.uid ?
+          (
+            <></>
+          ) :
+          user.profile.isFollowed ?
+          (
+            <div className="row-button">
+              <button className="button-follow">팔로우 취소</button>
+              <button className="button-alias">별명 변경</button>
+            </div>
+          ) :
+          (
+            <div className="row-button">
+              <button className="button-follow">팔로우</button>
+            </div>
+          )
+        }
+
         <div className="row">
           <div className="count half">
             <h5>팔로워</h5>
-            <p>{me.counts.follower}</p>
+            <p>{user.counts.follower}</p>
           </div>
           <div className="count half">
             <h5>스크랩된 수</h5>
-            <p>{me.counts.scrap}</p>
+            <p>{user.counts.scrap}</p>
           </div>
         </div>
-        <div className="row">
-          <div className="count">
-            <h5>팔로잉</h5>
-            <p>{me.counts.following}</p>
-          </div>
-          <div className="thumb-wrap">
-            <img className="thumb" alt="following" src={"https://picsum.photos/id/110/200"} />
-            <img className="thumb" alt="following" src={"https://picsum.photos/id/120/200"} />
-            <img className="thumb" alt="following" src={"https://picsum.photos/id/130/200"} />
-          </div>
-          <button className="button-following">관리</button>
-        </div>
+        {
+          user.profile.uid === me.profile.uid ?
+          (
+            <div className="row">
+              <div className="count">
+                <h5>팔로잉</h5>
+                <p>{user.counts.following}</p>
+              </div>
+              <div className="thumb-wrap">
+                <img className="thumb" alt="following" src={"https://picsum.photos/id/110/200"} />
+                <img className="thumb" alt="following" src={"https://picsum.photos/id/120/200"} />
+                <img className="thumb" alt="following" src={"https://picsum.photos/id/130/200"} />
+              </div>
+              <button className="button-following">관리</button>
+            </div>
+          ) :
+          (
+            <></>
+          )
+        }
         <div className="row">
           <div className="count">
             <h5>글</h5>
-            <p>0</p>
+            <p>{user.counts.post}</p>
           </div>
           <div className="right" />
         </div>

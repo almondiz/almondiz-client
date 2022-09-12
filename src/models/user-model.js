@@ -13,6 +13,7 @@ export default class UserModel {
         follower: 0,
         scrap: 5,
         following: 3,
+        post: 0,
       },
     },
     2: {
@@ -27,6 +28,7 @@ export default class UserModel {
         follower: 1,
         scrap: 2,
         following: 0,
+        post: 1,
       },
     },
     3: {
@@ -42,6 +44,7 @@ export default class UserModel {
         follower: 7,
         scrap: 21,
         following: 4,
+        post: 3,
       },
     },
     4: {
@@ -56,6 +59,7 @@ export default class UserModel {
         follower: 0,
         scrap: 0,
         following: 1,
+        post: 0,
       },
     },
     5: {
@@ -70,6 +74,7 @@ export default class UserModel {
         follower: 0,
         scrap: 0,
         following: 0,
+        post: 0,
       },
     },
   };

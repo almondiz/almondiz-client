@@ -199,6 +199,38 @@
         margin-left: auto;
       }
     }
+
+    .row-button {
+      display: flex;
+      align-items: center;
+
+      margin-top: 1rem;
+      height: 2.5rem;
+
+      .button-follow,
+      .button-alias {
+        font-size: .8125rem;
+        font-weight: 700;
+        color: var(--background-color);
+        background-color: var(--content-text-color);
+
+        height: 2rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        border-radius: 1rem;
+        padding: 0 auto;
+      }
+      .button-follow {
+        flex: 1;
+      }
+      .button-alias {
+        width: 30%;
+        margin-left: .625rem;
+      }
+    }
   }
 
   .card-list {
