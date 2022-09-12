@@ -7,7 +7,7 @@
   padding-right: 2rem;
 
   header {
-    z-index: 100;
+    z-index: 10;
     
     position: fixed;
     top: 0;
@@ -180,7 +180,7 @@
 }
 
 #thumbs {
-  z-index: 100;
+  z-index: 10;
   
   position: fixed;
   bottom: calc(5.25rem + 2rem);
