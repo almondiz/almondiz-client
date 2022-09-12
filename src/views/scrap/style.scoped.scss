@@ -1,0 +1,29 @@
+.page-wrap {
+  padding-bottom: $bottom-nav-height;
+
+  &>.header {
+    width: 100%;
+    padding-left: $padding-horiz;
+    padding-right: $padding-horiz;
+  
+    height: 5rem;
+    margin-top: .5rem;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .title {
+      font-size: 1.75rem;
+    }
+  
+    .right {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .card-list {
+    padding-bottom: 1rem;
+  }
+}

@@ -1,13 +1,9 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore } from "@reduxjs/toolkit";
 
-const reducerSlice = createSlice({
-    name: "store",
-    initialState: {},
-    reducers: {
-        a: () => { },
-    }
-})
+import globalReducer from "./slices/global";
 
 export default configureStore({
-    reducer: { foo: reducerSlice.reducer }
+  reducer: {
+    global: globalReducer,
+  }
 });

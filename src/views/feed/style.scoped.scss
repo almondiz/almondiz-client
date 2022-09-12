@@ -1,0 +1,47 @@
+.page-wrap {
+  padding-bottom: $bottom-nav-height;
+
+  &>.header {
+    width: 100%;
+    padding-left: $padding-horiz;
+    padding-right: $padding-horiz;
+  
+    height: 5rem;
+    margin-top: .5rem;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .title {
+      font-size: 1.75rem;
+      color: var(--primary-text-color);
+    }
+  
+    .right {
+      .button-location {
+        min-height: 2.5rem;
+
+        display: flex;
+        align-items: center;
+
+        .text-wrap {
+          margin-right: .5rem;
+
+          p {
+            text-align: right;
+
+            &:first-child {
+              font-size: .75rem;
+              margin-bottom: .3125rem;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .card-list {
+    padding-bottom: 1rem;
+  }
+}
