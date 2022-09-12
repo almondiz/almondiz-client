@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "./style.scoped.scss";
-
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
 import ExploreIconBorder from "../../asset/icons/mui/explore-icon-border";
 import SearchIconFill from "../../asset/icons/mui/search-icon-fill";

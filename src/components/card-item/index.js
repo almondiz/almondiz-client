@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 import ImageSlider from "../image-slider";
 
 import "./style.scoped.scss";
-
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";

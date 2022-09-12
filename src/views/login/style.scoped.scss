@@ -1,73 +1,74 @@
-main {
-  width: 100%;
-  height: 100%;
+.page-wrap {
+  min-height: 100%;
 
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 
-  position: relative;
-
-  .socials-wrap {
-    position: absolute;
-
+  .brand {
+    padding: 4rem 0;
+  
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    bottom: 5rem;
+  
+    .symbol {
+      height: 8rem;
+      width: 8rem;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+    .logotype {
+      height: 3rem;
+      width: 100%;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+  
+      margin-top: -.5rem;
+    }
+    .description {
+      font-size: 1.25rem;
+      margin-top: 1.5rem;
+    }
   }
-}
-
-
-.brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  .symbol {
-    height: 8rem;
-    width: 8rem;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-  }
-  .logotype {
-    height: 3rem;
-    width: 100%;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    margin-top: -.5rem;
-  }
-  .description {
-    font-size: 1.25rem;
-    margin-top: 2rem;
-  }
-}
-
-.socials {
-  display: flex;
-  flex-direction: row;
-
-  list-style: none;
-  padding: 0;
-  margin: 0;
-
-  .icon {
-    margin-left: .75rem;
-    margin-right: .75rem;
-
-    border-radius: 1.75rem;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, .25);
-
-    img {
-      display: block;
-
-      width: 3.5rem;
-      height: 3.5rem;
+  
+  .social {
+    padding: 1rem 0;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  
+    .description {
+      font-size: .875rem;
+      margin-bottom: 1.25rem;
+    }
+  
+    .social-icons {
+      display: flex;
+      flex-direction: row;
+  
+      list-style: none;
+      padding: 0;
+      margin: 0;
+  
+      .social-icon + .social-icon {
+        margin-left: 1.25rem;
+      }
+      .social-icon {
+        border-radius: 100%;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+  
+        img {
+          display: block;
+  
+          width: 3.25rem;
+          height: 3.25rem;
+        }
+      }
     }
   }
 }

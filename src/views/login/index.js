@@ -1,42 +1,44 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
+import "./style.scoped.scss";
 import SymbolImage from "../../asset/logo/symbol.png";
 import LogotypeImage from "../../asset/logo/logotype.svg";
-
 import AppleSocialImage from "../../asset/social/apple.svg";
 import GoogleSocialImage from "../../asset/social/google.svg";
 import NaverSocialImage from "../../asset/social/naver.svg";
 import KakaoSocialImage from "../../asset/social/kakao.svg";
 
-import "./style.scoped.scss";
 
 const LoginPage = () => {
-  return (
-    <main>
-      <div class="brand">
-        <div className="symbol" alt="symbol" style={{ backgroundImage: `url(${SymbolImage}` }} />
-        <div className="logotype" alt="logotype" style={{ backgroundImage: `url(${LogotypeImage}` }} />
-        <p className="description">나만의 맛있는 스크랩북</p>
-      </div>
+  const navigate = useNavigate();
 
-      <div className="socials-wrap">
-        <p style={{ fontSize: "0.75rem", marginBottom: "1rem" }}>소셜 계정으로 시작하기</p>
-        <ul className="socials">
-          <li className="icon">
-            <img alt="apple" src={AppleSocialImage} />
+  return (
+    <div className="page-wrap">
+      <section className="brand">
+        <img className="symbol" alt="symbol" src={SymbolImage} />
+        <img className="logotype" alt="symbol" src={LogotypeImage} />
+        <p className="description">나만의 맛있는 스크랩북</p>
+      </section>
+
+      <section className="social">
+        <p className="description">소셜 계정으로 시작하기</p>
+        <ul className="social-icons">
+          <li className="social-icon">
+            <img alt="apple" src={AppleSocialImage} onClick={() => navigate(`/signup`)} />
           </li>
-          <li className="icon">
-            <img alt="google" src={GoogleSocialImage} />
+          <li className="social-icon">
+            <img alt="google" src={GoogleSocialImage} onClick={() => navigate(`/signup`)} />
           </li>
-          <li className="icon">
-            <img alt="naver" src={NaverSocialImage} />
+          <li className="social-icon">
+            <img alt="naver" src={NaverSocialImage} onClick={() => navigate(`/signup`)} />
           </li>
-          <li className="icon">
-            <img alt="kakao" src={KakaoSocialImage} />
+          <li className="social-icon">
+            <img alt="kakao" src={KakaoSocialImage} onClick={() => navigate(`/signup`)} />
           </li>
         </ul>
-      </div>
-    </main>
+      </section>
+    </div>
   );
 };
 

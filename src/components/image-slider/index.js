@@ -2,6 +2,7 @@ import React from "react";
 
 import "./style.scoped.scss";
 
+
 const ImageSlider = ({ images }) => {
   const makeImages = (src, index) => (
     <div key={`image-${index}`}>
