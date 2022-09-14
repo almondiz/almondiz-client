@@ -12,14 +12,14 @@ const notices = [
   {
     nid: 1,
     uid: 1,
-    read: true,
+    read: false,
     message: `회원님이 "소고" 음식점을 리뷰한 글의 스크랩 수가 100개를 달성했습니다.`,
     time: 1638802800000,
   },
   {
     nid: 2,
     uid: 1,
-    read: false,
+    read: true,
     message: `닭발 피스타치오님이 대댓글을 달았습니다.\n"고마워요 :)"`,
     time: 1663155700000,
   },
@@ -65,6 +65,7 @@ const Notice = () => {
   const navigate = useNavigate();
 
   const makeNotices = (notice, index) => <NoticeItem key={index} notice={notice} />;
+  notices.reverse();
 
   return (
     <div className="page-wrap">
