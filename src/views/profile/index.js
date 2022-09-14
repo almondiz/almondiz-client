@@ -53,6 +53,8 @@ const FloatFooter = () => {
 };
 
 const Profile = ({ me }) => {
+  const navigate = useNavigate();
+
   const { uid } = useParams();
 
   const userViewModel = new UserViewModel(new UserModel());
@@ -67,10 +69,10 @@ const Profile = ({ me }) => {
       <header className="header">
         <img className="brand" alt="brand" src={LogotypeImage}/>
         <div className="right">
-          <button className="button-noti icon-sm icon-container">
+          <button className="button-notice icon-sm icon-container" onClick={() => navigate(`/notice`)}>
             <NotificationsIconFill />
           </button>
-          <button className="button-settings icon-sm icon-container">
+          <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
             <SettingsIconFill />
           </button>
         </div>
@@ -143,7 +145,7 @@ const Profile = ({ me }) => {
                 <img className="thumb" alt="following" src={"https://picsum.photos/id/120/200"} />
                 <img className="thumb" alt="following" src={"https://picsum.photos/id/130/200"} />
               </div>
-              <button className="button-following">보기</button>
+              <button className="button-following" onClick={() => navigate(`/subscriptions`)}>보기</button>
             </div>
           ) :
           (

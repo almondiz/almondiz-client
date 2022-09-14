@@ -14,7 +14,10 @@ import Post from "./views/post";
 import Search from "./views/search";
 import Scrap from "./views/scrap";
 import Profile from "./views/profile";
+import Subscriptions from "./views/subscriptions";
 import EditPost from "./views/edit-post";
+import Notice from "./views/notice";
+import Settings from "./views/settings";
 import NotFound from "./views/not-found";
 
 import BottomNav from "./components/bottom-nav";
@@ -89,9 +92,14 @@ const App = () => {
             <Route path="/scrap" element={<Scrap />} />
             <Route path="/me" element={<Navigate to={`/profile/${myUid}`} />} />
             <Route path="/profile/:uid" element={<Profile me={me} />} />
+
+            <Route path="/subscriptions" element={<Subscriptions />} />
           </Route>
 
           <Route path="/edit-post" element={<EditPost />} />
+
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/settings" element={<Settings />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
