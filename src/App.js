@@ -15,7 +15,7 @@ import Search from "./views/search";
 import Scrap from "./views/scrap";
 import Profile from "./views/profile";
 import Subscriptions from "./views/subscriptions";
-import EditPost from "./views/edit-post";
+import Edit from "./views/edit";
 import Notice from "./views/notice";
 import Settings from "./views/settings";
 import NotFound from "./views/not-found";
@@ -96,7 +96,7 @@ const App = () => {
             <Route path="/subscriptions" element={<Subscriptions />} />
           </Route>
 
-          <Route path="/edit-post" element={<EditPost />} />
+          <Route path="/edit" element={<Edit />} />
 
           <Route path="/notice" element={<Notice />} />
           <Route path="/settings" element={<Settings />} />

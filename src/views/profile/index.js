@@ -33,7 +33,7 @@ const FloatFooter = () => {
   const FloatFooterMain = ({ moveFrame }) => {
     return (
       <section className="frame-main">
-        <button className="button-write right" onClick={() => navigate(`/edit-post`)}>
+        <button className="button-write right" onClick={() => navigate(`/edit`)}>
           <div className="icon-sm">
             <EditIconFill />
           </div>

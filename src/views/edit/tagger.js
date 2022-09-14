@@ -1,8 +1,8 @@
 import React from "react";
 
 import "./style.scoped.scss";
-
 import BackIcon from "../../asset/icons/mui/back-icon";
+
 
 const Tagger = ({ moveStep }) => {
   return (
@@ -30,6 +30,6 @@ const Tagger = ({ moveStep }) => {
       </main>
     </div>
   )
-}
+};
 
 export default Tagger;

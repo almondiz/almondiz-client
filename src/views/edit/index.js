@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 
-import "./style.scoped.scss";
-
 import Writer from "./writer";
 import Tagger from "./tagger";
 import StoreSearch from "./store-search";
 import DirectRegister from "./direct-register";
 
-const EditPost = () => {
+import "./style.scoped.scss";
+
+
+const Edit = () => {
   const [ curStep, setCurStep ] = useState(0);
 
   const moveStep = val => {
@@ -24,6 +25,6 @@ const EditPost = () => {
   const maxStep = pages.length;
 
   return (pages[curStep]);
-}
+};
 
-export default EditPost;
+export default Edit;

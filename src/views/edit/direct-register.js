@@ -1,8 +1,8 @@
 import React from "react";
 
 import "./style.scoped.scss";
-
 import BackIcon from "../../asset/icons/mui/back-icon";
+
 
 const DirectRegister = ({ moveStep }) => {
   return (
@@ -29,6 +29,6 @@ const DirectRegister = ({ moveStep }) => {
       </main>
     </div>
   )
-}
+};
 
 export default DirectRegister;

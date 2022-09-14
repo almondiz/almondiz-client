@@ -1,8 +1,8 @@
 import React from "react";
 
 import "./style.scoped.scss";
-
 import BackIcon from "../../asset/icons/mui/back-icon";
+
 
 const Writer = ({ moveStep }) => {
   return (
@@ -31,6 +31,6 @@ const Writer = ({ moveStep }) => {
       </aside>
     </div>
   )
-}
+};
 
 export default Writer;
