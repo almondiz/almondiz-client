@@ -58,7 +58,7 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
             className={`profile ${comment.profile.uid === me.profile.uid ? "me" : (comment.profile.isFollowed ? "follower" : "")} ${comment.profile.uid === post.profile.uid ? "writer" : ""}`}
             onClick={() => navigate(`/profile/${comment.profile.uid}`)}
           >
-            <div className="thumb" alt="profile" style={{ backgroundImage: `url(${comment.profile.thumb.emoji})`, backgroundColor: comment.profile.thumb.background }} />
+            <div className="thumb" alt="profile" style={{ backgroundColor: comment.profile.thumb.background }}>{comment.profile.thumb.emoji ? comment.profile.thumb.emoji : ""}</div>
             <p className="name">{comment.profile.uid === me.profile.uid ? "나" : comment.profile[comment.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
           <p className="date">{getTime(comment.createdAt)}</p>
@@ -98,7 +98,7 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
         </a>
         <div className="shop" onClick={() => navigate(`/profile/${post.profile.uid}`)}>
           <div className="shop-icon">
-            <div className="thumb" alt="shop" style={{ backgroundImage: `url(${post.profile.thumb.emoji})`, backgroundColor: post.profile.thumb.background }} />
+            <div className="thumb" alt="shop" style={{ backgroundColor: post.profile.thumb.background }}>{post.profile.thumb.emoji ? post.profile.thumb.emoji : ""}</div>
             <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
           <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>

@@ -22,9 +22,10 @@ const ProfileFrame = ({ moveFrame }) => {
       
       <main className="content">
         <div className="menu-thumb">
-          <div className="thumb candidate" style={{ backgroundImage: `url(/emoji/see-no-evil-monkey_1f648.png)`, backgroundColor: "#cfd8dc" }} />
-          <div className="thumb candidate" style={{ backgroundImage: `url(/emoji/alien-monster_1f47e.png)`, backgroundColor: "#b2dfdb" }} />
-          <div className="thumb" style={{ backgroundImage: `url(/emoji/grinning-face_1f600.png)`, backgroundColor: "#e1bee7" }}>
+          <div className="thumb candidate" style={{ backgroundColor: "#cfd8dc" }}>{`🙈`}</div>
+          <div className="thumb candidate" style={{ backgroundColor: "#b2dfdb" }}>{`👾`}</div>
+          <div className="thumb" style={{ backgroundColor: "#e1bee7" }}>
+            {`😀`}
             <div className="refresh-icon">
               <RefreshIcon />
             </div>

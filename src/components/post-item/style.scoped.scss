@@ -78,6 +78,10 @@
           background-size: 75%;
           background-position: center;
           background-repeat: no-repeat;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: .75rem;
         }
         
         .name {
@@ -190,6 +194,10 @@
               background-size: 75%;
               background-position: center;
               background-repeat: no-repeat;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              font-size: 1.125rem;
             }
             .name {
               font-size: .875rem;

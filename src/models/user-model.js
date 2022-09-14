@@ -8,7 +8,7 @@ export default class UserModel {
         email: "almondiz.ajou@gmail.com",
         name: "마제멘 호두",
         thumb: {
-          emoji: "/emoji/grinning-face_1f600.png",
+          emoji: "😀",
           background: "#e1bee7",
         },
       },
@@ -25,7 +25,7 @@ export default class UserModel {
         name: "닭발 피스타치오",
         email: "canplane@gmail.com",
         thumb: {
-          emoji: "/emoji/see-no-evil-monkey_1f648.png",
+          emoji: "🙈",
           background: "#ffcc80",
         },
         isFollowed: false,
@@ -43,7 +43,7 @@ export default class UserModel {
         email: "gattenmaster@gmail.com",
         name: "달고나 마카다미아",
         thumb: {
-          emoji: "/emoji/alien-monster_1f47e.png",
+          emoji: "👾",
           background: "#b2dfdb",
         },
         isFollowed: true,
@@ -62,7 +62,7 @@ export default class UserModel {
         email: "95eksldpf@gmail.com",
         name: "마라탕 캐슈넛",
         thumb: {
-          emoji: "/emoji/grinning-face_1f600.png",
+          emoji: "😀",
           background: "#cfd8dc",
         },
         isFollowed: false,
@@ -80,7 +80,7 @@ export default class UserModel {
         email: "bellflower9904@gmail.com",
         name: "소바 아몬드",
         thumb: {
-          emoji: "/emoji/see-no-evil-monkey_1f648.png",
+          emoji: "🙈",
           background: "#cfd8dc",
         },
         isFollowed: false,

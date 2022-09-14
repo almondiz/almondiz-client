@@ -58,6 +58,10 @@
         background-size: 75%;
         background-position: center;
         background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3.75rem;
   
         position: relative;
         .refresh-icon {
@@ -92,12 +96,22 @@
         width: 3rem;
         margin-bottom: -1.5rem;
         opacity: .3;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.25rem;
       }
       .candidate + .candidate {
         height: 4rem;
         width: 4rem;
         margin-bottom: -1.5rem;
         opacity: .6;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3rem;
       }
   
       .description {
@@ -241,6 +255,10 @@
         background-size: 75%;
         background-position: center;
         background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 3.75rem;
       }
       .text-wrap {
         margin-top: 1rem;

@@ -6,7 +6,7 @@ export default class FeedModel {
         uid: 2,
         name: "닭발 피스타치오",
         thumb: {
-          emoji: "/emoji/see-no-evil-monkey_1f648.png",
+          emoji: "🙈",
           background: "#ffcc80",
         },
         isFollowed: false,
@@ -44,7 +44,7 @@ export default class FeedModel {
               uid: 3,
               name: "달고나 마카다미아",
               thumb: {
-                emoji: "/emoji/alien-monster_1f47e.png",
+                emoji: "👾",
                 background: "#b2dfdb",
               },
               isFollowed: true,
@@ -59,7 +59,7 @@ export default class FeedModel {
                   uid: 2,
                   name: "닭발 피스타치오",
                   thumb: {
-                    emoji: "/emoji/see-no-evil-monkey_1f648.png",
+                    emoji: "🙈",
                     background: "#ffcc80",
                   },
                   isFollowed: false,
@@ -75,7 +75,7 @@ export default class FeedModel {
               uid: 1,
               name: "마제멘 호두",
               thumb: {
-                emoji: "/emoji/grinning-face_1f600.png",
+                emoji: "😀",
                 background: "#e1bee7",
               },
               isFollowed: false,

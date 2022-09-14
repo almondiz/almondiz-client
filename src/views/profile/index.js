@@ -79,7 +79,7 @@ const Profile = ({ me }) => {
       </header>
       <div className={`profile-wrap ${user.profile.uid === me.profile.uid ? "me" : user.profile.isFollowed ? "following" : ""}`}>
         <div className="profile" >
-          <div className="thumb" alt="profile" style={{ backgroundImage: `url(${user.profile.thumb.emoji})`, backgroundColor: user.profile.thumb.background }} />
+          <div className="thumb" alt="profile" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
           {
             user.profile.uid === me.profile.uid ?
             (

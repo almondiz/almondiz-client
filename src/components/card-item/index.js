@@ -46,6 +46,8 @@ const getTime = epoch => {
 
 
 const CardItem = ({ index, post, me }) => {
+  console.log(post.profile.thumb)
+
   const navigate = useNavigate();
 
   const location = useSelector(state => state.global.location);
@@ -69,7 +71,7 @@ const CardItem = ({ index, post, me }) => {
         </a>
         <div className="shop" onClick={() => navigate(`/profile/${post.profile.uid}`)}>
           <div className="shop-icon">
-            <div className="thumb" alt="shop" style={{ backgroundImage: `url(${post.profile.thumb.emoji})`, backgroundColor: post.profile.thumb.background }} />
+            <div className="thumb" alt="shop" style={{ backgroundColor: post.profile.thumb.background }}>{post.profile.thumb.emoji}</div>
             <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
           <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>
@@ -110,7 +112,7 @@ const CardItem = ({ index, post, me }) => {
         </div>
         { post.reaction.comments.length > 0 && (
             <div className="comment">
-              <div className="thumb" alt="profile" style={{ backgroundImage: `url(${post.reaction.comments[0].profile.thumb.emoji})`, backgroundColor: post.reaction.comments[0].profile.thumb.background }} />
+              <div className="thumb" alt="profile" style={{ backgroundColor: post.reaction.comments[0].profile.thumb.background }}>{post.reaction.comments[0].profile.thumb.emoji}</div>
               <p>{post.reaction.comments[0].content}</p>
             </div>
           )
