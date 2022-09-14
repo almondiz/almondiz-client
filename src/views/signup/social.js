@@ -25,7 +25,7 @@ const SocialFrame = ({ moveFrame }) => {
       </main>
 
       <footer className="footer">
-        <p className="help">다른 계정으로 <span onClick={() => navigate(`/login`)}>로그인 또는 회원가입</span></p>
+        <p className="help">다른 계정으로 <span onClick={() => navigate(`/login`)}>로그인 또는 회원 가입</span></p>
         <button className="button-next" onClick={() => !moveFrame(1) && navigate(`/feed`)}>다음</button>
       </footer>
     </div>

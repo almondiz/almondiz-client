@@ -4,9 +4,6 @@ import { useNavigate } from "react-router-dom";
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 import RefreshIcon from "../../asset/icons/mui/refresh-icon";
-import EmojiImage from "../../asset/dummy/grinning-face_1f600.png";
-import EmojiImage_1 from "../../asset/dummy/alien-monster_1f47e.png";
-import EmojiImage_2 from "../../asset/dummy/see-no-evil-monkey_1f648.png";
 
 import ArrowDropDownIcon from "../../asset/icons/mui/arrow-drop-down-icon";
 
@@ -25,14 +22,14 @@ const ProfileFrame = ({ moveFrame }) => {
       
       <main className="content">
         <div className="menu-thumb">
-          <div className="thumb candidate" style={{ backgroundImage: `url(${EmojiImage_2})`, backgroundColor: "#cfd8dc" }} />
-          <div className="thumb candidate" style={{ backgroundImage: `url(${EmojiImage_1})`, backgroundColor: "#b2dfdb" }} />
-          <div className="thumb" style={{ backgroundImage: `url(${EmojiImage})`, backgroundColor: "#e1bee7" }}>
+          <div className="thumb candidate" style={{ backgroundImage: `url(/emoji/see-no-evil-monkey_1f648.png)`, backgroundColor: "#cfd8dc" }} />
+          <div className="thumb candidate" style={{ backgroundImage: `url(/emoji/alien-monster_1f47e.png)`, backgroundColor: "#b2dfdb" }} />
+          <div className="thumb" style={{ backgroundImage: `url(/emoji/grinning-face_1f600.png)`, backgroundColor: "#e1bee7" }}>
             <div className="refresh-icon">
               <RefreshIcon />
             </div>
           </div>
-          <h5 className="description">프로필 이미지</h5>
+          <h5 className="description">이모지</h5>
         </div>
         <div className="menu-name">
           <div className="name">
@@ -41,7 +38,7 @@ const ProfileFrame = ({ moveFrame }) => {
             </div>
             <div className="name-last">
               <select className="field" defaultValue="default">
-                <option value="default" disabled>견과류</option>
+                {/*<option value="default" disabled>견과류</option>*/}
                 <option value={0}>호두</option>
                 <option value={1}>피스타치오</option>
                 <option value={2}>캐슈넛</option>

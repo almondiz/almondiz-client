@@ -57,23 +57,23 @@ const CardItem = ({ index, post, me }) => {
       <div className="link" onClick={() => navigate(`/post`)} />
 
       <header className="header">
-        <div
+        <a
           className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}
-          onClick={() => navigate(`/profile/${post.profile.uid}`)}
+          href={post.shop.link}
         >
-          <img className="thumb" alt="profile" src={post.profile.thumb}/>
+          <img className="thumb" alt="profile" src={post.shop.thumb} />
           <div className="text-wrap">
-            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
-            <p className="date">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "팔로잉" : "근처"}`}</p>
-          </div>
-        </div>
-        <a href={post.shop.link} className="shop">
-          <div className="shop-icon">
-            <img className="thumb" alt="shop" src={post.shop.thumb} />
             <p className="name">{post.shop.name}</p>
+            <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
           </div>
-          <p className="location">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
         </a>
+        <div className="shop" onClick={() => navigate(`/profile/${post.profile.uid}`)}>
+          <div className="shop-icon">
+            <div className="thumb" alt="shop" style={{ backgroundImage: `url(${post.profile.thumb.emoji})`, backgroundColor: post.profile.thumb.background }} />
+            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
+          </div>
+          <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>
+        </div>
       </header>
 
       <nav className="tags-wrap">
@@ -110,7 +110,7 @@ const CardItem = ({ index, post, me }) => {
         </div>
         { post.reaction.comments.length > 0 && (
             <div className="comment">
-              <img className="thumb" alt="profile" src={post.reaction.comments[0].profile.thumb} />
+              <div className="thumb" alt="profile" style={{ backgroundImage: `url(${post.reaction.comments[0].profile.thumb.emoji})`, backgroundColor: post.reaction.comments[0].profile.thumb.background }} />
               <p>{post.reaction.comments[0].content}</p>
             </div>
           )

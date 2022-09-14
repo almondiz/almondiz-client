@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
-import EmojiImage from "../../asset/dummy/grinning-face_1f600.png";
 
 
 const ConfirmFrame = ({ moveFrame }) => {
@@ -21,7 +20,7 @@ const ConfirmFrame = ({ moveFrame }) => {
       <main className="content">
         <p className="description">이대로 가입하시겠어요?</p>
         <div className="profile">
-          <div className="thumb" style={{ backgroundImage: `url(${EmojiImage})`, backgroundColor: "#e1bee7" }} />
+          <div className="thumb" style={{ backgroundImage: `url(/emoji/grinning-face_1f600.png)`, backgroundColor: "#e1bee7" }} />
           <div className="text-wrap">
             <p className="name">마제멘 호두</p>
             <p className="email">almondiz.ajou@gmail.com</p>

@@ -77,7 +77,7 @@ const Profile = ({ me }) => {
       </header>
       <div className={`profile-wrap ${user.profile.uid === me.profile.uid ? "me" : user.profile.isFollowed ? "following" : ""}`}>
         <div className="profile" >
-          <img className="thumb" alt="profile" src={user.profile.thumb} />
+          <div className="thumb" alt="profile" style={{ backgroundImage: `url(${user.profile.thumb.emoji})`, backgroundColor: user.profile.thumb.background }} />
           {
             user.profile.uid === me.profile.uid ?
             (
@@ -109,20 +109,20 @@ const Profile = ({ me }) => {
           user.profile.isFollowed ?
           (
             <div className="row-button">
-              <button className="button-follow">팔로우 취소</button>
+              <button className="button-follow">구독 취소</button>
               <button className="button-alias">별명 변경</button>
             </div>
           ) :
           (
             <div className="row-button">
-              <button className="button-follow">팔로우</button>
+              <button className="button-follow">구독</button>
             </div>
           )
         }
 
         <div className="row">
           <div className="count half">
-            <h5>팔로워</h5>
+            <h5>구독자 수</h5>
             <p>{user.counts.follower}</p>
           </div>
           <div className="count half">
@@ -135,7 +135,7 @@ const Profile = ({ me }) => {
           (
             <div className="row">
               <div className="count">
-                <h5>팔로잉</h5>
+                <h5>구독</h5>
                 <p>{user.counts.following}</p>
               </div>
               <div className="thumb-wrap">
@@ -143,7 +143,7 @@ const Profile = ({ me }) => {
                 <img className="thumb" alt="following" src={"https://picsum.photos/id/120/200"} />
                 <img className="thumb" alt="following" src={"https://picsum.photos/id/130/200"} />
               </div>
-              <button className="button-following">관리</button>
+              <button className="button-following">보기</button>
             </div>
           ) :
           (

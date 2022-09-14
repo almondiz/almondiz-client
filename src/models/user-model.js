@@ -7,7 +7,10 @@ export default class UserModel {
         uid: 1,
         email: "almondiz.ajou@gmail.com",
         name: "마제멘 호두",
-        thumb: "https://picsum.photos/id/10/200",
+        thumb: {
+          emoji: "/emoji/grinning-face_1f600.png",
+          background: "#e1bee7",
+        },
       },
       counts: {
         follower: 0,
@@ -19,9 +22,12 @@ export default class UserModel {
     2: {
       profile: {
         uid: 2,
-        thumb: "https://picsum.photos/id/20/200",
         name: "닭발 피스타치오",
         email: "canplane@gmail.com",
+        thumb: {
+          emoji: "/emoji/see-no-evil-monkey_1f648.png",
+          background: "#ffcc80",
+        },
         isFollowed: false,
       },
       counts: {
@@ -36,7 +42,10 @@ export default class UserModel {
         uid: 3,
         email: "gattenmaster@gmail.com",
         name: "달고나 마카다미아",
-        thumb: "https://picsum.photos/id/30/200",
+        thumb: {
+          emoji: "/emoji/alien-monster_1f47e.png",
+          background: "#b2dfdb",
+        },
         isFollowed: true,
         alias: "후루룩챱챱",
       },
@@ -52,7 +61,10 @@ export default class UserModel {
         uid: 4,
         email: "95eksldpf@gmail.com",
         name: "마라탕 캐슈넛",
-        thumb: "https://picsum.photos/id/40/200",
+        thumb: {
+          emoji: "/emoji/grinning-face_1f600.png",
+          background: "#cfd8dc",
+        },
         isFollowed: false,
       },
       counts: {
@@ -67,7 +79,10 @@ export default class UserModel {
         uid: 1,
         email: "bellflower9904@gmail.com",
         name: "소바 아몬드",
-        thumb: "https://picsum.photos/id/50/200",
+        thumb: {
+          emoji: "/emoji/see-no-evil-monkey_1f648.png",
+          background: "#cfd8dc",
+        },
         isFollowed: false,
       },
       counts: {

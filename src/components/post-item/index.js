@@ -58,7 +58,7 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
             className={`profile ${comment.profile.uid === me.profile.uid ? "me" : (comment.profile.isFollowed ? "follower" : "")} ${comment.profile.uid === post.profile.uid ? "writer" : ""}`}
             onClick={() => navigate(`/profile/${comment.profile.uid}`)}
           >
-            <img className="thumb" alt="profile" src={comment.profile.thumb} />
+            <div className="thumb" alt="profile" style={{ backgroundImage: `url(${comment.profile.thumb.emoji})`, backgroundColor: comment.profile.thumb.background }} />
             <p className="name">{comment.profile.uid === me.profile.uid ? "나" : comment.profile[comment.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
           <p className="date">{getTime(comment.createdAt)}</p>
@@ -86,23 +86,23 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
   return (
     <article className="post-item">
       <header className="header">
-        <div
+        <a
           className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}
-          onClick={() => navigate(`/profile/${post.profile.uid}`)}
+          href={post.shop.link}
         >
-          <img className="thumb" alt="profile" src={post.profile.thumb}/>
+          <img className="thumb" alt="profile" src={post.shop.thumb} />
           <div className="text-wrap">
-            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
-            <p className="date">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "팔로잉" : "근처"}`}</p>
-          </div>
-        </div>
-        <a href={post.shop.link} className="shop">
-          <div className="shop-icon">
-            <img className="thumb" alt="shop" src={post.shop.thumb} />
             <p className="name">{post.shop.name}</p>
+            <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
           </div>
-          <p className="location">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
         </a>
+        <div className="shop" onClick={() => navigate(`/profile/${post.profile.uid}`)}>
+          <div className="shop-icon">
+            <div className="thumb" alt="shop" style={{ backgroundImage: `url(${post.profile.thumb.emoji})`, backgroundColor: post.profile.thumb.background }} />
+            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
+          </div>
+          <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>
+        </div>
       </header>
 
       <nav className="tags-wrap">

@@ -5,7 +5,10 @@ export default class FeedModel {
       profile: {
         uid: 2,
         name: "닭발 피스타치오",
-        thumb: "https://picsum.photos/id/20/200",
+        thumb: {
+          emoji: "/emoji/see-no-evil-monkey_1f648.png",
+          background: "#ffcc80",
+        },
         isFollowed: false,
       },
       shop: {
@@ -40,7 +43,10 @@ export default class FeedModel {
             profile: {
               uid: 3,
               name: "달고나 마카다미아",
-              thumb: "https://picsum.photos/id/30/200",
+              thumb: {
+                emoji: "/emoji/alien-monster_1f47e.png",
+                background: "#b2dfdb",
+              },
               isFollowed: true,
               alias: "후루룩챱챱",
             },
@@ -52,7 +58,10 @@ export default class FeedModel {
                 profile: {
                   uid: 2,
                   name: "닭발 피스타치오",
-                  thumb: "https://picsum.photos/id/20/200",
+                  thumb: {
+                    emoji: "/emoji/see-no-evil-monkey_1f648.png",
+                    background: "#ffcc80",
+                  },
                   isFollowed: false,
                 },
                 content: `유감이네용`,
@@ -65,7 +74,10 @@ export default class FeedModel {
             profile: {
               uid: 1,
               name: "마제멘 호두",
-              thumb: "https://picsum.photos/id/10/200",
+              thumb: {
+                emoji: "/emoji/grinning-face_1f600.png",
+                background: "#e1bee7",
+              },
               isFollowed: false,
             },
             content: `굿`,
