@@ -28,9 +28,9 @@ const getTime = epoch => {
   const DAY = 24 * HOUR;
   const WEEK = 7 * DAY;
 
-  const now = new Date().valueOf();
+  const now = new Date();
 
-  const dt = Math.floor(now - epoch);
+  const dt = Math.floor(now.valueOf() - epoch);
   if (dt < MINUTE)
     return `방금`;
   else if (dt < HOUR)   // 1 ~ 59 mins
@@ -41,7 +41,7 @@ const getTime = epoch => {
     return `${Math.floor(dt / DAY)}일 전`;
   
   const date = new Date(epoch);
-  return `${date.getMonth() + 1}월 ${date.getDate()}일`;
+  return (date.getFullYear() !== now.getFullYear() ? `${date.getFullYear()}년 ` : ``) + `${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
 

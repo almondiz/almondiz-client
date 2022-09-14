@@ -16,7 +16,7 @@ const Feed = ({ me }) => {
 
   const feedViewModel = new FeedViewModel(new FeedModel());
   const posts = feedViewModel.getAllFeedList();
-  const makeCards = (post, index) => (<CardItem key={index} post={post} me={me}></CardItem>);
+  const makeCards = (post, index) => <CardItem key={index} post={post} me={me} />;
 
   return (
     <div className="page-wrap">
