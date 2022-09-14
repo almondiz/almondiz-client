@@ -53,7 +53,7 @@ const NoticeItem = ({ notice }) => {
       <div className={`notice-icon ${notice.read ? "badge" : ""}`}>
         <NotificationsIconBorder />
       </div>
-      <div class="text-wrap">
+      <div className="text-wrap">
         <p className="message">{notice.message}</p>
         <p className="time">{getTime(notice.time)}</p>
       </div>
@@ -77,7 +77,7 @@ const Notice = () => {
         </nav>
 
         <main className="content">
-          <ul class="notice-list">{notices.map(makeNotices)}</ul>
+          <ul className="notice-list">{notices.map(makeNotices)}</ul>
 
           {/*<p className="description">{`아래의 소셜 계정으로\n가입을 진행합니다.`}</p>
           <img className="social-icon google" alt="Google" src={GoogleSocialImage} />

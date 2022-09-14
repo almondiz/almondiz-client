@@ -46,8 +46,6 @@ const getTime = epoch => {
 
 
 const CardItem = ({ index, post, me }) => {
-  console.log(post.profile.thumb)
-
   const navigate = useNavigate();
 
   const location = useSelector(state => state.global.location);
