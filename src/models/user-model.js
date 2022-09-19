@@ -1,4 +1,6 @@
-export default class UserModel {
+import defaultModel from "./default-model";
+
+export default class UserModel extends defaultModel {
   static myUid = 1;
 
   data = {
@@ -96,4 +98,10 @@ export default class UserModel {
 
   getData(uid) { return this.data[uid]; }
   getMyData() { return this.data[UserModel.myUid]; }
+  signup(body) {
+    return this.callApi(() => this.api.signup(body));
+  }
+  login(userEmail) {
+    return this.callApi(() => this.api.login({ userEmail }));
+  }
 }

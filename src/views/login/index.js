@@ -1,5 +1,12 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { GoogleLogin } from 'react-google-login';
+import { gapi } from "gapi-script";
+import { useDispatch } from "react-redux";
+import { setAccessToken, setRefreshToken, setEmail } from "../../store/slices/account";
+
+import { UserModel } from "../../models";
+import UserViewModel from "../../view-models/user";
 
 import "./style.scoped.scss";
 import SymbolImage from "../../asset/logo/symbol.png";
@@ -9,16 +16,23 @@ import GoogleSocialImage from "../../asset/social/google.svg";
 import NaverSocialImage from "../../asset/social/naver.svg";
 import KakaoSocialImage from "../../asset/social/kakao.svg";
 
-import { GoogleLogin } from 'react-google-login';
-import { gapi } from "gapi-script";
-
 const LoginPage = () => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
+  const userViewModel = new UserViewModel(new UserModel());
 
   const  onSuccess = async (res) => {
-    const profile = res.getBasicProfile();
-    console.log(profile);
-    navigate(`/signup`);
+    const { cu: email } = res.getBasicProfile();
+    dispatch(setEmail(email));
+    await userViewModel.checkAccount(
+      email,
+      () => navigate(`/signup`),
+      ({ accessToken, refreshToken }) => {
+        dispatch(setAccessToken(accessToken));
+        dispatch(setRefreshToken(refreshToken));
+        navigate(`/feed`)
+      },
+    );
   }
 
   const onFailure = async (res) => {

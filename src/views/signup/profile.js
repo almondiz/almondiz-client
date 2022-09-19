@@ -8,7 +8,15 @@ import RefreshIcon from "../../asset/icons/mui/refresh-icon";
 import ArrowDropDownIcon from "../../asset/icons/mui/arrow-drop-down-icon";
 
 
-const ProfileFrame = ({ moveFrame }) => {
+const ProfileFrame = ({
+  moveFrame,
+  onChangeProfile,
+  onChangeNut,
+  onChangeTag,
+  getProfile,
+  getNut,
+  getTag,
+}) => {
   const navigate = useNavigate();
 
   return (
@@ -26,7 +34,7 @@ const ProfileFrame = ({ moveFrame }) => {
           <div className="thumb candidate" style={{ backgroundColor: "#b2dfdb" }}>{`👾`}</div>
           <div className="thumb" style={{ backgroundColor: "#e1bee7" }}>
             {`😀`}
-            <div className="refresh-icon">
+            <div className="refresh-icon" onClick={onChangeProfile}>
               <RefreshIcon />
             </div>
           </div>
@@ -35,10 +43,10 @@ const ProfileFrame = ({ moveFrame }) => {
         <div className="menu-name">
           <div className="name">
             <div className="name-first">
-              <input className="field" placeholder="좋아하는 음식" autoFocus />
+              <input className="field" placeholder="좋아하는 음식" autoFocus onChange={onChangeTag} />
             </div>
             <div className="name-last">
-              <select className="field" defaultValue="default">
+              <select className="field" defaultValue="default" onChange={onChangeNut}>
                 {/*<option value="default" disabled>견과류</option>*/}
                 <option value={0}>호두</option>
                 <option value={1}>피스타치오</option>
