@@ -64,6 +64,7 @@ module.exports = {
     new EnvironmentPlugin({
       NODE_ENV: "development",
       DEBUG: false,
+      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     }),
     new DotenvWebpackPlugin(),
     // only develoment
