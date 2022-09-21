@@ -18,6 +18,10 @@ const path = {
     default: makePath("user"),
     login: makePath("user/login"),
   },
+  post: {
+    default: makePath("post"),
+    list: makePath("posts"),
+  }
 }
 
 export {
