@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ReactRefreshPlugin = require("@pmmmwh/react-refresh-webpack-plugin");
 const { EnvironmentPlugin } = require("webpack");
+const DotenvWebpackPlugin = require("dotenv-webpack");
 
 const port = process.env.PORT || 8080;
 
@@ -62,8 +63,9 @@ module.exports = {
     }),
     new EnvironmentPlugin({
       NODE_ENV: "development",
-      DEBUG: false
+      DEBUG: false,
     }),
+    new DotenvWebpackPlugin(),
     // only develoment
     new ReactRefreshPlugin()
   ],

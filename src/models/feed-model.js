@@ -1,4 +1,6 @@
-export default class FeedModel {
+import defaultModel from "./default-model";
+
+export default class FeedModel extends defaultModel {
   getDummyData() {
     return {
       createdAt: 1660993200000,
