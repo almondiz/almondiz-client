@@ -4,8 +4,8 @@ const initialState = {
     scrollDirection: 0,
     location: {
       address: "수원 팔달구 우만동",
-      lat: 37.284018,
-      lng: 127.030147,
+      lati: 37.284018,
+      longi: 127.030147,
     },
 };
 

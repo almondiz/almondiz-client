@@ -18,8 +18,8 @@ export default class FeedModel extends defaultModel {
         thumb: "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f184_184&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200512_270%2F1589240248177WIr4l_JPEG%2FKakaoTalk_Photo_2019-11-15-21-09-35.jpeg",
         location: {
           address: "수원 영통구 원천동",
-          lat: 37.275004,
-          lng: 127.045749,
+          lati: 37.275004,
+          longi: 127.045749,
         },
         link: "https://map.naver.com/v5/search/%ED%8C%94%EB%8B%AC%EC%88%98%EC%A0%9C%EB%A7%A5%EC%A3%BC/place/36786112?c=14136086.2802149,4478566.8609065,12,0,0,0,dh&placePath=%3Fentry%253Dbmp",
       },

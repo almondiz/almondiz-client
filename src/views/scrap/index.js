@@ -4,7 +4,7 @@ import { FeedModel, UserModel } from "../../models";
 import FeedViewModel from "../../view-models/feed";
 import UserViewModel from "../../view-models/user";
 
-import CardItem from "../../components/card-item";
+import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
 
@@ -15,17 +15,19 @@ const Scrap = () => {
 
   const feedViewModel = new FeedViewModel(new FeedModel());
   const posts = feedViewModel.getAllFeedList();
-  const makeCards = (post, index) => <CardItem key={index} post={post} me={me} />;
+  const makePost = (post, index) => <PostItem key={index} post={post} me={me} />;
 
   return (
-    <div className="page-wrap">
+    <div className="page">
       <header className="header">
         <h1 className="title">Scrapped</h1>
         <div className="right" />
       </header>
-      <section className="card-list">
-        {posts.map(makeCards)}
-      </section>
+      <main className="content">
+        <section className="post-list">
+          {posts.map(makePost)}
+        </section>
+      </main>
     </div>
   );
 };

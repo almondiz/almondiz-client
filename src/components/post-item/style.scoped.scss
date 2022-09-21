@@ -1,3 +1,6 @@
+.post-item + .post-item {
+  border-top: 1px solid #eee;
+}
 .post-item {
   width: 100%;
   padding-left: $padding-horiz;
@@ -8,7 +11,15 @@
 
   display: flex;
   flex-direction: column;
-  overflow: auto;
+
+  position: relative;
+  &>.link {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
 
   &>.header {
     margin-bottom: 1rem;
@@ -17,7 +28,9 @@
     display: flex;
     justify-content: space-between;
   
-    .profile {
+    .shop {
+      z-index: 1;
+
       display: flex;
       align-items: center;
   
@@ -26,6 +39,7 @@
         height: 2.5rem;
         margin-right: .625rem;
         border-radius: 100%;
+        background-size: cover;
 
         //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
       }
@@ -41,23 +55,16 @@
           color: #666;
         }
       }
-
-      &.me,
-      &.follower {
-        .text-wrap {
-          .name {
-            font-weight: 700;
-          }
-        }
-      }
     }
   
-    .shop {
+    .profile {
+      z-index: 1;
+
       display: flex;
       flex-direction: column;
       align-items: flex-end;
 
-      .shop-icon {
+      .chip {
         display: flex;
         align-items: center;
 
@@ -97,10 +104,21 @@
         margin-top: .0625rem; //.25rem;
         color: #666;
       }
+
+      &.me,
+      &.follower {
+        .chip {
+          .name {
+            font-weight: 700;
+          }
+        }
+      }
     }
   }
 
-  .tags-wrap {
+  .tag-wrap {
+    z-index: 1;
+
     margin-bottom: 1.25rem;
 
     display: flex;
@@ -153,108 +171,60 @@
     display: flex;
     flex-direction: column;
 
-    .counts {
-      height: 2.5rem;
+    .buttons {
+      z-index: 1;
+
+      width: 100%;
+      display: flex;
+  
+      .button {
+        &:not(:first-child) {
+          margin-left: .5rem;
+        }
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        min-width: 2.5rem;
+        height: 2.5rem;
+  
+        p {
+          font-size: .8125rem;
+          margin-left: .25rem;
+        }
+      }
+    }
+  
+    .comment {
+      margin-top: 1rem;
 
       display: flex;
       align-items: center;
+      width: 100%;
+    
+      .thumb {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-right: .625rem;
+        border-radius: 100%;
 
-      font-size: .8125rem;
-      color: #666;
+        //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
 
-      margin-bottom: .5rem;
-    }
-  
-    .comment-list {
-      &.reply {
-        margin-left: 1.375rem;
+        background-color: #ddd;
+        background-size: 75%;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.125rem;
+        line-height: 1.5rem;
       }
-
-      .comment-item {
-        border-top: 1px solid #eee;
-        padding-top: 1.125rem;
-
-        position: relative;
-        &>.header {
-          display: flex;
-          align-items: center;
-
-          .profile {
-            display: flex;
-            align-items: center;
-
-            .thumb {
-              width: 1.5rem;
-              height: 1.5rem;
-              margin-right: .5rem;
-              border-radius: 100%;
-
-              //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-
-              background-color: #ddd;
-              background-size: 75%;
-              background-position: center;
-              background-repeat: no-repeat;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              font-size: 1.125rem;
-              line-height: 1.5rem;
-            }
-            .name {
-              font-size: .875rem;
-
-              display: flex;
-              align-items: center;
-            }
-
-            &.me,
-            &.follower {
-              .name {
-                font-weight: 700;
-              }
-            }
-
-            &.writer {
-              .name::after {
-                content: "글쓴이";
-                font-weight: 400;
-                font-size: .625rem;
-                color: #666;
-                border: 1px solid #666;
-                border-radius: 1rem;
-                padding: .125rem .3125rem;
-                margin-left: .25rem;
-              }
-            }
-          }
-          .date {
-            font-size: .8125rem;
-            color: #666;
-            margin-left: .75rem;
-          }
-          .more-icon {
-            margin-left: .75rem;
-          }
-          .button-favorite {
-            display: flex;
-            align-items: center;
       
-            p {
-              font-size: .8125rem;
-              margin-left: .25rem;
-
-              color: #666;
-            }
-          }
-        }
-        &>.body {
-          padding-top: .5rem;
-          padding-bottom: 1rem;
-
-          font-size: .875rem;
-          line-height: 1.25rem;
-        }
+      p {
+        font-size: .8125rem;
+        line-height: 1.25rem;
       }
     }
   }

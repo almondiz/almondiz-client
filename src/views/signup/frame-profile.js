@@ -4,12 +4,12 @@ import { useNavigate } from "react-router-dom";
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 import RefreshIcon from "../../asset/icons/mui/refresh-icon";
-
 import ArrowDropDownIcon from "../../asset/icons/mui/arrow-drop-down-icon";
 
 
-const ProfileFrame = ({
-  moveFrame,
+// frame 2
+const FrameProfile = ({
+  framer,
   onChangeProfile,
   onChangeNut,
   onChangeTag,
@@ -22,7 +22,7 @@ const ProfileFrame = ({
   return (
     <div className="frame-profile">
       <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => !moveFrame(-1) && navigate(`/login`)}>
+        <button className="button-back icon-sm" onClick={() => framer.prev()}>
           <BackIcon />
         </button>
         <h3 className="title">프로필 생성</h3>
@@ -63,14 +63,14 @@ const ProfileFrame = ({
           </div>
           <h5 className="description">닉네임</h5>
         </div>
-
-        <footer className="footer">
-          <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
-          <button className="button-next" onClick={() => !moveFrame(1) && navigate(`/feed`)}>다음</button>
-        </footer>
       </main>
+
+      <footer className="footer">
+        <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
+        <button className="button-next" onClick={() => framer.next()}>다음</button>
+      </footer>
     </div>
   );
 };
 
-export default ProfileFrame;
+export default FrameProfile;

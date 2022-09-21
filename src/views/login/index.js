@@ -53,7 +53,7 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className="page-wrap">
+    <div className="page">
       <main className="content">
         <div className="brand">
           <img className="symbol" alt="Symbol" src={SymbolImage} />

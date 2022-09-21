@@ -166,13 +166,13 @@ const generateRandomGrid = (Y, X, TILES) => {
   return ret;
 };
 
-const ImageGrid = ({ images, shop, action }) => {
+const ImageGrid = ({ images, shop, controller }) => {
   const makeCell = (src, index) => (
     <div
       key={index}
       className="grid image"
       style={{ gridArea: `grid-${index + 1}`, backgroundImage: `url(${src})` }}
-      onClick={() => action(index)}
+      onClick={() => controller?.setIndex(index)}
     />
   );
   const makeGridStyle = () => {

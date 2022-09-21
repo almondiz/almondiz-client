@@ -57,7 +57,7 @@ const Monitor = () => {
   };
   initLocationHandler();
 
-  return <></>;
+  return false;
 };
 
 

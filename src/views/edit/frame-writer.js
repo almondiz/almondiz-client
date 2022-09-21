@@ -1,17 +1,20 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
-const Writer = ({ moveStep }) => {
+const FrameWriter = ({ framer }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="page-wrap">
+    <div className="page">
       <header>
-        <div className="header-back-button">
+        <div className="header-back-button" onClick={() => window.history.go(-1)}>
           <BackIcon />
         </div>
-        <div className="header-next-button" onClick={moveStep(1)}>
+        <div className="header-next-button" onClick={() => framer.next()}>
           다음
         </div>
         리뷰 작성
@@ -33,4 +36,4 @@ const Writer = ({ moveStep }) => {
   )
 };
 
-export default Writer;
+export default FrameWriter;
