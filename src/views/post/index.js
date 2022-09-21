@@ -130,7 +130,7 @@ const Post = ({ me, index }) => {
 
       <FloatFooter />
 
-      <ImageViewer images={post.postFileImgUrls} setIndex={setImageViewerIndex} index={imageViewerIndex} />
+      <ImageViewer images={post.content.images} setIndex={setImageViewerIndex} index={imageViewerIndex} />
     </div>
   );
 };

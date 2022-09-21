@@ -50,7 +50,7 @@ const CardItem = ({ index, post, me }) => {
 
   const location = useSelector(state => state.global.location);
 
-  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag.tagName}</li>);
+  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
 
   return (
     <article className="card-item">
@@ -58,41 +58,33 @@ const CardItem = ({ index, post, me }) => {
 
       <header className="header">
         <a
-          // isFollowed 미구현상태
-          className={`profile ${post.profileId === me.profile.uid ? "me" : (post.isFollowed ? "follower" : "")}`}
-          // 이부분은 따로 구현이 필요
-          // href={post.shop.link}
-          href={"/feed"}
+          className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}
+          href={post.shop.link}
         >
-          <img className="thumb" alt="profile" src={post.shopThumb} />
+          <img className="thumb" alt="profile" src={post.shop.thumb} />
           <div className="text-wrap">
-            <p className="name">{post.storeName}</p>
-            <p className="date">{post.storeAddress} · {getDistance(location, {
-              lat: post.lati,
-              lng: post.longi,
-            })}km</p>
+            <p className="name">{post.shop.name}</p>
+            <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
           </div>
         </a>
-        <div className="shop" onClick={() => navigate(`/profile/${post.profileId}`)}>
+        <div className="shop" onClick={() => navigate(`/profile/${post.profile.uid}`)}>
           <div className="shop-icon">
-            <div className="thumb" alt="shop" style={{ backgroundColor: post.userProfileBackground }}>
-              {post.userProfileEmoji}
-            </div>
-            <p className="name">{post.profileId === me.profile.uid ? "나" : post[post.isFollowed ? "alias" : "nickName"]}</p>
+            <div className="thumb" alt="shop" style={{ backgroundColor: post.profile.thumb.background }}>{post.profile.thumb.emoji}</div>
+            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
-          <p className="location">{getTime(post.createdAt)}{post.profileId === me.profile.uid ? "" : ` · ${post.isFollowed ? "구독" : "근처"}`}</p>
+          <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>
         </div>
       </header>
 
       <nav className="tags-wrap">
         <SellIconBorder height="1.25rem" fill="#999" />
-        <ul className="tags">{post.tagList.map(makeTags)}</ul>
+        <ul className="tags">{post.tags.map(makeTags)}</ul>
       </nav>
 
       <main className="body">
-        <p className="text">{post.content}</p>
+        <p className="text">{post.content.text}</p>
         <div className="images" onClick={() => navigate(`/post`)}>
-          <ImageSlider images={post.postFileImgUrls} />
+          <ImageSlider images={post.content.images} />
         </div>
       </main>
 
@@ -102,7 +94,7 @@ const CardItem = ({ index, post, me }) => {
             <div className="icon-sm">
               <ChatBubbleIconBorder />
             </div>
-            <p>{post.commentCount}</p>
+            <p>{post.reaction.commentCount}</p>
           </button>
           <button className="button right">
             <div className="icon-sm icon-container">
@@ -113,14 +105,13 @@ const CardItem = ({ index, post, me }) => {
             <div className="icon-sm">
               <BookmarkIconBorder />
             </div>
-            <p>{post.scrapCount}</p>
+            <p>{post.reaction.scrapCount}</p>
           </button>
         </div>
-        {
-          post.commentCount > 0 && (
+        { post.reaction.comments.length > 0 && (
             <div className="comment">
-              <div className="thumb" alt="profile" style={{ backgroundColor: post.commentList[0].background }}>{post.commentList[0].emoji}</div>
-              <p>{post.commentList[0].text}</p>
+              <div className="thumb" alt="profile" style={{ backgroundColor: post.reaction.comments[0].profile.thumb.background }}>{post.reaction.comments[0].profile.thumb.emoji}</div>
+              <p>{post.reaction.comments[0].content}</p>
             </div>
           )
         }

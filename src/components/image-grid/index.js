@@ -196,7 +196,7 @@ const ImageGrid = ({ images, shop, action }) => {
         <div className="content">
           <div>
             <p className="name">{shop.name}</p>
-            <p className="address">{shop.address}</p>
+            <p className="address">{shop.location.address}</p>
           </div>
           <NavigateNextIcon height="2.5rem" fill="#fff" />
         </div>

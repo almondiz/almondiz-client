@@ -49,17 +49,17 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
 
   const location = useSelector(state => state.global.location);
 
-  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag.tagName}</li>);
+  const makeTags = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
   const makeComments = (comment, index) => {
     return (
       <article key={index} className={`comment-item ${comment.reply ? "" : "reply"}`}>
         <header className="header">
           <div
-            className={`profile ${comment.userId === me.profile.uid ? "me" : (comment.isFollowed ? "follower" : "")} ${comment.userId === post.profileId ? "writer" : ""}`}
-            onClick={() => navigate(`/profile/${comment.userId}`)}
+            className={`profile ${comment.profile.uid === me.profile.uid ? "me" : (comment.profile.isFollowed ? "follower" : "")} ${comment.profile.uid === post.profile.uid ? "writer" : ""}`}
+            onClick={() => navigate(`/profile/${comment.profile.uid}`)}
           >
-            <div className="thumb" alt="profile" style={{ backgroundColor: comment.background }}>{comment.emoji ? comment.emoji : ""}</div>
-            <p className="name">{comment.userId === me.profile.uid ? "나" : comment[comment.isFollowed ? "alias" : "nickName"]}</p>
+            <div className="thumb" alt="profile" style={{ backgroundColor: comment.profile.thumb.background }}>{comment.profile.thumb.emoji ? comment.profile.thumb.emoji : ""}</div>
+            <p className="name">{comment.profile.uid === me.profile.uid ? "나" : comment.profile[comment.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
           <p className="date">{getTime(comment.createdAt)}</p>
           <div className="icon more-icon">
@@ -70,7 +70,7 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
             <p>{comment.likeCount}</p>
           </button>
         </header>
-        <p className="body">{comment.text}</p>
+        <p className="body">{comment.content}</p>
   
         {
           comment.reply && (
@@ -87,41 +87,33 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
     <article className="post-item">
       <header className="header">
         <a
-          className={`profile ${post.profileId === me.profile.uid ? "me" : (post.isFollowed ? "follower" : "")}`}
-          // href={post.shop.link}
-          href={"/feed"}
+          className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}
+          href={post.shop.link}
         >
-          <img className="thumb" alt="profile" src={post.shopThumb} />
+          <img className="thumb" alt="profile" src={post.shop.thumb} />
           <div className="text-wrap">
-            <p className="name">{post.storeName}</p>
-            <p className="date">{post.storeAddress} · {getDistance(location, {
-              lat: post.lati,
-              lng: post.longi,
-            })}km</p>
+            <p className="name">{post.shop.name}</p>
+            <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
           </div>
         </a>
-        <div className="shop" onClick={() => navigate(`/profile/${post.profileId}`)}>
+        <div className="shop" onClick={() => navigate(`/profile/${post.profile.uid}`)}>
           <div className="shop-icon">
-            <div className="thumb" alt="shop" style={{ backgroundColor: post.userProfileBackground }}>{post.userProfileEmoji ? post.userProfileEmoji : ""}</div>
-            <p className="name">{post.profileId === me.profile.uid ? "나" : post[post.isFollowed ? "alias" : "nickName"]}</p>
+            <div className="thumb" alt="shop" style={{ backgroundColor: post.profile.thumb.background }}>{post.profile.thumb.emoji ? post.profile.thumb.emoji : ""}</div>
+            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
           </div>
-          <p className="location">{getTime(post.createdAt)}{post.profileId === me.profile.uid ? "" : ` · ${post.isFollowed ? "구독" : "근처"}`}</p>
+          <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>
         </div>
       </header>
 
       <nav className="tags-wrap">
         <SellIconBorder height="1.25rem" fill="#999" />
-        <ul className="tags">{post.tagList.map(makeTags)}</ul>
+        <ul className="tags">{post.tags.map(makeTags)}</ul>
       </nav>
 
       <main className="body">
-        <p className="text">{post.content}</p>
+        <p className="text">{post.content.text}</p>
         <div className="images">
-          <ImageGrid images={post.postFileImgUrls} shop={{
-            name: post.storeName,
-            thumb: post.shopThumb,
-            address: post.storeAddress,
-          }} action={setImageViewerIndex} />
+          <ImageGrid images={post.content.images} shop={post.shop} action={setImageViewerIndex} />
         </div>
 
         <div className="images">
@@ -130,9 +122,9 @@ const PostItem = ({ index, post, me, setImageViewerIndex }) => {
       </main>
 
       <footer className="footer">
-        <p className="counts">{`댓글 ${post.commentCount} · 스크랩 ${post.scrapCount}`}</p>
+        <p className="counts">{`댓글 ${post.reaction.commentCount} · 스크랩 ${post.reaction.scrapCount}`}</p>
         <section className="comment-list">
-          {post.commentList.map(makeComments)}
+          {post.reaction.comments.map(makeComments)}
         </section>
       </footer>
     </article>
