@@ -41,6 +41,7 @@ const LoginPage = () => {
 
   const clientId = process.env.GOOGLE_CLIENT_ID;
   console.log(process.env.GOOGLE_CLIENT_ID);
+  console.log(process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
   useEffect(() => {
     const start = () => {
