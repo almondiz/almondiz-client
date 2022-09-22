@@ -105,7 +105,7 @@ const Post = ({ me, postId }) => {
       <article key={index} className={`comment-item ${comment.reply ? "" : "reply"}`}>
         <header className="header">
           <div
-            className={`profile ${commentAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(commentAuthorId) ? "subscribing" : "")} ${commentAuthorId === postAuthorId ? "writer" : ""}`}
+            className={`profile ${commentAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(commentAuthorId) ? "subscribing" : "")} ${commentAuthorId === postAuthorId ? "author" : ""}`}
             onClick={() => navigate(`/profile/${comment.userId}`)}
           >
             <div className="thumb" style={{ backgroundColor: commentAuthor.profile.thumb.background }}>{commentAuthor.profile.thumb.emoji ? commentAuthor.profile.thumb.emoji : ""}</div>
