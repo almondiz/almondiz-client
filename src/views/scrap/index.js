@@ -1,7 +1,7 @@
 import React from "react";
 
-import { FeedModel, UserModel } from "../../models";
-import FeedViewModel from "../../view-models/feed";
+import { PostModel, UserModel } from "../../models";
+import PostViewModel from "../../view-models/post";
 import UserViewModel from "../../view-models/user";
 
 import PostItem from "../../components/post-item";
@@ -13,9 +13,9 @@ const Scrap = () => {
   const userViewModel = new UserViewModel(new UserModel());
   const me = userViewModel.getMyData();
 
-  const feedViewModel = new FeedViewModel(new FeedModel());
-  const posts = feedViewModel.getAllFeedList();
-  const makePost = (post, index) => <PostItem key={index} post={post} me={me} />;
+  const postViewModel = new PostViewModel(new PostModel());
+  const posts = postViewModel.getDummyData();
+  const makePost = (post, index) => <PostItem key={index} postId={post.id} post={post} me={me} />;
 
   return (
     <div className="page">

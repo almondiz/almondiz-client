@@ -118,7 +118,7 @@
           }
 
           &.me,
-          &.follower {
+          &.subscribing {
             .chip {
               .name {
                 font-weight: 700;
@@ -237,7 +237,7 @@
                 }
     
                 &.me,
-                &.follower {
+                &.subscribing {
                   .name {
                     font-weight: 700;
                   }

@@ -72,8 +72,8 @@ const MainLayout = () => {
 
 const App = () => {
   const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
   const me = userViewModel.getMyData();
-  const myUid = me.profile.uid;
 
   return (
     <>
@@ -86,12 +86,12 @@ const App = () => {
           
           <Route element={<MainLayout />}>
             <Route path="/feed" element={<Feed me={me} />} />
-            <Route path="/post" element={<Post index={0} me={me} />} />
+            <Route path="/post" element={<Post postId={1} me={me} />} />
 
             <Route path="/search" element={<Search />} />
             <Route path="/scrap" element={<Scrap />} />
-            <Route path="/me" element={<Navigate to={`/profile/${myUid}`} />} />
-            <Route path="/profile/:uid" element={<Profile me={me} />} />
+            <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
+            <Route path="/profile/:userId" element={<Profile me={me} />} />
 
             <Route path="/subscriptions" element={<Subscriptions />} />
           </Route>

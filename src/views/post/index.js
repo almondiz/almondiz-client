@@ -3,9 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { Framer, getDistance, getTime } from "../../models/global";
-import { FeedModel, UserModel } from "../../models";
-import FeedViewModel from "../../view-models/feed";
+import { UserModel, PostModel } from "../../models";
 import UserViewModel from "../../view-models/user";
+import PostViewModel from "../../view-models/post";
 
 import ImageGrid from "../../components/image-grid";
 import ImageView from "../../components/image-view";
@@ -83,24 +83,33 @@ const Float = () => {
 };
 
 
-const Post = ({ me, index }) => {
+const Post = ({ me, postId }) => {
   const navigate = useNavigate();
 
-  const feedViewModel = new FeedViewModel(new FeedModel());
-  const post = feedViewModel.getPost(index);
+  const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
+  //const me = userViewModel.getMyData();
+
+  const postViewModel = new PostViewModel(new PostModel());
+  const post = postViewModel.getData(postId);
+  const postAuthorId = post.userId;
+  const postAuthor = userViewModel.getData(postAuthorId);
   
   const location = useSelector(state => state.global.location);
   const makeTag = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
   const makeComment = (comment, index) => {
+    const commentAuthorId = comment.userId;
+    const commentAuthor = userViewModel.getData(commentAuthorId);
+
     return (
       <article key={index} className={`comment-item ${comment.reply ? "" : "reply"}`}>
         <header className="header">
           <div
-            className={`profile ${comment.profile.uid === me.profile.uid ? "me" : (comment.profile.isFollowed ? "follower" : "")} ${comment.profile.uid === post.profile.uid ? "writer" : ""}`}
-            onClick={() => navigate(`/profile/${comment.profile.uid}`)}
+            className={`profile ${commentAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(commentAuthorId) ? "subscribing" : "")} ${commentAuthorId === postAuthorId ? "writer" : ""}`}
+            onClick={() => navigate(`/profile/${comment.userId}`)}
           >
-            <div className="thumb" style={{ backgroundColor: comment.profile.thumb.background }}>{comment.profile.thumb.emoji ? comment.profile.thumb.emoji : ""}</div>
-            <p className="name">{comment.profile.uid === me.profile.uid ? "나" : comment.profile[comment.profile.isFollowed ? "alias" : "name"]}</p>
+            <div className="thumb" style={{ backgroundColor: commentAuthor.profile.thumb.background }}>{commentAuthor.profile.thumb.emoji ? commentAuthor.profile.thumb.emoji : ""}</div>
+            <p className="name">{commentAuthorId === myUserId ? "나" : userViewModel.getAlias(commentAuthorId)}</p>
           </div>
           <p className="date">{getTime(comment.createdAt)}</p>
           <div className="icon more-icon">
@@ -108,7 +117,7 @@ const Post = ({ me, index }) => {
           </div>
           <button className="button-favorite right">
             <FavoriteIconBorder height="1.25rem" fill="#666" />
-            <p>{comment.likeCount}</p>
+            <p>{comment.liked.length}</p>
           </button>
         </header>
         <p className="body">{comment.content}</p>
@@ -150,12 +159,12 @@ const Post = ({ me, index }) => {
                 <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
               </div>
             </a>
-            <div onClick={() => navigate(`/profile/${post.profile.uid}`)} className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}>
+            <div onClick={() => navigate(`/profile/${postAuthorId}`)} className={`profile ${postAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(postAuthorId) ? "subscribing" : "")}`}>
               <div className="chip">
-                <div className="thumb" style={{ backgroundColor: post.profile.thumb.background }}>{post.profile.thumb.emoji ? post.profile.thumb.emoji : ""}</div>
-                <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
+                <div className="thumb" style={{ backgroundColor: postAuthor.profile.thumb.background }}>{postAuthor.profile.thumb.emoji ? postAuthor.profile.thumb.emoji : ""}</div>
+                <p className="name">{postAuthorId === myUserId ? "나" : userViewModel.getAlias(postAuthorId)}</p>
               </div>
-              <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>
+              <p className="location">{getTime(post.createdAt)}{postAuthorId === myUserId ? "" : ` · ${userViewModel.isSubscribing(postAuthorId) ? "구독" : "근처"}`}</p>
             </div>
           </header>
     
@@ -176,9 +185,9 @@ const Post = ({ me, index }) => {
           </main>
     
           <footer className="footer">
-            <p className="counts">{`댓글 ${post.reaction.commentCount} · 스크랩 ${post.reaction.scrapCount}`}</p>
+            <p className="counts">{`댓글 ${postViewModel.getCommentCount(postId)} · 스크랩 ${post.scrapped.length}`}</p>
             <section className="comment-list">
-              {post.reaction.comments.map(makeComment)}
+              {post.comments.map(makeComment)}
             </section>
           </footer>
         </article>

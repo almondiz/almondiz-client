@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { getDistance, getTime } from "../../models/global";
+import { UserModel, PostModel } from "../../models";
+import UserViewModel from "../../view-models/user";
+import PostViewModel from "../../view-models/post";
 
 import ImageSlider from "../image-slider";
 
@@ -13,8 +16,21 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 
-const PostItem = ({ index, post, me }) => {
+const PostItem = ({ postId, post, me }) => {
   const navigate = useNavigate();
+
+  const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
+  //const me = userViewModel.getMyData();
+
+  const postViewModel = new PostViewModel(new PostModel());
+  //const post = postViewModel.getData(index);
+  const postAuthorId = post.userId;
+  const postAuthor = userViewModel.getData(postAuthorId);
+
+  const comment = post.comments[post.bestCommentIndex];
+  const commentAuthorId = comment.userId;
+  const commentAuthor = userViewModel.getData(commentAuthorId);
 
   const location = useSelector(state => state.global.location);
 
@@ -32,12 +48,12 @@ const PostItem = ({ index, post, me }) => {
             <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
           </div>
         </a>
-        <div onClick={() => navigate(`/profile/${post.profile.uid}`)} className={`profile ${post.profile.uid === me.profile.uid ? "me" : (post.profile.isFollowed ? "follower" : "")}`}>
+        <div onClick={() => navigate(`/profile/${postAuthorId}`)} className={`profile ${postAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(postAuthorId) ? "subscribing" : "")}`}>
           <div className="chip">
-            <div className="thumb" style={{ backgroundColor: post.profile.thumb.background }}>{post.profile.thumb.emoji}</div>
-            <p className="name">{post.profile.uid === me.profile.uid ? "나" : post.profile[post.profile.isFollowed ? "alias" : "name"]}</p>
+            <div className="thumb" style={{ backgroundColor: postAuthor.profile.thumb.background }}>{postAuthor.profile.thumb.emoji}</div>
+            <p className="name">{postAuthorId === myUserId ? "나" : userViewModel.getAlias(postAuthorId)}</p>
           </div>
-          <p className="location">{getTime(post.createdAt)}{post.profile.uid === me.profile.uid ? "" : ` · ${post.profile.isFollowed ? "구독" : "근처"}`}</p>
+          <p className="location">{getTime(post.createdAt)}{postAuthorId === myUserId ? "" : ` · ${userViewModel.isSubscribing(postAuthorId) ? "구독" : "근처"}`}</p>
         </div>
       </header>
 
@@ -59,7 +75,7 @@ const PostItem = ({ index, post, me }) => {
             <div className="icon-sm">
               <ChatBubbleIconBorder />
             </div>
-            <p>{post.reaction.commentCount}</p>
+            <p>{postViewModel.getCommentCount(postId)}</p>
           </button>
           <button className="button right">
             <div className="icon-sm icon-container">
@@ -70,13 +86,13 @@ const PostItem = ({ index, post, me }) => {
             <div className="icon-sm">
               <BookmarkIconBorder />
             </div>
-            <p>{post.reaction.scrapCount}</p>
+            <p>{post.scrapped.length}</p>
           </button>
         </div>
-        { post.reaction.comments.length > 0 && (
+        { post.comments.length > 0 && (
             <div className="comment">
-              <div className="thumb" style={{ backgroundColor: post.reaction.comments[0].profile.thumb.background }}>{post.reaction.comments[0].profile.thumb.emoji}</div>
-              <p>{post.reaction.comments[0].content}</p>
+              <div className="thumb" style={{ backgroundColor: commentAuthor.profile.thumb.background }}>{commentAuthor.profile.thumb.emoji}</div>
+              <p>{comment.content}</p>
             </div>
           )
         }

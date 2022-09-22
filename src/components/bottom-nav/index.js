@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
 import { useSelector } from "react-redux";
+
+import { UserModel, NoticeModel } from "../../models";
+import UserViewModel from "../../view-models/user";
+import NoticeViewModel from "../../view-models/notice";
 
 import "./style.scoped.scss";
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
@@ -14,8 +17,11 @@ import AccountCircleIconFill from "../../asset/icons/mui/account-circle-icon-fil
 import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-border";
 
 
-const BottomNav = () => {
+const BottomNav = () => {  
   const scrollDirection = useSelector(state => state.global.scrollDirection);
+
+  const userViewModel = new UserViewModel(new UserModel());
+  const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const makeButton = ({ icon, path }, index) => {
@@ -23,7 +29,7 @@ const BottomNav = () => {
     const Icon = icon[focus ? 1 : 0];
     return (
       <Link to={path} key={index} className="button" onClick={() => setCurrentIndex(index)}>
-        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${index === 3 ? "badge" : ""}`}>
+        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(index === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
       </Link>

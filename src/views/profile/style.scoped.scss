@@ -26,7 +26,6 @@
       }
 
       .button-notice {
-        &, //
         &.badge {
           position: relative;
   
@@ -119,7 +118,7 @@
           }
         }
       }
-      &.following {
+      &.subscribing {
         .profile {
           .text-wrap {
             .alias {
@@ -198,7 +197,7 @@
           }
         }
 
-        .button-following {
+        .button-subscribing-list {
           font-size: .75rem;
           font-weight: 700;
           color: var(--background-color);
@@ -219,7 +218,7 @@
         margin-top: 1rem;
         height: 2.5rem;
 
-        .button-follow,
+        .button-subscribe,
         .button-alias {
           font-size: .875rem;
           font-weight: 700;
@@ -235,7 +234,7 @@
           border-radius: 1rem;
           padding: 0 auto;
         }
-        .button-follow {
+        .button-subscribe {
           flex: 1;
         }
         .button-alias {

@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { FeedModel } from "../../models";
-import FeedViewModel from "../../view-models/feed";
+import { PostModel } from "../../models";
+import PostViewModel from "../../view-models/post";
 
 import PostItem from "../../components/post-item";
 
@@ -14,9 +14,9 @@ const Feed = ({ me }) => {
   const location = useSelector(state => state.global.location);
   const address = location.address.split(" ");
 
-  const feedViewModel = new FeedViewModel(new FeedModel());
-  const posts = feedViewModel.getAllFeedList();
-  const makePost = (post, index) => <PostItem key={index} post={post} me={me} />;
+  const postViewModel = new PostViewModel(new PostModel());
+  const posts = postViewModel.getDummyData();
+  const makePost = (post, index) => <PostItem key={index} postId={post.id} post={post} me={me} />;
 
   return (
     <div className="page">

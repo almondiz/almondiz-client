@@ -3,9 +3,10 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { Framer } from "../../models/global";
-import { FeedModel, UserModel } from "../../models";
-import FeedViewModel from "../../view-models/feed";
+import { UserModel, PostModel, NoticeModel } from "../../models";
 import UserViewModel from "../../view-models/user";
+import PostViewModel from "../../view-models/post";
+import NoticeViewModel from "../../view-models/notice";
 
 import PostItem from "../../components/post-item";
 
@@ -61,14 +62,23 @@ const Float = () => {
 const Profile = ({ me }) => {
   const navigate = useNavigate();
 
-  const { uid } = useParams();
-
   const userViewModel = new UserViewModel(new UserModel());
-  const user = userViewModel.getData(uid);
+  const myUserId = userViewModel.getMyUserId();
+  //const me = userViewModel.getMyData();
+  const userId = parseInt(useParams().userId);
+  const user = userViewModel.getData(userId);
 
-  const feedViewModel = new FeedViewModel(new FeedModel());
-  const posts = feedViewModel.getAllFeedList();
-  const makePost = (post, index) => <PostItem key={index} post={post} me={me} />;
+  const postViewModel = new PostViewModel(new PostModel());
+  const posts = [];
+  user.posts.map(postId => posts.push(postViewModel.getData(postId)));
+  const makePost = (post, index) => <PostItem key={index} postId={post.id} post={post} me={me} />;
+
+  const MakeSubscribingList = (userId, index) => {
+    const user = userViewModel.getData(userId);
+    return <div key={index} className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>;
+  };
+
+  const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
   return (
     <div className="page">
@@ -77,7 +87,7 @@ const Profile = ({ me }) => {
       <header className="header">
         <img className="brand" alt="brand" src={LogotypeImage}/>
         <div className="right">
-          <button className="button-notice icon-sm icon-container" onClick={() => navigate(`/notice`)}>
+          <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
             <NotificationsIconBorder />
           </button>
           <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
@@ -86,21 +96,21 @@ const Profile = ({ me }) => {
         </div>
       </header>
       <main className="content">
-        <div className={`profile-wrap ${user.profile.uid === me.profile.uid ? "me" : user.profile.isFollowed ? "following" : ""}`}>
+        <div className={`profile-wrap ${userId === myUserId ? "me" : userViewModel.isSubscribing(userId) ? "subscribing" : ""}`}>
           <div className="profile" >
             <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
             {
-              user.profile.uid === me.profile.uid ?
+              userId === myUserId ?
               (
                 <div className="text-wrap">
                   <p className={"name"}>{user.profile.name}</p>
                   <p className={"email"}>{user.profile.email}</p>
                 </div>
               ) :
-              user.profile.isFollowed ?
+              userViewModel.isSubscribing(userId) ?
               (
                 <div className="text-wrap">
-                  <p className={"alias"}>{user.profile.alias}</p>
+                  <p className={"alias"}>{userViewModel.getAlias(userId)}</p>
                   <p className={"name"}>{user.profile.name}</p>
                 </div>
               ) :
@@ -113,20 +123,20 @@ const Profile = ({ me }) => {
           </div>
 
           {
-            user.profile.uid === me.profile.uid ?
+            userId === myUserId ?
             (
               false
             ) :
-            user.profile.isFollowed ?
+            userViewModel.isSubscribing(userId) ?
             (
               <div className="row-button">
-                <button className="button-follow">구독 취소</button>
+                <button className="button-subscribe">구독 취소</button>
                 <button className="button-alias">별명 변경</button>
               </div>
             ) :
             (
               <div className="row-button">
-                <button className="button-follow">구독</button>
+                <button className="button-subscribe">구독</button>
               </div>
             )
           }
@@ -134,27 +144,25 @@ const Profile = ({ me }) => {
           <div className="row">
             <div className="count half">
               <h5>구독자 수</h5>
-              <p>{user.counts.follower}</p>
+              <p>{user.subscribed.length}</p>
             </div>
             <div className="count half">
               <h5>스크랩된 수</h5>
-              <p>{user.counts.scrap}</p>
+              <p>{userViewModel.getSubscribedCount(postViewModel, userId)}</p>
             </div>
           </div>
           {
-            user.profile.uid === me.profile.uid ?
+            userId === myUserId ?
             (
               <div className="row">
                 <div className="count">
                   <h5>구독</h5>
-                  <p>{user.counts.following}</p>
+                  <p>{userViewModel.getSubscribingCount(userId)}</p>
                 </div>
                 <div className="thumbs">
-                  <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
-                  <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
-                  <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
+                  {Object.keys(user.subscribing).map(MakeSubscribingList)}
                 </div>
-                <button className="button-following" onClick={() => navigate(`/subscriptions`)}>보기</button>
+                <button className="button-subscribing-list" onClick={() => navigate(`/subscriptions`)}>보기</button>
               </div>
             ) :
             (
@@ -164,7 +172,7 @@ const Profile = ({ me }) => {
           <div className="row">
             <div className="count">
               <h5>글</h5>
-              <p>{user.counts.post}</p>
+              <p>{user.posts.length}</p>
             </div>
             <div className="right" />
           </div>

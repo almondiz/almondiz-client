@@ -2,48 +2,43 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import { getTime } from "../../models/global";
+import { UserModel, NoticeModel } from "../../models";
+import UserViewModel from "../../view-models/user";
+import NoticeViewModel from "../../view-models/notice";
+
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
-const notices = [
-  {
-    nid: 1,
-    uid: 1,
-    read: false,
-    message: `회원님이 "소고" 음식점을 리뷰한 글의 스크랩 수가 100개를 달성했습니다.`,
-    time: 1638802800000,
-  },
-  {
-    nid: 2,
-    uid: 1,
-    read: true,
-    message: `닭발 피스타치오님이 대댓글을 달았습니다.\n"고마워요 :)"`,
-    time: 1663155700000,
-  },
-];
-
-
 const Notice = () => {
   const navigate = useNavigate();
 
+  const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
+  const me = userViewModel.getMyData();
+
+  const noticeViewModel = new NoticeViewModel(new NoticeModel());
+
+  const notices = [];
+  me.notices.map((noticeId, index) => notices.push(noticeViewModel.getData(noticeId)));
+  notices.reverse();
+
   const NoticeItem = ({ notice }) => {
     return (
-      <li className={`notice-item ${notice.read ? "new" : ""}`}>
-        <div className={`notice-icon ${notice.read ? "badge" : ""}`}>
+      <li className={`notice-item ${notice.isRead[myUserId] ? "" : "new"}`}>
+        <div className={`notice-icon ${notice.isRead[myUserId] ? "" : "badge"}`}>
           <NotificationsIconBorder />
         </div>
         <div className="text-wrap">
           <p className="message">{notice.message}</p>
-          <p className="time">{getTime(notice.time)}</p>
+          <p className="time">{getTime(notice.createdAt)}</p>
         </div>
       </li>
     );
   };  
   const makeNotice = (notice, index) => <NoticeItem key={index} notice={notice} />;  
-  notices.reverse();
 
   return (
     <div className="page">
