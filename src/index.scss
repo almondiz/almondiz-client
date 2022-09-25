@@ -80,6 +80,10 @@ ul {
   overflow: hidden;
 }
 
+.noselect {
+  user-select: none;
+}
+
 .right {
   margin-left: auto !important;
 }

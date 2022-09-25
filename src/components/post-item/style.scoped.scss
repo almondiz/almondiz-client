@@ -81,6 +81,8 @@
 
           //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
 
+          user-select: none;
+          overflow: hidden;
           background-color: #ddd;
           background-size: 75%;
           background-position: center;
@@ -211,6 +213,8 @@
 
         //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
 
+        user-select: none;
+        overflow: hidden;
         background-color: #ddd;
         background-size: 75%;
         background-position: center;

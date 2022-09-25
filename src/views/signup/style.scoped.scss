@@ -133,8 +133,9 @@
           width: 5rem;
           border-radius: 100%;
     
+          user-select: none;
+          overflow: hidden;
           background-color: #ddd;
-    
           background-size: 75%;
           background-position: center;
           background-repeat: no-repeat;
@@ -144,6 +145,10 @@
           font-size: 3.75rem;
           line-height: 5rem;
     
+          border: 2px solid #fff;
+          //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        }
+        .thumb-wrap {
           position: relative;
           .refresh-icon {
             position: absolute;
@@ -169,9 +174,8 @@
               }
             }
           }
-          border: 2px solid #fff;
-          //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
         }
+
         .candidate {
           height: 3rem;
           width: 3rem;
@@ -332,8 +336,9 @@
           width: 5rem;
           border-radius: 100%;
     
+          user-select: none;
+          overflow: hidden;
           background-color: #ddd;
-    
           background-size: 75%;
           background-position: center;
           background-repeat: no-repeat;
