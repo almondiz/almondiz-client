@@ -38,5 +38,39 @@
     padding-top: 4rem;
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
+
+    .settings-list>* {
+      margin-top: .5rem;
+      height: 3rem;
+    }
+    .settings-item {
+      display: flex;
+      align-items: center;
+
+      color: var(--primary-text-color);
+
+      .text-wrap {
+        .title {
+          width: fit-content;
+          font-size: 1rem;
+        }
+        .info {
+          margin-top: .3125rem;
+          font-size: .8125rem;
+          color: #666;
+        }
+      }
+
+      &.danger {
+        .text-wrap {
+          .title {
+            color: rgb(237, 92, 94);
+          }
+          .info {
+            color: rgb(237, 92, 94);
+          }
+        }
+      }
+    }
   }
 }

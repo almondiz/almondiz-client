@@ -42,12 +42,11 @@
     .subscribing-list>* {
       margin-top: .5rem;
       height: 4rem;
-    
+    }
+    .subscribing-item {
       display: flex;
       align-items: center;
-    }
 
-    .subscribing-item {
       position: relative;
       &>.link {
         position: absolute;
@@ -100,6 +99,8 @@
       }
   
       .button-unsubscribe {
+        z-index: 1;
+        
         font-size: .75rem;
         font-weight: 700;
         color: var(--background-color);

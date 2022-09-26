@@ -12,7 +12,7 @@ const FrameWriter = ({ framer }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="page">
+    <>
       <header>
         <button className="header-back-button" onClick={() => navigate(-1)}>
           <BackIcon />
@@ -35,7 +35,7 @@ const FrameWriter = ({ framer }) => {
         <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/230/200)" }} />
         <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/210/240)" }} />
       </aside>
-    </div>
+    </>
   )
 };
 

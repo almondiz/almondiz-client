@@ -16,7 +16,7 @@ const Subscriptions = ({ me }) => {
   const makeSubscribingList = (userId, idx) => {
     const user = userViewModel.getData(userId);
     return (
-      <div key={idx} className="subscribing-item">
+      <li key={idx} className="subscribing-item">
         <div className="link" onClick={() => navigate(`/profile/${userId}`)} />
 
         <div className="profile">
@@ -27,7 +27,7 @@ const Subscriptions = ({ me }) => {
           </div>
           <button className="button-unsubscribe">구독 취소</button>
         </div>
-      </div>
+      </li>
     );
   };
 
@@ -41,9 +41,9 @@ const Subscriptions = ({ me }) => {
       </nav>
 
       <main className="content">
-        <section className="subscribing-list">
+        <ul className="subscribing-list">
           {Object.keys(me.subscribing).map(makeSubscribingList)}
-        </section>
+        </ul>
       </main>
     </div>
   );

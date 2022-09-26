@@ -7,7 +7,7 @@ import BackIcon from "../../asset/icons/mui/back-icon";
 // frame 2
 const FrameTagger = ({ framer }) => {
   return (
-    <div className="page">
+    <>
       <header>
         <button className="header-back-button" onClick={() => framer.prev()}>
           <BackIcon />
@@ -29,7 +29,7 @@ const FrameTagger = ({ framer }) => {
           <input className="text-box" type="text" placeholder="태그 추가" />
         </div>
       </main>
-    </div>
+    </>
   )
 };
 

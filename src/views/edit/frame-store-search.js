@@ -7,7 +7,7 @@ import BackIcon from "../../asset/icons/mui/back-icon";
 // frame 3
 const FrameStoreSearch = ({ framer }) => {
   return (
-    <div className="page">
+    <>
       <header>
         <button className="header-back-button" onClick={() => framer.prev()}>
           <BackIcon />
@@ -23,7 +23,7 @@ const FrameStoreSearch = ({ framer }) => {
           </div>
         </div>
       </main>
-    </div>
+    </>
   )
 };
 
