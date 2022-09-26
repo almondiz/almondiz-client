@@ -1,11 +1,9 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { getTime } from "../../models/global";
+import { goBack, getTime } from "../../util";
 import { UserModel, NoticeModel } from "../../models";
-import UserViewModel from "../../view-models/user";
-import NoticeViewModel from "../../view-models/notice";
-
+import { UserViewModel, NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
@@ -22,7 +20,7 @@ const Notice = () => {
   const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
   const notices = [];
-  me.notices.map((noticeId, index) => notices.push(noticeViewModel.getData(noticeId)));
+  me.notices.map(noticeId => notices.push(noticeViewModel.getData(noticeId)));
   notices.reverse();
 
   const NoticeItem = ({ notice }) => {
@@ -38,14 +36,14 @@ const Notice = () => {
       </li>
     );
   };  
-  const makeNotice = (notice, index) => <NoticeItem key={index} notice={notice} />;  
+  const makeNotice = (notice, idx) => <NoticeItem key={idx} notice={notice} />;  
 
   return (
     <div className="page">
       <nav className="navbar">
-        <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
+        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
           <BackIcon />
-        </div>
+        </button>
         <h3 className="title">알림</h3>
       </nav>
 

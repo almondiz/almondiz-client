@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { goBack } from "../../util";
+
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
@@ -11,9 +13,9 @@ const Settings = () => {
   return (
     <div className="page">
       <nav className="navbar">
-        <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
+        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
           <BackIcon />
-        </div>
+        </button>
         <h3 className="title">개인 설정</h3>
       </nav>
 

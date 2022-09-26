@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
+import { goBack } from "../../util";
+
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 import GoogleSocialImage from "../../asset/social/google.svg";
@@ -13,9 +15,9 @@ const FrameSocial = ({ framer }) => {
   return (
     <div className="frame-social">
       <nav className="navbar">
-        <div className="button-back icon-sm" onClick={() => navigate(`/login`)}>
+        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
           <BackIcon />
-        </div>
+        </button>
         <h3 className="title">회원 가입</h3>
       </nav>
 
@@ -26,7 +28,7 @@ const FrameSocial = ({ framer }) => {
       </main>
 
       <footer className="footer">
-        <p className="help">다른 계정으로 <span onClick={() => navigate(`/login`)}>로그인 또는 회원 가입</span></p>
+        <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
         <button className="button-next" onClick={() => framer.next()}>다음</button>
       </footer>
     </div>

@@ -2,10 +2,9 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { getDistance, getTime } from "../../models/global";
+import { getDistance, getTime } from "../../util";
 import { UserModel, PostModel } from "../../models";
-import UserViewModel from "../../view-models/user";
-import PostViewModel from "../../view-models/post";
+import { UserViewModel, PostViewModel } from "../../view-models";
 
 import ImageSlider from "../image-slider";
 
@@ -34,7 +33,7 @@ const PostItem = ({ postId, post, me }) => {
 
   const location = useSelector(state => state.global.location);
 
-  const makeTag = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
+  const makeTag = (tag, idx) => (<li key={idx} className="tag">{tag}</li>);
 
   return (
     <article className="post-item">

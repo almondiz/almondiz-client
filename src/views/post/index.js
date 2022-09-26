@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Framer, getDistance, getTime } from "../../models/global";
+import { goBack, Framer, getDistance, getTime } from "../../util";
 import { UserModel, PostModel } from "../../models";
-import UserViewModel from "../../view-models/user";
-import PostViewModel from "../../view-models/post";
+import { UserViewModel, PostViewModel } from "../../view-models";
 
 import ImageGrid from "../../components/image-grid";
 import ImageView from "../../components/image-view";
@@ -22,13 +21,15 @@ import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
 
 
 const Float = () => {
+  const navigate = useNavigate();
+
   const Header = () => {
     const scrollDirection = useSelector(state => state.global.scrollDirection);
     return (
       <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
-        <Link to={"/feed"} className="button-back icon-sm">
+        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
           <BackIcon />
-        </Link>
+        </button>
       </header>
     );
   };
@@ -96,13 +97,13 @@ const Post = ({ me, postId }) => {
   const postAuthor = userViewModel.getData(postAuthorId);
   
   const location = useSelector(state => state.global.location);
-  const makeTag = (tag, index) => (<li className="tag" key={index}>{tag}</li>);
-  const makeComment = (comment, index) => {
+  const makeTag = (tag, idx) => (<li key={idx} className="tag">{tag}</li>);
+  const makeComment = (comment, idx) => {
     const commentAuthorId = comment.userId;
     const commentAuthor = userViewModel.getData(commentAuthorId);
 
     return (
-      <article key={index} className={`comment-item ${comment.reply ? "" : "reply"}`}>
+      <article key={idx} className={`comment-item ${comment.reply ? "" : "reply"}`}>
         <header className="header">
           <div
             className={`profile ${commentAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(commentAuthorId) ? "subscribing" : "")} ${commentAuthorId === postAuthorId ? "author" : ""}`}

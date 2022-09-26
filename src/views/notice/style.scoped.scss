@@ -39,60 +39,60 @@
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
-    .notice-item {
+    .notice-list>* {
       margin-top: .5rem;
       height: 5rem;
     
       display: flex;
       align-items: center;
+    }
     
-      .notice-icon {
-        margin-left: -.5rem;
-    
-        height: 2.5rem;
-        width: 2.5rem;
-    
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    
-        ::v-deep {
-          svg {
-            height: 1.5rem;
-            width: 1.5rem;
-          }
-        }
-    
-        &.badge {
-          position: relative;
-    
-          &::after {
-            position: absolute;
-            top: -.3125rem + .5rem;
-            right: -.3125rem + .5rem;
-    
-            content: "";
-            width: .5rem;
-            height: .5rem;
-            background-color: var(--content-text-color);
-            border-radius: 100%;
-          }
+    .notice-icon {
+      margin-left: -.5rem;
+  
+      height: 2.5rem;
+      width: 2.5rem;
+  
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      ::v-deep {
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
         }
       }
-      .text-wrap {
-        margin-left: .75rem;
-        flex: 1;
-    
-        .message {
-          font-size: .9375rem;
-          line-height: 1.25;
-        }
-        .time {
-          font-size: .8125rem;
-          margin-top: .25rem;
-          color: #666;
+  
+      &.badge {
+        position: relative;
+  
+        &::after {
+          position: absolute;
+          top: -.3125rem + .5rem;
+          right: -.3125rem + .5rem;
+  
+          content: "";
+          width: .5rem;
+          height: .5rem;
+          background-color: var(--content-text-color);
+          border-radius: 100%;
         }
       }
-    } 
+    }
+    .text-wrap {
+      margin-left: .75rem;
+      flex: 1;
+  
+      .message {
+        font-size: .9375rem;
+        line-height: 1.25;
+      }
+      .time {
+        font-size: .8125rem;
+        margin-top: .25rem;
+        color: #666;
+      }
+    }
   }
 }

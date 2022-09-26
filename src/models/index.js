@@ -1,6 +1,6 @@
-import UserModel from "./user-model";
-import PostModel from "./post-model";
-import NoticeModel from "./notice-model";
+import UserModel from "./user";
+import PostModel from "./post";
+import NoticeModel from "./notice";
 
 
 export { UserModel, PostModel, NoticeModel, };

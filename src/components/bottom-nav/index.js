@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { UserModel, NoticeModel } from "../../models";
-import UserViewModel from "../../view-models/user";
-import NoticeViewModel from "../../view-models/notice";
+import { UserViewModel, NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
@@ -24,12 +23,12 @@ const BottomNav = () => {
   const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const makeButton = ({ icon, path }, index) => {
-    const focus = index === currentIndex;
+  const makeButton = ({ icon, path }, idx) => {
+    const focus = idx === currentIndex;
     const Icon = icon[focus ? 1 : 0];
     return (
-      <Link to={path} key={index} className="button" onClick={() => setCurrentIndex(index)}>
-        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(index === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
+      <Link key={idx} to={path} className="button" onClick={() => setCurrentIndex(idx)}>
+        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
       </Link>

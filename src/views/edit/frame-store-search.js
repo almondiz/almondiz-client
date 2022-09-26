@@ -4,13 +4,14 @@ import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
+// frame 3
 const FrameStoreSearch = ({ framer }) => {
   return (
     <div className="page">
       <header>
-        <div className="header-back-button" onClick={() => framer.prev()}>
+        <button className="header-back-button" onClick={() => framer.prev()}>
           <BackIcon />
-        </div>
+        </button>
         <input className="text-box" type="text" placeholder="장소 검색"/>
       </header>
       <main>

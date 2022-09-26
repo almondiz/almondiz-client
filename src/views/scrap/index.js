@@ -1,8 +1,7 @@
 import React from "react";
 
-import { PostModel, UserModel } from "../../models";
-import PostViewModel from "../../view-models/post";
-import UserViewModel from "../../view-models/user";
+import { UserModel, PostModel } from "../../models";
+import { UserViewModel, PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
 
@@ -15,7 +14,7 @@ const Scrap = () => {
 
   const postViewModel = new PostViewModel(new PostModel());
   const posts = postViewModel.getDummyData();
-  const makePost = (post, index) => <PostItem key={index} postId={post.id} post={post} me={me} />;
+  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
 
   return (
     <div className="page">

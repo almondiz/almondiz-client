@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Framer } from "../../models/global";
-import UserViewModel from "../../view-models/user";
+import { Framer } from "../../util";
 import { UserModel } from "../../models";
+import { UserViewModel } from "../../view-models";
 
 import FrameSocial from "./frame-social";
 import FrameProfile from "./frame-profile";

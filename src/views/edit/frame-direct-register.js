@@ -4,13 +4,14 @@ import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
+// frame 4
 const FrameDirectRegister = ({ framer }) => {
   return (
     <div className="page">
       <header>
-        <div className="header-back-button" onClick={() => framer.prev()}>
+        <button className="header-back-button" onClick={() => framer.prev()}>
           <BackIcon />
-        </div>
+        </button>
         <div className="text-button" onClick={() => framer.prev()}>
           <p>확인</p>
         </div>

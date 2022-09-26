@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setAccessToken, setRefreshToken, setEmail } from "../../store/slices/account";
 
 import { UserModel } from "../../models";
-import UserViewModel from "../../view-models/user";
+import { UserViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import SymbolImage from "../../asset/logo/symbol.png";

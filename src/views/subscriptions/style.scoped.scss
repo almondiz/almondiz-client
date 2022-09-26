@@ -38,5 +38,79 @@
     padding-top: 4rem;
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
+
+    .subscribing-list>* {
+      margin-top: .5rem;
+      height: 4rem;
+    
+      display: flex;
+      align-items: center;
+    }
+
+    .subscribing-item {
+      position: relative;
+      &>.link {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+      }
+
+      .profile {
+        flex: 1;
+        
+        display: flex;
+        align-items: center;
+    
+        .thumb {
+          width: 3rem;
+          height: 3rem;
+          margin-right: .625rem;
+          border-radius: 100%;
+  
+          user-select: none;
+          overflow: hidden;
+          background-color: #ddd;
+          background-size: 75%;
+          background-position: center;
+          background-repeat: no-repeat;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 2.25rem;
+          line-height: 3rem;
+        }
+  
+        .text-wrap {
+          .alias {
+            width: fit-content;
+            font-size: 1rem;
+            font-weight: 700;
+  
+            display: flex;
+            align-items: center;
+          }
+          .name {
+            margin-top: .3125rem;
+            font-size: .8125rem;
+            color: #666;
+          }
+        }
+      }
+  
+      .button-unsubscribe {
+        font-size: .75rem;
+        font-weight: 700;
+        color: var(--background-color);
+        background-color: var(--content-text-color);
+  
+        height: 1.5rem;
+        border-radius: .75rem;
+        padding: 0 .75rem;
+  
+        margin-left: auto;
+      }
+    }
   }
 }

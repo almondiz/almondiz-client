@@ -4,19 +4,19 @@ import "./style.scoped.scss";
 
 
 const ImageSlider = ({ images }) => {
-  const makeSlide = (src, index) => (
-    <div key={`image-${index}`}>
+  const makeSlide = (src, idx) => (
+    <div key={`image-${idx}`}>
       <div className="image" style={{backgroundImage: `url(${src})` }} />
     </div>
   );
   const makeIndicator = (images) => {
     const indicator = [];
-    images.forEach((_, index) => {
+    images.forEach((_, idx) => {
       indicator.push(
         <div
-          data-id={index}
-          className={index === 0 ? "highlight" : ""}
-          key={`indicator-${index}`}
+          data-id={idx}
+          className={idx === 0 ? "highlight" : ""}
+          key={`indicator-${idx}`}
         ></div>
       );
     });

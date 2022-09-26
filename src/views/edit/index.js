@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Framer } from "../../models/global";
+import { Framer } from "../../util";
 
 import FrameWriter from "./frame-writer";
 import FrameTagger from "./frame-tagger";

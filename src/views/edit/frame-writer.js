@@ -1,19 +1,22 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { goBack } from "../../util";
+
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
+// frame 1
 const FrameWriter = ({ framer }) => {
   const navigate = useNavigate();
 
   return (
     <div className="page">
       <header>
-        <div className="header-back-button" onClick={() => window.history.go(-1)}>
+        <button className="header-back-button" onClick={() => navigate(-1)}>
           <BackIcon />
-        </div>
+        </button>
         <div className="header-next-button" onClick={() => framer.next()}>
           다음
         </div>

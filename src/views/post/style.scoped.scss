@@ -54,8 +54,6 @@
             margin-right: .625rem;
             border-radius: 100%;
             background-size: cover;
-    
-            //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
           }
       
           .text-wrap {
@@ -90,8 +88,6 @@
               width: 1rem;
               height: 1rem;
               border-radius: 100%;
-    
-              //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
     
               user-select: none;
               overflow: hidden;
@@ -219,8 +215,6 @@
                   margin-right: .5rem;
                   border-radius: 100%;
     
-                  //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-    
                   user-select: none;
                   overflow: hidden;
                   background-color: #ddd;
@@ -296,6 +290,11 @@
 
 
 .float {
+  pointer-events: none;
+  &>* {
+    pointer-events: auto;
+  }
+
   z-index: 10;
   position: fixed;
   left: 0;
@@ -303,12 +302,12 @@
   top: 0;
   bottom: 0;
 
-  pointer-events: none;
-  &>* {
-    pointer-events: auto;
-  }
-
   &>.header {
+    pointer-events: none;
+    &>* {
+      pointer-events: auto;
+    }
+
     position: absolute;
     left: 0;
     right: 0;
@@ -346,6 +345,16 @@
   }
   
   &>.footer {
+    pointer-events: none;
+    &>[class|="frame"] {
+      pointer-events: none;
+      &>* {
+        pointer-events: auto;
+      }
+
+      height: 100%;
+    }
+
     position: absolute;
     left: 1rem;
     right: 1rem;
@@ -356,10 +365,6 @@
     transition: bottom .2s ease;
   
     height: 3rem;
-  
-    &>[class|="frame"] {
-      height: 100%;
-    }
     
     &>.frame-main {
       display: flex;

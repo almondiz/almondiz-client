@@ -72,8 +72,6 @@
           margin-right: .625rem;
           border-radius: 100%;
 
-          //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-
           user-select: none;
           overflow: hidden;
           background-color: #ddd;
@@ -182,8 +180,6 @@
             height: 1.5rem;
             margin-right: .375rem;
             border-radius: 100%;
-    
-            //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
 
             user-select: none;
             overflow: hidden;
@@ -221,7 +217,8 @@
         height: 2.5rem;
 
         .button-subscribe,
-        .button-alias {
+        .button-unsubscribe,
+        .button-change-alias {
           font-size: .875rem;
           font-weight: 700;
           color: var(--background-color);
@@ -236,10 +233,11 @@
           border-radius: 1rem;
           padding: 0 auto;
         }
-        .button-subscribe {
+        .button-subscribe,
+        .button-unsubscribe {
           flex: 1;
         }
-        .button-alias {
+        .button-change-alias {
           width: 30%;
           margin-left: .625rem;
         }
@@ -250,6 +248,11 @@
 
 
 .float {
+  pointer-events: none;
+  &>* {
+    pointer-events: auto;
+  }
+
   z-index: 10;
   position: fixed;
   left: 0;
@@ -262,7 +265,59 @@
     pointer-events: auto;
   }
 
+  &>.header {
+    pointer-events: none;
+    &>* {
+      pointer-events: auto;
+    }
+
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    &.hide {
+      top: -$page-header-height;
+    }
+    transition: top .2s ease;
+  
+    height: $page-header-height;
+    margin-top: .5rem;
+  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    .button-back {
+      position: absolute;
+      left: 1rem;
+    
+      width: 3rem;
+      height: 3rem;
+      
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+      border-radius: 1.5rem;
+      background-color: rgba(255, 255, 255, .75);
+      backdrop-filter: blur(.5rem);
+      -webkit-backdrop-filter: blur(.5rem);
+      //border: 1px solid rgba(238, 238, 238, .5);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+    }
+  }
+
   &>.footer {
+    pointer-events: none;
+    &>[class|="frame"] {
+      pointer-events: none;
+      &>* {
+        pointer-events: auto;
+      }
+
+      height: 100%;
+    }
+
     z-index: 10;
     position: fixed;
     left: 1rem;
@@ -274,10 +329,6 @@
     transition: bottom .2s ease;
 
     height: 3rem;
-
-    &>[class|="frame"] {
-      height: 100%;
-    }
     
     &>.frame-main {
       display: flex;

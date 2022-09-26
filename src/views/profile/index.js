@@ -2,33 +2,38 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Framer } from "../../models/global";
+import { goBack } from "../../util";
+
+import { Framer } from "../../util";
 import { UserModel, PostModel, NoticeModel } from "../../models";
-import UserViewModel from "../../view-models/user";
-import PostViewModel from "../../view-models/post";
-import NoticeViewModel from "../../view-models/notice";
+import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
+import BackIcon from "../../asset/icons/mui/back-icon";
 import LogotypeImage from "../../asset/logo/logotype.svg";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
+import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import EditIconFill from "../../asset/icons/mui/edit-icon-fill";
 
 
-const Float = () => {
+const Float = ({ user, me }) => {
+  const navigate = useNavigate();
+
   const Header = () => {
     const scrollDirection = useSelector(state => state.global.scrollDirection);
     return (
       <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
+        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+          <BackIcon />
+        </button>
       </header>
     )
   };
 
   const Footer = () => {
-    const navigate = useNavigate();
-
     const framer = new Framer([
       // main frame
       (
@@ -53,8 +58,8 @@ const Float = () => {
 
   return (
     <aside className="float">
-      <Header />
-      <Footer />
+      {user.id !== me.id && <Header />}
+      {user.id === me.id && <Footer />}
     </aside>
   )
 };
@@ -71,33 +76,49 @@ const Profile = ({ me }) => {
   const postViewModel = new PostViewModel(new PostModel());
   const posts = [];
   user.posts.map(postId => posts.push(postViewModel.getData(postId)));
-  const makePost = (post, index) => <PostItem key={index} postId={post.id} post={post} me={me} />;
+  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
 
-  const MakeSubscribingList = (userId, index) => {
+  const MakeSubscribingList = (userId, idx) => {
     const user = userViewModel.getData(userId);
-    return <div key={index} className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>;
+    return <div key={idx} className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>;
   };
 
   const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
   return (
     <div className="page">
-      <Float />
+      <Float user={user} me={me}/>
 
       <header className="header">
-        <img className="brand" alt="brand" src={LogotypeImage}/>
-        <div className="right">
-          <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
-            <NotificationsIconBorder />
-          </button>
-          <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
-            <SettingsIconBorder />
-          </button>
-        </div>
+        {
+          userId === myUserId ?
+          (
+            <>
+              <img className="brand" alt="brand" src={LogotypeImage}/>
+              <div className="right">
+                <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
+                  <NotificationsIconBorder />
+                </button>
+                <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
+                  <SettingsIconBorder />
+                </button>
+              </div>
+            </>
+          ) :
+          (
+            <>
+              <div className="right">
+                <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
+                  <MoreHorizIcon />
+                </button>
+              </div>
+            </>
+          )
+        }
       </header>
       <main className="content">
         <div className={`profile-wrap ${userId === myUserId ? "me" : userViewModel.isSubscribing(userId) ? "subscribing" : ""}`}>
-          <div className="profile" >
+          <div className="profile">
             <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
             {
               userId === myUserId ?
@@ -130,8 +151,8 @@ const Profile = ({ me }) => {
             userViewModel.isSubscribing(userId) ?
             (
               <div className="row-button">
-                <button className="button-subscribe">구독 취소</button>
-                <button className="button-alias">별명 변경</button>
+                <button className="button-unsubscribe">구독 취소</button>
+                <button className="button-change-alias">별명 변경</button>
               </div>
             ) :
             (
