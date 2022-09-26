@@ -50,13 +50,13 @@ const Settings = () => {
               <p className="title">FAQ</p>
             </div>
           </li>
-          <li className="settings-item">
+          {/*<li className="settings-item">
             <div className="text-wrap">
               <p className="title">버전 정보</p>
               <p className="info">최신 버전 : 1.0.1</p>
             </div>
             <div className="right">1.0.1</div>
-          </li>
+          </li>*/}
           <br />
           
           <li className="settings-item">
@@ -69,6 +69,8 @@ const Settings = () => {
               <p className="title">로그아웃</p>
             </div>
           </li>
+          <br />
+
           <li className="settings-item danger">
             <div className="text-wrap">
               <p className="title">회원 탈퇴</p>

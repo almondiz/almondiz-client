@@ -76,7 +76,7 @@ const _PALETTE_LENGTH = _EMOJIS.length * _COLORS.length;
 
 export const getRandomProfile = () => {
   const num = Math.floor(Math.random() * _PALETTE_LENGTH);
-  return [_EMOJIS[num % _EMOJIS.length], _COLORS[num % _COLORS.length]];
+  return [_EMOJIS[parseInt(num / _COLORS.length)], _COLORS[num % _COLORS.length]];
 };
 
 export const getRandomNutList = () => {
