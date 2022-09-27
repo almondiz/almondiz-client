@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -7,7 +7,7 @@ import { UserModel, PostModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
 import ImageGrid from "../../components/image-grid";
-import ImageView from "../../components/image-view";
+import ImageViewer from "../../components/image-viewer";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
@@ -134,11 +134,12 @@ const Post = ({ me, postId }) => {
     );
   };
 
-  const imageViewController = {};
+  const imageViewerElement = useRef();
+  const imageGridAction = index => imageViewerElement.current.setIndex(index);
 
   return (
     <div className="page">
-      <ImageView images={post.content.images} controller={imageViewController} />
+      <ImageViewer images={post.content.images} ref={imageViewerElement} />
 
       <Float />
       
@@ -177,7 +178,7 @@ const Post = ({ me, postId }) => {
           <main className="body">
             <p className="text">{post.content.text}</p>
             <div className="images">
-              <ImageGrid images={post.content.images} shop={post.shop} controller={imageViewController} />
+              <ImageGrid images={post.content.images} shop={post.shop} action={imageGridAction} />
             </div>
     
             <div className="images">
