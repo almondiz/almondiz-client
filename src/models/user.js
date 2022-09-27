@@ -107,7 +107,9 @@ export default class UserModel extends DefaultModel {
   getAlias(dst, src=this.getMyUserId()) {
     if (this.isSubscribing(dst, src))
       return this.data[src].subscribing[dst];
-    return this.data[dst].profile.name;
+    if (dst)
+      return this.data[dst].profile.name;
+    return "";
   }
 
   hasUnreadNotices(noticeViewModel, id=this.getMyUserId()) {

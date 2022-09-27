@@ -138,7 +138,7 @@ const Post = ({ me, postId }) => {
 
   return (
     <div className="page">
-      <ImageView images={post.content.images} controller={imageViewController} />
+      <ImageView images={post.postFileImgUrls} controller={imageViewController} />
 
       <Float />
       
@@ -177,7 +177,7 @@ const Post = ({ me, postId }) => {
           <main className="body">
             <p className="text">{post.content.text}</p>
             <div className="images">
-              <ImageGrid images={post.content.images} shop={post.shop} controller={imageViewController} />
+              <ImageGrid images={post.postFileImgUrls} shop={post.shop} controller={imageViewController} />
             </div>
     
             <div className="images">

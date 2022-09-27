@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { PostModel } from "../../models";
@@ -15,7 +15,17 @@ const Feed = ({ me }) => {
   const address = location.address.split(" ");
 
   const postViewModel = new PostViewModel(new PostModel());
-  const posts = postViewModel.getDummyData();
+  // const posts = postViewModel.getDummyData();
+  const [ posts, setPosts ] = useState([]);
+  
+  useEffect(() => {
+    const fetchApi = async () => {
+      const data = await postViewModel.getAllPosts();
+      setPosts(data);
+    }
+    fetchApi();
+  }, []);
+
   const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
 
   return (

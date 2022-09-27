@@ -22,18 +22,10 @@ const PostItem = ({ postId, post, me }) => {
   const myUserId = userViewModel.getMyUserId();
   //const me = userViewModel.getMyData();
 
-  const postViewModel = new PostViewModel(new PostModel());
-  //const post = postViewModel.getData(index);
-  const postAuthorId = post.userId;
-  const postAuthor = userViewModel.getData(postAuthorId);
-
-  const comment = post.comments[post.bestCommentIndex];
-  const commentAuthorId = comment.userId;
-  const commentAuthor = userViewModel.getData(commentAuthorId);
 
   const location = useSelector(state => state.global.location);
 
-  const makeTag = (tag, idx) => (<li key={idx} className="tag">{tag}</li>);
+  const makeTag = ({ tagId, tagName }) => (<li key={tagId} className="tag">{tagName}</li>);
 
   return (
     <article className="post-item">
@@ -43,16 +35,19 @@ const PostItem = ({ postId, post, me }) => {
         <a href={post.shop.link} className="shop">
           <div className="thumb" style={{ backgroundImage: `url(${post.shop.thumb})` }} />
           <div className="text-wrap">
-            <p className="name">{post.shop.name}</p>
-            <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
+            <p className="name">{post.shop.shopName}</p>
+            <p className="date">{post.shop.address} · {getDistance(location, {
+              lati: post.shop.lati,
+              longi: post.shop.longi
+            })}km</p>
           </div>
         </a>
-        <div onClick={() => navigate(`/profile/${postAuthorId}`)} className={`profile ${postAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(postAuthorId) ? "subscribing" : "")}`}>
+        <div onClick={() => navigate(`/profile/${post.user.userId}`)} className={`profile ${post.user.userId === myUserId ? "me" : (userViewModel.isSubscribing(post.user.userId) ? "subscribing" : "")}`}>
           <div className="chip">
-            <div className="thumb" style={{ backgroundColor: postAuthor.profile.thumb.background }}>{postAuthor.profile.thumb.emoji}</div>
-            <p className="name">{postAuthorId === myUserId ? "나" : userViewModel.getAlias(postAuthorId)}</p>
+            <div className="thumb" style={{ backgroundColor: post.user.background }}>{post.user.emoji}</div>
+            <p className="name">{post.user.userId === myUserId ? "나" : userViewModel.getAlias(post.user.userId)}</p>
           </div>
-          <p className="location">{getTime(post.createdAt)}{postAuthorId === myUserId ? "" : ` · ${userViewModel.isSubscribing(postAuthorId) ? "구독" : "근처"}`}</p>
+          <p className="location">{getTime(post.createdAt)}{post.user.userId === myUserId ? "" : ` · ${userViewModel.isSubscribing(post.user.userId) ? "구독" : "근처"}`}</p>
         </div>
       </header>
 
@@ -62,9 +57,9 @@ const PostItem = ({ postId, post, me }) => {
       </nav>
 
       <main className="body">
-        <p className="text">{post.content.text}</p>
+        <p className="text">{post.text}</p>
         <div className="images" onClick={() => navigate(`/post`)}>
-          <ImageSlider images={post.content.images} />
+          <ImageSlider images={post.postFileImgUrls} />
         </div>
       </main>
 
@@ -74,7 +69,7 @@ const PostItem = ({ postId, post, me }) => {
             <div className="icon-sm">
               <ChatBubbleIconBorder />
             </div>
-            <p>{postViewModel.getCommentCount(postId)}</p>
+            <p>{post.bestComment?.text || "댓글이 없습니다."}</p>
           </button>
           <button className="button right">
             <div className="icon-sm icon-container">
@@ -85,13 +80,16 @@ const PostItem = ({ postId, post, me }) => {
             <div className="icon-sm">
               <BookmarkIconBorder />
             </div>
-            <p>{post.scrapped.length}</p>
+            <p>{post.scrappedCount}</p>
           </button>
         </div>
-        { post.comments.length > 0 && (
+        { post.commentCount > 0 && (
             <div className="comment">
-              <div className="thumb" style={{ backgroundColor: commentAuthor.profile.thumb.background }}>{commentAuthor.profile.thumb.emoji}</div>
-              <p>{comment.content}</p>
+              <div
+                className="thumb"
+                style={{ backgroundColor: post.bestComment.user.background }}
+              >{post.bestComment.user.emoji}</div>
+              <p>{post.bestComment.text}</p>
             </div>
           )
         }

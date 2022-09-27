@@ -18,6 +18,11 @@ const path = {
     default: makePath("user"),
     login: makePath("user/login"),
   },
+  post: {
+    default: makePath("post"),
+    all: makePath("posts"),
+    one: (id) => makePath("post/" + id),
+  },
 };
 
 export { api, path };

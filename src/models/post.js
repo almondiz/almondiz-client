@@ -67,4 +67,8 @@ export default class PostModel extends DefaultModel {
     this.data[id].comments.map(comment => count += 1 + comment.reply.length);
     return count;
   }
+
+  getAllPosts() {
+    return this.callApi(() => this.api.getAllPosts());
+  }
 };
