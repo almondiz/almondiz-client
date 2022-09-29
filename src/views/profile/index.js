@@ -146,7 +146,7 @@ const Profile = ({ me }) => {
           {
             userId === myUserId ?
             (
-              false
+              <></>
             ) :
             userViewModel.isSubscribing(userId) ?
             (
@@ -187,7 +187,7 @@ const Profile = ({ me }) => {
               </div>
             ) :
             (
-              false
+              <></>
             )
           }
           <div className="row">

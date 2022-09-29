@@ -17,7 +17,7 @@ const ImageViewer = forwardRef(({ images }, ref) => {
 
   if (index === null) {
     document.body.classList.remove("noscroll");
-    return false;
+    return <></>;
   } else {
     document.body.classList.add("noscroll");
     return (

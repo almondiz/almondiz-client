@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navigate, BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import { Navigate, BrowserRouter, Routes, Route, Outlet, useLocation } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
@@ -57,7 +57,7 @@ const Monitor = () => {
   };
   initLocationHandler();
 
-  return false;
+  return <></>;
 };
 
 
@@ -70,6 +70,14 @@ const MainLayout = () => {
   );
 };
 
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  return <></>;
+};
+
+
 const App = () => {
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
@@ -78,6 +86,9 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
+        <Monitor />
+        <ScrollToTop />
+
         <Routes>
           <Route exact path="/" element={<Navigate to="/login" />} />
 
@@ -104,8 +115,6 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
-
-      <Monitor />
     </>
   );
 };
