@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { UserModel, NoticeModel } from "../../models";
@@ -16,18 +16,39 @@ import AccountCircleIconFill from "../../asset/icons/mui/account-circle-icon-fil
 import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-border";
 
 
-const BottomNav = () => {  
+const BottomNav = () => {
+  const { pathname } = useLocation();
+
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
   const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const makeButton = ({ icon, path }, idx) => {
-    const focus = idx === currentIndex;
+  const [index, setIndex] = useState(null);
+
+  const pathToIndex = { "/feed": 0, "/search": 1, "/scrap": 2, "/me": 3, };
+  pathToIndex[`/profile/${myUserId}`] = 3;
+  useEffect(() => { setIndex(pathToIndex[pathname]); }, [pathname]);
+
+  const paths = [ "/feed", "/search", "/scrap", "/me", ];
+  const icons = [
+    [ExploreIconBorder, ExploreIconFill],
+    [SearchIconBorder, SearchIconFill],
+    [BookmarkIconBorder, BookmarkIconFill],
+    [AccountCircleIconBorder, AccountCircleIconFill],
+  ];
+  const borderStyle = [
+    { background: `linear-gradient(to right, var(--content-text-color) 12.5%, transparent 37.5%)` },
+    { background: `linear-gradient(to right, transparent 12.5%, var(--content-text-color) 37.5%, transparent 62.5%)` },
+    { background: `linear-gradient(to right, transparent 37.5%, var(--content-text-color) 62.5%, transparent 87.5%)` },
+    { background: `linear-gradient(to right, transparent 62.5%, var(--content-text-color) 87.5%)` },
+  ];
+  const makeButton = (icon, idx) => {
+    const focus = idx === index;
     const Icon = icon[focus ? 1 : 0];
     return (
-      <Link key={idx} to={path} className="button" onClick={() => setCurrentIndex(idx)}>
+      <Link key={idx} to={paths[idx]} className="button">
         <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
@@ -35,45 +56,11 @@ const BottomNav = () => {
     )
   };
 
-  const iconList = [
-    {
-      icon: [ExploreIconBorder, ExploreIconFill],
-      path: "/feed",
-    },
-    {
-      icon: [SearchIconBorder, SearchIconFill],
-      path: "/search",
-    },
-    {
-      icon: [BookmarkIconBorder, BookmarkIconFill],
-      path: "/scrap",
-    },
-    {
-      icon: [AccountCircleIconBorder, AccountCircleIconFill],
-      path: "/me",
-    },
-  ];
-
-  const borderStyle = (_currentIndex => {
-    switch (_currentIndex) {
-      case 0:
-        return { background: `linear-gradient(to right, var(--content-text-color) 12.5%, transparent 37.5%)` };
-      case 1:
-        return { background: `linear-gradient(to right, transparent 12.5%, var(--content-text-color) 37.5%, transparent 62.5%)` };
-      case 2:
-        return { background: `linear-gradient(to right, transparent 37.5%, var(--content-text-color) 62.5%, transparent 87.5%)` };
-      case 3:
-        return { background: `linear-gradient(to right, transparent 62.5%, var(--content-text-color) 87.5%)` };
-      default:
-        return {};
-    }
-  })(currentIndex);
-
   return (
     <nav className={`bottom-nav ${scrollDirection === -1 ? "hide" : ""}`}>
-      <div className="border" style={borderStyle} />
+      <div className="border" style={borderStyle[index] && {}} />
       <ul className="buttons">
-        {iconList.map(makeButton)}
+        {icons.map(makeButton)}
       </ul>
     </nav>
   );
