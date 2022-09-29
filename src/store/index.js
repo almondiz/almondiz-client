@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import globalReducer from "./slices/global";
-import accountReducer from "./slices/account";
+import { globalReducer, accountReducer } from "./slices";
+
 
 export default configureStore({
   reducer: {

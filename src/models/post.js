@@ -1,26 +1,17 @@
-import defaultModel from "./default-model";
+import DefaultModel from "./default-model";
 
-export default class FeedModel extends defaultModel {
-  getDummyData() {
-    return {
+
+export default class PostModel extends DefaultModel {
+  data = {
+    1: {
+      id: 1,
+
       createdAt: 1660993200000,
-      profile: {
-        uid: 2,
-        name: "닭발 피스타치오",
-        thumb: {
-          emoji: "🙈",
-          background: "#ffcc80",
-        },
-        isFollowed: false,
-      },
+      userId: 2,
       shop: {
         name: "팔달수제맥주",
         thumb: "https://search.pstatic.net/common/?autoRotate=true&quality=95&type=f184_184&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200512_270%2F1589240248177WIr4l_JPEG%2FKakaoTalk_Photo_2019-11-15-21-09-35.jpeg",
-        location: {
-          address: "수원 영통구 원천동",
-          lat: 37.275004,
-          lng: 127.045749,
-        },
+        location: { address: "수원 영통구 원천동", lati: 37.275004, longi: 127.045749, },
         link: "https://map.naver.com/v5/search/%ED%8C%94%EB%8B%AC%EC%88%98%EC%A0%9C%EB%A7%A5%EC%A3%BC/place/36786112?c=14136086.2802149,4478566.8609065,12,0,0,0,dh&placePath=%3Fentry%253Dbmp",
       },
       tags: [ "맥주", "호프" ],
@@ -38,65 +29,42 @@ export default class FeedModel extends defaultModel {
           "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_245%2F1640014952265p4T4U_JPEG%2Fupload_74f2d577c28ecb075f4f90f026ffd1f1.jpeg",
         ],
       },
-      reaction: {
-        comments: [
-          {
-            createdAt: 1660993260000,
-            profile: {
-              uid: 3,
-              name: "달고나 마카다미아",
-              thumb: {
-                emoji: "👾",
-                background: "#b2dfdb",
-              },
-              isFollowed: true,
-              alias: "후루룩챱챱",
+
+      comments: [
+        {
+          createdAt: 1660993260000,
+          userId: 3,
+          content: `나만의 작은 가게였는데 글 내려주세요.`,
+          liked: [1, 4,],           // 이 댓글을 좋아하는 사용자들 (userId)
+          reply: [
+            {
+              createdAt: 1660993320000,
+              userId: 2,
+              content: `유감이네용`,
+              liked: [],
             },
-            content: `나만의 작은 가게였는데 글 내려주세요.`,
-            likeCount: 2,
-            reply: [
-              {
-                createdAt: 1660993320000,
-                profile: {
-                  uid: 2,
-                  name: "닭발 피스타치오",
-                  thumb: {
-                    emoji: "🙈",
-                    background: "#ffcc80",
-                  },
-                  isFollowed: false,
-                },
-                content: `유감이네용`,
-                likeCount: 0,
-              },
-            ],
-          },
-          {
-            createdAt: 1662700320000,
-            profile: {
-              uid: 1,
-              name: "마제멘 호두",
-              thumb: {
-                emoji: "😀",
-                background: "#e1bee7",
-              },
-              isFollowed: false,
-            },
-            content: `굿`,
-            likeCount: 0,
-            reply: [],
-          }
-        ],
-        commentCount: 3,
-        scrapCount: 7,
-      },
-    }
+          ],
+        },
+        {
+          createdAt: 1662700320000,
+          userId: 1,
+          content: `굿`,
+          liked: [],
+          reply: [],
+        }
+      ],
+      bestCommentIndex: 0,
+      scrapped: [1, 4],             // 이 글을 스크랩하는 사용자들 (userId)
+    },
+  };
+
+  getData(id) { return this.data[id]; }
+  
+  getDummyData() { return [ this.data[1], ]; }
+
+  getCommentCount(id) {
+    let count = 0;
+    this.data[id].comments.map(comment => count += 1 + comment.reply.length);
+    return count;
   }
-  getAllData() {
-    return [
-      this.getDummyData(),
-      this.getDummyData(),
-      this.getDummyData(),
-    ]
-  }
-}
+};

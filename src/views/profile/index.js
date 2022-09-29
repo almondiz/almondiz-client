@@ -1,170 +1,207 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { FeedModel, UserModel } from "../../models";
-import FeedViewModel from "../../view-models/feed";
-import UserViewModel from "../../view-models/user";
+import { goBack } from "../../util";
 
-import CardItem from "../../components/card-item";
+import { Framer } from "../../util";
+import { UserModel, PostModel, NoticeModel } from "../../models";
+import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models";
+
+import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
+import BackIcon from "../../asset/icons/mui/back-icon";
 import LogotypeImage from "../../asset/logo/logotype.svg";
-import NotificationsIconFill from "../../asset/icons/mui/notifications-icon-fill";
-import SettingsIconFill from "../../asset/icons/mui/settings-icon-fill";
+import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
+import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
+import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import EditIconFill from "../../asset/icons/mui/edit-icon-fill";
 
 
-const FloatFooter = () => {
+const Float = ({ user, me }) => {
   const navigate = useNavigate();
 
-  const scrollDirection = useSelector(state => state.global.scrollDirection);
-
-  const [ currentFrameIndex, setCurrentFrameIndex ] = useState(0);
-  const moveFrame = inc => {
-    let _currentFrameIndex = currentFrameIndex;
-    _currentFrameIndex += inc;
-    _currentFrameIndex = Math.min(Math.max(_currentFrameIndex, 0), frames.length - 1);
-    if (_currentFrameIndex === currentFrameIndex)   return false;
-    setCurrentFrameIndex(_currentFrameIndex);
-    return true;
+  const Header = () => {
+    const scrollDirection = useSelector(state => state.global.scrollDirection);
+    return (
+      <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
+        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+          <BackIcon />
+        </button>
+      </header>
+    )
   };
 
-  const FloatFooterMain = ({ moveFrame }) => {
+  const Footer = () => {
+    const framer = new Framer([
+      // main frame
+      (
+        <section className="frame-main">
+          <button className="button-write right" onClick={() => navigate(`/edit`)}>
+            <div className="icon-sm">
+              <EditIconFill />
+            </div>
+            <p>새 리뷰</p>
+          </button>
+        </section>
+      ),
+    ]);
+
+    const scrollDirection = useSelector(state => state.global.scrollDirection);
     return (
-      <section className="frame-main">
-        <button className="button-write right" onClick={() => navigate(`/edit`)}>
-          <div className="icon-sm">
-            <EditIconFill />
-          </div>
-          <p>새 리뷰</p>
-        </button>
-      </section>
+      <footer className={`footer ${scrollDirection === -1 ? "hide" : ""}`}>
+        {framer.view()}
+      </footer>
     );
   };
-  const frames = [
-    <FloatFooterMain moveFrame={moveFrame} />,
-  ];
+
   return (
-    <aside className={`float-footer ${scrollDirection === -1 ? "hide" : ""}`}>
-      {frames[currentFrameIndex]}
+    <aside className="float">
+      {user.id !== me.id && <Header />}
+      {user.id === me.id && <Footer />}
     </aside>
-  );
+  )
 };
 
 const Profile = ({ me }) => {
   const navigate = useNavigate();
 
-  const { uid } = useParams();
-
   const userViewModel = new UserViewModel(new UserModel());
-  const user = userViewModel.getData(uid);
+  const myUserId = userViewModel.getMyUserId();
+  //const me = userViewModel.getMyData();
+  const userId = parseInt(useParams().userId);
+  const user = userViewModel.getData(userId);
 
-  const feedViewModel = new FeedViewModel(new FeedModel());
-  const posts = feedViewModel.getAllFeedList();
-  const makeCards = (post, index) => <CardItem key={index} post={post} me={me} />;
+  const postViewModel = new PostViewModel(new PostModel());
+  const posts = [];
+  user.posts.map(postId => posts.push(postViewModel.getData(postId)));
+  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
+
+  const MakeSubscribingList = (userId, idx) => {
+    const user = userViewModel.getData(userId);
+    return <div key={idx} className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>;
+  };
+
+  const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
   return (
-    <div className="page-wrap">
+    <div className="page">
+      <Float user={user} me={me}/>
+
       <header className="header">
-        <img className="brand" alt="brand" src={LogotypeImage}/>
-        <div className="right">
-          <button className="button-notice icon-sm icon-container" onClick={() => navigate(`/notice`)}>
-            <NotificationsIconFill />
-          </button>
-          <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
-            <SettingsIconFill />
-          </button>
-        </div>
+        {
+          userId === myUserId ?
+          (
+            <>
+              <img className="brand" alt="brand" src={LogotypeImage}/>
+              <div className="right">
+                <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
+                  <NotificationsIconBorder />
+                </button>
+                <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
+                  <SettingsIconBorder />
+                </button>
+              </div>
+            </>
+          ) :
+          (
+            <>
+              <div className="right">
+                <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
+                  <MoreHorizIcon />
+                </button>
+              </div>
+            </>
+          )
+        }
       </header>
-      <div className={`profile-wrap ${user.profile.uid === me.profile.uid ? "me" : user.profile.isFollowed ? "following" : ""}`}>
-        <div className="profile" >
-          <div className="thumb" alt="profile" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
+      <main className="content">
+        <div className={`profile-wrap ${userId === myUserId ? "me" : userViewModel.isSubscribing(userId) ? "subscribing" : ""}`}>
+          <div className="profile">
+            <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
+            {
+              userId === myUserId ?
+              (
+                <div className="text-wrap">
+                  <p className={"name"}>{user.profile.name}</p>
+                  <p className={"email"}>{user.profile.email}</p>
+                </div>
+              ) :
+              userViewModel.isSubscribing(userId) ?
+              (
+                <div className="text-wrap">
+                  <p className={"alias"}>{userViewModel.getAlias(userId)}</p>
+                  <p className={"name"}>{user.profile.name}</p>
+                </div>
+              ) :
+              (
+                <div className="text-wrap">
+                  <p className={"name"}>{user.profile.name}</p>
+                </div>
+              )
+            }
+          </div>
+
           {
-            user.profile.uid === me.profile.uid ?
+            userId === myUserId ?
             (
-              <div className="text-wrap">
-                <p className={"name"}>{user.profile.name}</p>
-                <p className={"email"}>{user.profile.email}</p>
-              </div>
+              false
             ) :
-            user.profile.isFollowed ?
+            userViewModel.isSubscribing(userId) ?
             (
-              <div className="text-wrap">
-                <p className={"alias"}>{user.profile.alias}</p>
-                <p className={"name"}>{user.profile.name}</p>
+              <div className="row-button">
+                <button className="button-unsubscribe">구독 취소</button>
+                <button className="button-change-alias">별명 변경</button>
               </div>
             ) :
             (
-              <div className="text-wrap">
-                <p className={"name"}>{user.profile.name}</p>
+              <div className="row-button">
+                <button className="button-subscribe">구독</button>
               </div>
             )
           }
-        </div>
 
-        {
-          user.profile.uid === me.profile.uid ?
-          (
-            <></>
-          ) :
-          user.profile.isFollowed ?
-          (
-            <div className="row-button">
-              <button className="button-follow">구독 취소</button>
-              <button className="button-alias">별명 변경</button>
+          <div className="row">
+            <div className="count half">
+              <h5>구독자 수</h5>
+              <p>{user.subscribed.length}</p>
             </div>
-          ) :
-          (
-            <div className="row-button">
-              <button className="button-follow">구독</button>
+            <div className="count half">
+              <h5>스크랩된 수</h5>
+              <p>{userViewModel.getSubscribedCount(postViewModel, userId)}</p>
             </div>
-          )
-        }
-
-        <div className="row">
-          <div className="count half">
-            <h5>구독자 수</h5>
-            <p>{user.counts.follower}</p>
           </div>
-          <div className="count half">
-            <h5>스크랩된 수</h5>
-            <p>{user.counts.scrap}</p>
-          </div>
-        </div>
-        {
-          user.profile.uid === me.profile.uid ?
-          (
-            <div className="row">
-              <div className="count">
-                <h5>구독</h5>
-                <p>{user.counts.following}</p>
+          {
+            userId === myUserId ?
+            (
+              <div className="row">
+                <div className="count">
+                  <h5>구독</h5>
+                  <p>{userViewModel.getSubscribingCount(userId)}</p>
+                </div>
+                <div className="thumbs">
+                  {Object.keys(user.subscribing).map(MakeSubscribingList)}
+                </div>
+                <button className="button-subscribing-list" onClick={() => navigate(`/subscriptions`)}>보기</button>
               </div>
-              <div className="thumb-wrap">
-                <img className="thumb" alt="following" src={"https://picsum.photos/id/110/200"} />
-                <img className="thumb" alt="following" src={"https://picsum.photos/id/120/200"} />
-                <img className="thumb" alt="following" src={"https://picsum.photos/id/130/200"} />
-              </div>
-              <button className="button-following" onClick={() => navigate(`/subscriptions`)}>보기</button>
+            ) :
+            (
+              false
+            )
+          }
+          <div className="row">
+            <div className="count">
+              <h5>글</h5>
+              <p>{user.posts.length}</p>
             </div>
-          ) :
-          (
-            <></>
-          )
-        }
-        <div className="row">
-          <div className="count">
-            <h5>글</h5>
-            <p>{user.counts.post}</p>
+            <div className="right" />
           </div>
-          <div className="right" />
         </div>
-      </div>
-      <section className="card-list">
-        {posts.map(makeCards)}
-      </section>
-
-      <FloatFooter />
+        <section className="post-list">
+          {posts.map(makePost)}
+        </section>
+        </main>
     </div>
   );
 };

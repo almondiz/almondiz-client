@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
-import Writer from "./writer";
-import Tagger from "./tagger";
-import StoreSearch from "./store-search";
-import DirectRegister from "./direct-register";
+import { Framer } from "../../util";
+
+import FrameWriter from "./frame-writer";
+import FrameTagger from "./frame-tagger";
+import FrameStoreSearch from "./frame-store-search";
+import FrameDirectRegister from "./frame-direct-register";
 
 import "./style.scoped.scss";
 
 
 const Edit = () => {
-  const [ curStep, setCurStep ] = useState(0);
+  /*const [ curStep, setCurStep ] = useState(0);
 
   const moveStep = val => {
     if (curStep + val >= maxStep || curStep + val < 0) return;
@@ -24,7 +26,21 @@ const Edit = () => {
   ];
   const maxStep = pages.length;
 
-  return (pages[curStep]);
+  return (pages[curStep]);*/
+
+  const framer = new Framer();
+  framer.init([
+    <FrameWriter framer={framer} />,
+    <FrameTagger framer={framer} />,
+    <FrameStoreSearch framer={framer} />,
+    <FrameDirectRegister framer={framer} />,
+  ]);
+
+  return (
+    <div className="page">
+      {framer.view()}
+    </div>
+  );
 };
 
 export default Edit;

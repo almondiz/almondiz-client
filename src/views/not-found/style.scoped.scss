@@ -1,12 +1,22 @@
-.page-wrap {
-  justify-content: center;
-  align-items: center;
+.page {
+  &>.content {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  .pic-text {
-    font-size: 2rem;
-  }
-  .description {
-    margin-top: 2rem;
-    font-size: 1.25rem;
+    .pic-text {
+      font-size: 2rem;
+    }
+    .description {
+      margin-top: 2rem;
+      font-size: 1.25rem;
+    }
   }
 }

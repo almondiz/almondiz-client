@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
 
-import { FeedModel } from "../../models";
-import FeedViewModel from "../../view-models/feed";
+import { PostModel } from "../../models";
+import { PostViewModel } from "../../view-models";
 
-import CardItem from "../../components/card-item";
+import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
 import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
@@ -14,12 +14,12 @@ const Feed = ({ me }) => {
   const location = useSelector(state => state.global.location);
   const address = location.address.split(" ");
 
-  const feedViewModel = new FeedViewModel(new FeedModel());
-  const posts = feedViewModel.getAllFeedList();
-  const makeCards = (post, index) => <CardItem key={index} post={post} me={me} />;
+  const postViewModel = new PostViewModel(new PostModel());
+  const posts = postViewModel.getDummyData();
+  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
 
   return (
-    <div className="page-wrap">
+    <div className="page">
       <header className="header">
         <h1 className="title">Feed</h1>
         <div className="right">
@@ -34,9 +34,11 @@ const Feed = ({ me }) => {
           </button>
         </div>
       </header>
-      <section className="card-list">
-        {posts.map(makeCards)}
-      </section>
+      <main className="content">
+        <section className="post-list">
+          {posts.map(makePost)}
+        </section>
+      </main>
     </div>
   );
 };

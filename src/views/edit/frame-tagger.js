@@ -4,13 +4,14 @@ import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
-const Tagger = ({ moveStep }) => {
+// frame 2
+const FrameTagger = ({ framer }) => {
   return (
-    <div className="page-wrap">
+    <>
       <header>
-        <div className="header-back-button" onClick={moveStep(-1)}>
+        <button className="header-back-button" onClick={() => framer.prev()}>
           <BackIcon />
-        </div>
+        </button>
         <div className="header-next-button">
           완료
         </div>
@@ -19,7 +20,7 @@ const Tagger = ({ moveStep }) => {
       <main>
         <div className="menu-item">
           <h3>점포</h3>
-          <div className="text-button" onClick={moveStep(1)}>
+          <div className="text-button" onClick={() => framer.next()}>
             <p>선택</p>
           </div>
         </div>
@@ -28,8 +29,8 @@ const Tagger = ({ moveStep }) => {
           <input className="text-box" type="text" placeholder="태그 추가" />
         </div>
       </main>
-    </div>
+    </>
   )
 };
 
-export default Tagger;
+export default FrameTagger;

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { goBack } from "../../util";
+
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
@@ -8,27 +10,74 @@ import BackIcon from "../../asset/icons/mui/back-icon";
 const Settings = () => {
   const navigate = useNavigate();
 
+  //const makeSettingsList = (userId, idx) => {};
+
   return (
-    <div className="page-wrap">
-      <div className="frame-social">
-        <nav className="navbar">
-          <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
-            <BackIcon />
-          </div>
-          <h3 className="title">개인 설정</h3>
-        </nav>
+    <div className="page">
+      <nav className="navbar">
+        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+          <BackIcon />
+        </button>
+        <h3 className="title">개인 설정</h3>
+      </nav>
 
-        <main className="content">
-          {/*<p className="description">{`아래의 소셜 계정으로\n가입을 진행합니다.`}</p>
-          <img className="social-icon google" alt="Google" src={GoogleSocialImage} />
-          <p className="email">{`almondiz.ajou@gmail.com`}</p>*/}
-        </main>
+      <main className="content">
+        <ul className="settings-list">
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">최근 본 리뷰</p>
+            </div>
+          </li>
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">나의 신고</p>
+            </div>
+          </li>
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">1:1 문의</p>
+            </div>
+          </li>
+          <br />
 
-        <footer className="footer">
-          {/*<p className="help">다른 계정으로 <span onClick={() => navigate(`/login`)}>로그인 또는 회원 가입</span></p>
-          <button className="button-next" onClick={() => !moveFrame(1) && navigate(`/feed`)}>다음</button>*/}
-        </footer>
-      </div>
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">공지사항</p>
+            </div>
+          </li>
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">FAQ</p>
+            </div>
+          </li>
+          {/*<li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">버전 정보</p>
+              <p className="info">최신 버전 : 1.0.1</p>
+            </div>
+            <div className="right">1.0.1</div>
+          </li>*/}
+          <br />
+          
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">소셜 로그인 연동</p>
+            </div>
+          </li>
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">로그아웃</p>
+            </div>
+          </li>
+          <br />
+
+          <li className="settings-item danger">
+            <div className="text-wrap">
+              <p className="title">회원 탈퇴</p>
+            </div>
+          </li>
+        </ul>
+      </main>
     </div>
   );
 };

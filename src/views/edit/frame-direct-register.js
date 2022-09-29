@@ -4,14 +4,15 @@ import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
-const DirectRegister = ({ moveStep }) => {
+// frame 4
+const FrameDirectRegister = ({ framer }) => {
   return (
-    <div className="page-wrap">
+    <>
       <header>
-        <div className="header-back-button" onClick={moveStep(-1)}>
+        <button className="header-back-button" onClick={() => framer.prev()}>
           <BackIcon />
-        </div>
-        <div className="text-button" onClick={moveStep(-1)}>
+        </button>
+        <div className="text-button" onClick={() => framer.prev()}>
           <p>확인</p>
         </div>
       </header>
@@ -27,8 +28,8 @@ const DirectRegister = ({ moveStep }) => {
           <input className="text-box" type="text" placeholder="칼국수, 만두" />
         </div>
       </main>
-    </div>
+    </>
   )
 };
 
-export default DirectRegister;
+export default FrameDirectRegister;

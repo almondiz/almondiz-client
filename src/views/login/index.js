@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setAccessToken, setRefreshToken, setEmail } from "../../store/slices/account";
 
 import { UserModel } from "../../models";
-import UserViewModel from "../../view-models/user";
+import { UserViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import SymbolImage from "../../asset/logo/symbol.png";
@@ -53,7 +53,7 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className="page-wrap">
+    <div className="page">
       <main className="content">
         <div className="brand">
           <img className="symbol" alt="Symbol" src={SymbolImage} />

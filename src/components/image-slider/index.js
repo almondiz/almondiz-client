@@ -4,45 +4,42 @@ import "./style.scoped.scss";
 
 
 const ImageSlider = ({ images }) => {
-  const makeImages = (src, index) => (
-    <div key={`image-${index}`}>
+  const makeSlide = (src, idx) => (
+    <div key={`image-${idx}`}>
       <div className="image" style={{backgroundImage: `url(${src})` }} />
     </div>
   );
-
-  const makeThumbnails = (images) => {
-    const thumbnails = [];
-    images.forEach((_, index) => {
-      thumbnails.push(
+  const makeIndicator = (images) => {
+    const indicator = [];
+    images.forEach((_, idx) => {
+      indicator.push(
         <div
-          data-id={index}
-          className={index === 0 ? "highlighted" : ""}
-          key={`thumbnails-${index}`}
+          data-id={idx}
+          className={idx === 0 ? "highlight" : ""}
+          key={`indicator-${idx}`}
         ></div>
       );
     });
-    return (thumbnails);
+    return indicator;
   };
 
-  const setHighLight = (dom, target) => {
-    if (dom.querySelector(".highlighted") === target) return;
-    dom.querySelector(".highlighted").classList.remove("highlighted");
-    target.classList.add("highlighted");
-  };
+  const onScroll = ({ target }) => {
+    const setHighLight = (dom, target) => {
+      if (dom.querySelector(".highlight") === target) return;
+      dom.querySelector(".highlight").classList.remove("highlight");
+      target.classList.add("highlight");
+    };
 
-  const scrollEvent = ({ target }) => {
     const index = Math.round(target.scrollLeft / target.clientWidth);
     if (index < 0 || index >= images.length) return;
-    const thumbnailsDom = target.parentNode.querySelector(".thumbnails");
-    setHighLight(thumbnailsDom, thumbnailsDom.querySelector(`div[data-id="${index}"]`));
+    const indicatorDom = target.parentNode.querySelector(".indicator");
+    setHighLight(indicatorDom, indicatorDom.querySelector(`div[data-id="${index}"]`));
   };
   
   return (
     <div className="image-slider">
-      <div className="thumbnails">
-        {makeThumbnails(images)}
-      </div>
-      <div className="slides" onScroll={scrollEvent}>{images.map(makeImages)}</div>
+      <div className="slides" onScroll={onScroll}>{images.map(makeSlide)}</div>
+      <div className="indicator">{makeIndicator(images)}</div>
     </div>
   );
 };

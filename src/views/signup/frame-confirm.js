@@ -5,13 +5,14 @@ import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
-const ConfirmFrame = ({ moveFrame, callSignup }) => {
+// frame 3
+const FrameConfirm = ({ framer, callSignup }) => {
   const navigate = useNavigate();
 
   return (
     <div className="frame-confirm">
       <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => !moveFrame(-1) && navigate(`/login`)}>
+        <button className="button-back icon-sm" onClick={() => framer.prev()}>
           <BackIcon />
         </button>
         <h3 className="title">프로필 생성</h3>
@@ -30,10 +31,10 @@ const ConfirmFrame = ({ moveFrame, callSignup }) => {
 
       <footer className="footer">
         <p className="help">연동한 소셜 계정은 타인에게 드러나지 않습니다.</p>
-        <button className="button-next" onClick={() => !moveFrame(1) && callSignup()}>가입하기</button>
+        <button className="button-next" onClick={callSignup}>가입하기</button>
       </footer>
     </div>
   );
 };
 
-export default ConfirmFrame;
+export default FrameConfirm;

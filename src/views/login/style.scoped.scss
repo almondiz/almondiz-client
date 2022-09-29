@@ -1,79 +1,82 @@
-.content {
-  padding-bottom: 3.5rem;
-
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  .brand {
+.page {
+  &>.content {
+    padding-bottom: 3.5rem;
+  
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-
-    .symbol {
-      height: 8rem;
-    }
-    .logotype {
-      height: 3rem;
   
-      margin-top: -.5rem;
-    }
-    .description {
-      font-size: 1.25rem;
-      margin-top: 1.5rem;
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+  
+      .symbol {
+        height: 8rem;
+        width: 8rem;
+      }
+      .logotype {
+        height: 3rem;
+    
+        margin-top: -.5rem;
+      }
+      .description {
+        font-size: 1.25rem;
+        margin-top: 1.5rem;
+      }
     }
   }
-}
 
-.footer {
-  margin-bottom: 4rem;
-
-  z-index: 10;
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  display: flex;
-  flex-direction: column;
-
-  .social {
+  &>.footer {
+    margin-bottom: 4rem;
+  
+    z-index: 10;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  
     display: flex;
     flex-direction: column;
-    align-items: center;
-
-    .help {
-      color: #666;
-      font-size: .875rem;
-      margin-bottom: 1.25rem;
-    }
   
-    .social-icons {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-
+    .social {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
+      align-items: center;
   
-      .social-icon + .social-icon {
-        margin-left: 1.5rem;
+      .help {
+        color: #666;
+        font-size: .875rem;
+        margin-bottom: 1.25rem;
       }
-      .social-icon {
-        height: 3.5rem;
-        width: 3.5rem;
-
-        border-radius: 100%;
-        //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-
-        &.google {
-          border: 2px solid #ddd;
+    
+      .social-icons {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+  
+        display: flex;
+        flex-direction: row;
+    
+        .social-icon + .social-icon {
+          margin-left: 1.5rem;
+        }
+        .social-icon {
+          height: 3.5rem;
+          width: 3.5rem;
+  
+          border-radius: 100%;
+  
+          &.google {
+            border: 2px solid #ddd;
+          }
         }
       }
     }

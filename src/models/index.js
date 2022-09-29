@@ -1,8 +1,6 @@
-import FeedModel from "./feed-model";
-import UserModel from "./user-model";
+import UserModel from "./user";
+import PostModel from "./post";
+import NoticeModel from "./notice";
 
 
-export {
-  FeedModel,
-  UserModel,
-};
+export { UserModel, PostModel, NoticeModel, };

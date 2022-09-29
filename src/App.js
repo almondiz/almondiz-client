@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
 
 import { UserModel } from "./models";
-import UserViewModel from "./view-models/user";
+import { UserViewModel } from "./view-models";
 
 import Login from "./views/login";
 import Signup from "./views/signup";
@@ -57,7 +57,7 @@ const Monitor = () => {
   };
   initLocationHandler();
 
-  return <></>;
+  return false;
 };
 
 
@@ -72,8 +72,8 @@ const MainLayout = () => {
 
 const App = () => {
   const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
   const me = userViewModel.getMyData();
-  const myUid = me.profile.uid;
 
   return (
     <>
@@ -86,20 +86,20 @@ const App = () => {
           
           <Route element={<MainLayout />}>
             <Route path="/feed" element={<Feed me={me} />} />
-            <Route path="/post" element={<Post index={0} me={me} />} />
+            <Route path="/post" element={<Post postId={1} me={me} />} />
 
             <Route path="/search" element={<Search />} />
-            <Route path="/scrap" element={<Scrap />} />
-            <Route path="/me" element={<Navigate to={`/profile/${myUid}`} />} />
-            <Route path="/profile/:uid" element={<Profile me={me} />} />
+            <Route path="/scrap" element={<Scrap me={me} />} />
+            <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
+            <Route path="/profile/:userId" element={<Profile me={me} />} />
 
-            <Route path="/subscriptions" element={<Subscriptions />} />
+            <Route path="/subscriptions" element={<Subscriptions me={me} />} />
           </Route>
 
-          <Route path="/edit" element={<Edit />} />
+          <Route path="/edit" element={<Edit me={me} />} />
 
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/notice" element={<Notice me={me} />} />
+          <Route path="/settings" element={<Settings me={me} />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

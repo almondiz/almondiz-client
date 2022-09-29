@@ -1,34 +1,50 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+
+import { UserModel } from "../../models";
+import { UserViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
-const Subscriptions = () => {
+const Subscriptions = ({ me }) => {
   const navigate = useNavigate();
 
-  return (
-    <div className="page-wrap">
-      <div className="frame-social">
-        <nav className="navbar">
-          <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
-            <BackIcon />
+  const userViewModel = new UserViewModel(new UserModel());
+
+  const makeSubscribingList = (userId, idx) => {
+    const user = userViewModel.getData(userId);
+    return (
+      <li key={idx} className="subscribing-item">
+        <div className="link" onClick={() => navigate(`/profile/${userId}`)} />
+
+        <div className="profile">
+          <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
+          <div className="text-wrap">
+            <p className={"alias"}>{me.subscribing[userId]}</p>
+            <p className={"name"}>{user.profile.name}</p>
           </div>
-          <h3 className="title">구독 3</h3>
-        </nav>
+          <button className="button-unsubscribe">구독 취소</button>
+        </div>
+      </li>
+    );
+  };
 
-        <main className="content">
-          {/*<p className="description">{`아래의 소셜 계정으로\n가입을 진행합니다.`}</p>
-          <img className="social-icon google" alt="Google" src={GoogleSocialImage} />
-          <p className="email">{`almondiz.ajou@gmail.com`}</p>*/}
-        </main>
+  return (
+    <div className="page">
+      <nav className="navbar">
+        <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
+          <BackIcon />
+        </div>
+        <h3 className="title">구독 <span className="count">{Object.keys(me.subscribing).length}</span></h3>
+      </nav>
 
-        <footer className="footer">
-          {/*<p className="help">다른 계정으로 <span onClick={() => navigate(`/login`)}>로그인 또는 회원 가입</span></p>
-          <button className="button-next" onClick={() => !moveFrame(1) && navigate(`/feed`)}>다음</button>*/}
-        </footer>
-      </div>
+      <main className="content">
+        <ul className="subscribing-list">
+          {Object.keys(me.subscribing).map(makeSubscribingList)}
+        </ul>
+      </main>
     </div>
   );
 };

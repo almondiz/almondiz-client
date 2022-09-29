@@ -68,12 +68,20 @@ ul {
 
 /* custom */
 
-.page-wrap {
+.page {
   min-height: 100%;
   width: 100%;
 
   display: flex;
   flex-direction: column;
+}
+
+.noscroll {
+  overflow: hidden;
+}
+
+.noselect {
+  user-select: none;
 }
 
 .right {

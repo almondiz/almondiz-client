@@ -6,7 +6,7 @@
   width: 100%;
 }
 
-.thumbnails {
+.indicator {
   position: absolute;
   bottom: -1.25rem;
   display: flex;
@@ -14,7 +14,7 @@
   gap: .5rem;
 }
 
-.thumbnails div {
+.indicator div {
   width: .3125rem;
   height: .3125rem;
   cursor: pointer;
@@ -22,7 +22,7 @@
   border-radius: 100%;
 }
 
-.thumbnails div.highlighted {
+.indicator div.highlight {
   width: .4375rem;
   height: .4375rem;
   background-color: var(--content-text-color);

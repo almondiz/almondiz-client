@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
 import { useSelector } from "react-redux";
+
+import { UserModel, NoticeModel } from "../../models";
+import { UserViewModel, NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
@@ -14,16 +16,19 @@ import AccountCircleIconFill from "../../asset/icons/mui/account-circle-icon-fil
 import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-border";
 
 
-const BottomNav = () => {
+const BottomNav = () => {  
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
+  const userViewModel = new UserViewModel(new UserModel());
+  const noticeViewModel = new NoticeViewModel(new NoticeModel());
+
   const [currentIndex, setCurrentIndex] = useState(0);
-  const makeIcon = ({ icon, path }, index) => {
-    const focus = index === currentIndex;
+  const makeButton = ({ icon, path }, idx) => {
+    const focus = idx === currentIndex;
     const Icon = icon[focus ? 1 : 0];
     return (
-      <Link to={path} key={index} className="icon-wrap" onClick={() => setCurrentIndex(index)}>
-        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${index === 3 ? "badge" : ""}`}>
+      <Link key={idx} to={path} className="button" onClick={() => setCurrentIndex(idx)}>
+        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
       </Link>
@@ -49,7 +54,7 @@ const BottomNav = () => {
     },
   ];
 
-  const gradientStyle = (_currentIndex => {
+  const borderStyle = (_currentIndex => {
     switch (_currentIndex) {
       case 0:
         return { background: `linear-gradient(to right, var(--content-text-color) 12.5%, transparent 37.5%)` };
@@ -65,10 +70,10 @@ const BottomNav = () => {
   })(currentIndex);
 
   return (
-    <nav className={`bottom-nav-wrap ${scrollDirection === -1 ? "hide" : ""}`}>
-      <div className="bottom-nav-border" style={gradientStyle} />
-      <ul className="bottom-nav">
-        {iconList.map(makeIcon)}
+    <nav className={`bottom-nav ${scrollDirection === -1 ? "hide" : ""}`}>
+      <div className="border" style={borderStyle} />
+      <ul className="buttons">
+        {iconList.map(makeButton)}
       </ul>
     </nav>
   );

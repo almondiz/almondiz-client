@@ -1,17 +1,23 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { goBack } from "../../util";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
-const Writer = ({ moveStep }) => {
+// frame 1
+const FrameWriter = ({ framer }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="page-wrap">
+    <>
       <header>
-        <div className="header-back-button">
+        <button className="header-back-button" onClick={() => navigate(-1)}>
           <BackIcon />
-        </div>
-        <div className="header-next-button" onClick={moveStep(1)}>
+        </button>
+        <div className="header-next-button" onClick={() => framer.next()}>
           다음
         </div>
         리뷰 작성
@@ -29,8 +35,8 @@ const Writer = ({ moveStep }) => {
         <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/230/200)" }} />
         <div className="thumb" style={{ backgroundImage: "url(https://picsum.photos/id/210/240)" }} />
       </aside>
-    </div>
+    </>
   )
 };
 
-export default Writer;
+export default FrameWriter;

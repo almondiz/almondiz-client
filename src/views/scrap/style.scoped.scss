@@ -1,4 +1,4 @@
-.page-wrap {
+.page {
   padding-bottom: $bottom-nav-height;
 
   &>.header {
@@ -6,7 +6,7 @@
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
   
-    height: 5rem;
+    height: $page-header-height;
     margin-top: .5rem;
   
     display: flex;
@@ -23,7 +23,9 @@
     }
   }
 
-  .card-list {
-    padding-bottom: 1rem;
+  &>.content {
+    .post-list {
+      padding-bottom: 1rem;
+    }
   }
 }
