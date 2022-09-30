@@ -2,10 +2,10 @@ import React from "react";
 
 import { Framer } from "../../util";
 
-import FrameWriter from "./frame-writer";
-import FrameTagger from "./frame-tagger";
+import FrameTag from "./frame-tag";
 import FrameStoreSearch from "./frame-store-search";
 import FrameDirectRegister from "./frame-direct-register";
+import FrameWrite from "./frame-write";
 
 import "./style.scoped.scss";
 
@@ -30,10 +30,10 @@ const Edit = () => {
 
   const framer = new Framer();
   framer.init([
-    <FrameWriter framer={framer} />,
-    <FrameTagger framer={framer} />,
+    <FrameTag framer={framer} />,
     <FrameStoreSearch framer={framer} />,
     <FrameDirectRegister framer={framer} />,
+    <FrameWrite framer={framer} />,
   ]);
 
   return (

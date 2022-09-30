@@ -224,16 +224,16 @@
         
           border-radius: 1.5rem;
           background-color: var(--content-text-color);
-          backdrop-filter: blur(.5rem);
           -webkit-backdrop-filter: blur(.5rem);
+          backdrop-filter: blur(.5rem);
           //border: 1px solid rgba(238, 238, 238, .5);
           //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
         
           &>* {
             .field {
               width: 100%;
-              text-align: center;
               text-align: -webkit-center;
+              text-align: center;
         
               white-space: nowrap;
         

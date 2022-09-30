@@ -3,9 +3,6 @@ import { useState } from "react";
 
 /** controllers */
 
-// deprecated
-export const goBack = () => window.history.go(-1);
-
 export class Framer {
   index;
   setIndex;

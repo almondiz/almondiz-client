@@ -1,94 +1,156 @@
 .page {
-  padding-left: 2rem;
-  padding-right: 2rem;
-
-  header {
+  &>.navbar {
+    background-color: var(--background-color);
+    border-bottom: 1px solid #eee;
+  
     z-index: 10;
-    
     position: fixed;
-    top: 0;
     left: 0;
     right: 0;
-
-    height: 5.25rem;
-
-    padding: 0 1rem;
-
+    top: 0;
+    height: 4rem;
+  
     display: flex;
-    justify-content: center;
     align-items: center;
-
-    color: var(--primary-text-color);
-
-    //border-bottom: 1px solid var(--primary-text-color);
-
-    .text-box {
-      all: unset;
+    justify-content: center;
     
-      height: 2.25rem;
-      background-color: var(--primary-text-color);
-      color: var(--background-color);
-      border-radius: 1.125rem;
-      padding-left: .75rem;
-      padding-right: .75rem;
-    
-      width: 100%;
-      margin-left: 3.875rem;
-    }
-
-    .text-button {
-      font-size: .875rem;
-
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-      height: 2rem;
-      border-radius: 1rem;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      font-weight: 700;
-
-      background-color: #424242;
-      border: 1px solid rgba(255, 255, 255, .15);
-    }
-
-    .header-back-button {
+    .button-back {
+      z-index: 1;
+  
       position: absolute;
-      left: 1.625rem;
-
-      width: 2.25rem;
-      height: 2.25rem;
-      
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    
-      border-radius: 100%;
-      border: 1px solid #212121;
-      background-color: rgba(255, 255, 255, .8);
+      left: .25rem;
+  
+      height: 4rem;
+      width: 4rem;
     }
-
-    .header-next-button {
-      position: absolute;
-      right: 1.625rem;
-
-      height: 2.25rem;
+    .button-next {
+      z-index: 1;
       
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      position: absolute;
+      right: 1.5rem;
 
+      height: 4rem;
+
+      font-size: 1rem;
+      color: var(--content-text-color);
+    }
+  
+    .title {
       font-size: 1.125rem;
+      font-weight: 700;
+  
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 
-  main {
-    padding-top: calc(5.25rem + 1rem);
+  &>.content {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: $padding-horiz;
+    padding-right: $padding-horiz;
 
-    width: 100%;
+    .post {
+      &>.header {
+        margin-bottom: 1rem;
+    
+        height: 2.5rem;
+        display: flex;
+        justify-content: space-between;
+      
+        .shop {
+          display: flex;
+          align-items: center;
+      
+          .thumb {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-right: .625rem;
+            border-radius: 100%;
+            background-size: cover;
+          }
+      
+          .text-wrap {
+            .name {
+              width: fit-content;
+              font-size: .875rem;
+            }
+            .date {
+              margin-top: .375rem;
+              font-size: .75rem;
+              color: #666;
+            }
+          }
+        }
+      }
+    
+      .tag-wrap {
+        margin-bottom: 1.25rem;
+    
+        display: flex;
+        align-items: center;
+    
+        .tags {
+          margin: 0;
+          padding: 0;
+          padding-left: .25rem;
+      
+          display: inline-flex;
+          align-items: center;
+      
+          .tag {
+            margin-left: .25rem;
+      
+            height: 1.25rem;
+            padding: 0 .4375rem;
+            border: 1px solid #999;
+            border-radius: .625rem;
+            color: #666;
+      
+            font-size: .8125rem;
+      
+            display: flex;
+            align-items: center;
+            line-height: 1;
+          }
+        }
+      }
+    
+      &>.body {
+        margin-bottom: 1.5rem;
+    
+        .text {
+          color: var(--primary-text-color);
 
+          font-size: .875rem;
+          line-height: 1.5;
+
+          width: 100%;
+
+          border: none;
+          outline: none;
+          padding: 0;
+        
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+          box-shadow: none;
+        
+          background-color: transparent;
+        }
+    
+        .images {
+          margin-top: 1.25rem;
+          margin-left: -$padding-horiz;
+          margin-right: -$padding-horiz;
+        }
+      }
+    }
+  }
+
+
+  .content {
     .menu-item {
       height: 4rem;
 
@@ -105,31 +167,26 @@
       }
 
       .text-button {
-        font-size: .875rem;
-
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-        height: 2rem;
-        border-radius: 1rem;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
+        z-index: 1;
+        
+        font-size: .75rem;
         font-weight: 700;
-
-        background-color: #424242;
-        border: 1px solid rgba(255, 255, 255, .15);
-
-        flex: 0 0 auto;
+        color: var(--background-color);
+        background-color: var(--content-text-color);
+  
+        height: 1.5rem;
+        border-radius: .75rem;
+        padding: 0 .75rem;
+  
+        margin-left: auto;
       }
 
       .text-box {
         all: unset;
 
         height: 2.25rem;
-        background-color: var(--primary-text-color);
-        color: var(--background-color);
+        background-color: #ddd;
+        color: var(--primary-text-color);
         border-radius: 1.125rem;
         padding-left: .75rem;
         padding-right: .75rem;
@@ -139,8 +196,8 @@
     }
 
     #map {
-      width: calc(100% + 4rem);
-      margin: 0 -2rem;
+      margin-left: -$padding-horiz;
+      margin-right: -$padding-horiz;
       height: calc(100vh - 15rem - 4rem);
       background-color: #999;
 
@@ -153,61 +210,75 @@
   }
 }
 
-#texts {
-  border: none;
-  overflow: auto;
-  outline: none;
 
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  box-shadow: none;
-
-  resize: none; /*remove the resize handle on the bottom right*/
-
-  width: 100%;
-  height: calc(100vh - 14.5rem - 10rem);
-
-  font-family: var(--font-family);
-  color: var(--primary-text-color);
-  background-color: transparent;
-  font-size: 1rem;
-
-  line-height: 1.5rem;
-}
-
-#thumbs {
-  z-index: 10;
-  
-  position: fixed;
-  bottom: calc(5.25rem + 2rem);
-  left: 0;
-  right: 0;
-
-  overflow-x: scroll;
-
-  display: inline-flex;
-
-  padding: 0 2rem;
-
-  .thumb {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
-    min-width: 8rem;
-    height: 8rem;
-
-    border: 1px solid rgba(255, 255, 255, .15);
-    border-radius: .75rem;
-
-    &:not(:last-child) {
-      margin-right: 1rem;
-    }
+.float {
+  pointer-events: none;
+  &>* {
+    pointer-events: auto;
   }
 
-  .thumb-add-button {
-    background-color: rgba(0, 0, 0, .15);
-    border: 3px solid rgba(255, 255, 255, .25);
+  z-index: 10;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  
+  pointer-events: none;
+  &>* {
+    pointer-events: auto;
+  }
+
+  &>.footer {
+    pointer-events: none;
+    &>[class|="frame"] {
+      pointer-events: none;
+      &>* {
+        pointer-events: auto;
+      }
+
+      height: 100%;
+    }
+
+    z-index: 10;
+    position: fixed;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1.5rem;
+    &.hide {
+      bottom: 1.5rem - $page-header-height;
+    }
+    transition: bottom .2s ease;
+
+    height: 3rem;
+    
+    &>.frame-main {
+      display: flex;
+      justify-content: space-between;
+
+      &>* {
+        min-width: 3rem;
+
+        border-radius: 1.5rem;
+        background-color: rgba(255, 255, 255, .75);
+        -webkit-backdrop-filter: blur(.5rem);
+        backdrop-filter: blur(.5rem);
+        //border: 1px solid rgba(238, 238, 238, .5);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+      }
+  
+      .button-add-image {
+        display: flex;
+        align-items: center;
+
+        p {
+          margin-left: .5rem;
+          font-size: .875rem;
+        }
+
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+      }
+    }
   }
 }

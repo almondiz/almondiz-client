@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import { goBack } from "../../util";
-
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 

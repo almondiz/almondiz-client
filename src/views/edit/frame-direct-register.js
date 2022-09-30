@@ -1,22 +1,27 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 
 
-// frame 4
+// frame 3
 const FrameDirectRegister = ({ framer }) => {
+  const navigate = useNavigate();
+
   return (
     <>
-      <header>
-        <button className="header-back-button" onClick={() => framer.prev()}>
+      <nav className="navbar">
+        <button className="button-back icon-sm" onClick={() => framer.prev()}>
           <BackIcon />
         </button>
-        <div className="text-button" onClick={() => framer.prev()}>
-          <p>확인</p>
-        </div>
-      </header>
-      <main>
+        <h3 className="title">리뷰 작성</h3>
+        <button className="button-next" onClick={() => framer.walk(-2)}>
+          확인
+        </button>
+      </nav>
+
+      <main className="content">
         <p>위치가 어디인가요? 마커를 찍어주세요.</p>
         <div id="map" style={{ height: "24rem", }}><h2>지도 화면</h2></div>
         <div className="menu-item">

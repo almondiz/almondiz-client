@@ -1,8 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { goBack } from "../../util";
-
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
 import GoogleSocialImage from "../../asset/social/google.svg";

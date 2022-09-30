@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { goBack, Framer, getDistance, getTime } from "../../util";
+import { Framer, getDistance, getTime } from "../../util";
 import { UserModel, PostModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 

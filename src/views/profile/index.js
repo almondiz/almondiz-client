@@ -2,8 +2,6 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { goBack } from "../../util";
-
 import { Framer } from "../../util";
 import { UserModel, PostModel, NoticeModel } from "../../models";
 import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models";
@@ -87,14 +85,14 @@ const Profile = ({ me }) => {
 
   return (
     <div className="page">
-      <Float user={user} me={me}/>
+      <Float user={user} me={me} />
 
       <header className="header">
         {
           userId === myUserId ?
           (
             <>
-              <img className="brand" alt="brand" src={LogotypeImage}/>
+              <img className="brand" alt="brand" src={LogotypeImage} />
               <div className="right">
                 <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
                   <NotificationsIconBorder />
