@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { UserModel, NoticeModel } from "../../models";
@@ -14,9 +14,12 @@ import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import AccountCircleIconFill from "../../asset/icons/mui/account-circle-icon-fill";
 import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-border";
+import AddIcon from "../../asset/icons/mui/add-icon";
 
 
 const BottomNav = () => {
+  const navigate = useNavigate();
+
   const { pathname } = useLocation();
 
   const scrollDirection = useSelector(state => state.global.scrollDirection);
@@ -39,28 +42,42 @@ const BottomNav = () => {
     [AccountCircleIconBorder, AccountCircleIconFill],
   ];
   const borderStyle = [
-    { background: `linear-gradient(to right, var(--content-text-color) 12.5%, transparent 37.5%)` },
-    { background: `linear-gradient(to right, transparent 12.5%, var(--content-text-color) 37.5%, transparent 62.5%)` },
-    { background: `linear-gradient(to right, transparent 37.5%, var(--content-text-color) 62.5%, transparent 87.5%)` },
-    { background: `linear-gradient(to right, transparent 62.5%, var(--content-text-color) 87.5%)` },
+    { background: `linear-gradient(to right, var(--content-text-color) 10%, transparent 40%)` },
+    { background: `linear-gradient(to right, transparent 0%, var(--content-text-color) 30%, transparent 60%)` },
+    { background: `linear-gradient(to right, transparent 40%, var(--content-text-color) 70%, transparent 100%)` },
+    { background: `linear-gradient(to right, transparent 60%, var(--content-text-color) 90%)` },
   ];
-  const makeButton = (icon, idx) => {
+  const makeButton = idx => {
     const focus = idx === index;
-    const Icon = icon[focus ? 1 : 0];
+    const Icon = icons[idx][focus ? 1 : 0];
     return (
-      <Link key={idx} to={paths[idx]} className="button">
+      <button className="button" onClick={() => navigate(paths[idx])}>
         <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
-      </Link>
+      </button>
     )
+  };
+
+  const makeButtonWrite = () => {
+    return (
+      <button className="button button-write" onClick={() => navigate(`/edit`)}>
+        <div className="icon">
+          <AddIcon />
+        </div>
+      </button>
+    );
   };
 
   return (
     <nav className={`bottom-nav ${scrollDirection === -1 ? "hide" : ""}`}>
-      <div className="border" style={borderStyle[index] && {}} />
+      <div className="border" style={borderStyle[index]} />
       <ul className="buttons">
-        {icons.map(makeButton)}
+        {makeButton(0)}
+        {makeButton(1)}
+        {makeButtonWrite()}
+        {makeButton(2)}
+        {makeButton(3)}
       </ul>
     </nav>
   );

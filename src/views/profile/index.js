@@ -59,7 +59,7 @@ const Float = ({ user, me }) => {
   return (
     <aside className="float">
       {user.id !== me.id && <Header />}
-      {user.id === me.id && <Footer />}
+      {/*user.id === me.id && <Footer />*/}
     </aside>
   )
 };
