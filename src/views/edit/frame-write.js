@@ -97,7 +97,7 @@ const FrameWriter = ({ framer }) => {
 
           <main className="body">
             <textarea className="text" ref={textRef} onChange={handleResizeHeight} name="text" placeholder="내용을 입력하세요" autoFocus />
-            <div className="images">
+            <div className="images full">
               <ImageGrid images={post.content.images} shop={post.shop} />
             </div>
           </main>

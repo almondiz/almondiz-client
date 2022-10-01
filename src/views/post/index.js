@@ -177,7 +177,7 @@ const Post = ({ me, postId }) => {
     
           <main className="body">
             <p className="text">{post.content.text}</p>
-            <div className="images">
+            <div className="images full">
               <ImageGrid images={post.content.images} shop={post.shop} action={imageGridAction} />
             </div>
     

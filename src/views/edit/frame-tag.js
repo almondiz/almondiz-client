@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import BackIcon from "../../asset/icons/mui/back-icon";
+import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border";
 
 
 // frame 1
@@ -23,8 +24,11 @@ const FrameTagger = ({ framer }) => {
 
       <main className="content">
         <div className="menu-item">
-          <h3>점포</h3>
-          <button className="text-button" onClick={() => framer.next()}>선택</button>
+          <h3>점포 선택</h3>
+          <button className="text-button button-find-shop" onClick={() => framer.next()}>
+            <LocationOnIconBorder />
+            찾기
+          </button>
         </div>
         <div className="menu-item">
           <h3>태그</h3>

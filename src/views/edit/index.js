@@ -3,7 +3,7 @@ import React from "react";
 import { Framer } from "../../util";
 
 import FrameTag from "./frame-tag";
-import FrameStoreSearch from "./frame-store-search";
+import FrameFindShop from "./frame-find-shop";
 import FrameDirectRegister from "./frame-direct-register";
 import FrameWrite from "./frame-write";
 
@@ -31,7 +31,7 @@ const Edit = () => {
   const framer = new Framer();
   framer.init([
     <FrameTag framer={framer} />,
-    <FrameStoreSearch framer={framer} />,
+    <FrameFindShop framer={framer} />,
     <FrameDirectRegister framer={framer} />,
     <FrameWrite framer={framer} />,
   ]);

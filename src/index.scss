@@ -90,6 +90,11 @@ ul {
 .half {
   width: 50% !important;
 }
+.full {
+  width: unset !important;
+  margin-left: -$padding-horiz;
+  margin-right: -$padding-horiz;
+}
 
 .icon,
 .icon-xs,
