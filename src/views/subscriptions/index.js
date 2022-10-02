@@ -5,7 +5,7 @@ import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
 const Subscriptions = ({ me }) => {
@@ -35,7 +35,7 @@ const Subscriptions = ({ me }) => {
     <div className="page">
       <nav className="navbar">
         <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </div>
         <h3 className="title">구독 <span className="count">{Object.keys(me.subscribing).length}</span></h3>
       </nav>

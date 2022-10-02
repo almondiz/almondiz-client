@@ -57,13 +57,13 @@ const PostItem = ({ postId, post, me }) => {
       </header>
 
       <nav className="tag-wrap">
-        <SellIconBorder height="1.25rem" fill="#999" />
+        <SellIconBorder />
         <ul className="tags">{post.tags.map(makeTag)}</ul>
       </nav>
 
       <main className="body">
         <p className="text">{post.content.text}</p>
-        <div className="images" onClick={() => navigate(`/post`)}>
+        <div className="images full" onClick={() => navigate(`/post`)}>
           <ImageSlider images={post.content.images} />
         </div>
       </main>

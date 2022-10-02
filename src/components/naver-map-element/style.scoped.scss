@@ -1,0 +1,52 @@
+/* user-marker */
+
+.map {
+  ::v-deep {
+    .marker {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    
+      transform: translate(-50%, -.5rem);
+
+      .point {
+        background: linear-gradient(127deg, rgb(215, 57, 49), rgb(168, 46, 128));
+        border: .0625rem solid rgba(255, 255, 255, 1);
+        border-radius: 4rem;
+        box-shadow: 0 0 .25rem 0 rgba(0, 0, 0, .5);
+      
+        color: #fff;
+        font-size: .875rem;
+        padding: .125rem .375rem;
+      }
+      
+      .name {
+        margin-top: .125rem;
+      
+        color: rgb(176, 63, 92);
+        font-weight: bold;
+        font-size: 1rem;
+      
+        text-shadow: -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
+        /*-webkit-text-stroke: 2px #fff;*/
+      }
+    }
+    
+    .my_marker {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    
+      transform: translate(-50%, -50%);
+    
+      width: 1.125rem;
+      height: 1.125rem;
+      background: rgb(70, 136, 241);
+      border: .1875rem solid #fff;
+      border-radius: 4rem;
+      box-shadow: 0 0 .25rem 0 rgba(0, 0, 0, .5);
+    }
+  }
+}

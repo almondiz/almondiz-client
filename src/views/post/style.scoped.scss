@@ -54,6 +54,7 @@
             margin-right: .625rem;
             border-radius: 100%;
             background-size: cover;
+            background-color: #ccc;
           }
       
           .text-wrap {
@@ -127,22 +128,29 @@
       }
     
       .tag-wrap {
+        ::v-deep {
+          svg {
+            height: 1.25rem;
+            width: 1.25rem;
+            fill: #999;
+          }
+        }
+
         margin-bottom: 1.25rem;
     
         display: flex;
         align-items: center;
     
         .tags {
-          margin: 0;
-          padding: 0;
-          padding-left: .25rem;
+          padding-left: .375rem;
       
           display: inline-flex;
           align-items: center;
       
-          .tag {
+          .tag + .tag {
             margin-left: .25rem;
-      
+          }
+          .tag {
             height: 1.25rem;
             padding: 0 .4375rem;
             border: 1px solid #999;
@@ -170,8 +178,6 @@
     
         .images {
           margin-top: 1.25rem;
-          margin-left: -$padding-horiz;
-          margin-right: -$padding-horiz;
         }
       }
     
@@ -337,8 +343,8 @@
     
       border-radius: 1.5rem;
       background-color: rgba(255, 255, 255, .75);
-      backdrop-filter: blur(.5rem);
       -webkit-backdrop-filter: blur(.5rem);
+      backdrop-filter: blur(.5rem);
       //border: 1px solid rgba(238, 238, 238, .5);
       box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
     }
@@ -375,8 +381,8 @@
 
         border-radius: 1.5rem;
         background-color: rgba(255, 255, 255, .75);
-        backdrop-filter: blur(.5rem);
         -webkit-backdrop-filter: blur(.5rem);
+        backdrop-filter: blur(.5rem);
         //border: 1px solid rgba(238, 238, 238, .5);
         box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
       }
@@ -402,8 +408,8 @@
 
       border-radius: 1.5rem;
       background-color: rgba(255, 255, 255, .75);
-      backdrop-filter: blur(.5rem);
       -webkit-backdrop-filter: blur(.5rem);
+      backdrop-filter: blur(.5rem);
       //border: 1px solid rgba(238, 238, 238, .5);
       box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
 

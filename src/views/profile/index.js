@@ -2,8 +2,6 @@ import React from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { goBack } from "../../util";
-
 import { Framer } from "../../util";
 import { UserModel, PostModel, NoticeModel } from "../../models";
 import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models";
@@ -11,7 +9,7 @@ import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import LogotypeImage from "../../asset/logo/logotype.svg";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
@@ -27,7 +25,7 @@ const Float = ({ user, me }) => {
     return (
       <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
         <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </button>
       </header>
     )
@@ -59,7 +57,7 @@ const Float = ({ user, me }) => {
   return (
     <aside className="float">
       {user.id !== me.id && <Header />}
-      {user.id === me.id && <Footer />}
+      {/*user.id === me.id && <Footer />*/}
     </aside>
   )
 };
@@ -87,14 +85,14 @@ const Profile = ({ me }) => {
 
   return (
     <div className="page">
-      <Float user={user} me={me}/>
+      <Float user={user} me={me} />
 
       <header className="header">
         {
           userId === myUserId ?
           (
             <>
-              <img className="brand" alt="brand" src={LogotypeImage}/>
+              <img className="brand" alt="brand" src={LogotypeImage} />
               <div className="right">
                 <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
                   <NotificationsIconBorder />
@@ -146,7 +144,7 @@ const Profile = ({ me }) => {
           {
             userId === myUserId ?
             (
-              false
+              <></>
             ) :
             userViewModel.isSubscribing(userId) ?
             (
@@ -187,7 +185,7 @@ const Profile = ({ me }) => {
               </div>
             ) :
             (
-              false
+              <></>
             )
           }
           <div className="row">

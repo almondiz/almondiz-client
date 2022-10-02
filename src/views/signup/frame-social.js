@@ -1,10 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { goBack } from "../../util";
-
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import GoogleSocialImage from "../../asset/social/google.svg";
 
 
@@ -16,7 +14,7 @@ const FrameSocial = ({ framer }) => {
     <div className="frame-social">
       <nav className="navbar">
         <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </button>
         <h3 className="title">회원 가입</h3>
       </nav>

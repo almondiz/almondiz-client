@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
 // frame 3
@@ -13,7 +13,7 @@ const FrameConfirm = ({ framer, callSignup }) => {
     <div className="frame-confirm">
       <nav className="navbar">
         <button className="button-back icon-sm" onClick={() => framer.prev()}>
-          <BackIcon />
+          <ArrowBackIcon />
         </button>
         <h3 className="title">프로필 생성</h3>
       </nav>

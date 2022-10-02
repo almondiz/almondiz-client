@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { UserModel, NoticeModel } from "../../models";
@@ -14,66 +14,70 @@ import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import AccountCircleIconFill from "../../asset/icons/mui/account-circle-icon-fill";
 import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-border";
+import AddIcon from "../../asset/icons/mui/add-icon";
 
 
-const BottomNav = () => {  
+const BottomNav = () => {
+  const navigate = useNavigate();
+
+  const { pathname } = useLocation();
+
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
   const noticeViewModel = new NoticeViewModel(new NoticeModel());
 
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const makeButton = ({ icon, path }, idx) => {
-    const focus = idx === currentIndex;
-    const Icon = icon[focus ? 1 : 0];
+  const [index, setIndex] = useState(null);
+
+  const pathToIndex = { "/feed": 0, "/search": 1, "/scrap": 2, "/me": 3, };
+  pathToIndex[`/profile/${myUserId}`] = 3;
+  useEffect(() => { setIndex(pathToIndex[pathname]); }, [pathname]);
+
+  const paths = [ "/feed", "/search", "/scrap", "/me", ];
+  const icons = [
+    [ExploreIconBorder, ExploreIconFill],
+    [SearchIconBorder, SearchIconFill],
+    [BookmarkIconBorder, BookmarkIconFill],
+    [AccountCircleIconBorder, AccountCircleIconFill],
+  ];
+  const borderStyle = [
+    { background: `linear-gradient(to right, var(--content-text-color) 10%, transparent 40%)` },
+    { background: `linear-gradient(to right, transparent 0%, var(--content-text-color) 30%, transparent 60%)` },
+    { background: `linear-gradient(to right, transparent 40%, var(--content-text-color) 70%, transparent 100%)` },
+    { background: `linear-gradient(to right, transparent 60%, var(--content-text-color) 90%)` },
+  ];
+  const makeButton = idx => {
+    const focus = idx === index;
+    const Icon = icons[idx][focus ? 1 : 0];
     return (
-      <Link key={idx} to={path} className="button" onClick={() => setCurrentIndex(idx)}>
+      <button className="button" onClick={() => navigate(paths[idx])}>
         <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
-      </Link>
+      </button>
     )
   };
 
-  const iconList = [
-    {
-      icon: [ExploreIconBorder, ExploreIconFill],
-      path: "/feed",
-    },
-    {
-      icon: [SearchIconBorder, SearchIconFill],
-      path: "/search",
-    },
-    {
-      icon: [BookmarkIconBorder, BookmarkIconFill],
-      path: "/scrap",
-    },
-    {
-      icon: [AccountCircleIconBorder, AccountCircleIconFill],
-      path: "/me",
-    },
-  ];
-
-  const borderStyle = (_currentIndex => {
-    switch (_currentIndex) {
-      case 0:
-        return { background: `linear-gradient(to right, var(--content-text-color) 12.5%, transparent 37.5%)` };
-      case 1:
-        return { background: `linear-gradient(to right, transparent 12.5%, var(--content-text-color) 37.5%, transparent 62.5%)` };
-      case 2:
-        return { background: `linear-gradient(to right, transparent 37.5%, var(--content-text-color) 62.5%, transparent 87.5%)` };
-      case 3:
-        return { background: `linear-gradient(to right, transparent 62.5%, var(--content-text-color) 87.5%)` };
-      default:
-        return {};
-    }
-  })(currentIndex);
+  const makeButtonWrite = () => {
+    return (
+      <button className="button button-write" onClick={() => navigate(`/edit`)}>
+        <div className="icon">
+          <AddIcon />
+        </div>
+      </button>
+    );
+  };
 
   return (
     <nav className={`bottom-nav ${scrollDirection === -1 ? "hide" : ""}`}>
-      <div className="border" style={borderStyle} />
+      <div className="border" style={borderStyle[index]} />
       <ul className="buttons">
-        {iconList.map(makeButton)}
+        {makeButton(0)}
+        {makeButton(1)}
+        {makeButtonWrite()}
+        {makeButton(2)}
+        {makeButton(3)}
       </ul>
     </nav>
   );

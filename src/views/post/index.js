@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { goBack, Framer, getDistance, getTime } from "../../util";
+import { Framer, getDistance, getTime } from "../../util";
 import { UserModel, PostModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
@@ -10,7 +10,7 @@ import ImageGrid from "../../components/image-grid";
 import ImageViewer from "../../components/image-viewer";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
@@ -28,7 +28,7 @@ const Float = () => {
     return (
       <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
         <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </button>
       </header>
     );
@@ -171,13 +171,13 @@ const Post = ({ me, postId }) => {
           </header>
     
           <nav className="tag-wrap">
-            <SellIconBorder height="1.25rem" fill="#999" />
+            <SellIconBorder />
             <ul className="tags">{post.tags.map(makeTag)}</ul>
           </nav>
     
           <main className="body">
             <p className="text">{post.content.text}</p>
-            <div className="images">
+            <div className="images full">
               <ImageGrid images={post.content.images} shop={post.shop} action={imageGridAction} />
             </div>
     

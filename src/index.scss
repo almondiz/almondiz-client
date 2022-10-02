@@ -1,27 +1,27 @@
 @import "./pretendardvariable";
 
 
-html,
-body,
-#root {
+body {
   margin: 0;
   padding: 0;
-  height: 100%;
+  min-height: 100%;
   width: 100%;
 
+  overflow-x: hidden;
+
   font-size: 16px;
-}
-
-* {
-  box-sizing: border-box !important;
-}
-
-body {
   font-family: $font-family;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
   background-color: var(--background-color);
+}
+
+body,
+body * {
+  box-sizing: border-box !important;
+  
+  font-family: var(--font-family);
 }
 
 h1,
@@ -89,6 +89,11 @@ ul {
 }
 .half {
   width: 50% !important;
+}
+.full {
+  width: unset !important;
+  margin-left: -$padding-horiz;
+  margin-right: -$padding-horiz;
 }
 
 .icon,
