@@ -14,16 +14,19 @@ export class Framer {
     this.frames = frames;
   }
 
-  view() { return this.frames[this.index]; }
+  view(callback={}) {
+    if (callback[this.index]) callback[this.index]();
+    return this.frames[this.index];
+  }
 
-  walk(inc) {
-    let index = this.index;
-    index += inc;
+  move(index) {
     index = Math.min(Math.max(index, 0), this.frames.length - 1);
     if (index === this.index)   return false;
     this.setIndex(index);
     return true;
   }
+
+  walk(inc) { return this.move(this.index + inc); }
   next() { return this.walk(1); }
   prev() { return this.walk(-1); }
 };

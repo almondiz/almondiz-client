@@ -6,6 +6,7 @@ import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 import CloseIcon from "../../asset/icons/mui/close-icon";
@@ -19,8 +20,8 @@ const makeTag = (tag, idx) => (
 );
 
 
-// frame 5
-const FrameTag = ({ framer }) => {
+// frame 3
+const FrameDirectTag = ({ framer }) => {
   const navigate = useNavigate();
 
   const postViewModel = new PostViewModel(new PostModel());
@@ -29,13 +30,13 @@ const FrameTag = ({ framer }) => {
   const subframer = new Framer();
   subframer.init([
     (
-      <ul className="tags">{post.tags.map(makeTag)}</ul>
+      <ul className="tags">{[ "오뎅", ].map(makeTag)}</ul>
     ),
     (
       <ul className="tag-list">
-        <li className="tag-item" onClick={() => { subframer.move(0); setTextField(""); }}>맥주</li>
-        <li className="tag-item" onClick={() => { subframer.move(0); setTextField(""); }}>생맥주</li>
-        <li className="tag-item" onClick={() => { subframer.move(0); setTextField(""); }}>치맥</li>
+        <li className="tag-item" onClick={() => { subframer.move(0); setTextField(""); }}>떡볶이</li>
+        <li className="tag-item" onClick={() => { subframer.move(0); setTextField(""); }}>순대</li>
+        <li className="tag-item" onClick={() => { subframer.move(0); setTextField(""); }}>튀김</li>
       </ul>
     ),
   ]);
@@ -49,12 +50,12 @@ const FrameTag = ({ framer }) => {
   return (
     <>
       <nav className="navbar">
-        {/*<button className="button-back icon-sm" onClick={() => framer.prev()}>
+        <button className="button-back icon-sm" onClick={() => framer.prev()}>
           <ArrowBackIcon />
-        </button>*/}
+        </button>
         <h3 className="title">태그 추가</h3>
-        <button className="button-next" onClick={() => framer.prev()}>
-          완료
+        <button className="button-next" onClick={() => framer.walk(-2)}>
+          등록
         </button>
       </nav>
 
@@ -62,9 +63,9 @@ const FrameTag = ({ framer }) => {
         <article className="post">
           <header className="header">
             <a href={post.shop.link} className="shop">
-              <div className="thumb" style={{ backgroundImage: `url(${post.shop.thumb})` }} />
+              <div className="thumb" style={{ backgroundImage: `` }} />
               <div className="text-wrap">
-                <p className="name">{post.shop.name}</p>
+                <p className="name">아주대 앞 포장마차</p>
                 <p className="date">{post.shop.location.address}</p>
               </div>
             </a>
@@ -84,4 +85,4 @@ const FrameTag = ({ framer }) => {
   )
 };
 
-export default FrameTag;
+export default FrameDirectTag;

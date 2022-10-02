@@ -9,12 +9,17 @@ import { PostViewModel } from "../../view-models";
 import ImageGrid from "../../components/image-grid";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import AddAPhotoBorder from "../../asset/icons/mui/add-a-photo-icon-border";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 
-const makeTag = (tag, idx) => (<li key={idx} className="tag">{tag}</li>);
+const makeTag = (tag, idx) => (
+  <li key={idx} className="tag">
+    {tag}
+    {/*<button className="tag-cancel-button"><CloseIcon /></button>*/}
+  </li>
+);
 
 
 const Float = () => {
@@ -50,7 +55,7 @@ const Float = () => {
 
 
 // frame 4
-const FrameWriter = ({ framer }) => {
+const FrameWrite = ({ framer }) => {
   const navigate = useNavigate();
 
   const postViewModel = new PostViewModel(new PostModel());
@@ -70,11 +75,11 @@ const FrameWriter = ({ framer }) => {
 
       <nav className="navbar">
         <button className="button-back icon-sm" onClick={() => framer.walk(-3)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </button>
         <h3 className="title">리뷰 작성</h3>
-        <button className="button-next" onClick={() => framer.next()}>
-          다음
+        <button className="button-next" onClick={() => navigate(`/me`)}>
+          등록
         </button>
       </nav>
 
@@ -91,8 +96,9 @@ const FrameWriter = ({ framer }) => {
           </header>
     
           <nav className="tag-wrap">
-            <SellIconBorder height="1.25rem" fill="#999" />
+            <SellIconBorder />
             <ul className="tags">{post.tags.map(makeTag)}</ul>
+            <button className="text-button right" onClick={() => framer.next()}>태그 추가</button>
           </nav>
 
           <main className="body">
@@ -107,4 +113,4 @@ const FrameWriter = ({ framer }) => {
   )
 };
 
-export default FrameWriter;
+export default FrameWrite;

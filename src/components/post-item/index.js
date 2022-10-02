@@ -57,7 +57,7 @@ const PostItem = ({ postId, post, me }) => {
       </header>
 
       <nav className="tag-wrap">
-        <SellIconBorder height="1.25rem" fill="#999" />
+        <SellIconBorder />
         <ul className="tags">{post.tags.map(makeTag)}</ul>
       </nav>
 

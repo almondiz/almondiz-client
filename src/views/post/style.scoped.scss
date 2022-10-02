@@ -54,6 +54,7 @@
             margin-right: .625rem;
             border-radius: 100%;
             background-size: cover;
+            background-color: #ccc;
           }
       
           .text-wrap {
@@ -127,22 +128,29 @@
       }
     
       .tag-wrap {
+        ::v-deep {
+          svg {
+            height: 1.25rem;
+            width: 1.25rem;
+            fill: #999;
+          }
+        }
+
         margin-bottom: 1.25rem;
     
         display: flex;
         align-items: center;
     
         .tags {
-          margin: 0;
-          padding: 0;
-          padding-left: .25rem;
+          padding-left: .375rem;
       
           display: inline-flex;
           align-items: center;
       
-          .tag {
+          .tag + .tag {
             margin-left: .25rem;
-      
+          }
+          .tag {
             height: 1.25rem;
             padding: 0 .4375rem;
             border: 1px solid #999;

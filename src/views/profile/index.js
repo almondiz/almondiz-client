@@ -9,7 +9,7 @@ import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import LogotypeImage from "../../asset/logo/logotype.svg";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
@@ -25,7 +25,7 @@ const Float = ({ user, me }) => {
     return (
       <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
         <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </button>
       </header>
     )
