@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { Framer, getDistance, getTime } from "../../util";
@@ -135,7 +135,7 @@ const Post = ({ me, postId }) => {
   };
 
   const imageViewerElement = useRef();
-  const imageGridAction = index => imageViewerElement.current.setIndex(index);
+  const imageGridAction = index => imageViewerElement.current?.setIndex(index);
 
   return (
     <div className="page">

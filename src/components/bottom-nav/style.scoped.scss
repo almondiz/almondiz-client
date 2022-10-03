@@ -7,9 +7,9 @@
   &.hide {
     bottom: -$bottom-nav-height;
   }
-  transition: bottom .2s ease;
+  transition: bottom .3s ease;
 
-  box-shadow: 0 -2px 3rem rgba(0, 0, 0, .125);
+  box-shadow: 0 -1px 3rem rgba(0, 0, 0, .125);
 
   .border {
     z-index: 1;

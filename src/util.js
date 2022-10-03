@@ -14,10 +14,7 @@ export class Framer {
     this.frames = frames;
   }
 
-  view(callback={}) {
-    if (callback[this.index]) callback[this.index]();
-    return this.frames[this.index];
-  }
+  view() { return this.frames[this.index]; }
 
   move(index) {
     index = Math.min(Math.max(index, 0), this.frames.length - 1);

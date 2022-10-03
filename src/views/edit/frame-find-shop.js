@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Framer } from "../../util";
 
-import NaverMapElement from "../../components/naver-map-element";
+import NaverMap from "../../components/naver-map";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -15,20 +15,14 @@ import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border"
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 
-const makeTag = (tag, idx) => (
-  <li key={idx} className="tag">{tag}</li>
-);
+const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
 
-const BottomItemInit = () => {
-  return (
-    <section className="bottom-item-init">
-      <p className="msg">리뷰할 점포를 검색해주세요.</p>
-    </section>
-  );
-};
+const MapFloat = ({ framer, BottomElement }) => {
+  const [textfield, setTextfield] = useState("");
+  const handleTextfield = e => setTextfield(e.target.value);
+  const subframer = new Framer();
 
-const MapFloat = ({ framer, bottom }) => {
-  const DummyBottomItem = (
+  const DummyBottomContent = () => (
     <section className="bottom-item-1">
       <div className="text-wrap">
         <h3 className="title">팔달수제맥주</h3>
@@ -44,32 +38,36 @@ const MapFloat = ({ framer, bottom }) => {
       </button>
     </section>
   );
+  const keywordToElement = { "팔달수제맥주": <DummyBottomContent />, };
 
-  const [textfield, setTextField] = useState("");
-  const handleTextfield = e => {
-    setTextField(e.target.value);
+  const fooHandler = keyword => {
+    setTextfield(keyword);
+    if (keywordToElement[keyword])
+      BottomElement.current?.show({ content: keywordToElement[keyword] });
+    else
+      BottomElement.current?.show({});
+    subframer.move(0);
   };
 
-  const subframer = new Framer();
   subframer.init([
     (
       <section className="frame-1">
-        <div className="textfield" onClick={() => subframer.move(1)}>
+        <div className="textfield" onClick={() => { setTextfield(""); subframer.move(1); }}>
           <div className="textfield-icon"><SearchIconBorder /></div>
-          <input className="textfield-box" type="text" readOnly placeholder="점포 검색" value={textfield} />
+          <input className="textfield-box" type="text" placeholder="장소 검색" value={textfield} readOnly />
         </div>
       </section>
     ),
     (
       <section className="frame-2">
         <div className="textfield">
-          <button className="textfield-icon" onClick={() => subframer.move(0)}><ArrowBackIosIcon /></button>
-          <input className="textfield-box" type="text" placeholder="점포 검색" autoFocus value={textfield} />
-          <button className="textfield-clear-button" onClick={() => setTextField("")}><CancelIconFill /></button>
+          <button className="textfield-icon" onClick={() => fooHandler("")}><ArrowBackIosIcon /></button>
+          <input className="textfield-box" type="text" placeholder="점포 검색" value={textfield} onChange={handleTextfield} autoFocus />
+          <button className="textfield-clear-button" onClick={() => setTextfield("")}><CancelIconFill /></button>
         </div>
 
         <ul className="shop-list">
-          <li className="shop-item" onClick={() => subframer.move(2)}>
+          <li className="shop-item" onClick={() => fooHandler("팔달수제맥주")}>
             <h3 className="title">팔달수제맥주</h3>
             <p className="description">경기 수원시 영통구 동수원로537번길 57 (원천동)</p>
             <nav className="tag-wrap">
@@ -92,36 +90,29 @@ const MapFloat = ({ framer, bottom }) => {
         </div>
       </section>
     ),
-    (
-      <section className="frame-3">
-        <div className="textfield" onClick={() => subframer.move(1)}>
-          <div className="textfield-icon"><SearchIconBorder /></div>
-          <input className="textfield-box" type="text" readOnly value={textfield} />
-        </div>
-      </section>
-    )
   ]);
 
-  return (
-    <footer className="foo">
-      {subframer.view({ 0: () => { if (textfield !== "") setTextField(""); bottom.current?.setItem(BottomItemInit); }, 2: () => { if (textfield !== "팔달수제맥주") setTextField("팔달수제맥주"); bottom.current?.setItem(DummyBottomItem); } })}
-    </footer>
-  );
+  return <aside className="map-float">{subframer.view()}</aside>;
 };
 
 
 const Bottom = forwardRef((_, ref) => {
-  const [item, setItem] = useState(BottomItemInit);
-  useImperativeHandle(ref, () => ({ item: item, setItem: setItem, }));
+  const BottomInitContent = () => (
+    <section className="bottom-item-init">
+      <p className="msg">리뷰할 점포를 검색해주세요.</p>
+    </section>
+  );
+
+  const [content, setContent] = useState(<BottomInitContent />);
+  const show = ({ content=<BottomInitContent /> }) => setContent(content);
+  useImperativeHandle(ref, () => ({ show: show, }));
 
   return (
     <footer className="bottom">
       <button className="button-set-current-location icon-sm right">
         <LocationSearchingIcon />
       </button>
-      <div className="bottom-item">
-        {item}
-      </div>
+      <div className="bottom-item">{content}</div>
     </footer>
   );
 });
@@ -143,13 +134,11 @@ const FrameFindShop = ({ framer }) => {
       </nav>
 
       <main className="content find-shop">
+        <MapFloat framer={framer} BottomElement={BottomElement} />
         <div className="map-container">
-          <NaverMapElement id="map-find-shop" />
+          <NaverMap id="map-find-shop" />
+          <Bottom ref={BottomElement} />
         </div>
-
-        <Bottom ref={BottomElement} />
-
-        <MapFloat framer={framer} bottom={BottomElement} />
       </main>
     </>
   )

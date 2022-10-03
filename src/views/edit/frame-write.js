@@ -7,6 +7,7 @@ import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
 import ImageGrid from "../../components/image-grid";
+import BackdropTag from "./backdrop-tag";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -55,7 +56,7 @@ const Float = () => {
 
 
 // frame 4
-const FrameWrite = ({ framer }) => {
+const FrameWrite = ({ framer, BackdropElement }) => {
   const navigate = useNavigate();
 
   const postViewModel = new PostViewModel(new PostModel());
@@ -69,6 +70,8 @@ const FrameWrite = ({ framer }) => {
   };
   useEffect(() => { handleResizeHeight(); });
 
+  const showBackdropTag = () => BackdropElement.current?.show({ title: "태그 추가", content: <BackdropTag />, });
+
   return (
     <>
       <Float />
@@ -78,9 +81,7 @@ const FrameWrite = ({ framer }) => {
           <ArrowBackIcon />
         </button>
         <h3 className="title">리뷰 작성</h3>
-        <button className="button-next" onClick={() => navigate(`/me`)}>
-          등록
-        </button>
+        <button className="button-next" onClick={() => navigate(`/me`)}>게시</button>
       </nav>
 
       <main className="content">
@@ -98,7 +99,7 @@ const FrameWrite = ({ framer }) => {
           <nav className="tag-wrap">
             <SellIconBorder />
             <ul className="tags">{post.tags.map(makeTag)}</ul>
-            <button className="text-button right" onClick={() => framer.next()}>태그 추가</button>
+            <button className="text-button right" onClick={() => showBackdropTag()}>태그 추가</button>
           </nav>
 
           <main className="body">

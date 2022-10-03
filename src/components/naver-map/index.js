@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import "./style.scoped.scss";
 
 
-const NaverMapElement = ({ id="map" }) => {
+const NaverMap = ({ id="map" }) => {
   useEffect(() => {
     const map = new naver.maps.Map(id, {
       center: new naver.maps.LatLng(37.2844252, 127.043568),
@@ -52,4 +52,4 @@ const NaverMapElement = ({ id="map" }) => {
   );
 };
 
-export default NaverMapElement;
+export default NaverMap;

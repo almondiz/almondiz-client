@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -21,6 +21,7 @@ import Settings from "./views/settings";
 import NotFound from "./views/not-found";
 
 import BottomNav from "./components/bottom-nav";
+import Backdrop from "./components/backdrop";
 
 
 const Monitor = () => {
@@ -60,17 +61,6 @@ const Monitor = () => {
   return <></>;
 };
 
-
-const MainLayout = () => {
-  return (
-    <>
-      <Outlet />
-      <BottomNav />
-    </>
-  );
-};
-
-
 const ScrollToTop = () => {
   const { pathname } = useLocation();
   useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
@@ -78,10 +68,19 @@ const ScrollToTop = () => {
 };
 
 
+const MainLayout = () => (
+  <>
+    <Outlet />
+    <BottomNav />
+  </>
+);
+
 const App = () => {
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
   const me = userViewModel.getMyData();
+
+  const BackdropElement = useRef();
 
   return (
     <>
@@ -89,14 +88,16 @@ const App = () => {
         <Monitor />
         <ScrollToTop />
 
+        <Backdrop ref={BackdropElement} />
+
         <Routes>
           <Route exact path="/" element={<Navigate to="/login" />} />
 
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           
-          <Route element={<MainLayout />}>
-            <Route path="/feed" element={<Feed me={me} />} />
+          <Route element={<MainLayout BackdropElement={BackdropElement} />}>
+            <Route path="/feed" element={<Feed BackdropElement={BackdropElement} me={me} />} />
             <Route path="/post" element={<Post postId={1} me={me} />} />
 
             <Route path="/search" element={<Search />} />
@@ -107,7 +108,7 @@ const App = () => {
             <Route path="/subscriptions" element={<Subscriptions me={me} />} />
           </Route>
 
-          <Route path="/edit" element={<Edit me={me} />} />
+          <Route path="/edit" element={<Edit me={me} BackdropElement={BackdropElement} />} />
 
           <Route path="/notice" element={<Notice me={me} />} />
           <Route path="/settings" element={<Settings me={me} />} />
