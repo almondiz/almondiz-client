@@ -25,21 +25,21 @@ const FrameDirectTag = ({ framer }) => {
   const postViewModel = new PostViewModel(new PostModel());
   const post = postViewModel.getData(1);
 
-  const [textfield, setTextfield] = useState("");
-  const handleTextfield = e => {
-    setTextfield(e.target.value);
-    subframer.move(e.target.value ? 1 : 0);
+  const [tf, setTf] = useState("");
+  const handleTf = e => {
+    setTf(e.target.value);
+    tagFramer.move(e.target.value ? 1 : 0);
   };
-  const subframer = new Framer();
-  subframer.init([
+  const tagFramer = new Framer();
+  tagFramer.init([
     (
       <ul className="tags">{[ "오뎅", ].map(makeTag)}</ul>
     ),
     (
       <ul className="tag-list">
-        <li className="tag-item" onClick={() => { subframer.move(0); setTextfield(""); }}>떡볶이</li>
-        <li className="tag-item" onClick={() => { subframer.move(0); setTextfield(""); }}>순대</li>
-        <li className="tag-item" onClick={() => { subframer.move(0); setTextfield(""); }}>튀김</li>
+        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>떡볶이</li>
+        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>순대</li>
+        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>튀김</li>
       </ul>
     ),
   ]);
@@ -66,13 +66,13 @@ const FrameDirectTag = ({ framer }) => {
             </a>
           </header>
     
-          <nav className="tag-wrap edit">
-            <div className="textfield">
-              <div className="textfield-icon"><SellIconBorder /></div>
-              <input className="textfield-box" type="text" placeholder="태그를 추가하세요" value={textfield} onChange={handleTextfield} autoFocus />
-              <button className="textfield-clear-button" onClick={() => setTextfield("")}><CancelIconFill /></button>
+          <nav className="tags-wrap edit">
+            <div className="tf">
+              <div className="tf-icon"><SellIconBorder /></div>
+              <input className="tf-box" type="text" placeholder="태그를 추가하세요" value={tf} onChange={handleTf} autoFocus />
+              {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
             </div>
-            {subframer.view()}
+            {tagFramer.view()}
           </nav>
         </article>
       </main>

@@ -63,7 +63,7 @@ const Monitor = () => {
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
+  useEffect(() => window.scrollTo(0, 0), [pathname]);
   return <></>;
 };
 
@@ -85,11 +85,6 @@ const App = () => {
   return (
     <>
       <BrowserRouter>
-        <Monitor />
-        <ScrollToTop />
-
-        <Backdrop ref={backdropRef} />
-
         <Routes>
           <Route exact path="/" element={<Navigate to="/login" />} />
 
@@ -100,7 +95,7 @@ const App = () => {
             <Route path="/feed" element={<Feed backdropRef={backdropRef} me={me} />} />
             <Route path="/post" element={<Post postId={1} me={me} />} />
 
-            <Route path="/search" element={<Search />} />
+            <Route path="/search" element={<Search me={me}/>} />
             <Route path="/scrap" element={<Scrap me={me} />} />
             <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
             <Route path="/profile/:userId" element={<Profile me={me} />} />
@@ -115,6 +110,12 @@ const App = () => {
 
           <Route path="*" element={<NotFound />} />
         </Routes>
+
+        <Backdrop ref={backdropRef} />
+
+        <ScrollToTop />
+
+        <Monitor />
       </BrowserRouter>
     </>
   );

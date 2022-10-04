@@ -96,7 +96,7 @@ const FrameWrite = ({ framer, backdropRef }) => {
             </a>
           </header>
     
-          <nav className="tag-wrap">
+          <nav className="tags-wrap">
             <SellIconBorder />
             <ul className="tags">{post.tags.map(makeTag)}</ul>
             <button className="text-button right" onClick={() => showBackdropTag()}>태그 추가</button>

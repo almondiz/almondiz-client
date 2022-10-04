@@ -1,4 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+
+export const NoScroll = () => {
+  useEffect(() => {
+    document.body.classList.add("noscroll");
+    return () => document.body.classList.remove("noscroll");
+  }, []);
+};
 
 
 /** controllers */

@@ -14,9 +14,10 @@
   border-top-left-radius: 1.5rem;
   border-top-right-radius: 1.5rem;
 
-  background-color: rgba(255, 255, 255, .875);
+  background-color: #fff;
+  /*background-color: rgba(255, 255, 255, .875);
   -webkit-backdrop-filter: blur(1rem);
-  backdrop-filter: blur(1rem);
+  backdrop-filter: blur(1rem);*/
   box-shadow: 0 -1px 3rem rgba(0, 0, 0, .25);
 
   &>.header {

@@ -93,7 +93,7 @@
     }
   }
 
-  .tag-wrap {
+  .tags-wrap {
     ::v-deep {
       svg {
         height: 1.25rem;
@@ -149,17 +149,14 @@
       }
     }
   }
-  .tag-wrap.edit {
+  .tags-wrap.edit {
     padding: 1rem $padding-horiz;
     border-bottom: none;
 
     display: block;
 
-    .textfield {
-      margin-bottom: 1rem;
-    }
     .tag-list {
-      margin-top: -.5rem;
+      margin-top: .5rem;
       
       .tag-item {
         height: 2.5rem;
@@ -169,16 +166,15 @@
         align-items: center;
       }
     }
-
     .tags {
-      margin: 0;
-      padding: 0;
+      padding-left: 0;  // ad hoc
+      margin-top: 1.5rem;
   
       display: inline-flex;
       align-items: center;
   
       .tag + .tag {
-        margin-left: .375rem;
+        margin-left: .3125rem;
       }
       .tag {
         height: 1.75rem;
@@ -391,15 +387,15 @@
 
       transition: all .3s ease;
 
-      .textfield {
-        margin-top: 1.5rem;
+      .tf {
+        margin-top: 1rem;
         margin-bottom: 1rem;
 
         transition: all .3s ease;
       }
     }
     .frame-1 {
-      .textfield {
+      .tf {
         margin-left: -.5rem;
         margin-right: -.5rem;
         background-color: rgba(255, 255, 255, .75);
@@ -412,7 +408,7 @@
       height: 100vh;
       background-color: var(--background-color);
 
-      .textfield {}
+      .tf {}
       .shop-list {
         margin-top: -.5rem;
 
@@ -480,9 +476,8 @@
   bottom: 0;
 
   .button-set-current-location {
-    margin-left: auto;
-    margin-right: 1rem;
-    margin-bottom: 1.5rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
 
     height: 3rem;
     width: 3rem;
@@ -565,7 +560,7 @@
         .title {
           margin-right: 2rem;
         }
-        .textfield {
+        .tf {
           flex: 1;
           background-color: rgb(238, 238, 238);
           box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
@@ -594,7 +589,7 @@
 
 
 .shop-item, .bottom-item {
-  .tag-wrap {
+  .tags-wrap {
     ::v-deep {
       svg {
         height: 1.25rem;
@@ -609,7 +604,7 @@
     align-items: center;
 
     .tags {
-      padding-left: .375rem;
+      padding-left: .3125rem;
 
       display: inline-flex;
       align-items: center;

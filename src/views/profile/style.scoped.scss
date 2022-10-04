@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: $bottom-nav-height + 1.5rem + 3rem;
+  padding-bottom: $bottom-nav-height + 1rem + 3rem;
 
   &>.header {
     width: 100%;
@@ -7,7 +7,6 @@
     padding-right: $padding-horiz;
   
     height: $page-header-height;
-    margin-top: .5rem;
   
     display: flex;
     justify-content: space-between;
@@ -281,7 +280,6 @@
     transition: top .3s ease;
   
     height: $page-header-height;
-    margin-top: .5rem;
   
     display: flex;
     justify-content: space-between;
@@ -302,7 +300,6 @@
       background-color: rgba(255, 255, 255, .75);
       -webkit-backdrop-filter: blur(.5rem);
       backdrop-filter: blur(.5rem);
-      //border: 1px solid rgba(238, 238, 238, .5);
       box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
     }
   }
@@ -322,7 +319,7 @@
     position: fixed;
     left: 1rem;
     right: 1rem;
-    bottom: $bottom-nav-height + 1.5rem;
+    bottom: $bottom-nav-height + 1rem;
     &.hide {
       bottom: 1.5rem;
     }
@@ -341,7 +338,6 @@
         background-color: rgba(255, 255, 255, .75);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
-        //border: 1px solid rgba(238, 238, 238, .5);
         box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
       }
   

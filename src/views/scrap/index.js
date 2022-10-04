@@ -1,16 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-import { UserModel, PostModel } from "../../models";
-import { UserViewModel, PostViewModel } from "../../view-models";
+import { PostModel } from "../../models";
+import { PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
 
 
-const Scrap = () => {
-  const userViewModel = new UserViewModel(new UserModel());
-  const me = userViewModel.getMyData();
+const Scrap = ({ me }) => {
+  const navigate = useNavigate();
 
   const postViewModel = new PostViewModel(new PostModel());
   const posts = postViewModel.getDummyData();
