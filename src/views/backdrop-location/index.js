@@ -14,7 +14,7 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border";
 
 
-const MapFloat = ({ BottomElement }) => {
+const MapFloat = ({ bottomRef }) => {
   const [textfield, setTextfield] = useState("");
   const handleTextfield = e => setTextfield(e.target.value);
   const subframer = new Framer();
@@ -36,9 +36,9 @@ const MapFloat = ({ BottomElement }) => {
   const fooHandler = keyword => {
     setTextfield(keyword);
     if (keywordToElement[keyword])
-      BottomElement.current?.show({ content: keywordToElement[keyword] });
+      bottomRef.current?.show({ content: keywordToElement[keyword] });
     else
-      BottomElement.current?.show({});
+      bottomRef.current?.show({});
     subframer.move(0);
   };
 
@@ -96,7 +96,9 @@ const Bottom = forwardRef((_, ref) => {
 
 
 const BackdropLocation = () => {
-  const BottomElement = useRef();
+  const bottomRef = useRef();
+
+  const [distance, setDistance] = useState(5);
 
   return (
     <>
@@ -108,22 +110,22 @@ const BackdropLocation = () => {
         </div>
       </div>
 
-      <MapFloat BottomElement={BottomElement} />
+      <MapFloat bottomRef={bottomRef} />
       <div className="map-container">
         <NaverMap id="map-find-shop" />
-        <Bottom ref={BottomElement} />
+        <Bottom ref={bottomRef} />
       </div>
 
       <div className="bar">
         <div className="row">
           <div className="text-wrap">
-            <h3 className="title">위치로부터 <u>15km</u> 이내</h3>
+            <h3 className="title">위치로부터 <u>{distance}km</u> 이내</h3>
             <p className="description">선택한 범위의 리뷰만 피드에 표시됩니다.</p>
           </div>
           <button className="text-button">적용</button>
         </div>
         
-        <Slider />
+        <Slider action={setDistance} initial={distance} min={5} max={30} step={5} ticks={[ "5", "10", "15", "20", "25", "30" ]} />
       </div>
     </>
   );

@@ -80,7 +80,7 @@ const App = () => {
   const myUserId = userViewModel.getMyUserId();
   const me = userViewModel.getMyData();
 
-  const BackdropElement = useRef();
+  const backdropRef = useRef();
 
   return (
     <>
@@ -88,7 +88,7 @@ const App = () => {
         <Monitor />
         <ScrollToTop />
 
-        <Backdrop ref={BackdropElement} />
+        <Backdrop ref={backdropRef} />
 
         <Routes>
           <Route exact path="/" element={<Navigate to="/login" />} />
@@ -96,8 +96,8 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           
-          <Route element={<MainLayout BackdropElement={BackdropElement} />}>
-            <Route path="/feed" element={<Feed BackdropElement={BackdropElement} me={me} />} />
+          <Route element={<MainLayout backdropRef={backdropRef} />}>
+            <Route path="/feed" element={<Feed backdropRef={backdropRef} me={me} />} />
             <Route path="/post" element={<Post postId={1} me={me} />} />
 
             <Route path="/search" element={<Search />} />
@@ -108,7 +108,7 @@ const App = () => {
             <Route path="/subscriptions" element={<Subscriptions me={me} />} />
           </Route>
 
-          <Route path="/edit" element={<Edit me={me} BackdropElement={BackdropElement} />} />
+          <Route path="/edit" element={<Edit me={me} backdropRef={backdropRef} />} />
 
           <Route path="/notice" element={<Notice me={me} />} />
           <Route path="/settings" element={<Settings me={me} />} />

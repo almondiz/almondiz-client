@@ -56,7 +56,7 @@ const Float = () => {
 
 
 // frame 4
-const FrameWrite = ({ framer, BackdropElement }) => {
+const FrameWrite = ({ framer, backdropRef }) => {
   const navigate = useNavigate();
 
   const postViewModel = new PostViewModel(new PostModel());
@@ -68,9 +68,9 @@ const FrameWrite = ({ framer, BackdropElement }) => {
     obj.style.height = '1px';
     obj.style.height = obj.scrollHeight + 'px';
   };
-  useEffect(() => { handleResizeHeight(); });
+  useEffect(() => handleResizeHeight(), []);
 
-  const showBackdropTag = () => BackdropElement.current?.show({ title: "태그 추가", content: <BackdropTag />, });
+  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag />, });
 
   return (
     <>

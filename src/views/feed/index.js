@@ -12,7 +12,7 @@ import "./style.scoped.scss";
 import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
 
 
-const Feed = ({ BackdropElement, me }) => {
+const Feed = ({ backdropRef, me }) => {
   const navigate = useNavigate();
 
   const location = useSelector(state => state.global.location);
@@ -22,7 +22,7 @@ const Feed = ({ BackdropElement, me }) => {
   const posts = postViewModel.getDummyData();
   const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
 
-  const showBackdropLocation = () => BackdropElement.current?.show({ title: "위치 설정하기", content: <BackdropLocation />, });
+  const showBackdropLocation = () => backdropRef.current?.show({ title: "위치 설정하기", content: <BackdropLocation />, });
 
   return (
     <div className="page">

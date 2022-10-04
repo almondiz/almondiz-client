@@ -17,7 +17,7 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
 
-const MapFloat = ({ framer, BottomElement }) => {
+const MapFloat = ({ framer, bottomRef }) => {
   const [textfield, setTextfield] = useState("");
   const handleTextfield = e => setTextfield(e.target.value);
   const subframer = new Framer();
@@ -43,9 +43,9 @@ const MapFloat = ({ framer, BottomElement }) => {
   const fooHandler = keyword => {
     setTextfield(keyword);
     if (keywordToElement[keyword])
-      BottomElement.current?.show({ content: keywordToElement[keyword] });
+      bottomRef.current?.show({ content: keywordToElement[keyword] });
     else
-      BottomElement.current?.show({});
+      bottomRef.current?.show({});
     subframer.move(0);
   };
 
@@ -122,7 +122,7 @@ const Bottom = forwardRef((_, ref) => {
 const FrameFindShop = ({ framer }) => {
   const navigate = useNavigate();
 
-  const BottomElement = useRef();
+  const bottomRef = useRef();
 
   return (
     <>
@@ -134,10 +134,10 @@ const FrameFindShop = ({ framer }) => {
       </nav>
 
       <main className="content find-shop">
-        <MapFloat framer={framer} BottomElement={BottomElement} />
+        <MapFloat framer={framer} bottomRef={bottomRef} />
         <div className="map-container">
           <NaverMap id="map-find-shop" />
-          <Bottom ref={BottomElement} />
+          <Bottom ref={bottomRef} />
         </div>
       </main>
     </>

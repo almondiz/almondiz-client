@@ -1,4 +1,4 @@
-.slider {
+/*.slider {
   &-indicator {
     height: 2rem;
 
@@ -80,4 +80,101 @@
       font-size: .6875rem;
     }
   }
+}*/
+
+
+.slider {
+  height: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &-indicator {
+    z-index: 1;
+
+    &>input[type=range] {
+      width: 100%;
+    }
+  }
+  &-ticks {
+    z-index: 0;
+
+    display: flex;
+    justify-content: space-between;
+
+    padding-left: .75rem;
+    padding-right: .75rem;
+
+    &-tick {
+      z-index: 2;
+      margin-top: -.5rem;
+      width: 2px;
+      height: .5rem;
+      background: rgba(255, 134, 94, .25);
+
+      position: relative;
+      span {
+        position: absolute;
+        color: var(--secondary-text-color);
+        font-size: .6875rem;
+        top: .875rem;
+        transform: translateX(calc(-50% + 1px));
+      }
+    }
+  }
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  display: block;
+  height: .5rem;
+  border-radius: .25rem;
+  background-color: rgba(255, 134, 94, .25);
+  background-image: linear-gradient(var(--content-text-color), var(--content-text-color));
+  background-size: 0% 100%;
+  background-repeat: no-repeat;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 100%;
+  background-color: var(--content-text-color);
+}
+input[type=range]::-moz-range-thumb {
+  -webkit-appearance: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 100%;
+  background-color: var(--content-text-color);
+}
+input[type=range]::-ms-thumb {
+  -webkit-appearance: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .25);
+  height: 1.5rem;
+  width: 1.5rem;
+  border-radius: 100%;
+  background-color: var(--content-text-color);
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+input[type=range]::-moz-range-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+}
+input[type=range]::-ms-track {
+  -webkit-appearance: none;
+  box-shadow: none;
+  border: none;
+  background: transparent;
 }

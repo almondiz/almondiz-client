@@ -10,7 +10,7 @@ import FrameWrite from "./frame-write";
 import "./style.scoped.scss";
 
 
-const Edit = ({ BackdropElement }) => {
+const Edit = ({ backdropRef }) => {
   /*const [ curStep, setCurStep ] = useState(0);
 
   const moveStep = val => {
@@ -33,7 +33,7 @@ const Edit = ({ BackdropElement }) => {
     <FrameFindShop framer={framer} />,
     <FrameDirect framer={framer} />,
     <FrameDirectTag framer={framer} />,
-    <FrameWrite framer={framer} BackdropElement={BackdropElement} />,
+    <FrameWrite framer={framer} backdropRef={backdropRef} />,
   ]);
 
   return (

@@ -13,7 +13,7 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 
 
-const MapFloat = ({ BottomElement }) => {
+const MapFloat = ({ bottomRef }) => {
   const [textfield, setTextfield] = useState("");
   const handleTextfield = e => setTextfield(e.target.value);
   const subframer = new Framer();
@@ -33,9 +33,9 @@ const MapFloat = ({ BottomElement }) => {
   const fooHandler = keyword => {
     setTextfield(keyword);
     if (keywordToElement[keyword])
-      BottomElement.current?.show({ content: keywordToElement[keyword] });
+      bottomRef.current?.show({ content: keywordToElement[keyword] });
     else
-      BottomElement.current?.show({});
+      bottomRef.current?.show({});
     subframer.move(0);
   };
 
@@ -100,7 +100,7 @@ const Bottom = forwardRef((_, ref) => {
 const FrameDirect = ({ framer }) => {
   const navigate = useNavigate();
 
-  const BottomElement = useRef();
+  const bottomRef = useRef();
 
   return (
     <>
@@ -113,10 +113,10 @@ const FrameDirect = ({ framer }) => {
       </nav>
 
       <main className="content find-shop">
-        <MapFloat framer={framer} BottomElement={BottomElement} />
+        <MapFloat framer={framer} bottomRef={bottomRef} />
         <div className="map-container">
           <NaverMap id="map-init-shop" />
-          <Bottom ref={BottomElement} />
+          <Bottom ref={bottomRef} />
         </div>
       </main>
     </>
