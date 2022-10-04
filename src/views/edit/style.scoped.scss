@@ -274,9 +274,9 @@
     position: fixed;
     left: 1rem;
     right: 1rem;
-    bottom: 1.5rem;
+    bottom: 1rem;
     &.hide {
-      bottom: 1.5rem - $page-header-height;
+      bottom: 1rem - $page-header-height;
     }
     transition: bottom .3s ease;
 
