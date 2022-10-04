@@ -1,16 +1,17 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { Framer } from "../../util";
 
+import Slider from "../../components/slider";
 import NaverMap from "../../components/naver-map";
 
 import "./style.scoped.scss";
-import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
+import MyLocationIconFill from "../../asset/icons/mui/my-location-icon-fill";
 import SearchIconBorder from "../../asset/icons/mui/search-icon-border";
 import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
 import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
 import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
+import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border";
 
 
 const MapFloat = ({ bottomRef }) => {
@@ -19,13 +20,15 @@ const MapFloat = ({ bottomRef }) => {
   const subframer = new Framer();
 
   const DummyBottomContent = () => (
-    <section className="bottom-item-2">
-      <div className="row">
-        {/*<h3 className="title">점포 이름</h3>*/}
-        <div className="textfield">
-          <input className="textfield-box" type="text" placeholder="점포 이름" autoFocus />
-        </div>
+    <section className="bottom-item-3">
+      <div className="text-wrap">
+        <h3 className="title">아주대학교</h3>
+        <p className="description">경기 수원시 영통구 월드컵로 206 (원천동)</p>
       </div>
+      <button className="text-button button-select-shop" onClick={() => {}}>
+        <LocationOnIconBorder />
+        설정
+      </button>
     </section>
   );
   const keywordToElement = { "아주대학교": <DummyBottomContent />, };
@@ -75,11 +78,7 @@ const MapFloat = ({ bottomRef }) => {
 
 
 const Bottom = forwardRef((_, ref) => {
-  const BottomInitContent = () => (
-    <section className="bottom-item-init">
-      <p className="msg">새로 등록할 점포의 위치를 찾아주세요.</p>
-    </section>
-  );
+  const BottomInitContent = () => <></>;
 
   const [content, setContent] = useState(<BottomInitContent />);
   const show = ({ content=<BottomInitContent /> }) => setContent(content);
@@ -96,31 +95,40 @@ const Bottom = forwardRef((_, ref) => {
 });
 
 
-// frame 2
-const FrameDirect = ({ framer }) => {
-  const navigate = useNavigate();
-
+const BackdropLocation = () => {
   const bottomRef = useRef();
+
+  const [distance, setDistance] = useState(5);
 
   return (
     <>
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.prev()}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">점포 등록</h3>
-        <button className="button-next" onClick={() => framer.next()}>다음</button>
-      </nav>
-
-      <main className="content find-shop">
-        <MapFloat framer={framer} bottomRef={bottomRef} />
-        <div className="map-container">
-          <NaverMap id="map-init-shop" />
-          <Bottom ref={bottomRef} />
+      <div className="foo">
+        <div className="area-my-location">
+          <div className="icon location-icon"><MyLocationIconFill /></div>
+          <p className="location-text">수원 팔달구 우만동</p>
+          <button className="text-button">현 위치로 설정</button>
         </div>
-      </main>
+      </div>
+
+      <MapFloat bottomRef={bottomRef} />
+      <div className="map-container">
+        <NaverMap id="map-find-shop" />
+        <Bottom ref={bottomRef} />
+      </div>
+
+      <div className="bar">
+        <div className="row">
+          <div className="text-wrap">
+            <h3 className="title">위치로부터 <u>{distance}km</u> 이내</h3>
+            <p className="description">선택한 범위의 리뷰만 피드에 표시됩니다.</p>
+          </div>
+          <button className="text-button">적용</button>
+        </div>
+        
+        <Slider action={setDistance} initial={distance} min={5} max={30} step={5} ticks={[ "5", "10", "15", "20", "25", "30" ]} />
+      </div>
     </>
-  )
+  );
 };
 
-export default FrameDirect;
+export default BackdropLocation;

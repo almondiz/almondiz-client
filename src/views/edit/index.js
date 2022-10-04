@@ -6,12 +6,11 @@ import FrameFindShop from "./frame-find-shop";
 import FrameDirect from "./frame-direct";
 import FrameDirectTag from "./frame-direct-tag";
 import FrameWrite from "./frame-write";
-import FrameTag from "./frame-tag";
 
 import "./style.scoped.scss";
 
 
-const Edit = () => {
+const Edit = ({ backdropRef }) => {
   /*const [ curStep, setCurStep ] = useState(0);
 
   const moveStep = val => {
@@ -34,8 +33,7 @@ const Edit = () => {
     <FrameFindShop framer={framer} />,
     <FrameDirect framer={framer} />,
     <FrameDirectTag framer={framer} />,
-    <FrameWrite framer={framer} />,
-    <FrameTag framer={framer} />,
+    <FrameWrite framer={framer} backdropRef={backdropRef} />,
   ]);
 
   return (
