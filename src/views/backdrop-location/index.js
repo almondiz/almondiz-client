@@ -105,7 +105,7 @@ const BackdropLocation = () => {
       <div className="foo">
         <div className="area-my-location">
           <div className="icon location-icon"><MyLocationIconFill /></div>
-          <p className="location-text">수원시 팔달구 우만동</p>
+          <p className="location-text">수원 팔달구 우만동</p>
           <button className="text-button">현 위치로 설정</button>
         </div>
       </div>

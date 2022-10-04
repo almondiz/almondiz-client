@@ -52,7 +52,7 @@ const MapFloat = ({ bottomRef }) => {
       <section className="frame-2">
         <div className="textfield">
           <button className="textfield-icon" onClick={() => fooHandler("")}><ArrowBackIosIcon /></button>
-          <input className="textfield-box" type="text" placeholder="점포 검색" value={textfield} onChange={handleTextfield} autoFocus />
+          <input className="textfield-box" type="text" placeholder="장소 검색" value={textfield} onChange={handleTextfield} autoFocus />
           <button className="textfield-clear-button" onClick={() => setTextfield("")}><CancelIconFill /></button>
         </div>
 

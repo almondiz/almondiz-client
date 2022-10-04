@@ -54,7 +54,7 @@ const MapFloat = ({ framer, bottomRef }) => {
       <section className="frame-1">
         <div className="textfield" onClick={() => { setTextfield(""); subframer.move(1); }}>
           <div className="textfield-icon"><SearchIconBorder /></div>
-          <input className="textfield-box" type="text" placeholder="장소 검색" value={textfield} readOnly />
+          <input className="textfield-box" type="text" placeholder="점포 검색" value={textfield} readOnly />
         </div>
       </section>
     ),
