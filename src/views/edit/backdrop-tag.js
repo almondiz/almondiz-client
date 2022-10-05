@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Frame } from "../../util";
 import { PostModel } from "../../models";
@@ -22,22 +22,28 @@ const BackdropTag = () => {
   const postViewModel = new PostViewModel(new PostModel());
   const post = postViewModel.getData(1);
 
+  const tfPlaceholder = "태그를 추가하세요";
   const [tf, setTf] = useState("");
-  const handleTf = e => {
-    setTf(e.target.value);
-    tagFrame.move(e.target.value ? 1 : 0);
-  };
-  const tagFrame = new Frame();
-  tagFrame.init([
+  useEffect(() => {
+    tagFrame.move(tf ? 1 : 0);
+  }, [tf]);
+
+  const tagFrame = new Frame([
     (
       <ul className="tags">{post.tags.map(makeTag)}</ul>
     ),
     (
-      <ul className="tag-list">
-        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>맥주</li>
-        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>생맥주</li>
-        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>치맥</li>
-      </ul>
+      <div className="tag-list-group">
+        <ul className="list">
+          <li className="item" onClick={() => setTf("")}>맥주</li>
+          <li className="item" onClick={() => setTf("")}>생맥주</li>
+          <li className="item" onClick={() => setTf("")}>치맥</li>
+        </ul>
+        <div className="if-not-found">
+          <h3 className="title">"{tf}" 태그를 찾나요?</h3>
+          <button className="text-button" onClick={() => setTf("")}>직접 등록</button>
+        </div>
+      </div>
     ),
   ]);
 
@@ -54,10 +60,10 @@ const BackdropTag = () => {
           </a>
         </header>
   
-        <nav className="tags-wrap edit">
+        <nav className="tags-wrap area-edit-tag">
           <div className="tf">
             <div className="tf-icon"><SellIconBorder /></div>
-            <input className="tf-box" type="text" placeholder="태그를 추가하세요" value={tf} onChange={handleTf} autoFocus />
+            <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
             {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
           </div>
           {tagFrame.view()}

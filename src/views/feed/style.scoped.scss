@@ -12,29 +12,26 @@
     justify-content: space-between;
     align-items: center;
   
-    .title {
+    &>.title {
       font-size: 1.75rem;
       color: var(--primary-text-color);
     }
-  
-    .right {
+    &>.right {
       .button-location {
         min-height: 2.5rem;
 
         display: flex;
         align-items: center;
 
-        .text-wrap {
+        .location-text {
           margin-right: .5rem;
+          text-align: right;
 
-          p {
-            text-align: right;
-
-            &:first-child {
-              font-size: .75rem;
-              margin-bottom: .3125rem;
-            }
+          &>.description {
+            font-size: .75rem;
+            margin-bottom: .3125rem;
           }
+          &>.title {}
         }
       }
     }

@@ -30,9 +30,9 @@ const Feed = ({ backdropRef }) => {
         <h1 className="title">Feed</h1>
         <div className="right">
           <button className="button-location" onClick={() => showBackdropLocation()}>
-            <div className="text-wrap">
-              <p>{address.slice(0, -1).join(" ")}</p>
-              <p>{address[address.length - 1]}</p>
+            <div className="location-text">
+              <p className="description">{address.slice(0, -1).join(" ")}</p>
+              <h3 className="title">{address[address.length - 1]}</h3>
             </div>
             <div className="icon-sm">
               <LocationSearchingIcon />

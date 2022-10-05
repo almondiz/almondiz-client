@@ -12,11 +12,10 @@
     justify-content: space-between;
     align-items: center;
   
-    .title {
+    &>.title {
       font-size: 1.75rem;
     }
-  
-    .right {
+    &>.right {
       display: flex;
       align-items: center;
     }
@@ -44,18 +43,17 @@
 
     transition: all .3s ease;
 
-    .header {
+    &>.header {
       height: $page-header-height;
     
       display: flex;
       justify-content: space-between;
       align-items: center;
     
-      .title {
+      &>.title {
         font-size: 1.75rem;
       }
-    
-      .right {
+      &>.right {
         display: flex;
         align-items: center;
       }
@@ -83,7 +81,6 @@
   }
   .tf-frame.tf-frame-3 {
     top: 1rem - $page-header-height;
-
     &.hide {
       top: 1rem - $page-header-height - $page-header-height;
     }

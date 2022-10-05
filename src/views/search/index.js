@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { Frame, NoScroll } from "../../util";
@@ -28,11 +27,10 @@ const makeTag = ([ name, region, deletable ], idx) => {
 const SearchDrawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
+  const tfPlaceholder = "메뉴나 지역을 입력해 보세요";
   const [tf, setTf] = useState("");
-  const onInput = e => setTf(e.target.value);
   useEffect(() => {
-
-    tagFrame.move(tf ? 1 : 0);
+    tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
   }, [tf]);
 
   const DummyContent = () => {
@@ -42,24 +40,28 @@ const SearchDrawer = ({ contentRef }) => {
 
     return <section className="post-list">{posts.map(makePost)}</section>;
   };
-  const contentHandler = tfFrameIndex => {
+  const tfHandler = tfFrameIndex => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
+        setTf("");
         contentRef.current?.show({});
         break;
+      case 1:
+        setTf("");
+        break;
       case 2:
+        setTf("");
         contentRef.current?.show({ content: <DummyContent /> });
         break;
     }
-    setTf("");
   };
 
   const tagFrame = new Frame([
     (
       <div className="tags-wrap">
         <ul className="tags">{[ ["맥주", false, true], ["호프", false, true], ["대구", true, true] ].map(makeTag)}</ul>
-        <button className="button-search" onClick={() => contentHandler(2)}>
+        <button className="button-search" onClick={() => tfHandler(2)}>
           <div className="icon-sm"><SearchIconBorder /></div>
           <p>검색하기</p>
         </button>
@@ -93,9 +95,9 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf" onClick={() => { contentHandler(1); }}>
+        <div className="tf tf-step-1" onClick={() => tfHandler(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
-          <input className="tf-box" type="text" placeholder="메뉴나 지역을 입력해 보세요" value={tf} readOnly />
+          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
         </div>
         <div className="history-list-group">
           <h3 className="subheader">검색 기록</h3>
@@ -124,9 +126,9 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf">
-          <button className="tf-icon" onClick={() => contentHandler(0)}><ArrowBackIosIcon /></button>
-          <input className="tf-box" type="text" placeholder="메뉴나 지역을 입력해 보세요" value={tf} onChange={onInput} autoFocus />
+        <div className="tf tf-step-2">
+          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
+          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
           {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
         </div>
         {tagFrame.view()}
@@ -140,9 +142,9 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf">
-          <button className="tf-icon" onClick={() => contentHandler(0)}><ArrowBackIosIcon /></button>
-          <div className="tf-box" onClick={() => contentHandler(1)}>
+        <div className="tf tf-step-3">
+          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
+          <div className="tf-box" onClick={() => tfHandler(1)}>
             <ul className="tags">{[ ["맥주", false], ["호프", false], ["대구", true] ].map(makeTag)}</ul>
           </div>
         </div>

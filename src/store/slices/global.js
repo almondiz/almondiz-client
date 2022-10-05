@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     scrollDirection: 0,
     location: {
-      address: "수원 팔달구 우만동",
+      address: "서울 서초구 잠원동",
       lati: 37.284018,
       longi: 127.030147,
     },

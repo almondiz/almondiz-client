@@ -12,11 +12,10 @@
     justify-content: space-between;
     align-items: center;
   
-    .title {
+    &>.title {
       font-size: 1.75rem;
     }
-  
-    .right {
+    &>.right {
       display: flex;
       align-items: center;
     }
