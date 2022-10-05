@@ -9,7 +9,7 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 const FrameConfirm = ({ framer, callSignup, profile, email, nutId, tagId, getRandomNutList }) => {
   const navigate = useNavigate();
   const nutList = getRandomNutList();
-  const getNutName = (id) => nutList.filter(({ id: _id }) => _id === id)[0]?.name;
+  const getNutName = (id) => nutList.filter(({ id: _id }) => _id === Number(id))[0]?.name;
   return (
     <div className="frame-confirm">
       <nav className="navbar">

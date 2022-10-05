@@ -30,9 +30,9 @@ const FrameProfile = ({
       color: _randomProfiles[0][1]
     });
   };
-  const [randomNutList, setRandomNutList] = useState(getRandomNutList());
+  const [randomNutList, setRandomNutList] = useState([]);
   const getFirstNutId = (list) => {
-    return list[0].id;
+    return list[0]?.id;
   };
   useEffect(() => {
     const nutList = getRandomNutList();

@@ -40,8 +40,7 @@ const Signup = () => {
       nutId,
       thumb: {
         color: profile.color,
-        // String.fromCodePoint 함수를 사용해 다시 convert 필요
-        emoji: profile.emoji.codePointAt()
+        emoji: profile.emoji
       },
     });
     if (!success) {
