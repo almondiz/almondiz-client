@@ -22,7 +22,6 @@ import NotFound from "./views/not-found";
 
 import Float from "./components/float";
 import Backdrop from "./components/backdrop";
-import BottomNav from "./components/bottom-nav";
 
 
 const Monitor = () => {
@@ -71,8 +70,8 @@ const ScrollToTop = () => {
 
 const MainLayout = ({ floatRef }) => {
   useEffect(() => {
-    floatRef.current?.setBottomNav(<BottomNav />);
-    return () => floatRef.current?.setBottomNav(<></>);
+    floatRef.current?.setBottomNav(true);
+    return () => floatRef.current?.setBottomNav(false);
   });
   
   return <Outlet />;

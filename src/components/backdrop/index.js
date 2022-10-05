@@ -1,4 +1,4 @@
-import React, { useState, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 
 import { NoScroll } from "../../util";
 
@@ -8,32 +8,34 @@ import ExpandMoreIcon from "../../asset/icons/mui/expand-more-icon";
 
 const Backdrop = forwardRef((_, ref) => {
   const [visible, setVisible] = useState(false);
-  const [title, setTitle] = useState(<></>);
-  const [content, setContent] = useState(<></>);
+  const [hiding, setHiding] = useState(true);
+  const [data, setData] = useState(null);
+  
   const show = ({ title="", content=<></> }) => {
-    setTitle(title), setContent(content);
+    setData({ title: title, content: content, });
     setVisible(true);
   };
   const hide = () => {
     const DELAY = 300;
-    setVisible(false);
-    setTimeout(() => {
-      if (!visible)
-        setTitle(""), setContent(<></>);
-    }, DELAY);
+    setHiding(true);
+    setTimeout(() => setVisible(false), DELAY);
   };
   useImperativeHandle(ref, () => ({ show: show, hide: hide, }));
 
-  return (
-    <div id="backdrop" className={visible ? "show" : ""}>      
+  useEffect(() => {
+    if (visible)
+      setHiding(false);
+  }, [visible]);
+
+  return visible && (
+    <div id="backdrop" className={hiding ? "hide" : ""}>
       <header className="header" onClick={() => hide()}>
-        <h3 className="title">{title}</h3>
+        <h3 className="title">{data.title}</h3>
         <div className="button-close icon-sm"><ExpandMoreIcon /></div>
       </header>
+      <main className="content">{data.content}</main>
 
-      <main className="content">{content}</main>
-
-      {visible && <NoScroll />}
+      <NoScroll />
     </div>
   );
 });
