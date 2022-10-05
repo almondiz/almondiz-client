@@ -6,9 +6,10 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
 // frame 3
-const FrameConfirm = ({ framer, callSignup }) => {
+const FrameConfirm = ({ framer, callSignup, profile, email, nutId, tagId, getRandomNutList }) => {
   const navigate = useNavigate();
-
+  const nutList = getRandomNutList();
+  const getNutName = (id) => nutList.filter(({ id: _id }) => _id === id)[0]?.name;
   return (
     <div className="frame-confirm">
       <nav className="navbar">
@@ -21,10 +22,10 @@ const FrameConfirm = ({ framer, callSignup }) => {
       <main className="content">
         <p className="description">이대로 가입하시겠어요?</p>
         <div className="profile">
-          <div className="thumb" style={{ backgroundColor: "#e1bee7" }}>{`😀`}</div>
+          <div className="thumb" style={{ backgroundColor: profile.color }}>{profile.emoji}</div>
           <div className="text-wrap">
-            <p className="name">마제멘 호두</p>
-            <p className="email">almondiz.ajou@gmail.com</p>
+            <p className="name">마제멘 {getNutName(nutId)}</p>
+            <p className="email">{email}</p>
           </div>
         </div>
       </main>

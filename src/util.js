@@ -77,7 +77,15 @@ export const getRandomProfile = () => {
 };
 
 export const getRandomNutList = () => {
-  let li = ["호두", "피스타치오", "캐슈넛", "땅콩", "마카다미아", "아몬드", "밤"];
+  let li = [
+    { id: 1, name: "호두" }, 
+    { id: 2, name: "피스타치오" }, 
+    { id: 3, name: "캐슈넛" }, 
+    { id: 4, name: "땅콩" }, 
+    { id: 5, name: "마카다미아" }, 
+    { id: 6, name: "아몬드" },
+    { id: 7, name: "밤" },
+  ];
 
   let i, j, tmp;
   for (i = 0; i < li.length; i++) {
