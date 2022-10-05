@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
@@ -45,11 +45,11 @@ const Signup = () => {
     navigate("/feed");
   };
 
-  const framer = new Framer();
-  framer.init([
-    <FrameSocial framer={framer} />,
+  const frame = new Frame();
+  frame.init([
+    <FrameSocial frame={frame} />,
     <FrameProfile
-      framer={framer}
+      frame={frame}
       onChangeNut={onChangeNut}
       onChangeProfile={onChangeProfile}
       onChangeTag={onChangeTag}
@@ -57,12 +57,12 @@ const Signup = () => {
       getNutId={() => nutId}
       getProfileId={() => profileId}
     />,
-    <FrameConfirm framer={framer} callSignup={callSignup} />,
+    <FrameConfirm frame={frame} callSignup={callSignup} />,
   ]);
 
   return (
     <div className="page">
-      {framer.view()}
+      {frame.view()}
     </div>
   );
 };

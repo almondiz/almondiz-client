@@ -16,7 +16,7 @@ import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-b
 import AddIcon from "../../asset/icons/mui/add-icon";
 
 
-const BottomNav = () => {
+const MainBottomNav = () => {
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
@@ -80,4 +80,4 @@ const BottomNav = () => {
   );
 };
 
-export default BottomNav;
+export default MainBottomNav;

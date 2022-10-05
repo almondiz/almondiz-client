@@ -264,18 +264,29 @@
                 color: #666;
                 margin-left: .75rem;
               }
-              .more-icon {
-                margin-left: .75rem;
+              .button-comment-more {
+                ::v-deep {
+                  svg {
+                    height: 1.25rem;
+                    fill: #666;
+                  }
+                }
+
+                margin-left: .5rem;
               }
-              .button-favorite {
-                display: flex;
-                align-items: center;
-          
+              .button-comment-favorite {
                 p {
                   font-size: .8125rem;
-                  margin-left: .25rem;
+                  margin-left: .125rem;
     
                   color: #666;
+                }
+
+                ::v-deep {
+                  svg {
+                    height: 1.25rem;
+                    fill: #666;
+                  }
                 }
               }
             }

@@ -1,6 +1,6 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 
-import { NoScroll } from "../../util";
+import { Phase, NoScroll } from "../../util";
 
 import "./style.scoped.scss";
 import ExpandMoreIcon from "../../asset/icons/mui/expand-more-icon";
@@ -8,32 +8,39 @@ import ExpandMoreIcon from "../../asset/icons/mui/expand-more-icon";
 
 const Backdrop = forwardRef((_, ref) => {
   const [visible, setVisible] = useState(false);
-  const [hiding, setHiding] = useState(true);
-  const [data, setData] = useState(null);
-  
+  const [title, setTitle] = useState("")
+  const [content, setContent] = useState(<></>);
+
+  const DELAY = 300;
+  const phase = new Phase({
+    "hide": () => {
+      setVisible(false), setTitle(""), setContent(<></>);
+    },
+    "hide-out": (_title, _content) => {
+      setVisible(true), setTitle(_title), setContent(_content);
+      setTimeout(() => phase.go("show"), 0);
+    },
+    "show": () => {},
+    "hide-in": () => {
+      setTimeout(() => phase.go("hide"), DELAY);
+    },
+  }, "hide");
+
   const show = ({ title="", content=<></> }) => {
-    setData({ title: title, content: content, });
-    setVisible(true);
+    phase.is("hide") && phase.go("hide-out", title, content);
   };
   const hide = () => {
-    const DELAY = 300;
-    setHiding(true);
-    setTimeout(() => setVisible(false), DELAY);
+    phase.is("show") && phase.go("hide-in");
   };
   useImperativeHandle(ref, () => ({ show: show, hide: hide, }));
 
-  useEffect(() => {
-    if (visible)
-      setHiding(false);
-  }, [visible]);
-
   return visible && (
-    <div id="backdrop" className={hiding ? "hide" : ""}>
+    <div id="backdrop" className={phase.isIn("hide") ? "hide" : ""}>
       <header className="header" onClick={() => hide()}>
-        <h3 className="title">{data.title}</h3>
-        <div className="button-close icon-sm"><ExpandMoreIcon /></div>
+        <h3 className="title">{title}</h3>
+        <div className="button-close"><ExpandMoreIcon /></div>
       </header>
-      <main className="content">{data.content}</main>
+      <main className="content">{content}</main>
 
       <NoScroll />
     </div>

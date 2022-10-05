@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 
 import FrameFindShop from "./frame-find-shop";
 import FrameDirect from "./frame-direct";
@@ -28,15 +28,15 @@ const Edit = ({ floatRef, backdropRef }) => {
 
   return (pages[curStep]);*/
 
-  const framer = new Framer();
-  framer.init([
-    <FrameFindShop framer={framer} />,
-    <FrameDirect framer={framer} />,
-    <FrameDirectTag framer={framer} />,
-    <FrameWrite framer={framer} floatRef={floatRef} backdropRef={backdropRef} />,
+  const frame = new Frame();
+  frame.init([
+    <FrameFindShop frame={frame} />,
+    <FrameDirect frame={frame} />,
+    <FrameDirectTag frame={frame} />,
+    <FrameWrite frame={frame} floatRef={floatRef} backdropRef={backdropRef} />,
   ]);
 
-  return <div className="page">{framer.view()}</div>;
+  return <div className="page">{frame.view()}</div>;
 };
 
 export default Edit;

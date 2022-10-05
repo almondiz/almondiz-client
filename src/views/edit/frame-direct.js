@@ -1,7 +1,7 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 
 import NaverMap from "../../components/naver-map";
 
@@ -16,7 +16,7 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 const EditDrawer = ({ bottomRef }) => {
   const [tf, setTf] = useState("");
   const handleTf = e => setTf(e.target.value);
-  const subframer = new Framer();
+  const subFrame = new Frame();
 
   const DummyBottomContent = () => (
     <section className="bottom-item-2">
@@ -36,13 +36,13 @@ const EditDrawer = ({ bottomRef }) => {
       bottomRef.current?.show({ content: keywordToElement[keyword] });
     else
       bottomRef.current?.show({});
-    subframer.move(0);
+    subFrame.move(0);
   };
 
-  subframer.init([
+  subFrame.init([
     (
       <section className="frame-1">
-        <div className="tf" onClick={() => { setTf(""); subframer.move(1); }}>
+        <div className="tf" onClick={() => { setTf(""); subFrame.move(1); }}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder="장소 검색" value={tf} readOnly />
         </div>
@@ -70,7 +70,7 @@ const EditDrawer = ({ bottomRef }) => {
     ),
   ]);
 
-  return <aside className="edit-drawer">{subframer.view()}</aside>;
+  return <aside className="edit-drawer">{subFrame.view()}</aside>;
 };
 
 
@@ -97,21 +97,21 @@ const Bottom = forwardRef((_, ref) => {
 
 
 // frame 2
-const FrameDirect = ({ framer }) => {
+const FrameDirect = ({ frame }) => {
   const bottomRef = useRef();
 
   return (
     <>
       <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.prev()}>
+        <button className="button-back icon-sm" onClick={() => frame.prev()}>
           <ArrowBackIcon />
         </button>
         <h3 className="title">점포 등록</h3>
-        <button className="button-next" onClick={() => framer.next()}>다음</button>
+        <button className="button-next" onClick={() => frame.next()}>다음</button>
       </nav>
 
       <main className="content find-shop">
-        <EditDrawer framer={framer} bottomRef={bottomRef} />
+        <EditDrawer frame={frame} bottomRef={bottomRef} />
         <div className="map-container">
           <NaverMap id="map-init-shop" />
           <Bottom ref={bottomRef} />

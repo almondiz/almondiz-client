@@ -1,6 +1,6 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 
 import Slider from "../../components/slider";
 import NaverMap from "../../components/naver-map";
@@ -17,7 +17,7 @@ import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border"
 const LocationDrawer = ({ bottomRef }) => {
   const [tf, setTf] = useState("");
   const handleTf = e => setTf(e.target.value);
-  const subframer = new Framer();
+  const subFrame = new Frame();
 
   const DummyBottomContent = () => (
     <section className="bottom-item-3">
@@ -39,13 +39,13 @@ const LocationDrawer = ({ bottomRef }) => {
       bottomRef.current?.show({ content: keywordToElement[keyword] });
     else
       bottomRef.current?.show({});
-    subframer.move(0);
+    subFrame.move(0);
   };
 
-  subframer.init([
+  subFrame.init([
     (
       <section className="frame-1">
-        <div className="tf" onClick={() => { setTf(""); subframer.move(1); }}>
+        <div className="tf" onClick={() => { setTf(""); subFrame.move(1); }}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder="장소 검색" value={tf} readOnly />
         </div>
@@ -73,7 +73,7 @@ const LocationDrawer = ({ bottomRef }) => {
     ),
   ]);
 
-  return <aside className="location-drawer">{subframer.view()}</aside>;
+  return <aside className="location-drawer">{subFrame.view()}</aside>;
 };
 
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
@@ -25,18 +25,18 @@ const BackdropTag = () => {
   const [tf, setTf] = useState("");
   const handleTf = e => {
     setTf(e.target.value);
-    tagFramer.move(e.target.value ? 1 : 0);
+    tagFrame.move(e.target.value ? 1 : 0);
   };
-  const tagFramer = new Framer();
-  tagFramer.init([
+  const tagFrame = new Frame();
+  tagFrame.init([
     (
       <ul className="tags">{post.tags.map(makeTag)}</ul>
     ),
     (
       <ul className="tag-list">
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>맥주</li>
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>생맥주</li>
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>치맥</li>
+        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>맥주</li>
+        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>생맥주</li>
+        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>치맥</li>
       </ul>
     ),
   ]);
@@ -60,7 +60,7 @@ const BackdropTag = () => {
             <input className="tf-box" type="text" placeholder="태그를 추가하세요" value={tf} onChange={handleTf} autoFocus />
             {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
           </div>
-          {tagFramer.view()}
+          {tagFrame.view()}
         </nav>
       </article>
     </>

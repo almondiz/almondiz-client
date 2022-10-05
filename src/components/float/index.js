@@ -1,12 +1,12 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { useSelector } from "react-redux";
 
-import BottomNav from "../bottom-nav";
+import { isEmptyElement } from "../../util";
 
 import "./style.scoped.scss";
 
 
-const HideOnScroll = ({ bottomNav }) => {
+const HideOnScroll = () => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   useEffect(() => {
@@ -26,20 +26,22 @@ const HideOnScroll = ({ bottomNav }) => {
 
 
 const Float = forwardRef((_, ref) => {
+  const [top, setTop] = useState(<></>);
   const [header, setHeader] = useState(<></>);
   const [footer, setFooter] = useState(<></>);
-  const [bottomNav, setBottomNav] = useState(false);
-  useImperativeHandle(ref, () => ({ setHeader: setHeader, setFooter: setFooter, setBottomNav: setBottomNav }));
+  const [bottom, setBottom] = useState(<></>);
+  useImperativeHandle(ref, () => ({setTop: setTop, setHeader: setHeader, setFooter: setFooter, setBottom: setBottom, }));
 
   const FloatHeader = () => (
-    <div className={`float-header-wrap`}>
+    <div className={`float-header-wrap${!isEmptyElement(top) ? " has-top" : ""}`}>
+      {top}
       {header}
     </div>
   );
   const FloatFooter = () => (
-    <div className={`float-footer-wrap${bottomNav ? " has-bottom-nav" : ""}`}>
+    <div className={`float-footer-wrap${!isEmptyElement(bottom) ? " has-bottom" : ""}`}>
       {footer}
-      {bottomNav && <BottomNav />}
+      {bottom}
     </div>
   );
 
@@ -48,7 +50,7 @@ const Float = forwardRef((_, ref) => {
       <FloatHeader />
       <FloatFooter />
 
-      <HideOnScroll bottomNav={bottomNav} />
+      <HideOnScroll />
     </aside>
   );
 });

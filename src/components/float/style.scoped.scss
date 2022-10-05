@@ -20,6 +20,9 @@
   &.hide {
     top: -$page-header-height;
   }
+  &.hide.has-top {
+    top: -$bottom-nav-height;
+  }
   transition: top .3s ease;
 }
 .float-footer-wrap {
@@ -27,7 +30,7 @@
   &.hide {
     bottom: -$page-header-height;
   }
-  &.hide.has-bottom-nav {
+  &.hide.has-bottom {
     bottom: -$bottom-nav-height;
   }
   transition: bottom .3s ease;

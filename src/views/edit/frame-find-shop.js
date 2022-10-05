@@ -1,7 +1,7 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 
 import NaverMap from "../../components/naver-map";
 
@@ -17,10 +17,10 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
 
-const EditDrawer = ({ framer, bottomRef }) => {
+const EditDrawer = ({ frame, bottomRef }) => {
   const [tf, setTf] = useState("");
   const handleTf = e => setTf(e.target.value);
-  const subframer = new Framer();
+  const subFrame = new Frame();
 
   const DummyBottomContent = () => (
     <section className="bottom-item-1">
@@ -32,7 +32,7 @@ const EditDrawer = ({ framer, bottomRef }) => {
           <ul className="tags">{[ "맥주", "호프" ].map(makeTag)}</ul>
         </nav>
       </div>
-      <button className="button-select-shop text-button" onClick={() => framer.walk(3)}>
+      <button className="button-select-shop text-button" onClick={() => frame.walk(3)}>
         <LocationOnIconBorder />
         선택
       </button>
@@ -46,13 +46,13 @@ const EditDrawer = ({ framer, bottomRef }) => {
       bottomRef.current?.show({ content: keywordToElement[keyword] });
     else
       bottomRef.current?.show({});
-    subframer.move(0);
+    subFrame.move(0);
   };
 
-  subframer.init([
+  subFrame.init([
     (
       <section className="frame-1">
-        <div className="tf" onClick={() => { setTf(""); subframer.move(1); }}>
+        <div className="tf" onClick={() => { setTf(""); subFrame.move(1); }}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder="점포 검색" value={tf} readOnly />
         </div>
@@ -86,13 +86,13 @@ const EditDrawer = ({ framer, bottomRef }) => {
         </ul>
         <div className="shop-if-not-found">
           <h3 className="title">원하는 점포 결과가 없으신가요?</h3>
-          <button className="text-button" onClick={() => framer.next()}>직접 등록</button>
+          <button className="text-button" onClick={() => frame.next()}>직접 등록</button>
         </div>
       </section>
     ),
   ]);
 
-  return <aside className="edit-drawer">{subframer.view()}</aside>;
+  return <aside className="edit-drawer">{subFrame.view()}</aside>;
 };
 
 
@@ -119,7 +119,7 @@ const Bottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindShop = ({ framer }) => {
+const FrameFindShop = ({ frame }) => {
   const navigate = useNavigate();
 
   const bottomRef = useRef();
@@ -134,7 +134,7 @@ const FrameFindShop = ({ framer }) => {
       </nav>
 
       <main className="content find-shop">
-        <EditDrawer framer={framer} bottomRef={bottomRef} />
+        <EditDrawer frame={frame} bottomRef={bottomRef} />
         <div className="map-container">
           <NaverMap id="map-find-shop" />
           <Bottom ref={bottomRef} />

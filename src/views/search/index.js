@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Framer, NoScroll } from "../../util";
+import { Frame, NoScroll } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
@@ -32,7 +32,7 @@ const SearchDrawer = ({ contentRef }) => {
   const onInput = e => setTf(e.target.value);
   useEffect(() => {
 
-    tagFramer.move(tf ? 1 : 0);
+    tagFrame.move(tf ? 1 : 0);
   }, [tf]);
 
   const DummyContent = () => {
@@ -43,7 +43,7 @@ const SearchDrawer = ({ contentRef }) => {
     return <section className="post-list">{posts.map(makePost)}</section>;
   };
   const contentHandler = tfFrameIndex => {
-    tfFramer.move(tfFrameIndex);
+    tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
         contentRef.current?.show({});
@@ -55,7 +55,7 @@ const SearchDrawer = ({ contentRef }) => {
     setTf("");
   };
 
-  const tagFramer = new Framer([
+  const tagFrame = new Frame([
     (
       <div className="tags-wrap">
         <ul className="tags">{[ ["맥주", false, true], ["호프", false, true], ["대구", true, true] ].map(makeTag)}</ul>
@@ -86,7 +86,7 @@ const SearchDrawer = ({ contentRef }) => {
       </>
     ),
   ]);
-  const tfFramer = new Framer([
+  const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
         <header className="header">
@@ -129,7 +129,7 @@ const SearchDrawer = ({ contentRef }) => {
           <input className="tf-box" type="text" placeholder="메뉴나 지역을 입력해 보세요" value={tf} onChange={onInput} autoFocus />
           {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
         </div>
-        {tagFramer.view()}
+        {tagFrame.view()}
 
         <NoScroll />
       </section>
@@ -150,7 +150,7 @@ const SearchDrawer = ({ contentRef }) => {
     ),
   ]);
 
-  return <aside className="search-drawer">{tfFramer.view()}</aside>;
+  return <aside className="search-drawer">{tfFrame.view()}</aside>;
 };
 
 

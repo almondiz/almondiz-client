@@ -6,13 +6,13 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
 // frame 3
-const FrameConfirm = ({ framer, callSignup }) => {
+const FrameConfirm = ({ frame, callSignup }) => {
   const navigate = useNavigate();
 
   return (
     <div className="frame-confirm">
       <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.prev()}>
+        <button className="button-back icon-sm" onClick={() => frame.prev()}>
           <ArrowBackIcon />
         </button>
         <h3 className="title">프로필 생성</h3>

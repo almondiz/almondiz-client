@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
@@ -17,15 +17,15 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
 
 
-const FloatHandler = ({ floatRef }) => {
-  const headerFramer = new Framer(), footerFramer = new Framer();
+const FloatController = ({ floatRef }) => {
+  const headerFrame = new Frame(), footerFrame = new Frame();
 
   const Header = () => {
-    headerFramer.init([]);
-    return <div className="float-header">{headerFramer.view()}</div>;
+    headerFrame.init([]);
+    return <div className="float-header">{headerFrame.view()}</div>;
   };
   const Footer = () => {
-    footerFramer.init([
+    footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
           <button className="button-add-image right" onClick={() => {}}>
@@ -35,12 +35,12 @@ const FloatHandler = ({ floatRef }) => {
         </section>
       ),
     ]);
-    return <div className="float-footer">{footerFramer.view()}</div>;
+    return <div className="float-footer">{footerFrame.view()}</div>;
   }
 
   useEffect(() => {
     (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
-    return () => (floatRef.current?.setHeader(<></>), floatRef.current?.setFooter(<></>));
+    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
   }, [floatRef.current]);
 
   return <></>;
@@ -48,7 +48,7 @@ const FloatHandler = ({ floatRef }) => {
 
 
 // frame 4
-const FrameWrite = ({ framer, floatRef, backdropRef }) => {
+const FrameWrite = ({ frame, floatRef, backdropRef }) => {
   const navigate = useNavigate();
 
   const postViewModel = new PostViewModel(new PostModel());
@@ -67,7 +67,7 @@ const FrameWrite = ({ framer, floatRef, backdropRef }) => {
   return (
     <>
       <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.walk(-3)}>
+        <button className="button-back icon-sm" onClick={() => frame.walk(-3)}>
           <ArrowBackIcon />
         </button>
         <h3 className="title">리뷰 작성</h3>
@@ -101,7 +101,7 @@ const FrameWrite = ({ framer, floatRef, backdropRef }) => {
         </article>
       </main>
 
-      <FloatHandler floatRef={floatRef} />
+      <FloatController floatRef={floatRef} />
     </>
   )
 };

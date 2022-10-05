@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 import { UserModel, PostModel, NoticeModel } from "../../models";
 import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models";
 
@@ -17,13 +17,13 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import EditIconFill from "../../asset/icons/mui/edit-icon-fill";
 
 
-const FloatHandler = ({ floatRef, userId, myUserId }) => {
+const FloatController = ({ floatRef, userId, myUserId }) => {
   const navigate = useNavigate();
 
-  const headerFramer = new Framer(), footerFramer = new Framer();
+  const headerFrame = new Frame(), footerFrame = new Frame();
 
   const Header = () => {
-    headerFramer.init([
+    headerFrame.init([
       ( // main
         <section className="float-header-frame frame-1">
           <button className="button-back icon-sm" onClick={() => navigate(-1)}>
@@ -32,16 +32,16 @@ const FloatHandler = ({ floatRef, userId, myUserId }) => {
         </section>
       ),
     ]);
-    return (userId !== myUserId) && <div className="float-header">{headerFramer.view()}</div>;
+    return (userId !== myUserId) && <div className="float-header">{headerFrame.view()}</div>;
   };
   const Footer = () => {
-    footerFramer.init([]);
-    return (userId === myUserId) && <div className="float-footer">{footerFramer.view()}</div>;
+    footerFrame.init([]);
+    return (userId === myUserId) && <div className="float-footer">{footerFrame.view()}</div>;
   }
 
   useEffect(() => {
     (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
-    return () => (floatRef.current?.setHeader(<></>), floatRef.current?.setFooter(<></>));
+    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
   }, [floatRef.current]);
 
   return <></>;
@@ -185,7 +185,7 @@ const Profile = ({ floatRef }) => {
         </section>
         </main>
 
-        <FloatHandler floatRef={floatRef} userId={userId} myUserId={myUserId} />
+        <FloatController floatRef={floatRef} userId={userId} myUserId={myUserId} />
     </div>
   );
 };

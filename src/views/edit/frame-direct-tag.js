@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
@@ -21,25 +21,25 @@ const makeTag = (tag, idx) => (
 
 
 // frame 3
-const FrameDirectTag = ({ framer }) => {
+const FrameDirectTag = ({ frame }) => {
   const postViewModel = new PostViewModel(new PostModel());
   const post = postViewModel.getData(1);
 
   const [tf, setTf] = useState("");
   const handleTf = e => {
     setTf(e.target.value);
-    tagFramer.move(e.target.value ? 1 : 0);
+    tagFrame.move(e.target.value ? 1 : 0);
   };
-  const tagFramer = new Framer();
-  tagFramer.init([
+  const tagFrame = new Frame();
+  tagFrame.init([
     (
       <ul className="tags">{[ "오뎅", ].map(makeTag)}</ul>
     ),
     (
       <ul className="tag-list">
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>떡볶이</li>
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>순대</li>
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>튀김</li>
+        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>떡볶이</li>
+        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>순대</li>
+        <li className="tag-item" onClick={() => { tagFrame.move(0); setTf(""); }}>튀김</li>
       </ul>
     ),
   ]);
@@ -47,11 +47,11 @@ const FrameDirectTag = ({ framer }) => {
   return (
     <>
       <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.prev()}>
+        <button className="button-back icon-sm" onClick={() => frame.prev()}>
           <ArrowBackIcon />
         </button>
         <h3 className="title">태그 추가</h3>
-        <button className="button-next" onClick={() => framer.walk(-2)}>등록</button>
+        <button className="button-next" onClick={() => frame.walk(-2)}>등록</button>
       </nav>
 
       <main className="content">
@@ -72,7 +72,7 @@ const FrameDirectTag = ({ framer }) => {
               <input className="tf-box" type="text" placeholder="태그를 추가하세요" value={tf} onChange={handleTf} autoFocus />
               {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
             </div>
-            {tagFramer.view()}
+            {tagFrame.view()}
           </nav>
         </article>
       </main>

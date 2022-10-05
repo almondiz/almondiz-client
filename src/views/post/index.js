@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Framer, getDistance, getTime } from "../../util";
+import { Frame, getDistance, getTime } from "../../util";
 import { UserModel, PostModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
@@ -20,13 +20,13 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
 
 
-const FloatHandler = ({ floatRef }) => {
+const FloatController = ({ floatRef }) => {
   const navigate = useNavigate();
 
-  const headerFramer = new Framer(), footerFramer = new Framer();
+  const headerFrame = new Frame(), footerFrame = new Frame();
 
   const Header = () => {
-    headerFramer.init([
+    headerFrame.init([
       ( // main
         <section className="float-header-frame frame-1">
           <button className="button-back icon-sm" onClick={() => navigate(-1)}>
@@ -35,13 +35,13 @@ const FloatHandler = ({ floatRef }) => {
         </section>
       ),
     ]);
-    return <div className="float-header">{headerFramer.view()}</div>;
+    return <div className="float-header">{headerFrame.view()}</div>;
   };
   const Footer = () => {
-    footerFramer.init([
+    footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
-          <button className="button-comment" onClick={() => footerFramer.walk(1)}>
+          <button className="button-comment" onClick={() => footerFrame.walk(1)}>
             <div className="icon-sm"><ChatBubbleIconBorder /></div>
             <p>댓글 쓰기</p>
           </button>
@@ -53,7 +53,7 @@ const FloatHandler = ({ floatRef }) => {
       ),
       ( // comment
         <section className="float-footer-frame frame-2">
-          <button className="button-back icon-sm" onClick={() => footerFramer.walk(-1)}>
+          <button className="button-back icon-sm" onClick={() => footerFrame.walk(-1)}>
             <ArrowBackIosIcon />
           </button>
           <div className="comment-input-box">
@@ -65,12 +65,12 @@ const FloatHandler = ({ floatRef }) => {
         </section>
       ),
     ]);
-    return <div className="float-footer">{footerFramer.view()}</div>;
+    return <div className="float-footer">{footerFrame.view()}</div>;
   }
 
   useEffect(() => {
     (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
-    return () => (floatRef.current?.setHeader(<></>), floatRef.current?.setFooter(<></>));
+    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
   }, [floatRef.current]);
 
   return <></>;
@@ -105,11 +105,11 @@ const Post = ({ floatRef, postId }) => {
             <p className="name">{commentAuthorId === myUserId ? "나" : userViewModel.getAlias(commentAuthorId)}</p>
           </div>
           <p className="date">{getTime(comment.createdAt)}</p>
-          <div className="icon more-icon">
-            <MoreHorizIcon height="1.25rem" fill="#666" />
+          <div className="button-comment-more icon">
+            <MoreHorizIcon />
           </div>
-          <button className="button-favorite right">
-            <FavoriteIconBorder height="1.25rem" fill="#666" />
+          <button className="button-comment-favorite icon right">
+            <FavoriteIconBorder />
             <p>{comment.liked.length}</p>
           </button>
         </header>
@@ -186,7 +186,7 @@ const Post = ({ floatRef, postId }) => {
 
       <ImageViewer images={post.content.images} ref={imageViewerRef} />
 
-      <FloatHandler floatRef={floatRef} />
+      <FloatController floatRef={floatRef} />
     </div>
   );
 };

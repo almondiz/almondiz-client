@@ -7,7 +7,7 @@ import GoogleSocialImage from "../../asset/social/google.svg";
 
 
 // frame 1
-const FrameSocial = ({ framer }) => {
+const FrameSocial = ({ frame }) => {
   const navigate = useNavigate();
 
   return (
@@ -27,7 +27,7 @@ const FrameSocial = ({ framer }) => {
 
       <footer className="footer">
         <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
-        <button className="button-next" onClick={() => framer.next()}>다음</button>
+        <button className="button-next" onClick={() => frame.next()}>다음</button>
       </footer>
     </div>
   );

@@ -23,18 +23,18 @@
   
     z-index: 10;
     height: 4rem;
-  
     display: flex;
     align-items: center;
     justify-content: center;
     
     .button-close {
       z-index: 1;
-  
-      position: absolute;
-      right: .25rem;
-      height: 4rem;
-      width: 4rem;
+
+      display: flex;
+      align-items: center;
+
+      margin-left: .25rem;
+      margin-right: -1rem;
     }
   
     .title {
