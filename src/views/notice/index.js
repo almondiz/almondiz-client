@@ -1,12 +1,12 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import { goBack, getTime } from "../../util";
+import { getTime } from "../../util";
 import { UserModel, NoticeModel } from "../../models";
 import { UserViewModel, NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
@@ -42,7 +42,7 @@ const Notice = () => {
     <div className="page">
       <nav className="navbar">
         <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </button>
         <h3 className="title">알림</h3>
       </nav>

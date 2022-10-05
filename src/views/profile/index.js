@@ -1,8 +1,6 @@
-import React from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-
-import { goBack } from "../../util";
 
 import { Framer } from "../../util";
 import { UserModel, PostModel, NoticeModel } from "../../models";
@@ -11,7 +9,7 @@ import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import LogotypeImage from "../../asset/logo/logotype.svg";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
@@ -19,57 +17,43 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import EditIconFill from "../../asset/icons/mui/edit-icon-fill";
 
 
-const Float = ({ user, me }) => {
+const FloatHandler = ({ floatRef, userId, myUserId }) => {
   const navigate = useNavigate();
 
-  const Header = () => {
-    const scrollDirection = useSelector(state => state.global.scrollDirection);
-    return (
-      <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <BackIcon />
-        </button>
-      </header>
-    )
-  };
+  const headerFramer = new Framer(), footerFramer = new Framer();
 
-  const Footer = () => {
-    const framer = new Framer([
-      // main frame
-      (
-        <section className="frame-main">
-          <button className="button-write right" onClick={() => navigate(`/edit`)}>
-            <div className="icon-sm">
-              <EditIconFill />
-            </div>
-            <p>새 리뷰</p>
+  const Header = () => {
+    headerFramer.init([
+      ( // main
+        <section className="float-header-frame frame-1">
+          <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+            <ArrowBackIcon />
           </button>
         </section>
       ),
     ]);
-
-    const scrollDirection = useSelector(state => state.global.scrollDirection);
-    return (
-      <footer className={`footer ${scrollDirection === -1 ? "hide" : ""}`}>
-        {framer.view()}
-      </footer>
-    );
+    return (userId !== myUserId) && <div className="float-header">{headerFramer.view()}</div>;
   };
+  const Footer = () => {
+    footerFramer.init([]);
+    return (userId === myUserId) && <div className="float-footer">{footerFramer.view()}</div>;
+  }
 
-  return (
-    <aside className="float">
-      {user.id !== me.id && <Header />}
-      {user.id === me.id && <Footer />}
-    </aside>
-  )
+  useEffect(() => {
+    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
+    return () => (floatRef.current?.setHeader(<></>), floatRef.current?.setFooter(<></>));
+  }, [floatRef.current]);
+
+  return <></>;
 };
 
-const Profile = ({ me }) => {
+
+const Profile = ({ floatRef }) => {
   const navigate = useNavigate();
 
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
-  //const me = userViewModel.getMyData();
+  const me = userViewModel.getMyData();
   const userId = parseInt(useParams().userId);
   const user = userViewModel.getData(userId);
 
@@ -87,14 +71,12 @@ const Profile = ({ me }) => {
 
   return (
     <div className="page">
-      <Float user={user} me={me}/>
-
       <header className="header">
         {
           userId === myUserId ?
           (
             <>
-              <img className="brand" alt="brand" src={LogotypeImage}/>
+              <img className="brand" alt="brand" src={LogotypeImage} />
               <div className="right">
                 <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
                   <NotificationsIconBorder />
@@ -146,7 +128,7 @@ const Profile = ({ me }) => {
           {
             userId === myUserId ?
             (
-              false
+              <></>
             ) :
             userViewModel.isSubscribing(userId) ?
             (
@@ -187,7 +169,7 @@ const Profile = ({ me }) => {
               </div>
             ) :
             (
-              false
+              <></>
             )
           }
           <div className="row">
@@ -202,6 +184,8 @@ const Profile = ({ me }) => {
           {posts.map(makePost)}
         </section>
         </main>
+
+        <FloatHandler floatRef={floatRef} userId={userId} myUserId={myUserId} />
     </div>
   );
 };

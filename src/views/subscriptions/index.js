@@ -1,17 +1,18 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
-const Subscriptions = ({ me }) => {
+const Subscriptions = ({}) => {
   const navigate = useNavigate();
 
   const userViewModel = new UserViewModel(new UserModel());
+  const me = userViewModel.getMyData();
 
   const makeSubscribingList = (userId, idx) => {
     const user = userViewModel.getData(userId);
@@ -35,7 +36,7 @@ const Subscriptions = ({ me }) => {
     <div className="page">
       <nav className="navbar">
         <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
-          <BackIcon />
+          <ArrowBackIcon />
         </div>
         <h3 className="title">구독 <span className="count">{Object.keys(me.subscribing).length}</span></h3>
       </nav>

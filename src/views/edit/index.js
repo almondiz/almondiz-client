@@ -2,15 +2,15 @@ import React from "react";
 
 import { Framer } from "../../util";
 
-import FrameWriter from "./frame-writer";
-import FrameTagger from "./frame-tagger";
-import FrameStoreSearch from "./frame-store-search";
-import FrameDirectRegister from "./frame-direct-register";
+import FrameFindShop from "./frame-find-shop";
+import FrameDirect from "./frame-direct";
+import FrameDirectTag from "./frame-direct-tag";
+import FrameWrite from "./frame-write";
 
 import "./style.scoped.scss";
 
 
-const Edit = () => {
+const Edit = ({ floatRef, backdropRef }) => {
   /*const [ curStep, setCurStep ] = useState(0);
 
   const moveStep = val => {
@@ -30,17 +30,13 @@ const Edit = () => {
 
   const framer = new Framer();
   framer.init([
-    <FrameWriter framer={framer} />,
-    <FrameTagger framer={framer} />,
-    <FrameStoreSearch framer={framer} />,
-    <FrameDirectRegister framer={framer} />,
+    <FrameFindShop framer={framer} />,
+    <FrameDirect framer={framer} />,
+    <FrameDirectTag framer={framer} />,
+    <FrameWrite framer={framer} floatRef={floatRef} backdropRef={backdropRef} />,
   ]);
 
-  return (
-    <div className="page">
-      {framer.view()}
-    </div>
-  );
+  return <div className="page">{framer.view()}</div>;
 };
 
 export default Edit;

@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { goBack, Framer, getDistance, getTime } from "../../util";
+import { Framer, getDistance, getTime } from "../../util";
 import { UserModel, PostModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
@@ -10,7 +10,7 @@ import ImageGrid from "../../components/image-grid";
 import ImageViewer from "../../components/image-viewer";
 
 import "./style.scoped.scss";
-import BackIcon from "../../asset/icons/mui/back-icon";
+import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
@@ -20,29 +20,29 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
 
 
-const Float = () => {
+const FloatHandler = ({ floatRef }) => {
   const navigate = useNavigate();
 
-  const Header = () => {
-    const scrollDirection = useSelector(state => state.global.scrollDirection);
-    return (
-      <header className={`header ${scrollDirection === 1 ? "hide" : ""}`}>
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <BackIcon />
-        </button>
-      </header>
-    );
-  };
+  const headerFramer = new Framer(), footerFramer = new Framer();
 
+  const Header = () => {
+    headerFramer.init([
+      ( // main
+        <section className="float-header-frame frame-1">
+          <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+            <ArrowBackIcon />
+          </button>
+        </section>
+      ),
+    ]);
+    return <div className="float-header">{headerFramer.view()}</div>;
+  };
   const Footer = () => {
-    const framer = new Framer([
-      // main frame
-      (
-        <section className="frame-main">
-          <button className="button-comment" onClick={() => framer.walk(1)}>
-            <div className="icon-sm">
-              <ChatBubbleIconBorder />
-            </div>
+    footerFramer.init([
+      ( // main
+        <section className="float-footer-frame frame-1">
+          <button className="button-comment" onClick={() => footerFramer.walk(1)}>
+            <div className="icon-sm"><ChatBubbleIconBorder /></div>
             <p>댓글 쓰기</p>
           </button>
     
@@ -51,10 +51,9 @@ const Float = () => {
           </button>
         </section>
       ),
-      // comment frame
-      (
-        <section className="frame-comment">
-          <button className="button-back icon-sm" onClick={() => framer.walk(-1)}>
+      ( // comment
+        <section className="float-footer-frame frame-2">
+          <button className="button-back icon-sm" onClick={() => footerFramer.walk(-1)}>
             <ArrowBackIosIcon />
           </button>
           <div className="comment-input-box">
@@ -66,30 +65,23 @@ const Float = () => {
         </section>
       ),
     ]);
+    return <div className="float-footer">{footerFramer.view()}</div>;
+  }
 
-    const scrollDirection = useSelector(state => state.global.scrollDirection);
-    return (
-      <footer className={`footer ${scrollDirection === -1 ? "hide" : ""}`}>
-        {framer.view()}
-      </footer>
-    );
-  };
+  useEffect(() => {
+    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
+    return () => (floatRef.current?.setHeader(<></>), floatRef.current?.setFooter(<></>));
+  }, [floatRef.current]);
 
-  return (
-    <aside className="float">
-      <Header />
-      <Footer />
-    </aside>
-  )
+  return <></>;
 };
 
 
-const Post = ({ me, postId }) => {
+const Post = ({ floatRef, postId }) => {
   const navigate = useNavigate();
 
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
-  //const me = userViewModel.getMyData();
 
   const postViewModel = new PostViewModel(new PostModel());
   const post = postViewModel.getData(postId);
@@ -134,15 +126,12 @@ const Post = ({ me, postId }) => {
     );
   };
 
-  const imageViewerElement = useRef();
-  const imageGridAction = index => imageViewerElement.current.setIndex(index);
+  const imageViewerRef = useRef();
+  const imageGridAction = index => imageViewerRef.current?.setIndex(index);
+
 
   return (
     <div className="page">
-      <ImageViewer images={post.content.images} ref={imageViewerElement} />
-
-      <Float />
-      
       <header className="header">
         <div className="right">
           <button className="button-more icon-sm icon-container">
@@ -170,14 +159,14 @@ const Post = ({ me, postId }) => {
             </div>
           </header>
     
-          <nav className="tag-wrap">
-            <SellIconBorder height="1.25rem" fill="#999" />
+          <nav className="tags-wrap">
+            <SellIconBorder />
             <ul className="tags">{post.tags.map(makeTag)}</ul>
           </nav>
     
           <main className="body">
             <p className="text">{post.content.text}</p>
-            <div className="images">
+            <div className="images full">
               <ImageGrid images={post.content.images} shop={post.shop} action={imageGridAction} />
             </div>
     
@@ -194,6 +183,10 @@ const Post = ({ me, postId }) => {
           </footer>
         </article>
       </main>
+
+      <ImageViewer images={post.content.images} ref={imageViewerRef} />
+
+      <FloatHandler floatRef={floatRef} />
     </div>
   );
 };

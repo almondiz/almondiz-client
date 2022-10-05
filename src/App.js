@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Navigate, BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
+import React, { useEffect, useRef } from "react";
+import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
@@ -20,6 +20,8 @@ import Notice from "./views/notice";
 import Settings from "./views/settings";
 import NotFound from "./views/not-found";
 
+import Float from "./components/float";
+import Backdrop from "./components/backdrop";
 import BottomNav from "./components/bottom-nav";
 
 
@@ -57,23 +59,31 @@ const Monitor = () => {
   };
   initLocationHandler();
 
-  return false;
+  return <></>;
+};
+
+const ScrollToTop = () => {
+  const { pathname } = useLocation();
+  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  return <></>;
 };
 
 
-const MainLayout = () => {
-  return (
-    <>
-      <Outlet />
-      <BottomNav />
-    </>
-  );
+const MainLayout = ({ floatRef }) => {
+  useEffect(() => {
+    floatRef.current?.setBottomNav(<BottomNav />);
+    return () => floatRef.current?.setBottomNav(<></>);
+  });
+  
+  return <Outlet />;
 };
 
 const App = () => {
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
-  const me = userViewModel.getMyData();
+
+  const floatRef = useRef();
+  const backdropRef = useRef();
 
   return (
     <>
@@ -84,28 +94,33 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           
-          <Route element={<MainLayout />}>
-            <Route path="/feed" element={<Feed me={me} />} />
-            <Route path="/post" element={<Post postId={1} me={me} />} />
+          <Route element={<MainLayout floatRef={floatRef} />}>
+            <Route path="/feed" element={<Feed backdropRef={backdropRef} />} />
+            <Route path="/post" element={<Post postId={1} floatRef={floatRef} />} />
 
             <Route path="/search" element={<Search />} />
-            <Route path="/scrap" element={<Scrap me={me} />} />
+            <Route path="/scrap" element={<Scrap />} />
             <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
-            <Route path="/profile/:userId" element={<Profile me={me} />} />
+            <Route path="/profile/:userId" element={<Profile floatRef={floatRef} />} />
 
-            <Route path="/subscriptions" element={<Subscriptions me={me} />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
           </Route>
 
-          <Route path="/edit" element={<Edit me={me} />} />
+          <Route path="/edit" element={<Edit floatRef={floatRef} backdropRef={backdropRef} />} />
 
-          <Route path="/notice" element={<Notice me={me} />} />
-          <Route path="/settings" element={<Settings me={me} />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/settings" element={<Settings />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
 
-      <Monitor />
+        <Float ref={floatRef} />
+        <Backdrop ref={backdropRef} />
+
+        <ScrollToTop />
+
+        <Monitor />
+      </BrowserRouter>
     </>
   );
 };
