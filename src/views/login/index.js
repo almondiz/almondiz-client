@@ -48,7 +48,7 @@ const LoginPage = () => {
     console.log(res);
   }
 
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientId = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID_NETLIFY;
 
   useEffect(() => {
     const start = () => {

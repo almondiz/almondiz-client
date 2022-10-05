@@ -62,12 +62,12 @@ module.exports = {
       template: "./public/index.html",
       favicon: "./public/favicon.ico"
     }),
+    new DotenvWebpackPlugin(),
     new EnvironmentPlugin({
       NODE_ENV: "development",
       DEBUG: false,
-      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+      GOOGLE_CLIENT_ID_NETLIFY: process.env.GOOGLE_CLIENT_ID || "",
     }),
-    new DotenvWebpackPlugin(),
     // only develoment
     new ReactRefreshPlugin()
   ],
