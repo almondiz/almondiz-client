@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
