@@ -1,6 +1,7 @@
 @import "./pretendardvariable";
 
 
+html,
 body {
   margin: 0;
   padding: 0;
@@ -17,6 +18,7 @@ body {
   background-color: var(--background-color);
 }
 
+html,
 body,
 body * {
   box-sizing: border-box !important;
@@ -77,6 +79,8 @@ ul {
 }
 
 .noscroll {
+  margin: 0;
+  height: 100%;
   overflow: hidden;
 }
 
