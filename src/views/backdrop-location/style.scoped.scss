@@ -28,7 +28,7 @@
   left: 0;
   right: 0;
   top: 4rem;
-  bottom: 8rem;
+  bottom: 8.5rem;
 
   border-top: 1px solid #eee;
   border-bottom: 1px solid #eee;
@@ -38,7 +38,8 @@
   padding-left: $padding-horiz;
   padding-right: $padding-horiz;
 
-  height: 8rem;
+  height: 8.5rem;
+  padding-bottom: .5rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -70,7 +71,7 @@
 }
 
 
-.map-float {
+.location-drawer {
   pointer-events: none;
   &>* {
     pointer-events: auto;
@@ -89,13 +90,13 @@
       pointer-events: auto;
     }
   
-    padding-top: 1.5rem;
+    padding-top: 1rem;
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
     transition: all .3s ease;
 
-    .textfield {
+    .tf {
       margin-top: 4rem;
       margin-bottom: 1rem;
 
@@ -103,7 +104,7 @@
     }
   }
   .frame-1 {
-    .textfield {
+    .tf {
       margin-left: -.5rem;
       margin-right: -.5rem;
       background-color: rgba(255, 255, 255, .75);
@@ -116,7 +117,7 @@
     height: 100vh;
     background-color: var(--background-color);
 
-    .textfield {
+    .tf {
       margin-top: -1rem;
     }
     .shop-list {
@@ -178,15 +179,14 @@
   }
 
   z-index: 101;
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
-  bottom: 8rem;
+  bottom: 0;
 
   .button-set-current-location {
-    margin-left: auto;
-    margin-right: 1rem;
-    margin-bottom: 1.5rem;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
 
     height: 3rem;
     width: 3rem;

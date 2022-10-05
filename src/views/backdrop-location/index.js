@@ -14,9 +14,9 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border";
 
 
-const MapFloat = ({ bottomRef }) => {
-  const [textfield, setTextfield] = useState("");
-  const handleTextfield = e => setTextfield(e.target.value);
+const LocationDrawer = ({ bottomRef }) => {
+  const [tf, setTf] = useState("");
+  const handleTf = e => setTf(e.target.value);
   const subframer = new Framer();
 
   const DummyBottomContent = () => (
@@ -25,7 +25,7 @@ const MapFloat = ({ bottomRef }) => {
         <h3 className="title">아주대학교</h3>
         <p className="description">경기 수원시 영통구 월드컵로 206 (원천동)</p>
       </div>
-      <button className="text-button button-select-shop" onClick={() => {}}>
+      <button className="button-select-shop text-button" onClick={() => {}}>
         <LocationOnIconBorder />
         설정
       </button>
@@ -34,7 +34,7 @@ const MapFloat = ({ bottomRef }) => {
   const keywordToElement = { "아주대학교": <DummyBottomContent />, };
 
   const fooHandler = keyword => {
-    setTextfield(keyword);
+    setTf(keyword);
     if (keywordToElement[keyword])
       bottomRef.current?.show({ content: keywordToElement[keyword] });
     else
@@ -45,18 +45,18 @@ const MapFloat = ({ bottomRef }) => {
   subframer.init([
     (
       <section className="frame-1">
-        <div className="textfield" onClick={() => { setTextfield(""); subframer.move(1); }}>
-          <div className="textfield-icon"><SearchIconBorder /></div>
-          <input className="textfield-box" type="text" placeholder="장소 검색" value={textfield} readOnly />
+        <div className="tf" onClick={() => { setTf(""); subframer.move(1); }}>
+          <div className="tf-icon"><SearchIconBorder /></div>
+          <input className="tf-box" type="text" placeholder="장소 검색" value={tf} readOnly />
         </div>
       </section>
     ),
     (
       <section className="frame-2">
-        <div className="textfield">
-          <button className="textfield-icon" onClick={() => fooHandler("")}><ArrowBackIosIcon /></button>
-          <input className="textfield-box" type="text" placeholder="장소 검색" value={textfield} onChange={handleTextfield} autoFocus />
-          <button className="textfield-clear-button" onClick={() => setTextfield("")}><CancelIconFill /></button>
+        <div className="tf">
+          <button className="tf-icon" onClick={() => fooHandler("")}><ArrowBackIosIcon /></button>
+          <input className="tf-box" type="text" placeholder="장소 검색" value={tf} onChange={handleTf} autoFocus />
+          {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
         </div>
 
         <ul className="shop-list">
@@ -73,7 +73,7 @@ const MapFloat = ({ bottomRef }) => {
     ),
   ]);
 
-  return <aside className="map-float">{subframer.view()}</aside>;
+  return <aside className="location-drawer">{subframer.view()}</aside>;
 };
 
 
@@ -86,7 +86,7 @@ const Bottom = forwardRef((_, ref) => {
 
   return (
     <footer className="bottom">
-      <button className="button-set-current-location icon-sm right">
+      <button className="button-set-current-location icon-sm">
         <LocationSearchingIcon />
       </button>
       <div className="bottom-item">{content}</div>
@@ -110,7 +110,7 @@ const BackdropLocation = () => {
         </div>
       </div>
 
-      <MapFloat bottomRef={bottomRef} />
+      <LocationDrawer bottomRef={bottomRef} />
       <div className="map-container">
         <NaverMap id="map-find-shop" />
         <Bottom ref={bottomRef} />

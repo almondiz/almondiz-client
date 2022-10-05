@@ -10,7 +10,7 @@ import FrameWrite from "./frame-write";
 import "./style.scoped.scss";
 
 
-const Edit = ({ backdropRef }) => {
+const Edit = ({ floatRef, backdropRef }) => {
   /*const [ curStep, setCurStep ] = useState(0);
 
   const moveStep = val => {
@@ -33,14 +33,10 @@ const Edit = ({ backdropRef }) => {
     <FrameFindShop framer={framer} />,
     <FrameDirect framer={framer} />,
     <FrameDirectTag framer={framer} />,
-    <FrameWrite framer={framer} backdropRef={backdropRef} />,
+    <FrameWrite framer={framer} floatRef={floatRef} backdropRef={backdropRef} />,
   ]);
 
-  return (
-    <div className="page">
-      {framer.view()}
-    </div>
-  );
+  return <div className="page">{framer.view()}</div>;
 };
 
 export default Edit;

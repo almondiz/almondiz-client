@@ -15,15 +15,13 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 
-const PostItem = ({ postId, post, me }) => {
+const PostItem = ({ postId, post }) => {
   const navigate = useNavigate();
 
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
-  //const me = userViewModel.getMyData();
 
   const postViewModel = new PostViewModel(new PostModel());
-  //const post = postViewModel.getData(index);
   const postAuthorId = post.userId;
   const postAuthor = userViewModel.getData(postAuthorId);
 
@@ -56,7 +54,7 @@ const PostItem = ({ postId, post, me }) => {
         </div>
       </header>
 
-      <nav className="tag-wrap">
+      <nav className="tags-wrap">
         <SellIconBorder />
         <ul className="tags">{post.tags.map(makeTag)}</ul>
       </nav>

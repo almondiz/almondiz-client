@@ -159,23 +159,21 @@ ul {
 }
 
 
-.textfield {
+.tf {
   background-color: #eee;
 
-  border-radius: 1.25rem;
-
   display: flex;
-
-  height: 2.5rem;
   align-items: center;
 
-  padding-left: .5rem;
-  padding-right: .5rem;
+  height: 3rem;
+  border-radius: 1.5rem;
 
+  padding-left: .75em;
+  padding-right: .75rem;
   font-size: .9375rem;
 
   &-icon {
-    margin-left: .25rem;
+    margin-left: .125rem;
 
     height: 1.5rem;
     width: 1.5rem;

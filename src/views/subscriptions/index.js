@@ -8,10 +8,11 @@ import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
-const Subscriptions = ({ me }) => {
+const Subscriptions = ({}) => {
   const navigate = useNavigate();
 
   const userViewModel = new UserViewModel(new UserModel());
+  const me = userViewModel.getMyData();
 
   const makeSubscribingList = (userId, idx) => {
     const user = userViewModel.getData(userId);

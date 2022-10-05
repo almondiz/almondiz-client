@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: $bottom-nav-height + 1.5rem + 3rem;
+  padding-bottom: $bottom-nav-height + 1rem + 3rem;
 
   &>.header {
     width: 100%;
@@ -7,7 +7,6 @@
     padding-right: $padding-horiz;
   
     height: $page-header-height;
-    margin-top: .5rem;
   
     display: flex;
     justify-content: space-between;
@@ -127,7 +126,7 @@
         }
       }
     
-      .tag-wrap {
+      .tags-wrap {
         ::v-deep {
           svg {
             height: 1.25rem;
@@ -157,7 +156,7 @@
             border-radius: .625rem;
             color: #666;
       
-            font-size: .8125rem;
+            font-size: .75rem;
       
             display: flex;
             align-items: center;
@@ -296,151 +295,85 @@
 
 
 .float {
-  pointer-events: none;
-  &>* {
-    pointer-events: auto;
-  }
-
-  z-index: 10;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-
-  &>.header {
-    pointer-events: none;
-    &>* {
-      pointer-events: auto;
-    }
-
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    &.hide {
-      top: -$page-header-height;
-    }
-    transition: top .3s ease;
-  
-    height: $page-header-height;
-    margin-top: .5rem;
-  
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  
-    .button-back {
-      position: absolute;
-      left: 1rem;
-    
-      width: 3rem;
-      height: 3rem;
-      
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    
-      border-radius: 1.5rem;
-      background-color: rgba(255, 255, 255, .75);
-      -webkit-backdrop-filter: blur(.5rem);
-      backdrop-filter: blur(.5rem);
-      //border: 1px solid rgba(238, 238, 238, .5);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-    }
-  }
-  
-  &>.footer {
-    pointer-events: none;
-    &>[class|="frame"] {
-      pointer-events: none;
-      &>* {
-        pointer-events: auto;
-      }
-
-      height: 100%;
-    }
-
-    position: absolute;
-    left: 1rem;
-    right: 1rem;
-    bottom: $bottom-nav-height + 1.5rem;
-    &.hide {
-      bottom: 1.5rem;
-    }
-    transition: bottom .3s ease;
-  
-    height: 3rem;
-    
-    &>.frame-main {
-      display: flex;
-      justify-content: space-between;
-
-      &>* {
-        min-width: 3rem;
-
-        border-radius: 1.5rem;
+  &-header {
+    &-frame.frame-1 {
+      .button-back {      
         background-color: rgba(255, 255, 255, .75);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
-        //border: 1px solid rgba(238, 238, 238, .5);
         box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-      }
-  
-      .button-comment {
+        border-radius: 1.5rem;
+    
         display: flex;
+        justify-content: center;
         align-items: center;
 
+        height: 3rem;
+      }
+      .button-back {
+        width: 3rem;
+      }
+    }
+  }
+  &-footer {
+    &-frame.frame-1 {
+      .button-comment,
+      .button-scrap {
+        background-color: rgba(255, 255, 255, .75);
+        -webkit-backdrop-filter: blur(.5rem);
+        backdrop-filter: blur(.5rem);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        border-radius: 1.5rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 3rem;
+      }
+
+      .button-comment {
+        padding: 0 1.25rem;
         p {
           margin-left: .5rem;
           font-size: .875rem;
         }
-
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
+      }
+      .button-scrap {
+        width: 3rem;
       }
     }
-  
-    &>.frame-comment {
-      display: flex;
-      justify-content: space-between;
-      align-items: stretch;
-
-      border-radius: 1.5rem;
+    &-frame.frame-2 {
       background-color: rgba(255, 255, 255, .75);
       -webkit-backdrop-filter: blur(.5rem);
       backdrop-filter: blur(.5rem);
-      //border: 1px solid rgba(238, 238, 238, .5);
       box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+      border-radius: 1.5rem;
 
       .button-back {
         height: 3rem;
         width: 3rem;
       }
-  
       .comment-input-box {
         margin-left: 0;
-        margin-right: .5rem;
+        margin-right: .375rem;
         margin-top: auto;
         margin-bottom: auto;
         flex: 1;
 
+        height: 2.25rem;
+        border-radius: 1.125rem;
+
         display: flex;
         align-items: center;
-
-        height: 2rem;
-        border-radius: 1rem;
 
         background-color: rgb(238, 238, 238);
         box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
 
-        padding-left: .5rem;
-        padding-right: .5rem;
+        padding: 0 .5rem;
 
         input[type="text"] {
-          all: unset;
-
-          width: 100%;
+          flex: 1;
           padding-left: .375rem;
           padding-right: .375rem;
           font-size: .875rem;
