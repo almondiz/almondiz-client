@@ -20,7 +20,7 @@ const FrameProfile = ({
   getRandomNutList,
 }) => {
   const [randomProfiles, setRandomProfiles] = useState([null, null, null].map(() => getRandomProfile()));
-  let _changeProfile = () => {
+  let _onChangeProfile = () => {
     let _randomProfiles = [...randomProfiles];
     _randomProfiles.shift();
     _randomProfiles.push(getRandomProfile());
@@ -59,7 +59,7 @@ const FrameProfile = ({
           <div className="thumb candidate" style={{ backgroundColor: randomProfiles[1][1] }}>{randomProfiles[1][0]}</div>
           <div className="thumb-wrap">
             <div className="thumb" style={{ backgroundColor: randomProfiles[0][1] }}>{randomProfiles[0][0]}</div>
-            <button className="refresh-icon" onClick={_changeProfile}>
+            <button className="refresh-icon" onClick={_onChangeProfile}>
               <RefreshIcon />
             </button>
           </div>
