@@ -31,8 +31,6 @@
 
 
 .search-drawer {
-  pointer-events: none;
-
   z-index: 10;
   position: fixed;
   left: 0;
@@ -41,11 +39,6 @@
   bottom: 0;
 
   .tf-frame {
-    //pointer-events: none;
-    //&>* {
-      pointer-events: auto;
-    //}
-  
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
@@ -89,10 +82,10 @@
     }
   }
   .tf-frame.tf-frame-3 {
-    top: -5rem + 1.5rem;
+    top: 1rem - $page-header-height;
 
     &.hide {
-      top: -$page-header-height - 5rem + 1.5rem;
+      top: 1rem - $page-header-height - $page-header-height;
     }
 
     .tf {
