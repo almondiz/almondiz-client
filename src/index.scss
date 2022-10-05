@@ -1,12 +1,5 @@
 @import "./pretendardvariable";
 
-html {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -23,7 +16,6 @@ body {
   background-color: var(--background-color);
 }
 
-html,
 body,
 body * {
   box-sizing: border-box !important;
