@@ -14,7 +14,7 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border";
 
 
-const MapFloat = ({ bottomRef }) => {
+const LocationDrawer = ({ bottomRef }) => {
   const [tf, setTf] = useState("");
   const handleTf = e => setTf(e.target.value);
   const subframer = new Framer();
@@ -73,7 +73,7 @@ const MapFloat = ({ bottomRef }) => {
     ),
   ]);
 
-  return <aside className="map-float">{subframer.view()}</aside>;
+  return <aside className="location-drawer">{subframer.view()}</aside>;
 };
 
 
@@ -110,7 +110,7 @@ const BackdropLocation = () => {
         </div>
       </div>
 
-      <MapFloat bottomRef={bottomRef} />
+      <LocationDrawer bottomRef={bottomRef} />
       <div className="map-container">
         <NaverMap id="map-find-shop" />
         <Bottom ref={bottomRef} />

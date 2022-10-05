@@ -242,71 +242,27 @@
 
 
 .float {
-  pointer-events: none;
-  &>* {
-    pointer-events: auto;
-  }
-
-  z-index: 10;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  
-  pointer-events: none;
-  &>* {
-    pointer-events: auto;
-  }
-
-  &>.footer {
-    pointer-events: none;
-    &>[class|="frame"] {
-      pointer-events: none;
-      &>* {
-        pointer-events: auto;
-      }
-
-      height: 100%;
-    }
-
-    z-index: 10;
-    position: fixed;
-    left: 1rem;
-    right: 1rem;
-    bottom: 1rem;
-    &.hide {
-      bottom: 1rem - $page-header-height;
-    }
-    transition: bottom .3s ease;
-
-    height: 3rem;
-    
-    &>.frame-main {
-      display: flex;
-      justify-content: space-between;
-
-      &>* {
-        min-width: 3rem;
-
-        border-radius: 1.5rem;
+  &-footer {
+    &-frame.frame-1 {
+      .button-add-image {
         background-color: rgba(255, 255, 255, .75);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
         box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-      }
-  
-      .button-add-image {
+        border-radius: 1.5rem;
+
         display: flex;
+        justify-content: center;
         align-items: center;
 
+        height: 3rem;
+      }
+      .button-add-image {
+        padding: 0 1.25rem;
         p {
           margin-left: .5rem;
           font-size: .875rem;
         }
-
-        padding-left: 1.25rem;
-        padding-right: 1.25rem;
       }
     }
   }
@@ -367,7 +323,7 @@
     bottom: 0;
   }
 
-  .map-float {
+  .edit-drawer {
     pointer-events: none;
     &>* {
       pointer-events: auto;

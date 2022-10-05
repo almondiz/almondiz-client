@@ -15,8 +15,12 @@ const Backdrop = forwardRef((_, ref) => {
     setVisible(true);
   };
   const hide = () => {
-    setTitle(""), setContent(<></>);
+    const DELAY = 300;
     setVisible(false);
+    setTimeout(() => {
+      if (!visible)
+        setTitle(""), setContent(<></>);
+    }, DELAY);
   };
   useImperativeHandle(ref, () => ({ show: show, hide: hide, }));
 

@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import { Framer } from "../../util";
 import { PostModel } from "../../models";
@@ -15,48 +14,41 @@ import AddAPhotoBorder from "../../asset/icons/mui/add-a-photo-icon-border";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 
-const makeTag = (tag, idx) => (
-  <li key={idx} className="tag">
-    {tag}
-    {/*<button className="tag-cancel-button"><CloseIcon /></button>*/}
-  </li>
-);
+const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
 
 
-const Float = () => {
+const FloatHandler = ({ floatRef }) => {
+  const headerFramer = new Framer(), footerFramer = new Framer();
+
+  const Header = () => {
+    headerFramer.init([]);
+    return <div className="float-header">{headerFramer.view()}</div>;
+  };
   const Footer = () => {
-    const framer = new Framer([
-      // main frame
-      (
-        <section className="frame-main">
+    footerFramer.init([
+      ( // main
+        <section className="float-footer-frame frame-1">
           <button className="button-add-image right" onClick={() => {}}>
-            <div className="icon-sm">
-              <AddAPhotoBorder />
-            </div>
+            <div className="icon-sm"><AddAPhotoBorder /></div>
             <p>사진 추가</p>
           </button>
         </section>
       ),
     ]);
+    return <div className="float-footer">{footerFramer.view()}</div>;
+  }
 
-    const scrollDirection = useSelector(state => state.global.scrollDirection);
-    return (
-      <footer className={`footer ${scrollDirection === -1 ? "hide" : ""}`}>
-        {framer.view()}
-      </footer>
-    );
-  };
+  useEffect(() => {
+    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
+    return () => (floatRef.current?.setHeader(<></>), floatRef.current?.setFooter(<></>));
+  }, [floatRef.current]);
 
-  return (
-    <aside className="float">
-      <Footer />
-    </aside>
-  )
+  return <></>;
 };
 
 
 // frame 4
-const FrameWrite = ({ framer, backdropRef }) => {
+const FrameWrite = ({ framer, floatRef, backdropRef }) => {
   const navigate = useNavigate();
 
   const postViewModel = new PostViewModel(new PostModel());
@@ -74,8 +66,6 @@ const FrameWrite = ({ framer, backdropRef }) => {
 
   return (
     <>
-      <Float />
-
       <nav className="navbar">
         <button className="button-back icon-sm" onClick={() => framer.walk(-3)}>
           <ArrowBackIcon />
@@ -110,6 +100,8 @@ const FrameWrite = ({ framer, backdropRef }) => {
           </main>
         </article>
       </main>
+
+      <FloatHandler floatRef={floatRef} />
     </>
   )
 };

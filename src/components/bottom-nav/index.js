@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import { UserModel, NoticeModel } from "../../models";
 import { UserViewModel, NoticeViewModel } from "../../view-models";
@@ -21,8 +20,6 @@ const BottomNav = () => {
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
-
-  const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
@@ -52,7 +49,7 @@ const BottomNav = () => {
     const Icon = icons[idx][focus ? 1 : 0];
     return (
       <button className="button" onClick={() => navigate(paths[idx])}>
-        <div className={`icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
+        <div className={`icon icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
       </button>
@@ -70,7 +67,7 @@ const BottomNav = () => {
   };
 
   return (
-    <nav className={`bottom-nav ${scrollDirection === -1 ? "hide" : ""}`}>
+    <nav className="bottom-nav">
       <div className="border" style={borderStyle[index]} />
       <ul className="buttons">
         {makeButton(0)}

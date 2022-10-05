@@ -1,20 +1,23 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { PostModel } from "../../models";
-import { PostViewModel } from "../../view-models";
+import { UserModel, PostModel } from "../../models";
+import { UserViewModel, PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
 
 
-const Scrap = ({ me }) => {
+const Scrap = ({}) => {
   const navigate = useNavigate();
+
+  const userViewModel = new UserViewModel(new UserModel());
+  const myUserId = userViewModel.getMyUserId();
 
   const postViewModel = new PostViewModel(new PostModel());
   const posts = postViewModel.getDummyData();
-  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
+  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} />;
 
   return (
     <div className="page">

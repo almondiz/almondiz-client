@@ -25,7 +25,7 @@ const makeTag = ([ name, region, deletable ], idx) => {
 };
 
 
-const Float = ({ contentRef, me }) => {
+const SearchDrawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const [tf, setTf] = useState("");
@@ -38,7 +38,7 @@ const Float = ({ contentRef, me }) => {
   const DummyContent = () => {
     const postViewModel = new PostViewModel(new PostModel());
     const posts = postViewModel.getDummyData();
-    const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
+    const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} />;
 
     return <section className="post-list">{posts.map(makePost)}</section>;
   };
@@ -150,12 +150,12 @@ const Float = ({ contentRef, me }) => {
     ),
   ]);
 
-  return <aside className="map-float">{tfFramer.view()}</aside>;
+  return <aside className="search-drawer">{tfFramer.view()}</aside>;
 };
 
 
 
-const Content = forwardRef((_, ref) => {
+const SearchContent = forwardRef((_, ref) => {
   const InitContent = () => <></>;
   
   const [content, setContent] = useState(<InitContent />);
@@ -165,16 +165,14 @@ const Content = forwardRef((_, ref) => {
   return <main className="content">{content}</main>;
 });
 
-const Search = ({ me }) => {
-  const navigate = useNavigate();
-
+const Search = ({}) => {
   const contentRef = useRef();
 
   return (
     <div className="page">
       <header className="header" />
-      <Float contentRef={contentRef} me={me} />
-      <Content ref={contentRef} />
+      <SearchDrawer contentRef={contentRef} />
+      <SearchContent ref={contentRef} />
     </div>
   );
 };

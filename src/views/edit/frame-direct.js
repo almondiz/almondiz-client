@@ -13,7 +13,7 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 
 
-const MapFloat = ({ bottomRef }) => {
+const EditDrawer = ({ bottomRef }) => {
   const [tf, setTf] = useState("");
   const handleTf = e => setTf(e.target.value);
   const subframer = new Framer();
@@ -70,7 +70,7 @@ const MapFloat = ({ bottomRef }) => {
     ),
   ]);
 
-  return <aside className="map-float">{subframer.view()}</aside>;
+  return <aside className="edit-drawer">{subframer.view()}</aside>;
 };
 
 
@@ -98,8 +98,6 @@ const Bottom = forwardRef((_, ref) => {
 
 // frame 2
 const FrameDirect = ({ framer }) => {
-  const navigate = useNavigate();
-
   const bottomRef = useRef();
 
   return (
@@ -113,7 +111,7 @@ const FrameDirect = ({ framer }) => {
       </nav>
 
       <main className="content find-shop">
-        <MapFloat framer={framer} bottomRef={bottomRef} />
+        <EditDrawer framer={framer} bottomRef={bottomRef} />
         <div className="map-container">
           <NaverMap id="map-init-shop" />
           <Bottom ref={bottomRef} />
