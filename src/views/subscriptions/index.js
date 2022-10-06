@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { UserModel } from "../../models";
@@ -8,7 +8,28 @@ import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
-const Subscriptions = ({}) => {
+const FloatController = ({ floatRef, me }) => {
+  const navigate = useNavigate();
+
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <div className="button-back icon-sm" onClick={() => navigate(-1)}>
+        <ArrowBackIcon />
+      </div>
+      <h3 className="title">구독 <span className="count">{Object.keys(me.subscribing).length}</span></h3>
+    </nav>
+  );
+
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
+const Subscriptions = ({ floatRef }) => {
   const navigate = useNavigate();
 
   const userViewModel = new UserViewModel(new UserModel());
@@ -34,18 +55,13 @@ const Subscriptions = ({}) => {
 
   return (
     <div className="page">
-      <nav className="navbar">
-        <div className="button-back icon-sm" onClick={() => navigate(`/me`)}>
-          <ArrowBackIcon />
-        </div>
-        <h3 className="title">구독 <span className="count">{Object.keys(me.subscribing).length}</span></h3>
-      </nav>
-
       <main className="content">
         <ul className="subscribing-list">
           {Object.keys(me.subscribing).map(makeSubscribingList)}
         </ul>
       </main>
+
+      <FloatController floatRef={floatRef} me={me} />
     </div>
   );
 };

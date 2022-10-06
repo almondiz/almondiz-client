@@ -1,37 +1,30 @@
 .page {
-  &>[class|="frame"] {
-    &>.navbar {
-      //background-color: var(--background-color);
-      //border-bottom: 1px solid #eee;
-    
+  &>.frame {
+    &>.top-nav {    
       z-index: 10;
       position: fixed;
       left: 0;
       right: 0;
       top: 0;
-      height: 4rem;
+      height: $float-bottom-height;
     
       display: flex;
       align-items: center;
       justify-content: center;
       
-      .button-back {
-        z-index: 1;
-    
-        position: absolute;
-        left: .25rem;
-    
-        height: 4rem;
-        width: 4rem;
-      }
-    
-      .title {
-        font-size: 1.125rem;
-        font-weight: 700;
+      &>.title {
+        font-size: 1rem;
     
         display: flex;
         justify-content: center;
         align-items: center;
+      }
+      &>.button-back {
+        height: 3rem;
+        width: 3rem;
+  
+        position: absolute;
+        left: .5rem;
       }
     }
 
@@ -91,7 +84,7 @@
     }
   }
 
-  &>.frame-social {   // frame 1
+  &>.frame.frame-social {   // frame 1
     &>.content {
       .description {
         margin-bottom: 1.5rem;
@@ -120,7 +113,7 @@
     }
   }
 
-  &>.frame-profile {    // frame 2
+  &>.frame.frame-profile {    // frame 2
     &>.content {
       .menu-thumb {
         display: flex;
@@ -311,7 +304,7 @@
     }
   }
   
-  &>.frame-confirm {    // frame 3
+  &>.frame.frame-confirm {    // frame 3
     &>.content {
       .description {
         margin-bottom: 1.5rem;
@@ -369,8 +362,3 @@
     }
   }
 }
-
-
-
-
-

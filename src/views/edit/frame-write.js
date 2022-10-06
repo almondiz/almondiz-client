@@ -17,9 +17,10 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
 
 
-const FloatController = ({ floatRef }) => {
-  const headerFrame = new Frame(), footerFrame = new Frame();
+const FloatController = ({ floatRef, frame }) => {
+  const navigate = useNavigate();
 
+  const headerFrame = new Frame(), footerFrame = new Frame();
   const Header = () => {
     headerFrame.init([]);
     return <div className="float-header">{headerFrame.view()}</div>;
@@ -38,9 +39,19 @@ const FloatController = ({ floatRef }) => {
     return <div className="float-footer">{footerFrame.view()}</div>;
   }
 
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => frame.walk(-3)}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">리뷰 작성</h3>
+      <button className="button-next" onClick={() => navigate(`/me`)}>게시</button>
+    </nav>
+  );
+
   useEffect(() => {
-    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
-    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
+    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />), floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter(), floatRef.current?.setTop());
   }, [floatRef.current]);
 
   return <></>;
@@ -49,8 +60,6 @@ const FloatController = ({ floatRef }) => {
 
 // frame 4
 const FrameWrite = ({ frame, floatRef, backdropRef }) => {
-  const navigate = useNavigate();
-
   const postViewModel = new PostViewModel(new PostModel());
   const post = postViewModel.getData(1);
 
@@ -66,14 +75,6 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
 
   return (
     <>
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => frame.walk(-3)}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">리뷰 작성</h3>
-        <button className="button-next" onClick={() => navigate(`/me`)}>게시</button>
-      </nav>
-
       <main className="content">
         <article className="post">
           <header className="header">
@@ -101,7 +102,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
         </article>
       </main>
 
-      <FloatController floatRef={floatRef} />
+      <FloatController floatRef={floatRef} frame={frame} />
     </>
   )
 };

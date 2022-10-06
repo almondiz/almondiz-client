@@ -31,8 +31,8 @@ const FrameProfile = ({
   const [randomNutList, ] = useState(getRandomNutList());
 
   return (
-    <div className="frame-profile">
-      <nav className="navbar">
+    <div className="frame frame-profile">
+      <nav className="top-nav">
         <button className="button-back icon-sm" onClick={() => frame.prev()}>
           <ArrowBackIcon />
         </button>

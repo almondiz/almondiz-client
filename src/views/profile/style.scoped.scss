@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: $bottom-nav-height + 1rem + 3rem;
+  padding-bottom: $float-bottom-height + 1rem;
 
   &>.header {
     width: 100%;
@@ -245,8 +245,8 @@
 }
 
 
-.float {
-  &-header {
+#float {
+  .float-header {
     &-frame.frame-1 {
       .button-back {      
         background-color: rgba(255, 255, 255, .75);

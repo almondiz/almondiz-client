@@ -1,24 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
-const Settings = () => {
+const FloatController = ({ floatRef }) => {
   const navigate = useNavigate();
 
-  //const makeSettingsList = (userId, idx) => {};
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">알림</h3>
+    </nav>
+  );
 
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
+const Settings = ({ floatRef }) => {
   return (
     <div className="page">
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">개인 설정</h3>
-      </nav>
-
       <main className="content">
         <ul className="settings-list">
           <li className="settings-item">
@@ -48,13 +58,6 @@ const Settings = () => {
               <p className="title">FAQ</p>
             </div>
           </li>
-          {/*<li className="settings-item">
-            <div className="text-wrap">
-              <p className="title">버전 정보</p>
-              <p className="info">최신 버전 : 1.0.1</p>
-            </div>
-            <div className="right">1.0.1</div>
-          </li>*/}
           <br />
           
           <li className="settings-item">
@@ -76,6 +79,8 @@ const Settings = () => {
           </li>
         </ul>
       </main>
+
+      <FloatController floatRef={floatRef} />
     </div>
   );
 };

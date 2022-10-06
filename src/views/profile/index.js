@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 import { Frame } from "../../util";
 import { UserModel, PostModel, NoticeModel } from "../../models";
@@ -14,14 +13,12 @@ import LogotypeImage from "../../asset/logo/logotype.svg";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
-import EditIconFill from "../../asset/icons/mui/edit-icon-fill";
 
 
 const FloatController = ({ floatRef, userId, myUserId }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame(), footerFrame = new Frame();
-
   const Header = () => {
     headerFrame.init([
       ( // main

@@ -16,6 +16,27 @@ import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border"
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 
 
+const FloatController = ({ floatRef }) => {
+  const navigate = useNavigate();
+
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <div className="button-back icon-sm" onClick={() => navigate(-1)}>
+        <ArrowBackIcon />
+      </div>
+      <h3 className="title">리뷰 작성</h3>
+    </nav>
+  );
+
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
 const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
 
 const EditDrawer = ({ frame, mapBottomRef }) => {
@@ -150,20 +171,11 @@ const Bottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindShop = ({ frame }) => {
-  const navigate = useNavigate();
-
+const FrameFindShop = ({ frame, floatRef }) => {
   const mapBottomRef = useRef();
 
   return (
     <>
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">리뷰 작성</h3>
-      </nav>
-
       <main className="content find-shop">
         <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
         <div className="map-container">
@@ -171,6 +183,8 @@ const FrameFindShop = ({ frame }) => {
           <Bottom ref={mapBottomRef} />
         </div>
       </main>
+
+      <FloatController floatRef={floatRef} />
     </>
   )
 };

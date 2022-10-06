@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getTime } from "../../util";
@@ -10,9 +10,28 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
-const Notice = () => {
+const FloatController = ({ floatRef }) => {
   const navigate = useNavigate();
 
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">알림</h3>
+    </nav>
+  );
+
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
+const Notice = ({ floatRef }) => {
   const userViewModel = new UserViewModel(new UserModel());
   const myUserId = userViewModel.getMyUserId();
   const me = userViewModel.getMyData();
@@ -40,16 +59,11 @@ const Notice = () => {
 
   return (
     <div className="page">
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">알림</h3>
-      </nav>
-
       <main className="content">
         <ul className="notice-list">{notices.map(makeNotice)}</ul>
       </main>
+
+      <FloatController floatRef={floatRef} />
     </div>
   );
 };

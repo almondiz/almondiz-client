@@ -11,8 +11,8 @@ const FrameSocial = ({ frame }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="frame-social">
-      <nav className="navbar">
+    <div className="frame frame-social">
+      <nav className="top-nav">
         <button className="button-back icon-sm" onClick={() => navigate(-1)}>
           <ArrowBackIcon />
         </button>

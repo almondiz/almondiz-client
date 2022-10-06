@@ -1,58 +1,71 @@
-.page {
-  &>.navbar {
-    background-color: var(--background-color);
-    //border-bottom: 1px solid #eee;
-  
-    z-index: 10;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 4rem;
-  
+#float {
+  .float-top {
+    background-color: rgba(255, 255, 255, .75);
+    -webkit-backdrop-filter: blur(.5rem);
+    backdrop-filter: blur(.5rem);
+    box-shadow: 0 1px 3rem rgba(0, 0, 0, .125);
+
     display: flex;
     align-items: center;
     justify-content: center;
 
-    background-color: rgba(255, 255, 255, .75);
-    -webkit-backdrop-filter: blur(.5rem);
-    backdrop-filter: blur(.5rem);
-    //box-shadow: 0 -1px 3px rgba(0, 0, 0, .375);
-    
-    .button-back {
-      z-index: 1;
-  
-      position: absolute;
-      left: .25rem;
-  
-      height: 4rem;
-      width: 4rem;
-    }
-    .button-next {
-      z-index: 1;
-      
-      position: absolute;
-      right: 1.5rem;
-
-      height: 4rem;
-
+    &>.title {
       font-size: 1rem;
-      color: var(--content-text-color);
-    }
-  
-    .title {
-      font-size: 1.125rem;
-      font-weight: 700;
   
       display: flex;
       justify-content: center;
       align-items: center;
     }
+    
+    &>.button-back {
+      height: 3rem;
+      width: 3rem;
+
+      position: absolute;
+      left: .5rem;
+    }
+    &>.button-next {
+      height: 3rem;
+
+      position: absolute;
+      right: 1.5rem;
+
+      font-size: 1rem;
+      color: var(--content-text-color);
+    }
   }
 
+  .float-footer {
+    &-frame.frame-1 {
+      .button-add-image {
+        background-color: rgba(255, 255, 255, .75);
+        -webkit-backdrop-filter: blur(.5rem);
+        backdrop-filter: blur(.5rem);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        border-radius: 1.5rem;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        height: 3rem;
+      }
+      .button-add-image {
+        padding: 0 1.25rem;
+        p {
+          margin-left: .5rem;
+          font-size: .875rem;
+        }
+      }
+    }
+  }
+}
+
+
+.page {
   &>.content {
-    margin-top: 4rem;
-    //padding-top: 1rem;
+    padding-top: $float-bottom-height + 1rem;
+    padding-bottom: $page-header-height;
   }
 }
 
@@ -214,7 +227,6 @@
   &>.body {
     padding: 1rem $padding-horiz;
     padding-bottom: 0;
-    margin-bottom: 5.5rem;
 
     .text {
       color: var(--primary-text-color);
@@ -238,34 +250,6 @@
 
     .images {
       margin-top: 1.25rem;
-    }
-  }
-}
-
-
-.float {
-  &-footer {
-    &-frame.frame-1 {
-      .button-add-image {
-        background-color: rgba(255, 255, 255, .75);
-        -webkit-backdrop-filter: blur(.5rem);
-        backdrop-filter: blur(.5rem);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-        border-radius: 1.5rem;
-
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        height: 3rem;
-      }
-      .button-add-image {
-        padding: 0 1.25rem;
-        p {
-          margin-left: .5rem;
-          font-size: .875rem;
-        }
-      }
     }
   }
 }
@@ -309,10 +293,10 @@
   margin: unset;
   padding: unset;
 
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
-  top: 0;
+  top: $float-bottom-height;
   bottom: 0;
 
   .map-container {
@@ -323,6 +307,9 @@
     right: 0;
     top: 0;
     bottom: 0;
+
+    border-top: 1px solid #eee;
+    border-bottom: 1px solid #eee;
   }
 
   .edit-drawer {
@@ -339,7 +326,7 @@
     bottom: 0;
 
     .tf-frame {
-      padding-top: 4rem;
+      padding-top: $float-bottom-height;
       padding-left: $padding-horiz;
       padding-right: $padding-horiz;
 

@@ -30,13 +30,15 @@ const Edit = ({ floatRef, backdropRef }) => {
 
   const frame = new Frame();
   frame.init([
-    <FrameFindShop frame={frame} />,
-    <FrameDirect frame={frame} />,
-    <FrameDirectTag frame={frame} />,
+    <FrameFindShop frame={frame} floatRef={floatRef} />,
+    <FrameDirect frame={frame} floatRef={floatRef} />,
+    <FrameDirectTag frame={frame} floatRef={floatRef} />,
     <FrameWrite frame={frame} floatRef={floatRef} backdropRef={backdropRef} />,
   ]);
 
-  return <div className="page">{frame.view()}</div>;
+  return (
+    <div className="page">{frame.view()}</div>
+  );
 };
 
 export default Edit;

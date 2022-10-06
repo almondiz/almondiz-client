@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: $bottom-nav-height;
+  padding-bottom: $float-bottom-height;
 
   &>.header {
     width: 100%;
@@ -198,7 +198,7 @@
 
 .button-search {
   position: fixed;
-  bottom: $bottom-nav-height + 2rem;
+  bottom: $float-bottom-height + 2rem;
   left: 50%;
   transform: translateX(-50%);
 

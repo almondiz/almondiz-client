@@ -18,16 +18,21 @@
   background-color: #fff;
   box-shadow: 0 -1px 3rem rgba(0, 0, 0, .25);
 
-  &>.header {
-    //border-bottom: 1px solid #eee;
-  
+  &>.header {  
     z-index: 10;
-    height: 4rem;
+    height: $float-bottom-height;
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    .button-close {
+  
+    &>.title {
+      font-size: 1rem;
+  
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &>.button-close {
       z-index: 1;
 
       display: flex;
@@ -36,21 +41,13 @@
       margin-left: .25rem;
       margin-right: -1rem;
     }
-  
-    .title {
-      font-size: 1rem;
-  
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
   }
 
   &>.content {
     position: absolute;
     left: 0;
     right: 0;
-    top: 4rem;
+    top: $float-bottom-height;
     bottom: 0;
   }
 }

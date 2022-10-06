@@ -64,7 +64,7 @@ const Monitor = () => {
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return <></>;
 };
 
@@ -96,20 +96,20 @@ const App = () => {
           
           <Route element={<MainLayout floatRef={floatRef} />}>
             <Route path="/feed" element={<Feed backdropRef={backdropRef} />} />
-            <Route path="/post" element={<Post postId={1} floatRef={floatRef} />} />
+            <Route path="/post" element={<Post floatRef={floatRef} postId={1} />} />
 
-            <Route path="/search" element={<Search />} />
-            <Route path="/scrap" element={<Scrap />} />
+            <Route path="/search" element={<Search floatRef={floatRef} />} />
+            <Route path="/scrap" element={<Scrap floatRef={floatRef} />} />
             <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
             <Route path="/profile/:userId" element={<Profile floatRef={floatRef} />} />
 
-            <Route path="/subscriptions" element={<Subscriptions />} />
+            <Route path="/subscriptions" element={<Subscriptions floatRef={floatRef} />} />
           </Route>
 
           <Route path="/edit" element={<Edit floatRef={floatRef} backdropRef={backdropRef} />} />
 
-          <Route path="/notice" element={<Notice />} />
-          <Route path="/settings" element={<Settings />} />
+          <Route path="/notice" element={<Notice floatRef={floatRef} />} />
+          <Route path="/settings" element={<Settings floatRef={floatRef} />} />
 
           <Route path="*" element={<NotFound />} />
         </Routes>

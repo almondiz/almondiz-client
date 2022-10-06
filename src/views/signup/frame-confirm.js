@@ -10,8 +10,8 @@ const FrameConfirm = ({ frame, callSignup }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="frame-confirm">
-      <nav className="navbar">
+    <div className="frame frame-confirm">
+      <nav className="top-nav">
         <button className="button-back icon-sm" onClick={() => frame.prev()}>
           <ArrowBackIcon />
         </button>

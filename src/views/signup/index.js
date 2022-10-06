@@ -61,9 +61,7 @@ const Signup = () => {
   ]);
 
   return (
-    <div className="page">
-      {frame.view()}
-    </div>
+    <div className="page">{frame.view()}</div>
   );
 };
 

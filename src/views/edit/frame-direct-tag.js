@@ -11,6 +11,26 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 import CloseIcon from "../../asset/icons/mui/close-icon";
 
 
+const FloatController = ({ floatRef, frame }) => {
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => frame.prev()}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">음식점 등록</h3>
+      <button className="button-next" onClick={() => frame.walk(-2)}>등록</button>
+    </nav>
+  );
+
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
 const makeTag = (tag, idx) => (
   <li key={idx} className="tag">
     {tag}
@@ -18,9 +38,8 @@ const makeTag = (tag, idx) => (
   </li>
 );
 
-
 // frame 3
-const FrameDirectTag = ({ frame }) => {
+const FrameDirectTag = ({ frame, floatRef }) => {
   const postViewModel = new PostViewModel(new PostModel());
   const post = postViewModel.getData(1);
 
@@ -51,14 +70,6 @@ const FrameDirectTag = ({ frame }) => {
 
   return (
     <>
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => frame.prev()}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">태그 추가</h3>
-        <button className="button-next" onClick={() => frame.walk(-2)}>등록</button>
-      </nav>
-
       <main className="content">
         <article className="post">
           <header className="header">
@@ -81,6 +92,8 @@ const FrameDirectTag = ({ frame }) => {
           </nav>
         </article>
       </main>
+
+      <FloatController floatRef={floatRef} frame={frame} />
     </>
   )
 };

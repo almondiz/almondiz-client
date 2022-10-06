@@ -1,4 +1,5 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { isEmptyElement } from "../../util";
@@ -19,7 +20,7 @@ const HideOnScroll = () => {
       document.querySelector(".float-footer-wrap").classList.add("hide");
     else
       document.querySelector(".float-footer-wrap").classList.remove("hide");
-  }, [scrollDirection])
+  }, [scrollDirection]);
 
   return <></>;
 };
@@ -31,6 +32,14 @@ const Float = forwardRef((_, ref) => {
   const [footer, setFooter] = useState(<></>);
   const [bottom, setBottom] = useState(<></>);
   useImperativeHandle(ref, () => ({setTop: setTop, setHeader: setHeader, setFooter: setFooter, setBottom: setBottom, }));
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (document.body.scrollHeight <= window.innerHeight)
+      document.querySelector("#float").classList.add("noshadow");
+    else
+      document.querySelector("#float").classList.remove("noshadow");
+  }, [pathname, top, bottom]);
 
   const FloatHeader = () => (
     <div className={`float-header-wrap${!isEmptyElement(top) ? " has-top" : ""}`}>
@@ -46,7 +55,7 @@ const Float = forwardRef((_, ref) => {
   );
 
   return (
-    <aside className="float">
+    <aside id="float">
       <FloatHeader />
       <FloatFooter />
 

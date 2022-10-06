@@ -13,6 +13,26 @@ import MyLocationIconFill from "../../asset/icons/mui/my-location-icon-fill";
 import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 
 
+const FloatController = ({ floatRef, frame }) => {
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => frame.prev()}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">음식점 등록</h3>
+      <button className="button-next" onClick={() => frame.next()}>다음</button>
+    </nav>
+  );
+
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
 const EditDrawer = ({ mapBottomRef }) => {
   const tfPlaceholder = "장소 검색";
   const [tf, setTf] = useState("");
@@ -135,19 +155,11 @@ const Bottom = forwardRef((_, ref) => {
 
 
 // frame 2
-const FrameDirect = ({ frame }) => {
+const FrameDirect = ({ frame, floatRef }) => {
   const mapBottomRef = useRef();
 
   return (
     <>
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => frame.prev()}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">음식점 등록</h3>
-        <button className="button-next" onClick={() => frame.next()}>다음</button>
-      </nav>
-
       <main className="content find-shop">
         <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
         <div className="map-container">
@@ -155,6 +167,8 @@ const FrameDirect = ({ frame }) => {
           <Bottom ref={mapBottomRef} />
         </div>
       </main>
+
+      <FloatController floatRef={floatRef} frame={frame} />
     </>
   )
 };

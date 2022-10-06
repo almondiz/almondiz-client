@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -24,7 +24,6 @@ const FloatController = ({ floatRef }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame(), footerFrame = new Frame();
-
   const Header = () => {
     headerFrame.init([
       ( // main
@@ -57,11 +56,11 @@ const FloatController = ({ floatRef }) => {
             <ArrowBackIosIcon />
           </button>
           <div className="comment-input-box">
-            <input type="text" autoFocus />
-            <button className="button-send icon-sm right">
-              <SendIconBorder />
-            </button>
+            <input type="text" placeholder="댓글 입력" autoFocus />
           </div>
+          <button className="button-comment-send icon-sm right">
+            <SendIconBorder />
+          </button>
         </section>
       ),
     ]);

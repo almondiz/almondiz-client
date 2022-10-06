@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { PostModel } from "../../models";
@@ -13,8 +12,6 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 
 
 const Feed = ({ backdropRef }) => {
-  const navigate = useNavigate();
-
   const location = useSelector(state => state.global.location);
   const address = location.address.split(" ");
 
@@ -41,9 +38,7 @@ const Feed = ({ backdropRef }) => {
         </div>
       </header>
       <main className="content">
-        <section className="post-list">
-          {posts.map(makePost)}
-        </section>
+        <section className="post-list">{posts.map(makePost)}</section>
       </main>
     </div>
   );

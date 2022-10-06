@@ -67,7 +67,7 @@ const MainBottomNav = () => {
   };
 
   return (
-    <nav className="bottom-nav">
+    <nav className="float-bottom main-bottom-nav">
       <div className="border" style={borderStyle[index]} />
       <ul className="buttons">
         {makeButton(0)}

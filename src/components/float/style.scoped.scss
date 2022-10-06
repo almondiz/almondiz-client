@@ -1,4 +1,4 @@
-.float {
+#float {
   z-index: 10;
 
   position: fixed;
@@ -21,7 +21,7 @@
     top: -$page-header-height;
   }
   &.hide.has-top {
-    top: -$bottom-nav-height;
+    top: -$float-bottom-height;
   }
   transition: top .3s ease;
 }
@@ -31,39 +31,65 @@
     bottom: -$page-header-height;
   }
   &.hide.has-bottom {
-    bottom: -$bottom-nav-height;
+    bottom: -$float-bottom-height;
   }
   transition: bottom .3s ease;
 }
 
 ::v-deep {
-  .float-header {
+  .float-header,
+  .float-footer {
     &-frame {
-      margin: 1rem;
       pointer-events: none;
       &>* {
         pointer-events: auto;
       }
 
+      margin: 1rem;
       display: flex;
       justify-content: space-between;
+    }
+  }
+  .float-header {
+    &-frame {
       align-items: flex-start;
     }
   }
   .float-footer {
     &-frame {
-      margin: 1rem;
-      pointer-events: none;
-      &>* {
-        pointer-events: auto;
-      }
-
-      display: flex;
-      justify-content: space-between;
       align-items: flex-end;
     }
   }
-  .bottom-nav {
+
+  .float-top,
+  .float-bottom {
     pointer-events: auto;
+  }
+  .float-top {
+    height: $float-bottom-height + 10rem;
+    margin-top: -10rem;
+    padding-top: 10rem;
+  }
+  .float-bottom {
+    height: $float-bottom-height + 10rem;
+    margin-bottom: -10rem;
+    padding-bottom: 10rem;
+  }
+}
+
+#float {
+  ::v-deep {
+    .float-top,
+    .float-bottom {
+      transition: box-shadow .5s ease;
+    }
+  }
+}
+#float.noshadow {
+  ::v-deep {
+    .float-top,
+    .float-bottom {
+      box-shadow: none !important;
+    }
   }
 }

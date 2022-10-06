@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: $bottom-nav-height + 1rem + 3rem;
+  padding-bottom: $float-bottom-height + $page-header-height;
 
   &>.header {
     width: 100%;
@@ -305,8 +305,8 @@
 }
 
 
-.float {
-  &-header {
+#float {
+  .float-header {
     &-frame.frame-1 {
       .button-back {      
         background-color: rgba(255, 255, 255, .75);
@@ -326,7 +326,7 @@
       }
     }
   }
-  &-footer {
+  .float-footer {
     &-frame.frame-1 {
       .button-comment,
       .button-scrap {
@@ -361,33 +361,47 @@
       box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
       border-radius: 1.5rem;
 
+      height: 3rem;
+
+      position: relative;
       .button-back {
+        z-index: 1;
+        position: absolute;
+        left: 0;
+
+        height: 3rem;
+        width: 3rem;
+      }
+      .button-comment-send {
+        z-index: 1;
+        position: absolute;
+        right: .375rem;
+
         height: 3rem;
         width: 3rem;
       }
       .comment-input-box {
-        margin-left: 0;
-        margin-right: .375rem;
-        margin-top: auto;
-        margin-bottom: auto;
-        flex: 1;
+        position: absolute;
+        left: 3rem;
+        right: .375rem;
+        top: .375rem;
+        bottom: .375rem;
 
         height: 2.25rem;
         border-radius: 1.125rem;
 
-        display: flex;
-        align-items: center;
-
         background-color: rgb(238, 238, 238);
         box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
 
-        padding: 0 .5rem;
+        display: flex;
+        align-items: center;
+
+        padding-left: 1rem;
+        padding-right: 3rem;
 
         input[type="text"] {
-          flex: 1;
-          padding-left: .375rem;
-          padding-right: .375rem;
-          font-size: .875rem;
+          width: 100%;
+          font-size: .9375rem;
         }
       }
     }

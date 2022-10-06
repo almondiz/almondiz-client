@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useLocation } from "react-router-dom";
 
 import { Phase, NoScroll } from "../../util";
 
@@ -7,6 +8,9 @@ import ExpandMoreIcon from "../../asset/icons/mui/expand-more-icon";
 
 
 const Backdrop = forwardRef((_, ref) => {
+  const { pathname } = useLocation();
+  useEffect(() => { phase.go("hide-in"); }, [pathname]);
+
   const [visible, setVisible] = useState(false);
   const [title, setTitle] = useState("")
   const [content, setContent] = useState(<></>);
@@ -18,7 +22,7 @@ const Backdrop = forwardRef((_, ref) => {
     },
     "hide-out": (_title, _content) => {
       setVisible(true), setTitle(_title), setContent(_content);
-      setTimeout(() => phase.go("show"), 0);
+      setTimeout(() => phase.go("show"), DELAY);
     },
     "show": () => {},
     "hide-in": () => {
