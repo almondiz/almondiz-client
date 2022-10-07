@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { UserModel, NoticeModel } from "../../models";
-import { UserViewModel, NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
@@ -21,9 +20,9 @@ const MainBottomNav = () => {
 
   const { pathname } = useLocation();
 
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
-  const noticeViewModel = new NoticeViewModel(new NoticeModel());
+  const userModel = new UserModel();
+  const myUserId = userModel.getMyUserId();
+  const noticeModel = new NoticeModel();
 
   const [index, setIndex] = useState(null);
 
@@ -49,7 +48,7 @@ const MainBottomNav = () => {
     const Icon = icons[idx][focus ? 1 : 0];
     return (
       <button className="button" onClick={() => navigate(paths[idx])}>
-        <div className={`icon icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userViewModel.hasUnreadNotices(noticeViewModel)) ? "badge" : ""}`}>
+        <div className={`icon icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userModel.hasUnreadNotices(noticeModel)) ? "badge" : ""}`}>
           <Icon />
         </div>
       </button>

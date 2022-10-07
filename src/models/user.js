@@ -93,9 +93,9 @@ export default class UserModel extends DefaultModel {
   };
 
   getSubscribingCount(id=this.getMyUserId()) { return Object.keys(this.data[id].subscribing).length; }
-  getSubscribedCount(postViewModel, id=this.getMyUserId()) {
+  getSubscribedCount(postModel, id=this.getMyUserId()) {
     let count = 0;
-    this.data[id].posts.map(postId => count += postViewModel.getData(postId).scrapped.length);
+    this.data[id].posts.map(postId => count += postModel.getData(postId).scrapped.length);
     return count;
   }
 
@@ -110,10 +110,10 @@ export default class UserModel extends DefaultModel {
     return this.data[dst].profile.name;
   }
 
-  hasUnreadNotices(noticeViewModel, id=this.getMyUserId()) {
+  hasUnreadNotices(noticeModel, id=this.getMyUserId()) {
     const notices = this.data[id].notices;
     for (let i = 0; i < notices.length; i++)
-      if (!noticeViewModel.getData(notices[i]).isRead[id])
+      if (!noticeModel.getData(notices[i]).isRead[id])
         return true;
     return false;
   }

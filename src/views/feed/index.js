@@ -12,14 +12,22 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 
 
 const Feed = ({ backdropRef }) => {
-  const location = useSelector(state => state.global.location);
-  const address = location.address.split(" ");
+  // POST API
+  const dataList = (() => {
+    const postViewModel = new PostViewModel(new PostModel());
+    return postViewModel.getDummyData();
+  })();
+  //
 
-  const postViewModel = new PostViewModel(new PostModel());
-  const posts = postViewModel.getDummyData();
-  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} />;
 
-  const showBackdropLocation = () => backdropRef.current?.show({ title: "위치 설정하기", content: <BackdropLocation />, });
+  const addressTokens = (() => {
+    const location = useSelector(state => state.global.location);
+    const address = location.address.split(" ");
+    return [ address.slice(0, -1).join(" "), address[address.length - 1] ];   // [ "수원 영통구", "원천동" ]
+  })();
+
+  const showBackdropLocation = () => backdropRef.current?.show({ title: "위치 설정", content: <BackdropLocation />, });
+
 
   return (
     <div className="page">
@@ -28,17 +36,15 @@ const Feed = ({ backdropRef }) => {
         <div className="right">
           <button className="button-location" onClick={() => showBackdropLocation()}>
             <div className="location-text">
-              <p className="description">{address.slice(0, -1).join(" ")}</p>
-              <h3 className="title">{address[address.length - 1]}</h3>
+              <p className="description">{addressTokens[0]}</p>
+              <h3 className="title">{addressTokens[1]}</h3>
             </div>
-            <div className="icon-sm">
-              <LocationSearchingIcon />
-            </div>
+            <div className="icon-sm"><LocationSearchingIcon /></div>
           </button>
         </div>
       </header>
       <main className="content">
-        <section className="post-list">{posts.map(makePost)}</section>
+        <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
       </main>
     </div>
   );

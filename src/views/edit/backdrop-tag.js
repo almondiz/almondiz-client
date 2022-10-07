@@ -20,7 +20,7 @@ const makeTag = (tag, idx) => (
 
 const BackdropTag = () => {
   const postViewModel = new PostViewModel(new PostModel());
-  const post = postViewModel.getData(1);
+  const data = postViewModel.getData(1);
 
   const tfPlaceholder = "태그를 추가하세요";
   const [tf, setTf] = useState("");
@@ -30,7 +30,7 @@ const BackdropTag = () => {
 
   const tagFrame = new Frame([
     (
-      <ul className="tags">{post.tags.map(makeTag)}</ul>
+      <ul className="tags">{data.postTags.map(makeTag)}</ul>
     ),
     (
       <div className="tag-list-group">
@@ -51,13 +51,13 @@ const BackdropTag = () => {
     <>
       <article className="post">
         <header className="header">
-          <a href={post.shop.link} className="shop">
-            <div className="thumb" style={{ backgroundImage: `url(${post.shop.thumb})` }} />
+          <div className="shop">
+            <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
             <div className="text-wrap">
-              <p className="name">{post.shop.name}</p>
-              <p className="date">{post.shop.location.address}</p>
+              <p className="name">{data.shopName}</p>
+              <p className="date">{data.shopAddress}</p>
             </div>
-          </a>
+          </div>
         </header>
   
         <nav className="tags-wrap area-edit-tag">

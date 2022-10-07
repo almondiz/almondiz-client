@@ -1,31 +1,33 @@
 .image-slider {
+  width: 100%;
+
   position: relative;
   display: flex;
   justify-content: center;
-
-  width: 100%;
 }
 
 .indicator {
   position: absolute;
-  bottom: -1.25rem;
+  bottom: .75rem;
   display: flex;
   align-items: center;
   gap: .5rem;
 }
 
 .indicator div {
-  width: .3125rem;
-  height: .3125rem;
-  cursor: pointer;
-  background: #ccc;
-  border-radius: 100%;
+  width: .375rem;
+  height: .375rem;
+  border-radius: .1875rem;
+  background: rgba(255, 255, 255, .5);
+  -webkit-backdrop-filter: blur(.25rem);
+  backdrop-filter: blur(.25rem);
+
+  transition: width .2s ease;
 }
 
 .indicator div.highlight {
-  width: .4375rem;
-  height: .4375rem;
-  background-color: var(--content-text-color);
+  width: 1rem;
+  background: rgba(255, 255, 255, 1);
 }
 
 .slides {

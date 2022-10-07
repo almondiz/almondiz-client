@@ -12,11 +12,11 @@ const generateRandomGrid = (Y, X, TILES) => {
     const seed = new Array(TILES + 1);
 
     const _plant = () => {
-      map[Y - 1][X - 2] = map[Y - 1][X - 1] = -TILES, seed[TILES] = { y: Y - 1, x: X - 2 };   // for shop-link
+      //map[Y - 1][X - 2] = map[Y - 1][X - 1] = -TILES, seed[TILES] = { y: Y - 1, x: X - 2 };   // for shop-link
 
       let tile;
       let y, x, tmp;
-      for (tile = 1; tile <= TILES - 1; tile++) {
+      for (tile = 1; tile <= TILES; tile++) {
         while (true) {
           tmp = Math.floor(Math.random() * (Y * X));
           y = Math.floor(tmp / X), x = tmp % X;
@@ -37,7 +37,7 @@ const generateRandomGrid = (Y, X, TILES) => {
       let { y, x } = seed[tile];
       let y_m = y, y_M = y;
       let x_m = x, x_M = x;
-      if (tile === TILES)   x_M = x + 1;
+      //if (tile === TILES)   x_M = x + 1;
 
       let order = [ 0, 1, 2, 3 ];
       _shuffleArray(order);
@@ -122,10 +122,10 @@ const generateRandomGrid = (Y, X, TILES) => {
       for (y = 0; y < Y; y++) {
         for (x = 0; x < X; x++) {
           if ((tile = map[y][x]) < 0) {
-            if (tile === -TILES) {    // for shop-link
+            /*if (tile === -TILES) {    // for shop-link
               map[y][x] *= -1;
               continue;
-            }
+            }*/
 
             for (y1 = y; y1 < Y; y1++) {
               if (map[y1][x] !== tile)   break;
@@ -178,7 +178,7 @@ const ImageGrid = ({ images, shop, action=(() => {}) }) => {
   const makeGridStyle = () => {
     let N = Math.round(images.length / 2) + 1;  // # of rows
     let M = 3;                                  // # of columns
-    let TILES = images.length + 1;              // # of tiles (including a shop link tile)
+    let TILES = images.length;// + 1;              // # of tiles (including a shop link tile)
 
     const ImageGridStyle = {
       gridTemplateRows: `repeat(${N}, 1fr)`,
@@ -190,8 +190,11 @@ const ImageGrid = ({ images, shop, action=(() => {}) }) => {
   };
 
   return (
+    <>
     <div className="image-grid" style={makeGridStyle()}>
       {images.map(makeCell)}
+    </div>
+    {/*<div className="image-grid">
       <a href={shop.link} className="grid shop-link" style={{ gridArea: `grid-${images.length + 1}` }}>
         <div className="content">
           <div>
@@ -202,7 +205,8 @@ const ImageGrid = ({ images, shop, action=(() => {}) }) => {
         </div>
         <div className="image" style={{ backgroundImage: `url(${shop.thumb})` }} />
       </a>
-    </div>
+  </div>*/}
+    </>
   );
 };
 

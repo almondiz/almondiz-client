@@ -40,8 +40,13 @@ const makeTag = (tag, idx) => (
 
 // frame 3
 const FrameDirectTag = ({ frame, floatRef }) => {
-  const postViewModel = new PostViewModel(new PostModel());
-  const post = postViewModel.getData(1);
+  // POST API
+  const data = (postId => {
+    const postViewModel = new PostViewModel(new PostModel());
+    return postViewModel.getData(postId);
+  })(1);
+  //
+  
 
   const tfPlaceholder = "태그를 추가하세요";
   const [tf, setTf] = useState("");
@@ -73,13 +78,13 @@ const FrameDirectTag = ({ frame, floatRef }) => {
       <main className="content">
         <article className="post">
           <header className="header">
-            <a href={post.shop.link} className="shop">
+            <div className="shop">
               <div className="thumb" style={{ backgroundImage: `` }} />
               <div className="text-wrap">
                 <p className="name">아주대 앞 포장마차</p>
-                <p className="date">{post.shop.location.address}</p>
+                <p className="date">{data.shopAddress}</p>
               </div>
-            </a>
+            </div>
           </header>
     
           <nav className="tags-wrap area-edit-tag">

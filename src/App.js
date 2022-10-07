@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
 
 import { UserModel } from "./models";
-import { UserViewModel } from "./view-models";
 
 import Login from "./views/login";
 import Signup from "./views/signup";
@@ -79,8 +78,8 @@ const MainLayout = ({ floatRef }) => {
 };
 
 const App = () => {
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
+  const userModel = new UserModel();
+  const myUserId = userModel.getMyUserId();
 
   const floatRef = useRef();
   const backdropRef = useRef();

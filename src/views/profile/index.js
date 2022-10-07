@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Frame } from "../../util";
 import { UserModel, PostModel, NoticeModel } from "../../models";
-import { UserViewModel, PostViewModel, NoticeViewModel } from "../../view-models";
+import { PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
 
@@ -48,23 +48,31 @@ const FloatController = ({ floatRef, userId, myUserId }) => {
 const Profile = ({ floatRef }) => {
   const navigate = useNavigate();
 
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
-  const me = userViewModel.getMyData();
+  const userModel = new UserModel();
+  const myUserId = userModel.getMyUserId();
   const userId = parseInt(useParams().userId);
-  const user = userViewModel.getData(userId);
+  const user = userModel.getData(userId);
 
-  const postViewModel = new PostViewModel(new PostModel());
-  const posts = [];
-  user.posts.map(postId => posts.push(postViewModel.getData(postId)));
-  const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} me={me} />;
+  const postModel = new PostModel();
+  
+  // POST API
+  const dataList = (() => {
+    const postModel = new PostModel();
+    const postViewModel = new PostViewModel(postModel);
+
+    const _dataList = [];
+    user.posts.map(postId => _dataList.push(postViewModel.getData(postId)));
+    return _dataList;
+  })();
+  //
+  
 
   const MakeSubscribingList = (userId, idx) => {
-    const user = userViewModel.getData(userId);
+    const user = userModel.getData(userId);
     return <div key={idx} className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>;
   };
 
-  const noticeViewModel = new NoticeViewModel(new NoticeModel());
+  const noticeModel = new NoticeModel();
 
   return (
     <div className="page">
@@ -75,7 +83,7 @@ const Profile = ({ floatRef }) => {
             <>
               <img className="brand" alt="brand" src={LogotypeImage} />
               <div className="right">
-                <button className={`button-notice icon-sm icon-container ${userViewModel.hasUnreadNotices(noticeViewModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
+                <button className={`button-notice icon-sm icon-container ${userModel.hasUnreadNotices(noticeModel) ? "badge" : ""}`} onClick={() => navigate(`/notice`)}>
                   <NotificationsIconBorder />
                 </button>
                 <button className="button-settings icon-sm icon-container" onClick={() => navigate(`/settings`)}>
@@ -96,7 +104,7 @@ const Profile = ({ floatRef }) => {
         }
       </header>
       <main className="content">
-        <div className={`profile-wrap ${userId === myUserId ? "me" : userViewModel.isSubscribing(userId) ? "subscribing" : ""}`}>
+        <div className={`profile-wrap ${userId === myUserId ? "me" : userModel.isSubscribing(userId) ? "subscribing" : ""}`}>
           <div className="profile">
             <div className="thumb" style={{ backgroundColor: user.profile.thumb.background }}>{user.profile.thumb.emoji ? user.profile.thumb.emoji : ""}</div>
             {
@@ -107,10 +115,10 @@ const Profile = ({ floatRef }) => {
                   <p className={"email"}>{user.profile.email}</p>
                 </div>
               ) :
-              userViewModel.isSubscribing(userId) ?
+              userModel.isSubscribing(userId) ?
               (
                 <div className="text-wrap">
-                  <p className={"alias"}>{userViewModel.getAlias(userId)}</p>
+                  <p className={"alias"}>{userModel.getAlias(userId)}</p>
                   <p className={"name"}>{user.profile.name}</p>
                 </div>
               ) :
@@ -127,7 +135,7 @@ const Profile = ({ floatRef }) => {
             (
               <></>
             ) :
-            userViewModel.isSubscribing(userId) ?
+            userModel.isSubscribing(userId) ?
             (
               <div className="row-button">
                 <button className="button-unsubscribe">구독 취소</button>
@@ -148,7 +156,7 @@ const Profile = ({ floatRef }) => {
             </div>
             <div className="count half">
               <h5>스크랩된 수</h5>
-              <p>{userViewModel.getSubscribedCount(postViewModel, userId)}</p>
+              <p>{userModel.getSubscribedCount(postModel, userId)}</p>
             </div>
           </div>
           {
@@ -157,7 +165,7 @@ const Profile = ({ floatRef }) => {
               <div className="row">
                 <div className="count">
                   <h5>구독</h5>
-                  <p>{userViewModel.getSubscribingCount(userId)}</p>
+                  <p>{userModel.getSubscribingCount(userId)}</p>
                 </div>
                 <div className="thumbs">
                   {Object.keys(user.subscribing).map(MakeSubscribingList)}
@@ -172,14 +180,12 @@ const Profile = ({ floatRef }) => {
           <div className="row">
             <div className="count">
               <h5>글</h5>
-              <p>{user.posts.length}</p>
+              <p>{dataList.length}</p>
             </div>
             <div className="right" />
           </div>
         </div>
-        <section className="post-list">
-          {posts.map(makePost)}
-        </section>
+        <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
         </main>
 
         <FloatController floatRef={floatRef} userId={userId} myUserId={myUserId} />

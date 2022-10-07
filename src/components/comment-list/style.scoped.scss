@@ -1,0 +1,151 @@
+.buttons {
+  display: flex;
+  align-items: center;
+
+  .button + .button {
+    margin-left: .5rem;
+  }
+}
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 2.5rem;
+  min-width: 2.5rem;
+
+  p {
+    font-size: .8125rem;
+    color: #666;
+  }
+  ::v-deep {
+    svg {
+      height: 1.25rem;
+      width: 1.25rem;
+      fill: #666;
+    }
+  }
+}
+
+.comment-list:not(.root)>.comment-item {
+  padding-left: 1.25rem;
+}
+.comment-unit {   // dynamic effect
+  position: relative;
+  &>.background {
+    z-index: -1;
+    position: absolute;
+    left: -$padding-horiz;
+    right: -$padding-horiz;
+    top: 0;
+    bottom: -1px;
+
+    transition: all .3s ease;
+  }
+
+  &.adding-reply {
+    &>.background {
+      background-color: #eee;
+    }
+    .button-comment-reply {
+      &>p {
+        color: var(--content-text-color);
+      }
+    }
+  }
+}
+
+.comment-list {
+  .comment-item {
+    &>.comment-unit {
+      border-top: 1px solid #eee;
+
+      &>.header,
+      &>.footer {
+        display: flex;
+        align-items: center;
+        height: 2.5rem;
+      }
+      &>.header {
+        .profile {
+          display: flex;
+          align-items: center;
+    
+          .emoji {
+            margin-right: .4375rem;
+            font-size: 1.125rem;
+          }
+          .name {
+            font-size: .875rem;
+            display: flex;
+            align-items: center;
+          }
+          &.me,
+          &.following {
+            .name {
+              font-weight: 700;
+            }
+          }
+          &.author {
+            .name::after {
+              content: "글쓴이";
+              font-size: .625rem;
+              color: #666;
+              border: 1px solid #666;
+              border-radius: 1rem;
+              padding: .125rem .3125rem;
+              margin-left: .25rem;
+            }
+          }
+        }
+        .description {
+          margin-left: .625rem;
+          font-size: .8125rem;
+          color: #666;
+        }
+      }
+      &>.footer {
+        .description {
+          font-size: .8125rem;
+          color: #666;
+        }
+      }
+      &>.text {
+        padding-top: .25rem;
+        padding-bottom: .25rem;
+
+        font-size: .875rem;
+        line-height: 1.25rem;
+      }
+
+      .buttons {
+        .button-comment-more {
+          margin-right: -.625rem;
+        }
+        .button-comment-favorite {
+          justify-content: flex-end;
+          &>p {
+            margin-left: .3125rem;
+          }
+        }
+        .button-comment-reply {
+          justify-content: flex-start;
+          &>p {
+            letter-spacing: .125rem;
+            font-weight: 700;
+          }
+        }
+      }
+    }
+    &>.comment-unit {
+      padding-top: .75rem;
+      padding-bottom: .75rem;
+
+      &>.header,
+      &>.footer {
+        margin-top: -.5rem;
+        margin-bottom: -.5rem;
+      }
+    }
+  }
+}

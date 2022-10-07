@@ -60,8 +60,13 @@ const FloatController = ({ floatRef, frame }) => {
 
 // frame 4
 const FrameWrite = ({ frame, floatRef, backdropRef }) => {
-  const postViewModel = new PostViewModel(new PostModel());
-  const post = postViewModel.getData(1);
+  // POST API
+  const data = (postId => {
+    const postViewModel = new PostViewModel(new PostModel());
+    return postViewModel.getData(postId);
+  })(1);
+  //
+  
 
   const textRef = useRef();
   const handleResizeHeight = () => {
@@ -78,25 +83,25 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
       <main className="content">
         <article className="post">
           <header className="header">
-            <a href={post.shop.link} className="shop">
-              <div className="thumb" style={{ backgroundImage: `url(${post.shop.thumb})` }} />
+            <div className="shop">
+              <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
               <div className="text-wrap">
-                <p className="name">{post.shop.name}</p>
-                <p className="date">{post.shop.location.address}</p>
+                <p className="name">{data.shopName}</p>
+                <p className="date">{data.shopAddress}</p>
               </div>
-            </a>
+            </div>
           </header>
     
           <nav className="tags-wrap">
             <SellIconBorder />
-            <ul className="tags">{post.tags.map(makeTag)}</ul>
+            <ul className="tags">{data.postTags.map(makeTag)}</ul>
             <button className="text-button right" onClick={() => showBackdropTag()}>태그 추가</button>
           </nav>
 
           <main className="body">
             <textarea className="text" ref={textRef} onChange={handleResizeHeight} name="text" placeholder="내용을 입력하세요" autoFocus />
             <div className="images full">
-              <ImageGrid images={post.content.images} shop={post.shop} />
+              <ImageGrid images={data.postImageUrls} shop={data.shop} />
             </div>
           </main>
         </article>

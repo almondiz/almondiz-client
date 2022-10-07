@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import { getTime } from "../../util";
 import { UserModel, NoticeModel } from "../../models";
-import { UserViewModel, NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -32,14 +31,14 @@ const FloatController = ({ floatRef }) => {
 
 
 const Notice = ({ floatRef }) => {
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
-  const me = userViewModel.getMyData();
+  const userModel = new UserModel();
+  const myUserId = userModel.getMyUserId();
+  const me = userModel.getMyData();
 
-  const noticeViewModel = new NoticeViewModel(new NoticeModel());
+  const noticeModel = new NoticeModel();
 
   const notices = [];
-  me.notices.map(noticeId => notices.push(noticeViewModel.getData(noticeId)));
+  me.notices.map(noticeId => notices.push(noticeModel.getData(noticeId)));
   notices.reverse();
 
   const NoticeItem = ({ notice }) => {

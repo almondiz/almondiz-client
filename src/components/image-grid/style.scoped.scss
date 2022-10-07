@@ -1,4 +1,6 @@
 .image-grid {
+  width: 100%;
+  
   display: grid;
   gap: .125rem;
 
@@ -54,7 +56,7 @@
         right: 0;
         top: 0;
         bottom: 0;
-        background-color: #aaa;
+        background-color: #eee;
   
         &::after {
           content: "";

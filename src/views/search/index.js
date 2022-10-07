@@ -34,11 +34,14 @@ const SearchDrawer = ({ contentRef }) => {
   }, [tf]);
 
   const DummyContent = () => {
-    const postViewModel = new PostViewModel(new PostModel());
-    const posts = postViewModel.getDummyData();
-    const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} />;
-
-    return <section className="post-list">{posts.map(makePost)}</section>;
+    // POST API
+    const dataList = (() => {
+      const postViewModel = new PostViewModel(new PostModel());
+      return postViewModel.getDummyData();
+    })();
+    //
+    
+    return <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
   };
   const tfHandler = tfFrameIndex => {
     tfFrame.move(tfFrameIndex);
