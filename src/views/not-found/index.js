@@ -3,7 +3,7 @@ import React from "react";
 import "./style.scoped.scss";
 
 
-const NotFound = () => {
+const NotFoundPage = () => {
   const PIC_TEXT = `(╯°□°）╯︵ ┻━┻`;
   const DESCRIPTION = `이게 머선 페이지고?`;
 
@@ -17,4 +17,4 @@ const NotFound = () => {
   );
 };
 
-export default NotFound;
+export default NotFoundPage;

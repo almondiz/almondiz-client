@@ -8,7 +8,7 @@ import PostItem from "../../components/post-item";
 import "./style.scoped.scss";
 
 
-const Scrap = ({}) => {
+const ScrapPage = ({}) => {
   // POST API
   const dataList = (() => {
     const postViewModel = new PostViewModel(new PostModel());
@@ -30,4 +30,4 @@ const Scrap = ({}) => {
   );
 };
 
-export default Scrap;
+export default ScrapPage;

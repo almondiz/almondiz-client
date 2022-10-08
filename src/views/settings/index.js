@@ -26,7 +26,7 @@ const FloatController = ({ floatRef }) => {
 };
 
 
-const Settings = ({ floatRef }) => {
+const SettingsPage = ({ floatRef }) => {
   return (
     <div className="page">
       <main className="content">
@@ -58,6 +58,11 @@ const Settings = ({ floatRef }) => {
               <p className="title">FAQ</p>
             </div>
           </li>
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">만든 사람들</p>
+            </div>
+          </li>
           <br />
           
           <li className="settings-item">
@@ -85,4 +90,4 @@ const Settings = ({ floatRef }) => {
   );
 };
 
-export default Settings;
+export default SettingsPage;

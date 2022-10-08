@@ -45,7 +45,7 @@ const FloatController = ({ floatRef, userId, myUserId }) => {
 };
 
 
-const Profile = ({ floatRef }) => {
+const ProfilePage = ({ floatRef }) => {
   const navigate = useNavigate();
 
   const userModel = new UserModel();
@@ -193,4 +193,4 @@ const Profile = ({ floatRef }) => {
   );
 };
 
-export default Profile;
+export default ProfilePage;

@@ -5,6 +5,7 @@ import { Frame, NoScroll } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
+import TagList, { TagController } from "../../components/tag-list";
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
@@ -12,16 +13,6 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import SearchIconBorder from "../../asset/icons/mui/search-icon-border";
 import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
 import CloseIcon from "../../asset/icons/mui/close-icon";
-
-
-const makeTag = ([ name, region, deletable ], idx) => {
-  return (
-    <li key={idx} className={`tag tag-${region ? "region" : "food"}`}>
-      {name}
-      {deletable && <button className="tag-cancel-button"><CloseIcon /></button>}
-    </li>
-  );
-};
 
 
 const SearchDrawer = ({ contentRef }) => {
@@ -60,32 +51,40 @@ const SearchDrawer = ({ contentRef }) => {
     }
   };
 
+  // TAG
+  const tagController = new TagController([ "맥주", "호프", ["대구", true] ]);
+  const onClickTagItem = data => {
+    tagController.push(data);
+    setTf("");
+  };
+  //
+
   const tagFrame = new Frame([
     (
-      <div className="tags-wrap">
-        <ul className="tags">{[ ["맥주", false, true], ["호프", false, true], ["대구", true, true] ].map(makeTag)}</ul>
+      <>
+        <TagList controller={tagController} />
         <button className="button-search" onClick={() => tfHandler(2)}>
           <div className="icon-sm"><SearchIconBorder /></div>
           <p>검색하기</p>
         </button>
-      </div>
+      </>
     ),
     (
       <>
         <div className="tag-list-group">
           <h3 className="subheader">음식</h3>
           <ul className="list">
-            <li className="item" onClick={() => setTf("")}>대구탕</li>
+            <li className="item" onClick={() => onClickTagItem("대구탕")}>대구탕</li>
           </ul>
         </div>
         <div className="tag-list-group">
           <h3 className="subheader">지역</h3>
           <ul className="list">
-            <li className="item" onClick={() => setTf("")}>대구</li>
-            <li className="item" onClick={() => setTf("")}>대구 남구</li>
-            <li className="item" onClick={() => setTf("")}>대구 달서구</li>
-            <li className="item" onClick={() => setTf("")}>대구 북구</li>
-            <li className="item" onClick={() => setTf("")}>대구 중구</li>
+            <li className="item" onClick={() => onClickTagItem(["대구", true])}>대구</li>
+            <li className="item" onClick={() => onClickTagItem(["대구 남구", true])}>대구 남구</li>
+            <li className="item" onClick={() => onClickTagItem(["대구 달서구", true])}>대구 달서구</li>
+            <li className="item" onClick={() => onClickTagItem(["대구 북구", true])}>대구 북구</li>
+            <li className="item" onClick={() => onClickTagItem(["대구 중구", true])}>대구 중구</li>
           </ul>
         </div>
       </>
@@ -106,15 +105,15 @@ const SearchDrawer = ({ contentRef }) => {
           <h3 className="subheader">검색 기록</h3>
           <ul className="list">
             <li className="item">
-              <ul className="tags">{[ ["한식"], ["서울", true] ].map(makeTag)}</ul>
+              <TagList dataList={[ "한식", ["서울", true] ]} />
               <button className="button-delete-item"><CloseIcon /></button>
             </li>
             <li className="item">
-              <ul className="tags">{[ ["짬뽕"], ["성남 분당구", true], ["수원 팔달구 우만동", true] ].map(makeTag)}</ul>
+              <TagList dataList={[ "짬뽕", ["성남 분당구", true], ["수원 팔달구 우만동", true] ]} />
               <button className="button-delete-item"><CloseIcon /></button>
             </li>
             <li className="item">
-              <ul className="tags">{[ ["스시"], ["마라탕"], ["천안", true] ].map(makeTag)}</ul>
+              <TagList dataList={[ "스시", "마라탕", ["천안", true] ]} />
               <button className="button-delete-item"><CloseIcon /></button>
             </li>
           </ul>
@@ -148,7 +147,7 @@ const SearchDrawer = ({ contentRef }) => {
         <div className="tf tf-step-3">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <div className="tf-box" onClick={() => tfHandler(1)}>
-            <ul className="tags">{[ ["맥주", false], ["호프", false], ["대구", true] ].map(makeTag)}</ul>
+            <TagList dataList={tagController.tags} />
           </div>
         </div>
       </section>
@@ -170,7 +169,7 @@ const SearchContent = forwardRef((_, ref) => {
   return <main className="content">{content}</main>;
 });
 
-const Search = ({}) => {
+const SearchPage = ({}) => {
   const contentRef = useRef();
 
   return (
@@ -183,4 +182,4 @@ const Search = ({}) => {
 };
 
 
-export default Search;
+export default SearchPage;

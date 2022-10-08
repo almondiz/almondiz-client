@@ -1,19 +1,19 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../util";
+import { Frame } from "../../../util";
 
-import NaverMap from "../../components/naver-map";
+import NaverMap from "../../../components/naver-map";
+import TagList from "../../../components/tag-list";
 
 import "./style.scoped.scss";
-import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
-import SearchIconBorder from "../../asset/icons/mui/search-icon-border";
-import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
-import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
-import MyLocationIconFill from "../../asset/icons/mui/my-location-icon-fill";
-import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
-import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border";
-import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
+import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
+import SearchIconBorder from "../../../asset/icons/mui/search-icon-border";
+import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
+import LocationSearchingIcon from "../../../asset/icons/mui/location-searching-icon";
+import MyLocationIconFill from "../../../asset/icons/mui/my-location-icon-fill";
+import ArrowBackIosIcon from "../../../asset/icons/mui/arrow-back-ios-icon";
+import LocationOnIconBorder from "../../../asset/icons/mui/location-on-icon-border";
 
 
 const FloatController = ({ floatRef }) => {
@@ -36,9 +36,6 @@ const FloatController = ({ floatRef }) => {
   return <></>;
 };
 
-
-const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
-
 const EditDrawer = ({ frame, mapBottomRef }) => {
   const tfPlaceholder = "음식점 검색";
   const [tf, setTf] = useState("");
@@ -47,17 +44,15 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
   }, [tf]);
 
   const DummyContent = () => (
-    <section className="bottom-item-1">
+    <section className="bottom-item">
       <div className="text-wrap">
         <h3 className="title">팔달수제맥주</h3>
         <p className="description">경기 수원시 영통구 동수원로537번길 57 (원...</p>
-        <nav className="tags-wrap">
-          <SellIconBorder />
-          <ul className="tags">{[ "맥주", "호프" ].map(makeTag)}</ul>
-        </nav>
+        <TagList dataList={["맥주", "호프"]} small />
       </div>
       <button className="button-select-shop text-button" onClick={() => frame.walk(3)}>
-        <LocationOnIconBorder />
+        <div className="icon"><LocationOnIconBorder /></div>
+        
         선택
       </button>
     </section>
@@ -89,18 +84,12 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
           <li className="item" onClick={() => tfHandler(2)}>
             <h3 className="title">팔달수제맥주</h3>
             <p className="description">경기 수원시 영통구 동수원로537번길 57 (원천동)</p>
-            <nav className="tags-wrap">
-              <SellIconBorder />
-              <ul className="tags">{[ "맥주", "호프" ].map(makeTag)}</ul>
-            </nav>
+            <TagList dataList={["맥주", "호프"]} small />
           </li>
           <li className="item">
             <h3 className="title">팔달김수산</h3>
             <p className="description">대구 북구 팔달로 139 (노원동3가)</p>
-            <nav className="tags-wrap">
-              <SellIconBorder />
-              <ul className="tags">{[ "수산물" ].map(makeTag)}</ul>
-            </nav>
+            <TagList dataList={["수산물"]} small />
           </li>
         </ul>
         <div className="if-not-found">
@@ -162,9 +151,9 @@ const Bottom = forwardRef((_, ref) => {
   return (
     <footer className="bottom">
       <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
-        {myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}
+        <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>
-      <div className="bottom-item">{content}</div>
+      <div className="bottom-item-container">{content}</div>
     </footer>
   );
 });
@@ -176,7 +165,7 @@ const FrameFindShop = ({ frame, floatRef }) => {
 
   return (
     <>
-      <main className="content find-shop">
+      <main className="content">
         <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
         <div className="map-container">
           <NaverMap id="map-find-shop" />

@@ -6,18 +6,18 @@ import { setScrollDirection } from "./store/slices/global";
 
 import { UserModel } from "./models";
 
-import Login from "./views/login";
-import Signup from "./views/signup";
-import Feed from "./views/feed";
-import Post from "./views/post";
-import Search from "./views/search";
-import Scrap from "./views/scrap";
-import Profile from "./views/profile";
-import Subscriptions from "./views/subscriptions";
-import Edit from "./views/edit";
-import Notice from "./views/notice";
-import Settings from "./views/settings";
-import NotFound from "./views/not-found";
+import LoginPage from "./views/login";
+import SignupPage from "./views/signup";
+import FeedPage from "./views/feed";
+import PostPage from "./views/post";
+import SearchPage from "./views/search";
+import ScrapPage from "./views/scrap";
+import ProfilePage from "./views/profile";
+import SubscriptionsPage from "./views/subscriptions";
+import EditPage from "./views/edit";
+import NoticePage from "./views/notice";
+import SettingsPage from "./views/settings";
+import NotFoundPage from "./views/not-found";
 
 import Float from "./components/float";
 import Backdrop from "./components/backdrop";
@@ -90,27 +90,27 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Navigate to="/login" />} />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           
           <Route element={<MainLayout floatRef={floatRef} />}>
-            <Route path="/feed" element={<Feed backdropRef={backdropRef} />} />
-            <Route path="/post" element={<Post floatRef={floatRef} postId={1} />} />
+            <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
+            <Route path="/post" element={<PostPage floatRef={floatRef} postId={1} />} />
 
-            <Route path="/search" element={<Search floatRef={floatRef} />} />
-            <Route path="/scrap" element={<Scrap floatRef={floatRef} />} />
+            <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
+            <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
             <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
-            <Route path="/profile/:userId" element={<Profile floatRef={floatRef} />} />
+            <Route path="/profile/:userId" element={<ProfilePage floatRef={floatRef} />} />
 
-            <Route path="/subscriptions" element={<Subscriptions floatRef={floatRef} />} />
+            <Route path="/subscriptions" element={<SubscriptionsPage floatRef={floatRef} />} />
           </Route>
 
-          <Route path="/edit" element={<Edit floatRef={floatRef} backdropRef={backdropRef} />} />
+          <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
 
-          <Route path="/notice" element={<Notice floatRef={floatRef} />} />
-          <Route path="/settings" element={<Settings floatRef={floatRef} />} />
+          <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
+          <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
 
         <Float ref={floatRef} />

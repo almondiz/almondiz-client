@@ -30,7 +30,7 @@ const FloatController = ({ floatRef }) => {
 };
 
 
-const Notice = ({ floatRef }) => {
+const NoticePage = ({ floatRef }) => {
   const userModel = new UserModel();
   const myUserId = userModel.getMyUserId();
   const me = userModel.getMyData();
@@ -67,4 +67,4 @@ const Notice = ({ floatRef }) => {
   );
 };
 
-export default Notice;
+export default NoticePage;

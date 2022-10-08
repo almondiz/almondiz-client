@@ -11,7 +11,7 @@ import "./style.scoped.scss";
 import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
 
 
-const Feed = ({ backdropRef }) => {
+const FeedPage = ({ backdropRef }) => {
   // POST API
   const dataList = (() => {
     const postViewModel = new PostViewModel(new PostModel());
@@ -50,4 +50,4 @@ const Feed = ({ backdropRef }) => {
   );
 };
 
-export default Feed;
+export default FeedPage;

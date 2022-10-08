@@ -72,7 +72,7 @@
 
           user-select: none;
           overflow: hidden;
-          background-color: #ddd;
+          background-color: #eee;
           background-size: 75%;
           background-position: center;
           background-repeat: no-repeat;
@@ -81,6 +81,7 @@
           align-items: center;
           font-size: 2.25rem;
           line-height: 3rem;
+          flex-shrink: 0;
         }
       }
 
@@ -181,7 +182,7 @@
 
             user-select: none;
             overflow: hidden;
-            background-color: #ddd;
+            background-color: #eee;
             background-size: 75%;
             background-position: center;
             background-repeat: no-repeat;
@@ -190,10 +191,13 @@
             align-items: center;
             font-size: 1.125rem;
             line-height: 1.5rem;
+            flex-shrink: 0;
           }
         }
 
         .button-subscribing-list {
+          flex-shrink: 0;
+
           font-size: .75rem;
           font-weight: 700;
           color: var(--background-color);

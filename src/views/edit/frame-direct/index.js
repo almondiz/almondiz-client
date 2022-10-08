@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 
-import { Frame } from "../../util";
+import { Frame } from "../../../util";
 
-import NaverMap from "../../components/naver-map";
+import NaverMap from "../../../components/naver-map";
 
 import "./style.scoped.scss";
-import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
-import SearchIconBorder from "../../asset/icons/mui/search-icon-border";
-import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
-import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
-import MyLocationIconFill from "../../asset/icons/mui/my-location-icon-fill";
-import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
+import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
+import SearchIconBorder from "../../../asset/icons/mui/search-icon-border";
+import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
+import LocationSearchingIcon from "../../../asset/icons/mui/location-searching-icon";
+import MyLocationIconFill from "../../../asset/icons/mui/my-location-icon-fill";
+import ArrowBackIosIcon from "../../../asset/icons/mui/arrow-back-ios-icon";
 
 
 const FloatController = ({ floatRef, frame }) => {
@@ -41,7 +41,7 @@ const EditDrawer = ({ mapBottomRef }) => {
   }, [tf]);
 
   const DummyContent = () => (
-    <section className="bottom-item-2">
+    <section className="bottom-item">
       <div className="row">
         {/*<h3 className="title">음식점 이름</h3>*/}
         <div className="tf">
@@ -148,7 +148,7 @@ const Bottom = forwardRef((_, ref) => {
       <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
         {myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}
       </button>
-      <div className="bottom-item">{content}</div>
+      <div className="bottom-item-container">{content}</div>
     </footer>
   );
 });
@@ -160,7 +160,7 @@ const FrameDirect = ({ frame, floatRef }) => {
 
   return (
     <>
-      <main className="content find-shop">
+      <main className="content">
         <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
         <div className="map-container">
           <NaverMap id="map-init-shop" />

@@ -69,11 +69,13 @@ const PostItem = ({ data, detail=false }) => {
             </div>
           )}
         </div>
-        <nav className="row row-tags"><TagList dataList={data.postTags} /></nav>
+        <nav className="row row-tags"><TagList dataList={data.postTags} small /></nav>
       </header>
 
       <main className="body">
-        <p className="row row-text">{data.postText}</p>
+        <div className="row row-text">
+          <p className="text">{data.postText}</p>
+        </div>
         { 
           !detail ?
           (
