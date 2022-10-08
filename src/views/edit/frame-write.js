@@ -12,6 +12,7 @@ import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import AddAPhotoBorder from "../../asset/icons/mui/add-a-photo-icon-border";
 import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
+import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
 const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
@@ -66,6 +67,18 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
     return postViewModel.getData(postId);
   })(1);
   //
+
+  const ImageGridTrailer = ({ data }) => (
+    <div className="grid trailer" style={{ gridArea: `grid-${data.postImageUrls.length + 1}` }}>
+      <div className="content">
+        <div className="text-wrap">
+          <p className="name">{data.shopName}</p>
+          <p className="address">{data.shopAddress}</p>
+        </div>
+      </div>
+      <div className="image" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+    </div>
+  );
   
 
   const textRef = useRef();
@@ -101,7 +114,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
           <main className="body">
             <textarea className="text" ref={textRef} onChange={handleResizeHeight} name="text" placeholder="내용을 입력하세요" autoFocus />
             <div className="images full">
-              <ImageGrid images={data.postImageUrls} shop={data.shop} />
+              <ImageGrid images={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} editable />
             </div>
           </main>
         </article>

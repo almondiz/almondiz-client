@@ -5,7 +5,6 @@ export default class PostModel extends DefaultModel {
   data = {
     1: {
       id: 1,
-
       createdAt: 1660993200000,
       userId: 2,
       shop: {
@@ -32,24 +31,28 @@ export default class PostModel extends DefaultModel {
 
       comments: [
         {
+          id: 1,
           createdAt: 1660993260000,
           userId: 3,
           content: `나만의 작은 가게였는데 글 내려주세요.나만의 작은 가게였는데 글 내려주세요.나만의 작은 가게였는데 글 내려주세요.내려`,
           liked: [],        // 이 댓글을 좋아하는 사용자들 (userId)
           reply: [
             {
+              id: 2,
               createdAt: 1660993320000,
               userId: 2,
               content: `유감이네용유감이네용유감이네용유감이네용유감이네용유감이네용유감이네용유감이네용유감이네용`,
               liked: [1, 4,],
             },
             {
+              id: 3,
               createdAt: 1660993330000,
               userId: 2,
               content: `ㅋ`,
               liked: [],
             },
             {
+              id: 4,
               createdAt: 1661993350000,
               userId: 3,
               content: `미친놈인가...🤔`,
@@ -58,6 +61,7 @@ export default class PostModel extends DefaultModel {
           ],
         },
         {
+          id: 5,
           createdAt: 1662700320000,
           userId: 1,
           content: `이 글 보고 걸렀습니다`,

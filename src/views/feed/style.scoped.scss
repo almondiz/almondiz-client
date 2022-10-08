@@ -17,6 +17,9 @@
       color: var(--primary-text-color);
     }
     &>.right {
+      display: flex;
+      align-items: center;
+      
       .button-location {
         min-height: 2.5rem;
 

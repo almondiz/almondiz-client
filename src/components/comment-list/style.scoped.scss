@@ -18,11 +18,13 @@
     font-size: .8125rem;
     color: #666;
   }
-  ::v-deep {
-    svg {
-      height: 1.25rem;
-      width: 1.25rem;
-      fill: #666;
+  .icon {
+    ::v-deep {
+      svg {
+        height: 1.25rem;
+        width: 1.25rem;
+        fill: #666;
+      }
     }
   }
 }
@@ -43,36 +45,37 @@
     transition: all .3s ease;
   }
 
-  &.adding-reply {
+  &.focus {
     &>.background {
       background-color: #eee;
-    }
-    .button-comment-reply {
-      &>p {
-        color: var(--content-text-color);
-      }
     }
   }
 }
 
 .comment-list {
+  width: 100%;
+
   .comment-item {
     &>.comment-unit {
       border-top: 1px solid #eee;
+      padding-top: .25rem;
+      padding-bottom: .25rem;
 
       &>.header,
       &>.footer {
         display: flex;
         align-items: center;
         height: 2.5rem;
+        
       }
       &>.header {
         .profile {
+          height: 2.5rem;
           display: flex;
           align-items: center;
     
           .emoji {
-            margin-right: .4375rem;
+            margin-right: .375rem;
             font-size: 1.125rem;
           }
           .name {
@@ -80,26 +83,25 @@
             display: flex;
             align-items: center;
           }
-          &.me,
-          &.following {
+          &[data-after]::after {
+            content: attr(data-after);
+            font-size: .625rem;
+            color: #666;
+            border: 1px solid #666;
+            border-radius: 1rem;
+            padding: .1875rem .3125rem;
+            margin-left: .3125rem;
+          }
+
+          &[data-type=me],
+          &[data-type=following] {
             .name {
               font-weight: 700;
             }
           }
-          &.author {
-            .name::after {
-              content: "글쓴이";
-              font-size: .625rem;
-              color: #666;
-              border: 1px solid #666;
-              border-radius: 1rem;
-              padding: .125rem .3125rem;
-              margin-left: .25rem;
-            }
-          }
         }
         .description {
-          margin-left: .625rem;
+          margin-left: .75rem;
           font-size: .8125rem;
           color: #666;
         }
@@ -111,8 +113,8 @@
         }
       }
       &>.text {
-        padding-top: .25rem;
-        padding-bottom: .25rem;
+        margin-top: -.25rem;
+        margin-bottom: -.25rem;
 
         font-size: .875rem;
         line-height: 1.25rem;
@@ -122,10 +124,23 @@
         .button-comment-more {
           margin-right: -.625rem;
         }
-        .button-comment-favorite {
+        .button-comment-like {
           justify-content: flex-end;
           &>p {
             margin-left: .3125rem;
+          }
+          &.focus {
+            &>p {
+              color: var(--content-text-color);
+              font-weight: 700;
+            }
+            .icon {
+              ::v-deep {
+                svg {
+                  fill: var(--content-text-color);
+                }
+              }
+            }
           }
         }
         .button-comment-reply {
@@ -134,17 +149,12 @@
             letter-spacing: .125rem;
             font-weight: 700;
           }
+          &.focus {
+            &>p {
+              color: var(--content-text-color);
+            }
+          }
         }
-      }
-    }
-    &>.comment-unit {
-      padding-top: .75rem;
-      padding-bottom: .75rem;
-
-      &>.header,
-      &>.footer {
-        margin-top: -.5rem;
-        margin-bottom: -.5rem;
       }
     }
   }

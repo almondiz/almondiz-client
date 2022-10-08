@@ -18,11 +18,13 @@
     font-size: .8125rem;
     color: #666;
   }
-  ::v-deep {
-    svg {
-      height: 1.25rem;
-      width: 1.25rem;
-      fill: #666;
+  .icon {
+    ::v-deep {
+      svg {
+        height: 1.25rem;
+        width: 1.25rem;
+        fill: #666;
+      }
     }
   }
 }
@@ -133,24 +135,38 @@
       background-color: #eee;
 
       .profile {
+        height: 2.5rem;
         display: flex;
         align-items: center;
   
         .emoji {
-          margin-right: .4375rem;
+          margin-right: .375rem;
           font-size: 1.125rem;
         }
         .name {
           font-size: .875rem;
+          display: flex;
+          align-items: center;
         }
-      }
-      .profile.following {
-        .name {
-          font-weight: 700;
+        &[data-after]::after {
+          content: attr(data-after);
+          font-size: .625rem;
+          color: #666;
+          border: 1px solid #666;
+          border-radius: 1rem;
+          padding: .125rem .3125rem;
+          margin-left: .3125rem;
+        }
+
+        &[data-type=me],
+        &[data-type=following] {
+          .name {
+            font-weight: 700;
+          }
         }
       }
       .description {
-        margin-left: .625rem;
+        margin-left: .75rem;
         font-size: .8125rem;
         color: #666;
       }
@@ -158,6 +174,19 @@
         justify-content: flex-end;
         &>p {
           margin-left: .3125rem;
+        }
+        &.focus {
+          &>p {
+            //color: var(--content-text-color);
+            font-weight: 700;
+          }
+          .icon {
+            ::v-deep {
+              svg {
+                //fill: var(--content-text-color);
+              }
+            }
+          }
         }
       }
     }

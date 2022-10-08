@@ -1,7 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../util";
+import { Frame, Pipe } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
@@ -12,11 +12,12 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
+import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
 import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import SendIconBorder from "../../asset/icons/mui/send-icon-border";
 
 
-const FloatController = ({ floatRef }) => {
+const FloatController = ({ floatRef, data }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame(), footerFrame = new Frame();
@@ -33,30 +34,73 @@ const FloatController = ({ floatRef }) => {
     return <div className="float-header">{headerFrame.view()}</div>;
   };
   const Footer = () => {
+    const tfPlaceholder = "댓글 입력";
+    const [tf, setTf] = useState("");
+
+
+    const [repliedCommentUnit, setRepliedCommentUnit] = useState(null);
+    useEffect(() => {
+      repliedCommentUnit && repliedCommentUnit.onShow();
+      return () => (repliedCommentUnit && repliedCommentUnit.onHide());
+    }, [repliedCommentUnit]);
+
+    const commentDialog = {
+      send: () => {
+        if (repliedCommentUnit)
+          console.log(`[${repliedCommentUnit.repliedCommentId}에게 답글] ${tf}`);
+        else
+          console.log(`[댓글] ${tf}`);
+        commentDialog.hide();
+      },
+
+      show: (_repliedCommentUnit) => {  // repliedCommentId, onShow, onHide
+        setRepliedCommentUnit(_repliedCommentUnit);
+        footerFrame.move(1);
+      },
+      hide: () => {
+        setRepliedCommentUnit(null);
+        setTf("");
+        footerFrame.move(0);
+      },
+    };
+    Pipe.set("commentDialog", commentDialog);
+
+
+    const ButtonScrap = ({ data }) => {
+      const [focus, setFocus] = useState(data.scrap);
+      const onClick = () => setFocus(!focus);
+      return (
+        <button className={`button button-scrap ${focus ? "focus" : ""}`} onClick={onClick}>
+          <div className="icon">{focus ? <BookmarkIconFill /> : <BookmarkIconBorder />}</div>
+        </button>
+      );
+    };
+
+
     footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
-          <button className="button-comment" onClick={() => footerFrame.walk(1)}>
+          <button className="button button-comment" onClick={() => commentDialog.show()}>
             <div className="icon-sm"><ChatBubbleIconBorder /></div>
             <p>댓글 쓰기</p>
           </button>
     
-          <button className="button-scrap icon-sm">
-            <BookmarkIconBorder />
-          </button>
+          <ButtonScrap data={data} />
         </section>
       ),
       ( // comment
         <section className="float-footer-frame frame-2">
-          <button className="button-back icon-sm" onClick={() => footerFrame.walk(-1)}>
-            <ArrowBackIosIcon />
-          </button>
-          <div className="comment-input-box">
-            <input type="text" placeholder="댓글 입력" autoFocus />
+          <div className="comment-dialog">
+            <button className="button button-back icon-sm" onClick={() => commentDialog.hide()}>
+              <ArrowBackIosIcon />
+            </button>
+            <div className="comment-input-box">
+              <input type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+            </div>
+            <button className="button button-comment-send icon-sm right" onClick={() => commentDialog.send()}>
+              <SendIconBorder />
+            </button>
           </div>
-          <button className="button-comment-send icon-sm right">
-            <SendIconBorder />
-          </button>
         </section>
       ),
     ]);
@@ -81,21 +125,28 @@ const Post = ({ floatRef, postId }) => {
   //
 
 
+  const ButtonMore = ({ data }) => {
+    const [focus, setFocus] = useState(false);
+    const onClick = () => setFocus(!focus);
+    return (
+      <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
+        <div className="icon icon-sm icon-container"><MoreHorizIcon /></div>
+      </button>
+    );
+  };
+
+
   return (
     <div className="page">
       <header className="header">
         <div className="right">
-          <button className="button-more icon-sm icon-container">
-            <MoreHorizIcon />
-          </button>
+          <ButtonMore />
         </div>
       </header>
 
-      <main className="content">
-        <PostItem data={data} detail={true} />
-      </main>
+      <main className="content"><PostItem data={data} detail={true} /></main>
 
-      <FloatController floatRef={floatRef} />
+      <FloatController floatRef={floatRef} data={data} />
     </div>
   );
 };

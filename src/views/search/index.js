@@ -107,15 +107,15 @@ const SearchDrawer = ({ contentRef }) => {
           <ul className="list">
             <li className="item">
               <ul className="tags">{[ ["한식"], ["서울", true] ].map(makeTag)}</ul>
-              <button className="delete-item-button"><CloseIcon /></button>
+              <button className="button-delete-item"><CloseIcon /></button>
             </li>
             <li className="item">
               <ul className="tags">{[ ["짬뽕"], ["성남 분당구", true], ["수원 팔달구 우만동", true] ].map(makeTag)}</ul>
-              <button className="delete-item-button"><CloseIcon /></button>
+              <button className="button-delete-item"><CloseIcon /></button>
             </li>
             <li className="item">
               <ul className="tags">{[ ["스시"], ["마라탕"], ["천안", true] ].map(makeTag)}</ul>
-              <button className="delete-item-button"><CloseIcon /></button>
+              <button className="button-delete-item"><CloseIcon /></button>
             </li>
           </ul>
         </div>

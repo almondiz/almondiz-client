@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 
 
+export class Pipe {
+  static data = {};
+
+  static set(key, val) {
+    useEffect(() => {
+      Pipe.data[key] = val;
+      //console.log(`key '${key}' added`);
+      return () => {
+        delete Pipe.data[key];
+        //console.log(`key '${key}' deleted`);
+      };
+    }, []);
+  }
+
+  static get(key) {
+    return Pipe.data[key];
+  }
+};
+
+
 /** components */
 
 export const NoScroll = () => {

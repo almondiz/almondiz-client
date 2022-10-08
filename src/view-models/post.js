@@ -12,7 +12,6 @@ export default class PostViewModel {
     const res = this.model.getData(id);
     return this._makePostItemData(res);
   }
-  
   getDummyData(...params) {
     const resList = this.model.getDummyData(...params);
     return resList.map(res => this._makePostItemData(res));
@@ -34,20 +33,29 @@ export default class PostViewModel {
     const bestComment = post.comments[post.bestCommentIndex];
     const bestCommentAuthorId = bestComment.userId;
     const bestCommentAuthor = userModel.getData(bestCommentAuthorId);
-  
+    
   
     return {
-      postText: post.content.text,
-      postImageUrls: post.content.images,
-      postCreatedAt: getTime(post.createdAt),
-      goToPostPage: () => navigate(`/post`),
-  
-      shopName: post.shop.name,
+      postId: postId,
+
       shopThumbUrl: post.shop.thumb,
+      shopName: post.shop.name,
       shopAddress: post.shop.location.address,
       shopDistance: `${getDistance(location, post.shop.location)}km`,
       goToShopPage: () => (window.location.href = post.shop.link),
+
+      postTags: post.tags,
+      postText: post.content.text,
+      postImageUrls: post.content.images,
+      goToPostPage: () => navigate(`/post`),
   
+      postAuthorEmoji: postAuthor.profile.thumb.emoji,
+      postAuthorName: (() => {
+        if (postAuthorId === myUserId)
+          return "나";
+        else
+          return userModel.getAlias(postAuthorId);
+      })(),
       postAuthorType: (() => {
         if (postAuthorId === myUserId)
           return "me";
@@ -56,21 +64,16 @@ export default class PostViewModel {
         else
           return "other";
       })(),
-      postAuthorName: (() => {
-        if (postAuthorId === myUserId)
-          return "나";
-        else
-          return userModel.getAlias(postAuthorId);
-      })(),
-      postAuthorEmoji: postAuthor.profile.thumb.emoji,
-      isPostAuthorFollowing: userModel.isSubscribing(postAuthorId),
       goToPostAuthorPage: () => {
         console.log(1);
         navigate(`/profile/${postAuthorId}`)
       },
-  
-      postTags: post.tags,
-  
+
+      postCreatedAt: getTime(post.createdAt),
+      
+      scrap: (() => {
+        return (post.scrapped.indexOf(myUserId) >= 0) ? true : false;
+      }),
       scrappedCount: post.scrapped.length,
   
       commentCount: postModel.getCommentCount(postId),
@@ -78,17 +81,15 @@ export default class PostViewModel {
       bestCommentAuthorEmoji: bestCommentAuthor.profile.thumb.emoji,
 
 
-      // post detail page에서만 필요한 것
+      // used only in post detail page
       comments: post.comments.map(comment => this._makeCommentItemData(comment, { postAuthorId })),
-
-      shop: post.shop,  // temp
       //
     };
   }
-
   _makeCommentItemData(comment, { postAuthorId }) {
     const navigate = useNavigate();
-  
+
+    const commentId = comment.id;
   
     const userModel = new UserModel();
     const myUserId = userModel.getMyUserId();
@@ -97,8 +98,15 @@ export default class PostViewModel {
   
   
     return {
-      commentCreatedAt: getTime(comment.createdAt),
-  
+      commentId: commentId,
+
+      commentAuthorEmoji: commentAuthor.profile.thumb.emoji,
+      commentAuthorName: (() => {
+        if (commentAuthorId === myUserId)
+          return "나";
+        else
+          return userModel.getAlias(commentAuthorId);
+      })(),
       commentAuthorType: (() => {
         if (commentAuthorId === myUserId)
           return "me";
@@ -108,17 +116,15 @@ export default class PostViewModel {
           return "other";
       })(),
       isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
-  
-      commentAuthorName: (() => {
-        if (commentAuthorId === myUserId)
-          return "나";
-        else
-          return userModel.getAlias(commentAuthorId);
-      })(),
-      commentAuthorEmoji: commentAuthor.profile.thumb.emoji,
       goToCommentAuthorPage: () => navigate(`/profile/${commentAuthorId}`),
+
+      commentCreatedAt: getTime(comment.createdAt),
   
       commentText: comment.content,
+      
+      like: (() => {
+        return (comment.liked.indexOf(myUserId) >= 0) ? true : false;
+      }),
       commentLikedCount: comment.liked.length,
   
       replyComments: (() => {

@@ -24,6 +24,23 @@
   }
 }
 
+.slides {
+  display: grid;
+  grid-auto-flow: column;
+  width: 100vw;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &>.float-footer-frame {
+    width: 100vw;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
 
 #float {
   .float-header {
@@ -48,8 +65,8 @@
   }
   .float-footer {
     &-frame.frame-1 {
-      .button-comment,
-      .button-scrap {
+      &>.button-comment,
+      &>.button-scrap {
         background-color: rgba(255, 255, 255, .75);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
@@ -62,66 +79,68 @@
 
         height: 3rem;
       }
-
-      .button-comment {
+      &>.button-comment {
         padding: 0 1.25rem;
         p {
           margin-left: .5rem;
           font-size: .875rem;
         }
       }
-      .button-scrap {
+      &>.button-scrap {
         width: 3rem;
       }
     }
     &-frame.frame-2 {
-      background-color: rgba(255, 255, 255, .75);
-      -webkit-backdrop-filter: blur(.5rem);
-      backdrop-filter: blur(.5rem);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
-      border-radius: 1.5rem;
-
-      height: 3rem;
-
-      position: relative;
-      .button-back {
-        z-index: 1;
-        position: absolute;
-        left: 0;
-
+      &>.comment-dialog {
         height: 3rem;
-        width: 3rem;
-      }
-      .button-comment-send {
-        z-index: 1;
-        position: absolute;
-        right: .375rem;
+        width: 100%;
+        
+        background-color: rgba(255, 255, 255, .75);
+        -webkit-backdrop-filter: blur(.5rem);
+        backdrop-filter: blur(.5rem);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        border-radius: 1.5rem;
 
-        height: 3rem;
-        width: 3rem;
-      }
-      .comment-input-box {
-        position: absolute;
-        left: 3rem;
-        right: .375rem;
-        top: .375rem;
-        bottom: .375rem;
+        position: relative;
+        .button-back {
+          z-index: 1;
+          position: absolute;
+          left: 0;
 
-        height: 2.25rem;
-        border-radius: 1.125rem;
+          height: 3rem;
+          width: 3rem;
+        }
+        .button-comment-send {
+          z-index: 1;
+          position: absolute;
+          right: .375rem;
 
-        background-color: rgb(238, 238, 238);
-        box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+          height: 3rem;
+          width: 3rem;
+        }
+        .comment-input-box {
+          position: absolute;
+          left: 3rem;
+          right: .375rem;
+          top: .375rem;
+          bottom: .375rem;
 
-        display: flex;
-        align-items: center;
+          height: 2.25rem;
+          border-radius: 1.125rem;
 
-        padding-left: 1rem;
-        padding-right: 3rem;
+          background-color: rgb(238, 238, 238);
+          box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
 
-        input[type="text"] {
-          width: 100%;
-          font-size: .9375rem;
+          display: flex;
+          align-items: center;
+
+          padding-left: 1rem;
+          padding-right: 3rem;
+
+          input[type="text"] {
+            width: 100%;
+            font-size: .9375rem;
+          }
         }
       }
     }
