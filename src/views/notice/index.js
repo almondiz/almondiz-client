@@ -1,26 +1,44 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getTime } from "../../util";
 import { UserModel, NoticeModel } from "../../models";
-import { UserViewModel, NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
-const Notice = () => {
+const FloatController = ({ floatRef }) => {
   const navigate = useNavigate();
 
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
-  const me = userViewModel.getMyData();
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">알림</h3>
+    </nav>
+  );
 
-  const noticeViewModel = new NoticeViewModel(new NoticeModel());
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
+const Notice = ({ floatRef }) => {
+  const userModel = new UserModel();
+  const myUserId = userModel.getMyUserId();
+  const me = userModel.getMyData();
+
+  const noticeModel = new NoticeModel();
 
   const notices = [];
-  me.notices.map(noticeId => notices.push(noticeViewModel.getData(noticeId)));
+  me.notices.map(noticeId => notices.push(noticeModel.getData(noticeId)));
   notices.reverse();
 
   const NoticeItem = ({ notice }) => {
@@ -40,16 +58,11 @@ const Notice = () => {
 
   return (
     <div className="page">
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">알림</h3>
-      </nav>
-
       <main className="content">
         <ul className="notice-list">{notices.map(makeNotice)}</ul>
       </main>
+
+      <FloatController floatRef={floatRef} />
     </div>
   );
 };

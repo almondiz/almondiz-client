@@ -1,0 +1,21 @@
+.tag-list {
+  display: inline-flex;
+  align-items: center;
+
+  .tag-item + .tag-item {
+    margin-left: .25rem;
+  }
+  .tag-item {
+    height: 1.375rem;
+    padding: 0 .4375rem;
+    border: 1px solid #999;
+    border-radius: 1rem;
+    color: #666;
+
+    font-size: .8125rem;
+
+    display: flex;
+    align-items: center;
+    line-height: 1;
+  }
+}

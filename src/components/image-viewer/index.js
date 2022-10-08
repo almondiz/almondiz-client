@@ -9,26 +9,23 @@ import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
 const ImageViewer = forwardRef(({ images }, ref) => {
-  const [index, setIndex] = useState(null);
-  useImperativeHandle(ref, () => ({
-    index: index,
-    setIndex: setIndex,
-  }));
+  const [index, setIndex] = useState(-1);
+  useImperativeHandle(ref, () => ({ index: index, setIndex: setIndex, }));
 
   const image = images[index];
 
-  return index !== null && (
+  return (index !== -1) && (
     <div className="image-viewer">
-      <div className="background" style={{ /*backgroundImage: `url(${image})`*/ }} />
+      <div className="background" />
       <img className="image" src={image} />
-      <button className="button-close icon-md" onClick={() => setIndex(null)}>
-        <CloseIcon height="2rem" fill="#fff" />
+      <button className="button-close icon-md" onClick={() => setIndex(-1)}>
+        <CloseIcon />
       </button>
       <button className="button-prev icon-lg" onClick={() => setIndex((index + images.length - 1) % images.length)}>
-        <NavigateBeforeIcon height="3rem" fill="#fff" />
+        <NavigateBeforeIcon />
       </button>
       <button className="button-next icon-lg" onClick={() => setIndex((index + 1) % images.length)}>
-        <NavigateNextIcon height="3rem" fill="#fff" />
+        <NavigateNextIcon />
       </button>
       <p className="index">{`${index + 1} / ${images.length}`}</p>
 

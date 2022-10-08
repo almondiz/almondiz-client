@@ -1,17 +1,6 @@
 export default class UserViewModel {
   constructor(model) { this.model = model; }
 
-  getData(id) { return this.model.getData(id); }
-
-  getMyData(...params) { return this.model.getMyData(...params); }
-  getMyUserId(...params) { return this.model.getMyUserId(...params); }
-  isSubscribing(...params) { return this.model.isSubscribing(...params); }
-  getAlias(...params) { return this.model.getAlias(...params); }  
-
-  getSubscribingCount(...params) { return this.model.getSubscribingCount(...params); }
-  getSubscribedCount(...params) { return this.model.getSubscribedCount(...params); }
-
-  hasUnreadNotices(...params) { return this.model.hasUnreadNotices(...params); }
 
   signup(body) { return this.model.signup(body); }
   login(providerType, providerUid) { return this.model.login(providerType, providerUid); }

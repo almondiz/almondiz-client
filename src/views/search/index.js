@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-import { Framer, NoScroll } from "../../util";
+import { Frame, NoScroll } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
@@ -28,38 +27,44 @@ const makeTag = ([ name, region, deletable ], idx) => {
 const SearchDrawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
+  const tfPlaceholder = "메뉴나 지역을 입력해 보세요";
   const [tf, setTf] = useState("");
-  const onInput = e => setTf(e.target.value);
   useEffect(() => {
-
-    tagFramer.move(tf ? 1 : 0);
+    tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
   }, [tf]);
 
   const DummyContent = () => {
-    const postViewModel = new PostViewModel(new PostModel());
-    const posts = postViewModel.getDummyData();
-    const makePost = (post, idx) => <PostItem key={idx} postId={post.id} post={post} />;
-
-    return <section className="post-list">{posts.map(makePost)}</section>;
+    // POST API
+    const dataList = (() => {
+      const postViewModel = new PostViewModel(new PostModel());
+      return postViewModel.getDummyData();
+    })();
+    //
+    
+    return <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
   };
-  const contentHandler = tfFrameIndex => {
-    tfFramer.move(tfFrameIndex);
+  const tfHandler = tfFrameIndex => {
+    tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
+        setTf("");
         contentRef.current?.show({});
         break;
+      case 1:
+        setTf("");
+        break;
       case 2:
+        setTf("");
         contentRef.current?.show({ content: <DummyContent /> });
         break;
     }
-    setTf("");
   };
 
-  const tagFramer = new Framer([
+  const tagFrame = new Frame([
     (
       <div className="tags-wrap">
         <ul className="tags">{[ ["맥주", false, true], ["호프", false, true], ["대구", true, true] ].map(makeTag)}</ul>
-        <button className="button-search" onClick={() => contentHandler(2)}>
+        <button className="button-search" onClick={() => tfHandler(2)}>
           <div className="icon-sm"><SearchIconBorder /></div>
           <p>검색하기</p>
         </button>
@@ -86,31 +91,31 @@ const SearchDrawer = ({ contentRef }) => {
       </>
     ),
   ]);
-  const tfFramer = new Framer([
+  const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
         <header className="header">
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf" onClick={() => { contentHandler(1); }}>
+        <div className="tf tf-step-1" onClick={() => tfHandler(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
-          <input className="tf-box" type="text" placeholder="메뉴나 지역을 입력해 보세요" value={tf} readOnly />
+          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
         </div>
         <div className="history-list-group">
           <h3 className="subheader">검색 기록</h3>
           <ul className="list">
             <li className="item">
               <ul className="tags">{[ ["한식"], ["서울", true] ].map(makeTag)}</ul>
-              <button className="delete-item-button"><CloseIcon /></button>
+              <button className="button-delete-item"><CloseIcon /></button>
             </li>
             <li className="item">
               <ul className="tags">{[ ["짬뽕"], ["성남 분당구", true], ["수원 팔달구 우만동", true] ].map(makeTag)}</ul>
-              <button className="delete-item-button"><CloseIcon /></button>
+              <button className="button-delete-item"><CloseIcon /></button>
             </li>
             <li className="item">
               <ul className="tags">{[ ["스시"], ["마라탕"], ["천안", true] ].map(makeTag)}</ul>
-              <button className="delete-item-button"><CloseIcon /></button>
+              <button className="button-delete-item"><CloseIcon /></button>
             </li>
           </ul>
         </div>
@@ -124,12 +129,12 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf">
-          <button className="tf-icon" onClick={() => contentHandler(0)}><ArrowBackIosIcon /></button>
-          <input className="tf-box" type="text" placeholder="메뉴나 지역을 입력해 보세요" value={tf} onChange={onInput} autoFocus />
+        <div className="tf tf-step-2">
+          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
+          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
           {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
         </div>
-        {tagFramer.view()}
+        {tagFrame.view()}
 
         <NoScroll />
       </section>
@@ -140,9 +145,9 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf">
-          <button className="tf-icon" onClick={() => contentHandler(0)}><ArrowBackIosIcon /></button>
-          <div className="tf-box" onClick={() => contentHandler(1)}>
+        <div className="tf tf-step-3">
+          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
+          <div className="tf-box" onClick={() => tfHandler(1)}>
             <ul className="tags">{[ ["맥주", false], ["호프", false], ["대구", true] ].map(makeTag)}</ul>
           </div>
         </div>
@@ -150,7 +155,7 @@ const SearchDrawer = ({ contentRef }) => {
     ),
   ]);
 
-  return <aside className="search-drawer">{tfFramer.view()}</aside>;
+  return <aside className="search-drawer">{tfFrame.view()}</aside>;
 };
 
 

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 
-import { Framer } from "../../util";
+import { Frame } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
@@ -12,6 +11,26 @@ import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
 import CloseIcon from "../../asset/icons/mui/close-icon";
 
 
+const FloatController = ({ floatRef, frame }) => {
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => frame.prev()}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">음식점 등록</h3>
+      <button className="button-next" onClick={() => frame.walk(-2)}>등록</button>
+    </nav>
+  );
+
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
+
+  return <></>;
+};
+
+
 const makeTag = (tag, idx) => (
   <li key={idx} className="tag">
     {tag}
@@ -19,63 +38,67 @@ const makeTag = (tag, idx) => (
   </li>
 );
 
-
 // frame 3
-const FrameDirectTag = ({ framer }) => {
-  const postViewModel = new PostViewModel(new PostModel());
-  const post = postViewModel.getData(1);
+const FrameDirectTag = ({ frame, floatRef }) => {
+  // POST API
+  const data = (postId => {
+    const postViewModel = new PostViewModel(new PostModel());
+    return postViewModel.getData(postId);
+  })(1);
+  //
+  
 
+  const tfPlaceholder = "태그를 추가하세요";
   const [tf, setTf] = useState("");
-  const handleTf = e => {
-    setTf(e.target.value);
-    tagFramer.move(e.target.value ? 1 : 0);
-  };
-  const tagFramer = new Framer();
-  tagFramer.init([
+  useEffect(() => {
+    tagFrame.move(tf ? 1 : 0);
+  }, [tf]);
+
+  const tagFrame = new Frame([
     (
       <ul className="tags">{[ "오뎅", ].map(makeTag)}</ul>
     ),
     (
-      <ul className="tag-list">
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>떡볶이</li>
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>순대</li>
-        <li className="tag-item" onClick={() => { tagFramer.move(0); setTf(""); }}>튀김</li>
-      </ul>
+      <div className="tag-list-group">
+        <ul className="list">
+          <li className="item" onClick={() => setTf("")}>떡볶이</li>
+          <li className="item" onClick={() => setTf("")}>순대</li>
+          <li className="item" onClick={() => setTf("")}>튀김</li>
+        </ul>
+        <div className="if-not-found">
+          <h3 className="title">"{tf}" 태그를 찾나요?</h3>
+          <button className="text-button" onClick={() => setTf("")}>직접 등록</button>
+        </div>
+      </div>
     ),
   ]);
 
   return (
     <>
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.prev()}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">태그 추가</h3>
-        <button className="button-next" onClick={() => framer.walk(-2)}>등록</button>
-      </nav>
-
       <main className="content">
         <article className="post">
           <header className="header">
-            <a href={post.shop.link} className="shop">
+            <div className="shop">
               <div className="thumb" style={{ backgroundImage: `` }} />
               <div className="text-wrap">
                 <p className="name">아주대 앞 포장마차</p>
-                <p className="date">{post.shop.location.address}</p>
+                <p className="date">{data.shopAddress}</p>
               </div>
-            </a>
+            </div>
           </header>
     
-          <nav className="tags-wrap edit">
+          <nav className="tags-wrap area-edit-tag">
             <div className="tf">
               <div className="tf-icon"><SellIconBorder /></div>
-              <input className="tf-box" type="text" placeholder="태그를 추가하세요" value={tf} onChange={handleTf} autoFocus />
+              <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
               {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
             </div>
-            {tagFramer.view()}
+            {tagFrame.view()}
           </nav>
         </article>
       </main>
+
+      <FloatController floatRef={floatRef} frame={frame} />
     </>
   )
 };

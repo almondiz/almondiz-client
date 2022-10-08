@@ -1,4 +1,4 @@
-.float {
+#float {
   z-index: 10;
 
   position: fixed;
@@ -20,6 +20,9 @@
   &.hide {
     top: -$page-header-height;
   }
+  &.hide.has-top {
+    top: -$float-bottom-height;
+  }
   transition: top .3s ease;
 }
 .float-footer-wrap {
@@ -27,40 +30,69 @@
   &.hide {
     bottom: -$page-header-height;
   }
-  &.hide.has-bottom-nav {
-    bottom: -$bottom-nav-height;
+  &.hide.has-bottom {
+    bottom: -$float-bottom-height;
   }
   transition: bottom .3s ease;
 }
 
 ::v-deep {
-  .float-header {
+  .float-header,
+  .float-footer {
     &-frame {
-      margin: 1rem;
       pointer-events: none;
       &>* {
         pointer-events: auto;
       }
 
+      padding: 1rem;
       display: flex;
       justify-content: space-between;
+    }
+  }
+  .float-header {
+    &-frame {
       align-items: flex-start;
     }
   }
   .float-footer {
     &-frame {
-      margin: 1rem;
-      pointer-events: none;
-      &>* {
-        pointer-events: auto;
-      }
-
-      display: flex;
-      justify-content: space-between;
       align-items: flex-end;
     }
   }
-  .bottom-nav {
+
+  .float-top,
+  .float-bottom {
     pointer-events: auto;
+  }
+  .float-top {
+    height: $float-bottom-height + 10rem;
+    margin-top: -10rem;
+    padding-top: 10rem;
+  }
+  .float-bottom {
+    height: $float-bottom-height + 10rem;
+    margin-bottom: -10rem;
+    padding-bottom: 10rem;
+  }
+}
+
+#float {
+  ::v-deep {
+    .float-top,
+    .float-bottom {
+      transition: box-shadow .5s ease;
+    }
+  }
+}
+#float.noshadow {
+  ::v-deep {
+    .float-top,
+    .float-bottom {
+      box-shadow: none !important;
+    }
+    .float-bottom {
+      border-top: 1px solid #eee;
+    }
   }
 }

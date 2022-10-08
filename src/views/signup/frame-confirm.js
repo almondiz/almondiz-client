@@ -6,14 +6,14 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
 // frame 3
-const FrameConfirm = ({ framer, callSignup, profile, email, nutId, tagId, getRandomNutList }) => {
+const FrameConfirm = ({ frame, callSignup, profile, email, nutId, tagId, getRandomNutList }) => {
   const navigate = useNavigate();
   const nutList = getRandomNutList();
   const getNutName = (id) => nutList.filter(({ id: _id }) => _id === Number(id))[0]?.name;
   return (
-    <div className="frame-confirm">
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.prev()}>
+    <div className="frame frame-confirm">
+      <nav className="top-nav">
+        <button className="button-back icon-sm" onClick={() => frame.prev()}>
           <ArrowBackIcon />
         </button>
         <h3 className="title">프로필 생성</h3>

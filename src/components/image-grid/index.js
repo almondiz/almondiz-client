@@ -1,7 +1,7 @@
 import React from "react";
+import CloseIcon from "../../asset/icons/mui/close-icon";
 
 import "./style.scoped.scss";
-import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
 const generateRandomGrid = (Y, X, TILES) => {
@@ -12,11 +12,9 @@ const generateRandomGrid = (Y, X, TILES) => {
     const seed = new Array(TILES + 1);
 
     const _plant = () => {
-      map[Y - 1][X - 2] = map[Y - 1][X - 1] = -TILES, seed[TILES] = { y: Y - 1, x: X - 2 };   // for shop-link
-
       let tile;
       let y, x, tmp;
-      for (tile = 1; tile <= TILES - 1; tile++) {
+      for (tile = 1; tile <= TILES; tile++) {
         while (true) {
           tmp = Math.floor(Math.random() * (Y * X));
           y = Math.floor(tmp / X), x = tmp % X;
@@ -37,7 +35,6 @@ const generateRandomGrid = (Y, X, TILES) => {
       let { y, x } = seed[tile];
       let y_m = y, y_M = y;
       let x_m = x, x_M = x;
-      if (tile === TILES)   x_M = x + 1;
 
       let order = [ 0, 1, 2, 3 ];
       _shuffleArray(order);
@@ -99,21 +96,13 @@ const generateRandomGrid = (Y, X, TILES) => {
           break;
         }
       }
-
-      if (tile === TILES) {
-        for (x = x_m; x <= x_M; x++)
-          for (y = y_m; y <= y_M; y++)
-            if (map[y][x] !== -tile)
-              map[y][x];
-      }
     };
-    const _isFullGrown = () => {
+    const _isFullGrown = () => {      
       let x, y;
-      if (tile === TILES)
-        for (x = 0; x < X; x++)
-          for (y = 0; y < Y; y++)
-            if (map[y][x] === 0)
-              return false;
+      for (x = 0; x < X; x++)
+        for (y = 0; y < Y; y++)
+          if (map[y][x] === 0)
+            return false;
       return true;
     };
     const _sort = () => {
@@ -122,11 +111,6 @@ const generateRandomGrid = (Y, X, TILES) => {
       for (y = 0; y < Y; y++) {
         for (x = 0; x < X; x++) {
           if ((tile = map[y][x]) < 0) {
-            if (tile === -TILES) {    // for shop-link
-              map[y][x] *= -1;
-              continue;
-            }
-
             for (y1 = y; y1 < Y; y1++) {
               if (map[y1][x] !== tile)   break;
               map[y1][x] = new_tile;
@@ -166,42 +150,46 @@ const generateRandomGrid = (Y, X, TILES) => {
   return ret;
 };
 
-const ImageGrid = ({ images, shop, action=(() => {}) }) => {
-  const makeCell = (src, idx) => (
-    <div
-      key={idx}
-      className="grid image"
-      style={{ gridArea: `grid-${idx + 1}`, backgroundImage: `url(${src})` }}
-      onClick={() => action(idx)}
-    />
-  );
-  const makeGridStyle = () => {
-    let N = Math.round(images.length / 2) + 1;  // # of rows
-    let M = 3;                                  // # of columns
-    let TILES = images.length + 1;              // # of tiles (including a shop link tile)
 
-    const ImageGridStyle = {
-      gridTemplateRows: `repeat(${N}, 1fr)`,
-      gridTemplateColumns: `repeat(${M}, 1fr)`,
-      height: `${8 * N}rem`,
-      gridTemplateAreas: generateRandomGrid(N, M, TILES),
-    };
-    return ImageGridStyle;
+const ImageGrid = ({ images, trailer, action=(() => {}), editable }) => {
+  const makeCell = (src, idx) => (
+    <div key={idx} className="grid" onClick={() => action(idx)}
+      style={{ gridArea: `grid-${idx + 1}`, backgroundImage: `url(${src})` }}
+    >
+      {editable && (
+        <button className="button button-delete">
+          <div className="icon"><CloseIcon /></div>
+        </button>
+      )}
+    </div>
+  );
+  const makeGridStyle = hasTrailer => {
+    let N = Math.max(3, Math.ceil(images.length / 2));    // # of rows
+    let M = 3;                                            // # of columns
+    let TILES = images.length;                            // # of tiles
+
+    if (hasTrailer) {
+      return {
+        gridTemplateRows: `repeat(${N + 1}, 1fr)`,
+        gridTemplateColumns: `repeat(${M}, 1fr)`,
+        height: `${8 * (N + 1)}rem`,
+        gridTemplateAreas: generateRandomGrid(N, M, TILES) + (`"` + `grid-${TILES + 1} `.repeat(M) + `"\n`),
+      };
+    } else {
+      return {
+        gridTemplateRows: `repeat(${N}, 1fr)`,
+        gridTemplateColumns: `repeat(${M}, 1fr)`,
+        height: `${8 * N}rem`,
+        gridTemplateAreas: generateRandomGrid(N, M, TILES),
+      };
+    }
   };
 
   return (
-    <div className="image-grid" style={makeGridStyle()}>
+    <div className={`image-grid ${editable ? "editable" : ""}`} style={makeGridStyle(trailer ? true : false )}
+    >
       {images.map(makeCell)}
-      <a href={shop.link} className="grid shop-link" style={{ gridArea: `grid-${images.length + 1}` }}>
-        <div className="content">
-          <div>
-            <p className="name">{shop.name}</p>
-            <p className="address">{shop.location.address}</p>
-          </div>
-          <NavigateNextIcon height="2.5rem" fill="#fff" />
-        </div>
-        <div className="image" style={{ backgroundImage: `url(${shop.thumb})` }} />
-      </a>
+      {trailer}
     </div>
   );
 };

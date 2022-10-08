@@ -1,10 +1,13 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
+import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+
+import { isEmptyElement } from "../../util";
 
 import "./style.scoped.scss";
 
 
-const HideOnScroll = ({ bottomNav }) => {
+const HideOnScroll = () => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   useEffect(() => {
@@ -17,43 +20,46 @@ const HideOnScroll = ({ bottomNav }) => {
       document.querySelector(".float-footer-wrap").classList.add("hide");
     else
       document.querySelector(".float-footer-wrap").classList.remove("hide");
-  }, [scrollDirection])
-
-  useEffect(() => {
-    if (bottomNav)
-      document.querySelector(".float-footer-wrap").classList.add("has-bottom-nav");
-    else
-      document.querySelector(".float-footer-wrap").classList.remove("has-bottom-nav");
-  }, [bottomNav]);
+  }, [scrollDirection]);
 
   return <></>;
 };
 
 
 const Float = forwardRef((_, ref) => {
+  const [top, setTop] = useState(<></>);
   const [header, setHeader] = useState(<></>);
   const [footer, setFooter] = useState(<></>);
-  const [bottomNav, setBottomNav] = useState(<></>);
-  useImperativeHandle(ref, () => ({ setHeader: setHeader, setFooter: setFooter, setBottomNav: setBottomNav }));
+  const [bottom, setBottom] = useState(<></>);
+  useImperativeHandle(ref, () => ({setTop: setTop, setHeader: setHeader, setFooter: setFooter, setBottom: setBottom, }));
+
+  const { pathname } = useLocation();
+  useEffect(() => {
+    if (document.body.scrollHeight <= window.innerHeight)
+      document.querySelector("#float").classList.add("noshadow");
+    else
+      document.querySelector("#float").classList.remove("noshadow");
+  }, [pathname, top, bottom]);
 
   const FloatHeader = () => (
-    <div className="float-header-wrap">
+    <div className={`float-header-wrap${!isEmptyElement(top) ? " has-top" : ""}`}>
+      {top}
       {header}
     </div>
   );
   const FloatFooter = () => (
-    <div className="float-footer-wrap">
+    <div className={`float-footer-wrap${!isEmptyElement(bottom) ? " has-bottom" : ""}`}>
       {footer}
-      {bottomNav}
+      {bottom}
     </div>
   );
 
   return (
-    <aside className="float">
+    <aside id="float">
       <FloatHeader />
       <FloatFooter />
 
-      <HideOnScroll bottomNav={bottomNav} />
+      <HideOnScroll />
     </aside>
   );
 });
