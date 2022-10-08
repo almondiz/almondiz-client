@@ -122,5 +122,5 @@ export default class UserModel extends DefaultModel {
   getMyData() { return this.data[this.getMyUserId()]; }
 
   signup(body) { return this.callApi(() => this.api.signup(body)); }
-  login(userEmail) { return this.callApi(() => this.api.login({ userEmail })); }
+  login(providerType, providerUid) { return this.callApi(() => this.api.login({ providerType, providerUid })); }
 };

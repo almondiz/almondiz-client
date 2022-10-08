@@ -3,9 +3,9 @@ export default class UserViewModel {
 
 
   signup(body) { return this.model.signup(body); }
-  login(email) { return this.model.login(email); }
-  async checkAccount(email, goSignup, goMain) {
-    const { success, ...result } = await this.login(email);
+  login(providerType, providerUid) { return this.model.login(providerType, providerUid); }
+  async checkAccount({ providerType, providerUid } , goSignup, goMain) {
+    const { success, ...result } = await this.login(providerType, providerUid);
 
     if (!success) {
       switch (result.msg) {
@@ -21,6 +21,8 @@ export default class UserViewModel {
       }
       return;
     }
+
+    console.log(result.data)
     goMain(result.data);
   }
 };

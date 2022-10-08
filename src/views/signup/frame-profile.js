@@ -1,7 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { getRandomProfile, getRandomNutList } from "../../util";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -12,23 +10,39 @@ import ArrowDropDownIcon from "../../asset/icons/mui/arrow-drop-down-icon";
 // frame 2
 const FrameProfile = ({
   frame,
-  onChangeProfile,
-  onChangeNut,
-  onChangeTag,
+  changeProfile,
+  changeNut,
+  changeTag,
   getProfile,
   getNut,
   getTag,
+  getRandomProfile,
+  getRandomNutList,
 }) => {
-  const navigate = useNavigate();
-
   const [randomProfiles, setRandomProfiles] = useState([null, null, null].map(() => getRandomProfile()));
   let _onChangeProfile = () => {
     let _randomProfiles = [...randomProfiles];
     _randomProfiles.shift();
     _randomProfiles.push(getRandomProfile());
     setRandomProfiles(_randomProfiles);
+    changeProfile({
+      emoji: _randomProfiles[0][0],
+      color: _randomProfiles[0][1]
+    });
   };
-  const [randomNutList, ] = useState(getRandomNutList());
+  const [randomNutList, setRandomNutList] = useState([]);
+  const getFirstNutId = (list) => {
+    return list[0]?.id;
+  };
+  useEffect(() => {
+    const nutList = getRandomNutList();
+    setRandomNutList(nutList);
+    changeProfile({
+      emoji: randomProfiles[0][0],
+      color: randomProfiles[0][1]
+    });
+    changeNut(getFirstNutId(nutList));
+  }, []);
 
   return (
     <div className="frame frame-profile">
@@ -55,12 +69,11 @@ const FrameProfile = ({
         <div className="menu-name">
           <div className="name">
             <div className="name-first">
-              <input className="field" placeholder="좋아하는 음식" autoFocus onChange={onChangeTag} />
+              <input className="field" placeholder="좋아하는 음식" autoFocus onChange={(event) => changeTag(event.target.value)} />
             </div>
             <div className="name-last">
-              <select className="field" defaultValue="default" onChange={onChangeNut}>
-                {/*<option value="default" disabled>견과류</option>*/}
-                {randomNutList.map((val, idx) => <option key={idx} value={idx}>{val}</option>)}
+              <select className="field" defaultValue={getFirstNutId(randomNutList)} onChange={(event) => changeNut(event.target.value)}>
+                {randomNutList.map((val) => <option key={val.id} value={val.id}>{val.name}</option>)}
               </select>
               <div className="decoration">
                 <ArrowDropDownIcon />

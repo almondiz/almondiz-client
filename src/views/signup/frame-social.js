@@ -5,10 +5,12 @@ import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import GoogleSocialImage from "../../asset/social/google.svg";
 
-
 // frame 1
-const FrameSocial = ({ frame }) => {
+const FrameSocial = ({ frame, email, providerType }) => {
   const navigate = useNavigate();
+  const showProviderLogo = (providerType) => {
+    if (providerType === "GOOGLE") return (<img className="social-icon google" alt="Google" src={GoogleSocialImage} />);
+  }
 
   return (
     <div className="frame frame-social">
@@ -21,8 +23,8 @@ const FrameSocial = ({ frame }) => {
 
       <main className="content">
         <p className="description">{`아래의 소셜 계정으로\n가입을 진행합니다.`}</p>
-        <img className="social-icon google" alt="Google" src={GoogleSocialImage} />
-        <p className="email">{`almondiz.ajou@gmail.com`}</p>
+        {showProviderLogo(providerType)}
+        <p className="email">{email}</p>
       </main>
 
       <footer className="footer">

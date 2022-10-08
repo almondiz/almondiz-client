@@ -3,7 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from "gapi-script";
 import { useDispatch } from "react-redux";
-import { setAccessToken, setRefreshToken, setEmail } from "../../store/slices/account";
+import {
+  setAccessToken,
+  setRefreshToken,
+  setProviderUid,
+  setEmail,
+  setProviderType
+} from "../../store/slices/account";
 
 import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
@@ -22,10 +28,13 @@ const LoginPage = () => {
   const userViewModel = new UserViewModel(new UserModel());
 
   const  onSuccess = async (res) => {
-    const { cu: email } = res.getBasicProfile();
+    const { cu: email, NT: providerUid } = res.getBasicProfile();
+    const providerType = "GOOGLE";
     dispatch(setEmail(email));
+    dispatch(setProviderUid(providerUid));
+    dispatch(setProviderType(providerType));
     await userViewModel.checkAccount(
-      email,
+      { providerType, providerUid },
       () => navigate(`/signup`),
       ({ accessToken, refreshToken }) => {
         dispatch(setAccessToken(accessToken));
@@ -39,7 +48,7 @@ const LoginPage = () => {
     console.log(res);
   }
 
-  const clientId = process.env.GOOGLE_CLIENT_ID;
+  const clientId = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID_NETLIFY;
 
   useEffect(() => {
     const start = () => {
