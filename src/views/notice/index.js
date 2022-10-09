@@ -10,7 +10,7 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
-const FloatController = ({ floatRef }) => {
+const FloatController = ({ floatRef, dataList }) => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -18,7 +18,7 @@ const FloatController = ({ floatRef }) => {
       <button className="button-back icon-sm" onClick={() => navigate(-1)}>
         <ArrowBackIcon />
       </button>
-      <h3 className="title">알림</h3>
+      <h3 className="title">알림 <span className="count">{dataList.length}</span></h3>
     </nav>
   );
 
@@ -67,7 +67,7 @@ const NoticePage = ({ floatRef }) => {
         <NoticeList dataList={dataList} />
       </main>
 
-      <FloatController floatRef={floatRef} />
+      <FloatController floatRef={floatRef} dataList={dataList} />
     </div>
   );
 };
