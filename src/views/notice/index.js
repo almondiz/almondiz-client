@@ -1,57 +1,75 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getTime } from "../../util";
-import { UserModel, NoticeModel } from "../../models";
-import { UserViewModel, NoticeViewModel } from "../../view-models";
+import { NoticeModel } from "../../models";
+import { NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
-const Notice = () => {
+const FloatController = ({ floatRef }) => {
   const navigate = useNavigate();
 
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
-  const me = userViewModel.getMyData();
+  const Top = () => (
+    <nav className="float-top top-nav">
+      <button className="button-back icon-sm" onClick={() => navigate(-1)}>
+        <ArrowBackIcon />
+      </button>
+      <h3 className="title">알림</h3>
+    </nav>
+  );
 
-  const noticeViewModel = new NoticeViewModel(new NoticeModel());
+  useEffect(() => {
+    (floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setTop());
+  }, [floatRef.current]);
 
-  const notices = [];
-  me.notices.map(noticeId => notices.push(noticeViewModel.getData(noticeId)));
-  notices.reverse();
+  return <></>;
+};
 
-  const NoticeItem = ({ notice }) => {
+
+const NoticePage = ({ floatRef }) => {
+  // NOTICE API
+  const dataList = (() => {
+    const noticeViewModel = new NoticeViewModel(new NoticeModel());
+    return noticeViewModel.getMyNoticeData();
+  })();
+  //
+
+
+  const NoticeList = ({ dataList }) => {
     return (
-      <li className={`notice-item ${notice.isRead[myUserId] ? "" : "new"}`}>
-        <div className={`notice-icon ${notice.isRead[myUserId] ? "" : "badge"}`}>
-          <NotificationsIconBorder />
-        </div>
-        <div className="text-wrap">
-          <p className="message">{notice.message}</p>
-          <p className="time">{getTime(notice.createdAt)}</p>
-        </div>
-      </li>
+      <ul className="notice-list">
+        {dataList.map((data, idx) => {
+          return (
+            <li key={idx} className={`notice-item ${data.isRead ? "" : "new"}`}>
+              <div className={`notice-icon ${data.isRead ? "" : "badge"}`}>
+                <NotificationsIconBorder />
+              </div>
+              <div className="text-wrap">
+                <p className="message">{data.message}</p>
+                <p className="time">{getTime(data.createdAt)}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     );
-  };  
-  const makeNotice = (notice, idx) => <NoticeItem key={idx} notice={notice} />;  
+  };
+
 
   return (
     <div className="page">
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
-        </button>
-        <h3 className="title">알림</h3>
-      </nav>
-
       <main className="content">
-        <ul className="notice-list">{notices.map(makeNotice)}</ul>
+        <NoticeList dataList={dataList} />
       </main>
+
+      <FloatController floatRef={floatRef} />
     </div>
   );
 };
 
-export default Notice;
+export default NoticePage;

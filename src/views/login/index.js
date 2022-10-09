@@ -27,7 +27,7 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const userViewModel = new UserViewModel(new UserModel());
 
-  const  onSuccess = async (res) => {
+  const onSuccess = async (res) => {
     const { cu: email, NT: providerUid } = res.getBasicProfile();
     const providerType = "GOOGLE";
     dispatch(setEmail(email));

@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: $bottom-nav-height;
+  padding-bottom: $float-bottom-height;
 
   &>.header {
     width: 100%;
@@ -12,11 +12,10 @@
     justify-content: space-between;
     align-items: center;
   
-    .title {
+    &>.title {
       font-size: 1.75rem;
     }
-  
-    .right {
+    &>.right {
       display: flex;
       align-items: center;
     }
@@ -31,6 +30,11 @@
 
 
 .search-drawer {
+  pointer-events: none;
+  &>* {
+    pointer-events: auto;
+  }
+  
   z-index: 10;
   position: fixed;
   left: 0;
@@ -44,18 +48,17 @@
 
     transition: all .3s ease;
 
-    .header {
+    &>.header {
       height: $page-header-height;
     
       display: flex;
       justify-content: space-between;
       align-items: center;
     
-      .title {
+      &>.title {
         font-size: 1.75rem;
       }
-    
-      .right {
+      &>.right {
         display: flex;
         align-items: center;
       }
@@ -68,22 +71,27 @@
     position: absolute;
     left: 0;
     right: 0;
+    top: 0;
+    bottom: 0;
+    pointer-events: none;
+    &>* {
+      pointer-events: auto;
+    }
   }
   .tf-frame.tf-frame-1,
   .tf-frame.tf-frame-2 {
-    top: 0;
-    bottom: 0;
+    pointer-events: auto;
+    background-color: var(--background-color);
   }
   .tf-frame.tf-frame-2 {
-    background-color: var(--background-color);
-
-    .tags-wrap {
-      margin-top: 1.5rem;
+    ::v-deep {
+      .tag-list {
+        margin-top: 1.5rem;
+      }
     }
   }
   .tf-frame.tf-frame-3 {
     top: 1rem - $page-header-height;
-
     &.hide {
       top: 1rem - $page-header-height - $page-header-height;
     }
@@ -95,6 +103,25 @@
       -webkit-backdrop-filter: blur(.5rem);
       backdrop-filter: blur(.5rem);
       box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+    }
+
+    .tf-box {
+      height: 3rem;
+      margin-right: -.75rem;
+      border-top-right-radius: 1.5rem;
+      border-bottom-right-radius: 1.5rem;
+
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      ::v-deep {
+        .tag-list {
+          flex-wrap: nowrap;
+          overflow: visible;
+        }
+      }
     }
   }
 }
@@ -110,7 +137,7 @@
     font-weight: 700;
     margin-bottom: 1.25rem;
 
-    letter-spacing: .1875rem;
+    letter-spacing: .125rem;
   }
   &>.list {
     margin-top: -.5rem;
@@ -122,7 +149,7 @@
       display: flex;
       align-items: center;
 
-      &>.delete-item-button {
+      &>.button-delete-item {
         margin-left: auto;
 
         height: 2.5rem;
@@ -144,64 +171,10 @@
   }
 }
 
-.tags {
-  display: inline-flex;
-  align-items: center;
-
-  width: 100%;
-
-  .tag + .tag {
-    margin-left: .3125rem;
-  }
-  .tag {
-    height: 1.75rem;
-    padding: 0 .625rem;
-    border-radius: .875rem;
-    font-size: .875rem;
-
-    display: flex;
-    align-items: center;
-    line-height: 1;
-
-    border: 1px solid #999;
-    color: #666;
-
-    .tag-cancel-button {
-      height: 1.25rem;
-      width: 1.25rem;
-      margin-right: -.5rem;
-
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      ::v-deep {
-        svg {
-          height: .75rem;
-          width: .75rem;
-        }
-      }
-    }
-
-    &.tag-region {
-      background-color: #666;
-      border: none;
-      color: #fff;
-
-      .tag-cancel-button {
-        ::v-deep {
-          svg {
-            fill: #fff;
-          }
-        }
-      }
-    }
-  }
-}
 
 .button-search {
   position: fixed;
-  bottom: $bottom-nav-height + 2rem;
+  bottom: $float-bottom-height + 2rem;
   left: 50%;
   transform: translateX(-50%);
 
@@ -221,7 +194,7 @@
   p {
     color: #fff;//
     font-weight: 700;//
-    letter-spacing: .1875rem;//
+    letter-spacing: .125rem;//
     margin-left: .5rem;//.25rem;
     font-size: .9375rem;//.875rem;
   }

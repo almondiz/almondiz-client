@@ -1,99 +1,96 @@
 .page {
-  &>.navbar {
-    background-color: var(--background-color);
-    border-bottom: 1px solid #eee;
-  
-    z-index: 10;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 4rem;
-  
+  &>.content {
+    padding-top: $float-bottom-height + 1rem;
+    padding-bottom: $float-bottom-height + 1rem;
+  }
+}
+#float {
+  .float-top {
+    background-color: rgba(255, 255, 255, .75);
+    -webkit-backdrop-filter: blur(.5rem);
+    backdrop-filter: blur(.5rem);
+    box-shadow: 0 1px 3rem rgba(0, 0, 0, .125);
+
     display: flex;
     align-items: center;
     justify-content: center;
-    
-    .button-back {
-      z-index: 1;
-  
-      position: absolute;
-      left: .25rem;
-  
-      height: 4rem;
-      width: 4rem;
-    }
-  
-    .title {
-      font-size: 1.125rem;
-      font-weight: 700;
+
+    &>.title {
+      font-size: 1rem;
   
       display: flex;
       justify-content: center;
       align-items: center;
     }
-  }
+    
+    &>.button-back {
+      height: 3rem;
+      width: 3rem;
 
-  &>.content {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
+      position: absolute;
+      left: .5rem;
+    }
+  }
+}
+
+
+.notice-list {
+  .notice-item + .notice-item {
+    margin-top: .5rem;
+  }
+  .notice-item {
+    height: 5rem;
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
-    .notice-list>* {
-      margin-top: .5rem;
-      height: 5rem;
-    }
-    .notice-item {
-      display: flex;
-      align-items: center;
+    display: flex;
+    align-items: center;
 
-      .notice-icon {
-        margin-left: -.5rem;
-    
-        height: 2.5rem;
-        width: 2.5rem;
-    
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    
-        ::v-deep {
-          svg {
-            height: 1.5rem;
-            width: 1.5rem;
-          }
-        }
-    
-        &.badge {
-          position: relative;
-    
-          &::after {
-            position: absolute;
-            top: -.3125rem + .5rem;
-            right: -.3125rem + .5rem;
-    
-            content: "";
-            width: .5rem;
-            height: .5rem;
-            background-color: var(--content-text-color);
-            border-radius: 100%;
-          }
+    .notice-icon {
+      margin-left: -.5rem;
+  
+      height: 2.5rem;
+      width: 2.5rem;
+  
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      ::v-deep {
+        svg {
+          height: 1.5rem;
+          width: 1.5rem;
         }
       }
-      .text-wrap {
-        margin-left: .75rem;
-        flex: 1;
-    
-        .message {
-          font-size: .9375rem;
-          line-height: 1.25;
+  
+      &.badge {
+        position: relative;
+  
+        &::after {
+          position: absolute;
+          top: -.3125rem + .5rem;
+          right: -.3125rem + .5rem;
+  
+          content: "";
+          width: .5rem;
+          height: .5rem;
+          background-color: var(--content-text-color);
+          border-radius: 100%;
         }
-        .time {
-          font-size: .8125rem;
-          margin-top: .25rem;
-          color: #666;
-        }
+      }
+    }
+    .text-wrap {
+      margin-left: .75rem;
+      flex: 1;
+  
+      .message {
+        font-size: .9375rem;
+        line-height: 1.25;
+      }
+      .time {
+        font-size: .8125rem;
+        margin-top: .25rem;
+        color: #666;
       }
     }
   }

@@ -1,6 +1,5 @@
 @import "./pretendardvariable";
 
-
 body {
   margin: 0;
   padding: 0;
@@ -24,14 +23,17 @@ body * {
   font-family: var(--font-family);
 }
 
+p,
 h1,
 h2,
 h3,
 h4,
 h5,
 h6,
-p,
 li,
+textarea,
+input,
+button,
 ::after,
 ::before {
   margin: 0;
@@ -77,6 +79,8 @@ ul {
 }
 
 .noscroll {
+  margin: 0;
+  height: 100%;
   overflow: hidden;
 }
 
@@ -143,6 +147,8 @@ ul {
 
 
 .text-button {
+  flex-shrink: 0;
+
   z-index: 1;
   
   font-size: .75rem;
@@ -173,10 +179,10 @@ ul {
   font-size: .9375rem;
 
   &-icon {
-    margin-left: .125rem;
+    margin-left: -.5rem + .125rem;
 
-    height: 1.5rem;
-    width: 1.5rem;
+    height: 2.5rem;
+    width: 2.5rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -189,12 +195,14 @@ ul {
   }
   &-box {
     flex: 1;
-    padding-left: .5rem;
-    padding-right: .5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
   }
   &-clear-button {
-    height: 1.5rem;
-    width: 1.5rem;
+    margin-right: -.5rem;
+    height: 2.5rem;
+    width: 2.5rem;
     display: flex;
     justify-content: center;
     align-items: center;

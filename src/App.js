@@ -5,24 +5,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
 
 import { UserModel } from "./models";
-import { UserViewModel } from "./view-models";
 
-import Login from "./views/login";
-import Signup from "./views/signup";
-import Feed from "./views/feed";
-import Post from "./views/post";
-import Search from "./views/search";
-import Scrap from "./views/scrap";
-import Profile from "./views/profile";
-import Subscriptions from "./views/subscriptions";
-import Edit from "./views/edit";
-import Notice from "./views/notice";
-import Settings from "./views/settings";
-import NotFound from "./views/not-found";
+import LoginPage from "./views/login";
+import SignupPage from "./views/signup";
+import FeedPage from "./views/feed";
+import PostPage from "./views/post";
+import SearchPage from "./views/search";
+import ScrapPage from "./views/scrap";
+import ProfilePage from "./views/profile";
+import SubscriptionsPage from "./views/subscriptions";
+import EditPage from "./views/edit";
+import NoticePage from "./views/notice";
+import SettingsPage from "./views/settings";
+import NotFoundPage from "./views/not-found";
 
 import Float from "./components/float";
 import Backdrop from "./components/backdrop";
-import BottomNav from "./components/bottom-nav";
+import MainBottomNav from "./components/main-bottom-nav";
 
 import store from "./store";
 
@@ -66,15 +65,15 @@ const Monitor = () => {
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
-  useEffect(() => window.scrollTo(0, 0), [pathname]);
+  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
   return <></>;
 };
 
 
 const MainLayout = ({ floatRef }) => {
   useEffect(() => {
-    floatRef.current?.setBottomNav(<BottomNav />);
-    return () => floatRef.current?.setBottomNav(<></>);
+    floatRef.current?.setBottom(<MainBottomNav />);
+    return () => floatRef.current?.setBottom();
   });
   
   return <Outlet />;
@@ -86,8 +85,8 @@ const RequireAuth = () => {
 };
 
 const App = () => {
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
+  const userModel = new UserModel();
+  const myUserId = userModel.getMyUserId();
 
   const floatRef = useRef();
   const backdropRef = useRef();
@@ -98,28 +97,28 @@ const App = () => {
         <Routes>
           <Route exact path="/" element={<Navigate to="/login" />} />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
           
           <Route element={<RequireAuth/>}>
             <Route element={<MainLayout floatRef={floatRef} />}>
-              <Route path="/scrap" element={<Scrap />} />
+              <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
               <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
-              <Route path="/subscriptions" element={<Subscriptions />} />
+              <Route path="/subscriptions" element={<SubscriptionsPage floatRef={floatRef} />} />
             </Route>
-            <Route path="/edit" element={<Edit floatRef={floatRef} backdropRef={backdropRef} />} />
-            <Route path="/notice" element={<Notice />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
+            <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
+            <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
           </Route>
 
           <Route element={<MainLayout floatRef={floatRef} />}>
-            <Route path="/feed" element={<Feed backdropRef={backdropRef} />} />
-            <Route path="/post" element={<Post postId={1} floatRef={floatRef} />} />
-            <Route path="/search" element={<Search />} />
-            <Route path="/profile/:userId" element={<Profile floatRef={floatRef} />} />
+            <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
+            <Route path="/post" element={<PostPage floatRef={floatRef} postId={1} />} />
+            <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
+            <Route path="/profile/:userId" element={<ProfilePage floatRef={floatRef} />} />
           </Route>
 
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
 
         <Float ref={floatRef} />

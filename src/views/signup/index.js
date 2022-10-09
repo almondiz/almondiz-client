@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Framer, getRandomProfile, getRandomNutList } from "../../util";
+import { Frame, getRandomProfile, getRandomNutList } from "../../util";
 import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
@@ -13,7 +13,7 @@ import FrameConfirm from "./frame-confirm";
 import "./style.scoped.scss";
 import { getAccountInfo, setAccessToken, setRefreshToken } from "../../store/slices/account";
 
-const Signup = () => {
+const SignupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const account = useSelector(getAccountInfo);
@@ -51,16 +51,16 @@ const Signup = () => {
     dispatch(setRefreshToken(data.refreshToken));
     navigate("/feed");
   };
-
-  const framer = new Framer();
-  framer.init([
+  
+  const frame = new Frame();
+  frame.init([
     <FrameSocial
-      framer={framer}
+      frame={frame}
       email={account.email}
       providerType={account.providerType}
     />,
     <FrameProfile
-      framer={framer}
+      frame={frame}
       changeNut={changeNut}
       changeProfile={changeProfile}
       changeTag={changeTag}
@@ -71,7 +71,7 @@ const Signup = () => {
       getRandomNutList={getRandomNutList}
     />,
     <FrameConfirm
-      framer={framer}
+      frame={frame}
       callSignup={callSignup}
       profile={profile}
       email={account.email}
@@ -82,10 +82,8 @@ const Signup = () => {
   ]);
 
   return (
-    <div className="page">
-      {framer.view()}
-    </div>
+    <div className="page">{frame.view()}</div>
   );
 };
 
-export default Signup;
+export default SignupPage;

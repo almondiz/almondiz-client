@@ -9,7 +9,7 @@ import ArrowDropDownIcon from "../../asset/icons/mui/arrow-drop-down-icon";
 
 // frame 2
 const FrameProfile = ({
-  framer,
+  frame,
   changeProfile,
   changeNut,
   changeTag,
@@ -45,9 +45,9 @@ const FrameProfile = ({
   }, []);
 
   return (
-    <div className="frame-profile">
-      <nav className="navbar">
-        <button className="button-back icon-sm" onClick={() => framer.prev()}>
+    <div className="frame frame-profile">
+      <nav className="top-nav">
+        <button className="button-back icon-sm" onClick={() => frame.prev()}>
           <ArrowBackIcon />
         </button>
         <h3 className="title">프로필 생성</h3>
@@ -86,7 +86,7 @@ const FrameProfile = ({
 
       <footer className="footer">
         <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
-        <button className="button-next" onClick={() => framer.next()}>다음</button>
+        <button className="button-next" onClick={() => frame.next()}>다음</button>
       </footer>
     </div>
   );

@@ -1,54 +1,56 @@
 .image-slider {
+  width: 100%;
+
   position: relative;
   display: flex;
   justify-content: center;
 
-  width: 100%;
-}
+  .slides {
+    display: grid;
+    grid-auto-flow: column;
+    width: 100vw;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  
+    &>div {
+      scroll-snap-align: start;
+  
+      .image {
+        width: 100vw;
+        height: 17.5rem;
+        background-size: cover;
+        background-position: center;
+      }
+    }
+  
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 
-.indicator {
-  position: absolute;
-  bottom: -1.25rem;
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-}
-
-.indicator div {
-  width: .3125rem;
-  height: .3125rem;
-  cursor: pointer;
-  background: #ccc;
-  border-radius: 100%;
-}
-
-.indicator div.highlight {
-  width: .4375rem;
-  height: .4375rem;
-  background-color: var(--content-text-color);
-}
-
-.slides {
-  display: grid;
-  grid-auto-flow: column;
-  width: 100vw;
-  overflow-y: hidden;
-  overscroll-behavior-x: contain;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-}
-
-.slides > div {
-  scroll-snap-align: start;
-}
-
-.slides .image {
-  width: 100vw;
-  height: 17.5rem;
-  background-size: cover;
-  background-position: center;
-}
-
-.slides::-webkit-scrollbar {
-  display: none;
+  .indicator {
+    position: absolute;
+    bottom: .75rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  
+    div {
+      width: .375rem;
+      height: .375rem;
+      border-radius: .1875rem;
+      background: rgba(255, 255, 255, .5);
+      -webkit-backdrop-filter: blur(.25rem);
+      backdrop-filter: blur(.25rem);
+  
+      transition: width .2s ease;
+  
+      &.highlight {
+        width: 1rem;
+        background: rgba(255, 255, 255, 1);
+      }
+    }
+  }
 }

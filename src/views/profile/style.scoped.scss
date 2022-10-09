@@ -1,5 +1,5 @@
 .page {
-  padding-bottom: $bottom-nav-height + 1rem + 3rem;
+  padding-bottom: $float-bottom-height + 1rem;
 
   &>.header {
     width: 100%;
@@ -12,11 +12,10 @@
     justify-content: space-between;
     align-items: center;
   
-    .brand {
+    &>.brand {
       height: 2rem;
     }
-
-    .right {
+    &>.right {
       display: flex;
       align-items: center;
 
@@ -47,116 +46,34 @@
     }
   }
 
-  &>.content {
+  &>.body {
     .post-list {
       padding-bottom: 1rem;
     }
 
-    .profile-wrap {
-      padding-top: 1rem;
-
+    .rows {
       width: 100%;
       padding-left: $padding-horiz;
       padding-right: $padding-horiz;
 
-      .profile {
-        margin-bottom: .25rem;
-
+      &>.row {
         display: flex;
         align-items: center;
-    
-        .thumb {
-          width: 3rem;
-          height: 3rem;
-          margin-right: .625rem;
-          border-radius: 100%;
-
-          user-select: none;
-          overflow: hidden;
-          background-color: #ddd;
-          background-size: 75%;
-          background-position: center;
-          background-repeat: no-repeat;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-size: 2.25rem;
-          line-height: 3rem;
-        }
       }
-
-      &.me {
-        .profile {
-          .text-wrap {
-            .name {
-              width: fit-content;
-              font-size: 1rem;
-              //font-weight: 700;
-    
-              display: flex;
-              align-items: center;
-    
-              &::after {
-                content: "나";
-                
-                font-weight: 400;
-                font-size: .6825rem;
-                color: #666;
-                border: 1px solid #666;
-                border-radius: 1rem;
-                padding: .125rem .375rem;
-                margin-left: .375rem;
-              }
-            }
-            .email {
-              margin-top: .3125rem;
-              font-size: .8125rem;
-              color: #666;
-            }
-          }
-        }
+      &>.row.row-follow,
+      &>.row.row-counts,
+      &>.row.row-following,
+      &>.row-post-counts {
+        height: 3.5rem;
       }
-      &.subscribing {
-        .profile {
-          .text-wrap {
-            .alias {
-              width: fit-content;
-              font-size: 1rem;
-              font-weight: 700;
-    
-              display: flex;
-              align-items: center;
-    
-              /*&::after {
-                content: "구독";
-
-                font-weight: 400;
-                font-size: .6825rem;
-                color: #666;
-                border: 1px solid #666;
-                border-radius: 1rem;
-                padding: .125rem .375rem;
-                margin-left: .375rem;
-              }*/
-            }
-            .name {
-              margin-top: .3125rem;
-              font-size: .8125rem;
-              color: #666;
-            }
-          }
-        }
-      }
-
-      .row + .row {
+      &>.row.row-following,
+      &>.row.row-post-counts {
         border-top: 1px solid #eee;
       }
-      .row {      
-        display: flex;
-        align-items: center;
 
-        height: 3.5rem;
-
+      &>.row.row-counts,
+      &>.row.row-following,
+      &>.row-post-counts {
         .count {
           display: flex;
           align-items: center;
@@ -169,54 +86,66 @@
             margin-left: .25rem;
           }
         }
-
-        .thumbs {
-          display: flex;
-          margin-left: 1rem;
-    
-          .thumb {
-            width: 1.5rem;
-            height: 1.5rem;
-            margin-right: .375rem;
-            border-radius: 100%;
-
-            user-select: none;
-            overflow: hidden;
-            background-color: #ddd;
-            background-size: 75%;
-            background-position: center;
-            background-repeat: no-repeat;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.125rem;
-            line-height: 1.5rem;
-          }
-        }
-
-        .button-subscribing-list {
-          font-size: .75rem;
-          font-weight: 700;
-          color: var(--background-color);
-          background-color: var(--content-text-color);
-
-          height: 1.5rem;
-          border-radius: .75rem;
-          padding: 0 .75rem;
-
-          margin-left: auto;
-        }
       }
 
-      .row-button {
-        display: flex;
-        align-items: center;
+      &>.row.row-profile {
+        height: 4rem;
+    
+        .thumb {
+          width: 3rem;
+          height: 3rem;
+          margin-right: .625rem;
+          border-radius: 100%;
 
-        margin-top: 1rem;
-        height: 2.5rem;
+          user-select: none;
+          overflow: hidden;
+          background-color: #eee;
+          background-size: 75%;
+          background-position: center;
+          background-repeat: no-repeat;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 2.25rem;
+          line-height: 3rem;
 
-        .button-subscribe,
-        .button-unsubscribe,
+          flex-shrink: 0;
+        }
+        .text-wrap {
+          .name {
+            height: 1.25rem;
+            display: flex;
+            align-items: center;
+  
+            font-size: 1rem;
+  
+            &[data-after]::after {
+              content: attr(data-after);
+              font-size: .6825rem;
+              color: #666;
+              border: 1px solid #666;
+              border-radius: 1rem;
+              padding: .1875rem .375rem;
+              margin-left: .375rem;
+            }
+          }
+          .description {
+            margin-top: .1825rem;
+            font-size: .8125rem;
+            color: #666;
+          }
+        }
+        &[data-user-type=following] {
+          .text-wrap {
+            .name {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+      &>.row.row-follow {
+        .button-follow,
+        .button-unfollow,
         .button-change-alias {
           font-size: .875rem;
           font-weight: 700;
@@ -232,8 +161,8 @@
           border-radius: 1rem;
           padding: 0 auto;
         }
-        .button-subscribe,
-        .button-unsubscribe {
+        .button-follow,
+        .button-unfollow {
           flex: 1;
         }
         .button-change-alias {
@@ -241,13 +170,38 @@
           margin-left: .625rem;
         }
       }
+      &>.row.row-following {
+        .emojis {
+          display: flex;
+          margin-left: 1rem;
+
+          .emoji {
+            margin-right: .375rem;
+            font-size: 1.5rem;
+          }
+        }
+        .button-following-list {
+          flex-shrink: 0;
+
+          font-size: .75rem;
+          font-weight: 700;
+          color: var(--background-color);
+          background-color: var(--content-text-color);
+
+          height: 1.5rem;
+          border-radius: .75rem;
+          padding: 0 .75rem;
+
+          margin-left: auto;
+        }
+      }
     }
   }
 }
 
 
-.float {
-  &-header {
+#float {
+  .float-header {
     &-frame.frame-1 {
       .button-back {      
         background-color: rgba(255, 255, 255, .75);

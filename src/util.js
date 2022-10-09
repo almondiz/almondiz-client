@@ -1,6 +1,26 @@
 import React, { useState, useEffect } from "react";
 
 
+export class Pipe {
+  static data = {};
+
+  static set(key, val) {
+    useEffect(() => {
+      Pipe.data[key] = val;
+      console.log(`key '${key}' added`);
+      return () => {
+        delete Pipe.data[key];
+        console.log(`key '${key}' deleted`);
+      };
+    }, []);
+  }
+
+  static get(key) {
+    return Pipe.data[key];
+  }
+};
+
+
 /** components */
 
 export const NoScroll = () => {
@@ -8,26 +28,61 @@ export const NoScroll = () => {
     document.body.classList.add("noscroll");
     return () => document.body.classList.remove("noscroll");
   }, []);
+
+  return <></>;
+};
+
+
+/*
+export const isFunctionComponent = component => ( typeof component === 'function' && String(component).includes("return React.createElement"));
+export const isClassComponent = component => (typeof component === 'function' && !!component.prototype.isReactComponent);
+*/
+export const isElement = element => React.isValidElement(element);
+export const isDOMTypeElement = element => (isElement(element) && typeof element.type === "string");
+
+export const isEmptyElement = element => {
+  if (element === null || element === undefined)
+    return true;
+  if (isElement(element) && element.type === React.Fragment)
+    return true;
+  return false;
 };
 
 
 /** controllers */
 
-export class Framer {
+/*const [ curStep, setCurStep ] = useState(0);
+
+  const moveStep = val => {
+    if (curStep + val >= maxStep || curStep + val < 0) return;
+    return () => setCurStep(curStep + val);
+  };
+
+  const pages = [
+    <Writer moveStep={moveStep} />,
+    <Tagger moveStep={moveStep} />,
+    <StoreSearch moveStep={moveStep} />,
+    <DirectRegister moveStep={moveStep} />,
+  ];
+  const maxStep = pages.length;
+
+  return (pages[curStep]);*/
+export class Frame {
   index;
   setIndex;
-  frames;
+  elements;
 
   constructor(...params) { this.init(...params); }
-  init(frames=[], initialIndex=0) {
-    [this.index, this.setIndex] = useState(initialIndex);
-    this.frames = frames;
+  init(elements=[], initialIndex=0) {
+    const [index, setIndex] = useState(initialIndex);
+    this.index = index, this.setIndex = setIndex;
+    this.elements = elements;
   }
 
-  view() { return this.frames[this.index]; }
+  view() { return this.elements[this.index]; }
 
   move(index) {
-    index = Math.min(Math.max(index, 0), this.frames.length - 1);
+    index = Math.min(Math.max(index, 0), this.elements.length - 1);
     if (index === this.index)   return false;
     this.setIndex(index);
     return true;
@@ -36,6 +91,48 @@ export class Framer {
   walk(inc) { return this.move(this.index + inc); }
   next() { return this.walk(1); }
   prev() { return this.walk(-1); }
+};
+
+export class Phase {
+  state;
+  setState;
+  handlers;
+
+  constructor(handlers={}, initKey="init", ...initArgs) {
+    this.handlers = handlers;
+    
+    const [state, setState] = useState({
+      key: initKey,
+      handler: this._getHandler(initKey, initArgs),
+    });
+    this.state = state, this.setState = setState;
+
+    useEffect(() => {
+      const destroy = state.handler();
+      return (typeof destroy === "function") ? destroy : () => {};
+    }, [state]);
+  }
+  
+  go(key, ...args) {
+    this.setState({
+      key: key,
+      handler: this._getHandler(key, args),
+    });
+  }
+  
+  get() { return this.state.key; }
+  is(key) { return this.state.key === key; }
+  isIn(...keys) {   // prefix array
+    for (let i = 0; i < keys.length; i++) {
+      if (this.state.key?.startsWith(keys[i]))
+        return true;
+    }
+    return false;
+  }
+
+  _getHandler(key, args) {
+    return (typeof this.handlers[key] === "function") ? () => this.handlers[key](...args) : () => {};
+  }
 };
 
 

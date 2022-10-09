@@ -1,99 +1,137 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import React, { useState, useRef } from "react";
 
-import { getDistance, getTime } from "../../util";
-import { UserModel, PostModel } from "../../models";
-import { UserViewModel, PostViewModel } from "../../view-models";
-
+import TagList from "../../components/tag-list";
+import CommentList from "../../components/comment-list";
 import ImageSlider from "../image-slider";
+import ImageGrid from "../../components/image-grid";
+import ImageViewer from "../../components/image-viewer";
 
 import "./style.scoped.scss";
-import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
+import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
-import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
+import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
-const PostItem = ({ postId, post }) => {
-  const navigate = useNavigate();
+const PostItem = ({ data, detail=false }) => {
+  const imageViewerRef = useRef();
+  const imageGridAction = index => imageViewerRef.current?.setIndex(index);
+  const ImageGridTrailer = ({ data }) => (
+    <div onClick={data.goToShopPage} className="grid trailer" style={{ gridArea: `grid-${data.postImageUrls.length + 1}` }}>
+      <div className="content">
+        <div className="text-wrap">
+          <p className="name">{data.shopName}</p>
+          <p className="address">{data.shopAddress}</p>
+        </div>
+        <div className="icon"><NavigateNextIcon /></div>
+      </div>
+      <div className="image" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+    </div>
+  );
 
-  const userViewModel = new UserViewModel(new UserModel());
-  const myUserId = userViewModel.getMyUserId();
-
-  const postViewModel = new PostViewModel(new PostModel());
-  const postAuthorId = post.userId;
-  const postAuthor = userViewModel.getData(postAuthorId);
-
-  const comment = post.comments[post.bestCommentIndex];
-  const commentAuthorId = comment.userId;
-  const commentAuthor = userViewModel.getData(commentAuthorId);
-
-  const location = useSelector(state => state.global.location);
-
-  const makeTag = (tag, idx) => (<li key={idx} className="tag">{tag}</li>);
+  const ButtonMore = ({ data }) => {
+    const [focus, setFocus] = useState(false);
+    const onClick = () => setFocus(!focus);
+    return (
+      <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
+        <div className="icon"><MoreHorizIcon /></div>
+      </button>
+    );
+  };
+  const ButtonScrap = ({ data }) => {
+    const [focus, setFocus] = useState(data.scrap);
+    const onClick = () => setFocus(!focus);
+    return (
+      <button className={`button button-scrap ${focus ? "focus" : ""}`} onClick={onClick}>
+        <div className="icon">{focus ? <BookmarkIconFill /> : <BookmarkIconBorder />}</div>
+        <p>{data.scrappedCount}</p>
+      </button>
+    );
+  };
 
   return (
-    <article className="post-item">
-      <div className="link" onClick={() => navigate(`/post`)} />
+    <article className={`post ${!detail ? "post-item" : ""}`} data-id={data.postId}>
+      {!detail && <div className="background" onClick={data.goToPostPage} />}
+      {detail && <ImageViewer images={data.postImageUrls} ref={imageViewerRef} />}
 
       <header className="header">
-        <a href={post.shop.link} className="shop">
-          <div className="thumb" style={{ backgroundImage: `url(${post.shop.thumb})` }} />
-          <div className="text-wrap">
-            <p className="name">{post.shop.name}</p>
-            <p className="date">{post.shop.location.address} · {getDistance(location, post.shop.location)}km</p>
-          </div>
-        </a>
-        <div onClick={() => navigate(`/profile/${postAuthorId}`)} className={`profile ${postAuthorId === myUserId ? "me" : (userViewModel.isSubscribing(postAuthorId) ? "subscribing" : "")}`}>
-          <div className="chip">
-            <div className="thumb" style={{ backgroundColor: postAuthor.profile.thumb.background }}>{postAuthor.profile.thumb.emoji}</div>
-            <p className="name">{postAuthorId === myUserId ? "나" : userViewModel.getAlias(postAuthorId)}</p>
-          </div>
-          <p className="location">{getTime(post.createdAt)}{postAuthorId === myUserId ? "" : ` · ${userViewModel.isSubscribing(postAuthorId) ? "구독" : "근처"}`}</p>
+        <div className="row row-shop">
+          <button className="shop" onClick={data.goToShopPage}>
+            <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+            <div className="text-wrap">
+              <p className="name">{data.shopName}</p>
+              <p className="description">{data.shopAddress} · {data.shopDistance}</p>
+            </div>
+          </button>
+          {!detail && (
+            <div className="buttons right">
+              <ButtonMore data={data} />
+            </div>
+          )}
         </div>
+        <nav className="row row-tags"><TagList dataList={data.postTags} small /></nav>
       </header>
 
-      <nav className="tags-wrap">
-        <SellIconBorder />
-        <ul className="tags">{post.tags.map(makeTag)}</ul>
-      </nav>
-
       <main className="body">
-        <p className="text">{post.content.text}</p>
-        <div className="images full" onClick={() => navigate(`/post`)}>
-          <ImageSlider images={post.content.images} />
+        <div className="row row-text">
+          <p className="text">{data.postText}</p>
         </div>
-      </main>
-
-      <footer className="footer">
-        <div className="buttons">
-          <button className="button">
-            <div className="icon-sm">
-              <ChatBubbleIconBorder />
+        { 
+          !detail ?
+          (
+            <div className="row row-images" onClick={data.goToPostPage}>
+              <ImageSlider images={data.postImageUrls} />
             </div>
-            <p>{postViewModel.getCommentCount(postId)}</p>
-          </button>
-          <button className="button right">
-            <div className="icon-sm icon-container">
-              <MoreHorizIcon />
-            </div>
-          </button>
-          <button className="button">
-            <div className="icon-sm">
-              <BookmarkIconBorder />
-            </div>
-            <p>{post.scrapped.length}</p>
-          </button>
-        </div>
-        { post.comments.length > 0 && (
-            <div className="comment">
-              <div className="thumb" style={{ backgroundColor: commentAuthor.profile.thumb.background }}>{commentAuthor.profile.thumb.emoji}</div>
-              <p>{comment.content}</p>
+          ) :
+          (
+            <div className="row row-images">
+              <ImageGrid images={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} action={imageGridAction} />
             </div>
           )
         }
-      </footer>
+      </main>
+
+      {
+        !detail ?
+        (
+          data.commentCount && (
+            <footer className="footer">
+              <div className="row row-profile">
+                <button className="profile" onClick={data.goToPostAuthorPage} data-user-type={data.postAuthorType}>
+                  <p className="emoji">{data.postAuthorEmoji}</p>
+                  <p className="name">{data.postAuthorName}</p>
+                </button>
+                <p className="description">{data.postCreatedAt}</p>
+                <div className="buttons right">
+                  <ButtonScrap data={data} />
+                </div>
+              </div>
+              <div className="row row-counts">
+                <p className="description">댓글 <span className="count">{data.commentCount}</span></p>
+                <div className="best-comment">
+                  <p className="emoji">{data.bestCommentAuthorEmoji}</p>
+                  <p className="text">{data.bestCommentText}</p>
+                </div>
+              </div>
+            </footer>
+          )
+        ) :
+        (
+          <footer className="footer">
+            <div className="row row-profile">
+              <button className="profile" onClick={data.goToPostAuthorPage}>
+                <p className="emoji">{data.postAuthorEmoji}</p>
+                <p className="name">{data.postAuthorName}</p>
+              </button>
+              <p className="description right">{data.postCreatedAt}</p>
+            </div>
+            <div className="row row-counts">
+              <p className="description">댓글 <span className="count">{data.commentCount}</span> · 스크랩 <span className="count">{data.scrappedCount}</span></p>
+            </div>
+            <div className="row row-comments"><CommentList dataList={data.comments} root={true} /></div>
+          </footer>
+        )
+      }
     </article>
   );
 }
