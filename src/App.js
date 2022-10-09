@@ -23,6 +23,8 @@ import Float from "./components/float";
 import Backdrop from "./components/backdrop";
 import MainBottomNav from "./components/main-bottom-nav";
 
+import store from "./store";
+
 
 const Monitor = () => {
   const dispatch = useDispatch();
@@ -77,6 +79,11 @@ const MainLayout = ({ floatRef }) => {
   return <Outlet />;
 };
 
+const RequireAuth = () => {
+  if (store.getState().account.accessToken) return <Outlet />;
+  else return (<Navigate to="/login" />);
+};
+
 const App = () => {
   const userModel = new UserModel();
   const myUserId = userModel.getMyUserId();
@@ -93,22 +100,23 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           
+          <Route element={<RequireAuth/>}>
+            <Route element={<MainLayout floatRef={floatRef} />}>
+              <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
+              <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
+              <Route path="/subscriptions" element={<SubscriptionsPage floatRef={floatRef} />} />
+            </Route>
+            <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
+            <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
+            <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
+          </Route>
+
           <Route element={<MainLayout floatRef={floatRef} />}>
             <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
             <Route path="/post" element={<PostPage floatRef={floatRef} postId={1} />} />
-
             <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
-            <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
-            <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
             <Route path="/profile/:userId" element={<ProfilePage floatRef={floatRef} />} />
-
-            <Route path="/subscriptions" element={<SubscriptionsPage floatRef={floatRef} />} />
           </Route>
-
-          <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
-
-          <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
-          <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
