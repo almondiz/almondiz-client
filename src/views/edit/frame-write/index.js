@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Frame } from "../../../util";
 import { PostModel } from "../../../models";
 import { PostViewModel } from "../../../view-models";
 
-import TagList from "../../../components/tag-list";
+import TagList, { TagController } from "../../../components/tag-list";
 import ImageGrid from "../../../components/image-grid";
 import BackdropTag from "../backdrop-tag";
 
@@ -85,7 +85,14 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
   };
   useEffect(() => handleResizeHeight(), []);
 
-  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag />, });
+  // TAG
+  const tagController = new TagController(data.postTags);
+  useEffect(() => {
+    console.log(tagController.tags);
+  }, [tagController.tags]);
+  //
+
+  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag tagController={tagController} /> });
 
   return (
     <>
@@ -102,7 +109,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
               </button>
             </div>
             <nav className="row row-tags">
-              <TagList dataList={data.postTags} small />
+              <TagList dataList={tagController.tags} small />
               <div className="buttons right">
                 <button className="button-add-tag text-button" onClick={() => showBackdropTag()}>태그 추가</button>
               </div>

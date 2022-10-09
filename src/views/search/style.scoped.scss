@@ -104,6 +104,25 @@
       backdrop-filter: blur(.5rem);
       box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
     }
+
+    .tf-box {
+      height: 3rem;
+      margin-right: -.75rem;
+      border-top-right-radius: 1.5rem;
+      border-bottom-right-radius: 1.5rem;
+
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      ::v-deep {
+        .tag-list {
+          flex-wrap: nowrap;
+          overflow: visible;
+        }
+      }
+    }
   }
 }
 

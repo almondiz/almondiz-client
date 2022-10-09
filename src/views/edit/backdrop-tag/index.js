@@ -11,7 +11,7 @@ import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
 import SellIconBorder from "../../../asset/icons/mui/sell-icon-border";
 
 
-const BackdropTag = () => {
+const BackdropTag = ({ tagController }) => {
   const postViewModel = new PostViewModel(new PostModel());
   const data = postViewModel.getData(1);
 
@@ -21,8 +21,7 @@ const BackdropTag = () => {
     tagFrame.move(tf ? 1 : 0);
   }, [tf]);
 
-  // TAG
-  const tagController = new TagController(data.postTags);
+  // TAG - bug
   const onClickTagItem = data => {
     tagController.push(data);
     setTf("");

@@ -10,8 +10,7 @@ export class TagController {
   setTags;
 
   constructor(dataList) {
-    const [tags, setTags] = useState(dataList);
-    [this.tags, this.setTags] = [tags, setTags];
+    [this.tags, this.setTags] = useState(dataList);
   }
 
   push(data) {
