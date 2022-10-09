@@ -16,7 +16,7 @@ const FloatController = ({ floatRef, dataList }) => {
       <div className="button-back icon-sm" onClick={() => navigate(-1)}>
         <ArrowBackIcon />
       </div>
-      <h3 className="title">구독 <span className="count">{Object.keys(dataList.length)}</span></h3>
+      <h3 className="title">구독 <span className="count">{dataList.length}</span></h3>
     </nav>
   );
 
