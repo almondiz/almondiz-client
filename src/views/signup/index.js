@@ -13,7 +13,7 @@ import FrameConfirm from "./frame-confirm";
 import "./style.scoped.scss";
 import { getAccountInfo, setAccessToken, setRefreshToken } from "../../store/slices/account";
 
-const Signup = () => {
+const SignupPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const account = useSelector(getAccountInfo);
@@ -86,4 +86,4 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+export default SignupPage;

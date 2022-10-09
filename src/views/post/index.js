@@ -80,12 +80,15 @@ const FloatController = ({ floatRef, data }) => {
     footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
-          <button className="button button-comment" onClick={() => commentDialog.show()}>
-            <div className="icon-sm"><ChatBubbleIconBorder /></div>
-            <p>댓글 쓰기</p>
-          </button>
-    
-          <ButtonScrap data={data} />
+          <div className="buttons">
+            <button className="button button-comment" onClick={() => commentDialog.show()}>
+              <div className="icon-sm"><ChatBubbleIconBorder /></div>
+              <p>댓글 쓰기</p>
+            </button>
+          </div>
+          <div className="buttons right">
+            <ButtonScrap data={data} />
+          </div>
         </section>
       ),
       ( // comment
@@ -116,7 +119,7 @@ const FloatController = ({ floatRef, data }) => {
 };
 
 
-const Post = ({ floatRef, postId }) => {
+const PostPage = ({ floatRef, postId }) => {
   // POST API
   const data = (postId => {
     const postViewModel = new PostViewModel(new PostModel());
@@ -151,4 +154,4 @@ const Post = ({ floatRef, postId }) => {
   );
 };
 
-export default Post;
+export default PostPage;

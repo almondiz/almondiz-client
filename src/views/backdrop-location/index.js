@@ -22,7 +22,7 @@ const LocationDrawer = ({ mapBottomRef }) => {
   }, [tf]);
 
   const DummyContent = () => (
-    <section className="bottom-item-3">
+    <section className="bottom-item">
       <div className="text-wrap">
         <h3 className="title">수원 영통구 원천동</h3>
         <p className="description">아주대학교</p>
@@ -112,7 +112,7 @@ const LocationDrawer = ({ mapBottomRef }) => {
 
 const MapBottom = forwardRef((_, ref) => {
   const BottomInitContent = () => (
-    <section className="bottom-item-3">
+    <section className="bottom-item">
       <div className="text-wrap">
         <h3 className="title"><b>서울 서초구 잠원동</b></h3>
         <p className="description">기존에 설정된 위치</p>
@@ -122,7 +122,7 @@ const MapBottom = forwardRef((_, ref) => {
   );
 
   const BottomMyContent = () => (
-    <section className="bottom-item-3">
+    <section className="bottom-item">
       <div className="text-wrap">
         <h3 className="title">성남 분당구 백현동</h3>
         <p className="description">내 위치</p>
@@ -156,7 +156,7 @@ const MapBottom = forwardRef((_, ref) => {
       <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
         {myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}
       </button>
-      <div className="bottom-item">{content}</div>
+      <div className="bottom-item-container">{content}</div>
     </footer>
   );
 });

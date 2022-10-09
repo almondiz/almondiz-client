@@ -28,7 +28,7 @@ const FloatController = ({ floatRef, me }) => {
 };
 
 
-const Subscriptions = ({ floatRef }) => {
+const SubscriptionsPage = ({ floatRef }) => {
   const navigate = useNavigate();
 
   const userModel = new UserModel();
@@ -65,4 +65,4 @@ const Subscriptions = ({ floatRef }) => {
   );
 };
 
-export default Subscriptions;
+export default SubscriptionsPage;

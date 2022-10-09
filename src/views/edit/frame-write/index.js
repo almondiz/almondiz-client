@@ -1,21 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../util";
-import { PostModel } from "../../models";
-import { PostViewModel } from "../../view-models";
+import { Frame } from "../../../util";
+import { PostModel } from "../../../models";
+import { PostViewModel } from "../../../view-models";
 
-import ImageGrid from "../../components/image-grid";
-import BackdropTag from "./backdrop-tag";
+import TagList, { TagController } from "../../../components/tag-list";
+import ImageGrid from "../../../components/image-grid";
+import BackdropTag from "../backdrop-tag";
 
 import "./style.scoped.scss";
-import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
-import AddAPhotoBorder from "../../asset/icons/mui/add-a-photo-icon-border";
-import SellIconBorder from "../../asset/icons/mui/sell-icon-border";
-import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
-
-
-const makeTag = (tag, idx) => <li key={idx} className="tag">{tag}</li>;
+import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
+import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
 
 
 const FloatController = ({ floatRef, frame }) => {
@@ -31,7 +27,7 @@ const FloatController = ({ floatRef, frame }) => {
       ( // main
         <section className="float-footer-frame frame-1">
           <button className="button-add-image right" onClick={() => {}}>
-            <div className="icon-sm"><AddAPhotoBorder /></div>
+            <div className="icon"><AddAPhotoBorder /></div>
             <p>사진 추가</p>
           </button>
         </section>
@@ -89,31 +85,43 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
   };
   useEffect(() => handleResizeHeight(), []);
 
-  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag />, });
+  // TAG
+  const tagController = new TagController(data.postTags);
+  useEffect(() => {
+    console.log(tagController.tags);
+  }, [tagController.tags]);
+  //
+
+  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag tagController={tagController} /> });
 
   return (
     <>
       <main className="content">
-        <article className="post">
+        <article className="post editable">
           <header className="header">
-            <div className="shop">
-              <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
-              <div className="text-wrap">
-                <p className="name">{data.shopName}</p>
-                <p className="date">{data.shopAddress}</p>
-              </div>
+            <div className="row row-shop">
+              <button className="shop">
+                <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+                <div className="text-wrap">
+                  <p className="name">{data.shopName}</p>
+                  <p className="description">{data.shopAddress} · {data.shopDistance}</p>
+                </div>
+              </button>
             </div>
+            <nav className="row row-tags">
+              <TagList dataList={tagController.tags} small />
+              <div className="buttons right">
+                <button className="button-add-tag text-button" onClick={() => showBackdropTag()}>태그 추가</button>
+              </div>
+            </nav>
           </header>
-    
-          <nav className="tags-wrap">
-            <SellIconBorder />
-            <ul className="tags">{data.postTags.map(makeTag)}</ul>
-            <button className="text-button right" onClick={() => showBackdropTag()}>태그 추가</button>
-          </nav>
 
           <main className="body">
-            <textarea className="text" ref={textRef} onChange={handleResizeHeight} name="text" placeholder="내용을 입력하세요" autoFocus />
-            <div className="images full">
+            <div className="row row-text">
+              <textarea className="text" ref={textRef} onChange={handleResizeHeight} name="text" placeholder="내용을 입력하세요" autoFocus />
+              {/*data.postText*/}
+            </div>
+            <div className="row row-images">
               <ImageGrid images={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} editable />
             </div>
           </main>
