@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getTime } from "../../util";
-import { UserModel, NoticeModel } from "../../models";
+import { NoticeModel } from "../../models";
+import { NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -31,35 +32,39 @@ const FloatController = ({ floatRef }) => {
 
 
 const NoticePage = ({ floatRef }) => {
-  const userModel = new UserModel();
-  const myUserId = userModel.getMyUserId();
-  const me = userModel.getMyData();
+  // NOTICE API
+  const dataList = (() => {
+    const noticeViewModel = new NoticeViewModel(new NoticeModel());
+    return noticeViewModel.getMyNoticeData();
+  })();
+  //
 
-  const noticeModel = new NoticeModel();
 
-  const notices = [];
-  me.notices.map(noticeId => notices.push(noticeModel.getData(noticeId)));
-  notices.reverse();
-
-  const NoticeItem = ({ notice }) => {
+  const NoticeList = ({ dataList }) => {
     return (
-      <li className={`notice-item ${notice.isRead[myUserId] ? "" : "new"}`}>
-        <div className={`notice-icon ${notice.isRead[myUserId] ? "" : "badge"}`}>
-          <NotificationsIconBorder />
-        </div>
-        <div className="text-wrap">
-          <p className="message">{notice.message}</p>
-          <p className="time">{getTime(notice.createdAt)}</p>
-        </div>
-      </li>
+      <ul className="notice-list">
+        {dataList.map((data, idx) => {
+          return (
+            <li key={idx} className={`notice-item ${data.isRead ? "" : "new"}`}>
+              <div className={`notice-icon ${data.isRead ? "" : "badge"}`}>
+                <NotificationsIconBorder />
+              </div>
+              <div className="text-wrap">
+                <p className="message">{data.message}</p>
+                <p className="time">{getTime(data.createdAt)}</p>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
     );
-  };  
-  const makeNotice = (notice, idx) => <NoticeItem key={idx} notice={notice} />;  
+  };
+
 
   return (
     <div className="page">
       <main className="content">
-        <ul className="notice-list">{notices.map(makeNotice)}</ul>
+        <NoticeList dataList={dataList} />
       </main>
 
       <FloatController floatRef={floatRef} />

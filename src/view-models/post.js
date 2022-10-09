@@ -18,6 +18,13 @@ export default class PostViewModel {
   }
 
 
+  getAllDataByUser(userId) {
+    const userModel = new UserModel();
+    const user = userModel.getData(userId);
+    return user.posts.map(postId => this.getData(postId));
+  }
+
+
   _makePostItemData(post) {
     const navigate = useNavigate();
     const location = useSelector(state => state.global.location);

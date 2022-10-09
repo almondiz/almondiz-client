@@ -52,15 +52,15 @@ const SignupPage = () => {
     navigate("/feed");
   };
   
-  const frame = new Framer();
+  const frame = new Frame();
   frame.init([
     <FrameSocial
-      framer={framer}
+      frame={frame}
       email={account.email}
       providerType={account.providerType}
     />,
     <FrameProfile
-      framer={framer}
+      frame={frame}
       changeNut={changeNut}
       changeProfile={changeProfile}
       changeTag={changeTag}
@@ -71,7 +71,7 @@ const SignupPage = () => {
       getRandomNutList={getRandomNutList}
     />,
     <FrameConfirm
-      framer={framer}
+      frame={frame}
       callSignup={callSignup}
       profile={profile}
       email={account.email}

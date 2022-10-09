@@ -1,3 +1,9 @@
+.page {
+  &>.content {
+    padding-top: $float-bottom-height + 1rem;
+    padding-bottom: $float-bottom-height + 1rem;
+  }
+}
 #float {
   .float-top {
     background-color: rgba(255, 255, 255, .75);
@@ -8,7 +14,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     &>.title {
       font-size: 1rem;
   
@@ -16,6 +22,7 @@
       justify-content: center;
       align-items: center;
     }
+    
     &>.button-back {
       height: 3rem;
       width: 3rem;
@@ -27,43 +34,39 @@
 }
 
 
-.page {
-  &>.content {
-    padding-top: $float-bottom-height + 1rem;
-    padding-bottom: $float-bottom-height + 1rem;
+.settings-list {
+  .settings-item + .settings-item {
+    margin-top: .5rem;
+  }
+  .settings-item {
+    height: 3rem;
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
-    .settings-list>* {
-      margin-top: .5rem;
-      height: 3rem;
+    display: flex;
+    align-items: center;
+
+    color: var(--primary-text-color);
+
+    .text-wrap {
+      .title {
+        width: fit-content;
+        font-size: 1rem;
+      }
+      .info {
+        margin-top: .3125rem;
+        font-size: .8125rem;
+        color: #666;
+      }
     }
-    .settings-item {
-      display: flex;
-      align-items: center;
 
-      color: var(--primary-text-color);
-
+    &.danger {
       .text-wrap {
         .title {
-          width: fit-content;
-          font-size: 1rem;
+          color: rgb(237, 92, 94);
         }
         .info {
-          margin-top: .3125rem;
-          font-size: .8125rem;
-          color: #666;
-        }
-      }
-
-      &.danger {
-        .text-wrap {
-          .title {
-            color: rgb(237, 92, 94);
-          }
-          .info {
-            color: rgb(237, 92, 94);
-          }
+          color: rgb(237, 92, 94);
         }
       }
     }
