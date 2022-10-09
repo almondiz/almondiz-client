@@ -13,7 +13,7 @@ const FloatController = ({ floatRef }) => {
       <button className="button-back icon-sm" onClick={() => navigate(-1)}>
         <ArrowBackIcon />
       </button>
-      <h3 className="title">알림</h3>
+      <h3 className="title">개인 설정</h3>
     </nav>
   );
 

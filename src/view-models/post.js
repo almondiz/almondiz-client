@@ -71,10 +71,7 @@ export default class PostViewModel {
         else
           return "other";
       })(),
-      goToPostAuthorPage: () => {
-        console.log(1);
-        navigate(`/profile/${postAuthorId}`)
-      },
+      goToPostAuthorPage: () => navigate(`/profile/${postAuthorId}`),
 
       postCreatedAt: getTime(post.createdAt),
       
