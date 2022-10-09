@@ -38,12 +38,12 @@ const SettingsPage = ({ floatRef }) => {
           </li>
           <li className="settings-item">
             <div className="text-wrap">
-              <p className="title">나의 신고</p>
+              <p className="title">좋아한 글</p>
             </div>
           </li>
           <li className="settings-item">
             <div className="text-wrap">
-              <p className="title">1:1 문의</p>
+              <p className="title">댓글 단 글</p>
             </div>
           </li>
           <br />
@@ -60,16 +60,26 @@ const SettingsPage = ({ floatRef }) => {
           </li>
           <li className="settings-item">
             <div className="text-wrap">
+              <p className="title">1:1 문의</p>
+            </div>
+          </li>
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">나의 신고</p>
+            </div>
+          </li>
+          <li className="settings-item">
+            <div className="text-wrap">
               <p className="title">만든 사람들</p>
             </div>
           </li>
           <br />
           
-          <li className="settings-item">
+          {/*<li className="settings-item">
             <div className="text-wrap">
               <p className="title">소셜 로그인 연동</p>
             </div>
-          </li>
+          </li>*/}
           <li className="settings-item">
             <div className="text-wrap">
               <p className="title">로그아웃</p>

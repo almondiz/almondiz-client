@@ -93,8 +93,8 @@
             margin-left: .3125rem;
           }
 
-          &[data-type=me],
-          &[data-type=following] {
+          &[data-user-type=me],
+          &[data-user-type=following] {
             .name {
               font-weight: 700;
             }

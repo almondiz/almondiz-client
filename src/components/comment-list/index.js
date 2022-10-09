@@ -64,8 +64,8 @@ const CommentUnit = ({ data, root=false }) => {
 
       <header className="header">
         <button className="profile" onClick={data.goToCommentAuthorPage}
-          data-type={data.commentAuthorType}
-          data-author={data.isCommentAuthorPostAuthor}
+          data-user-type={data.commentAuthorType}
+          data-is-author={data.isCommentAuthorPostAuthor}
           data-after={data.isCommentAuthorPostAuthor ? "글쓴이" : undefined}
         >
           <p className="emoji">{data.commentAuthorEmoji}</p>

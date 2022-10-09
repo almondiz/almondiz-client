@@ -97,9 +97,7 @@ const PostItem = ({ data, detail=false }) => {
           data.commentCount && (
             <footer className="footer">
               <div className="row row-profile">
-                <button className="profile" onClick={data.goToPostAuthorPage}
-                  data-type={data.postAuthorType}
-                >
+                <button className="profile" onClick={data.goToPostAuthorPage} data-user-type={data.postAuthorType}>
                   <p className="emoji">{data.postAuthorEmoji}</p>
                   <p className="name">{data.postAuthorName}</p>
                 </button>
@@ -121,10 +119,7 @@ const PostItem = ({ data, detail=false }) => {
         (
           <footer className="footer">
             <div className="row row-profile">
-              <button
-                className="profile"
-                onClick={data.goToPostAuthorPage}
-              >
+              <button className="profile" onClick={data.goToPostAuthorPage}>
                 <p className="emoji">{data.postAuthorEmoji}</p>
                 <p className="name">{data.postAuthorName}</p>
               </button>
