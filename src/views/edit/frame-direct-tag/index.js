@@ -93,7 +93,7 @@ const FrameDirectTag = ({ frame, floatRef }) => {
               <div className="tf">
                 <div className="tf-icon"><SellIconBorder /></div>
                 <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
-                {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
+                <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
               </div>
               {tagFrame.view()}
             </nav>

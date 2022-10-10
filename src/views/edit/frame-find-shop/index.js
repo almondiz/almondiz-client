@@ -102,7 +102,7 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
-        <div className="tf tf-step-1" onClick={() => tfHandler(1)}>
+        <div className="tf" onClick={() => tfHandler(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
         </div>
@@ -110,17 +110,17 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
     ),
     (
       <section className="tf-frame tf-frame-2">
-        <div className="tf tf-step-2">
+        <div className="tf">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
-          {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
+          <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
         </div>
         {tagFrame.view()}
       </section>
     ),
     (
       <section className="tf-frame tf-frame-3">
-        <div className="tf tf-step-3">
+        <div className="tf">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly onClick={() => tfHandler(1)} />
         </div>
@@ -132,7 +132,7 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
 };
 
 
-const Bottom = forwardRef((_, ref) => {
+const MapBottom = forwardRef((_, ref) => {
   const BottomInitContent = () => (
     <section className="bottom-item-init">
       <p className="msg">리뷰할 음식점를 검색해주세요.</p>
@@ -149,7 +149,7 @@ const Bottom = forwardRef((_, ref) => {
   };
 
   return (
-    <footer className="bottom">
+    <footer className="map-bottom">
       <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
         <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>
@@ -169,7 +169,7 @@ const FrameFindShop = ({ frame, floatRef }) => {
         <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
         <div className="map-container">
           <NaverMap id="map-find-shop" />
-          <Bottom ref={mapBottomRef} />
+          <MapBottom ref={mapBottomRef} />
         </div>
       </main>
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Frame, getRandomProfile, getRandomNutList } from "../../util";
+import { Frame, getRandomProfile, getRandomNutList, getRandomNut } from "../../util";
 import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
@@ -10,8 +10,8 @@ import FrameSocial from "./frame-social";
 import FrameProfile from "./frame-profile";
 import FrameConfirm from "./frame-confirm";
 
-import "./style.scoped.scss";
 import { getAccountInfo, setAccessToken, setRefreshToken } from "../../store/slices/account";
+
 
 const SignupPage = () => {
   const dispatch = useDispatch();
@@ -69,6 +69,8 @@ const SignupPage = () => {
       getProfileId={() => profile}
       getRandomProfile={getRandomProfile}
       getRandomNutList={getRandomNutList}
+
+      getRandomNut={getRandomNut}
     />,
     <FrameConfirm
       frame={frame}

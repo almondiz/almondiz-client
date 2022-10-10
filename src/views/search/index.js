@@ -97,7 +97,7 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf tf-step-1" onClick={() => tfHandler(1)}>
+        <div className="tf" onClick={() => tfHandler(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
         </div>
@@ -128,10 +128,10 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf tf-step-2">
+        <div className="tf">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
-          {tf && <button className="tf-clear-button" onClick={() => setTf("")}><CancelIconFill /></button>}
+          <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
         </div>
         {tagFrame.view()}
 
@@ -144,7 +144,7 @@ const SearchDrawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf tf-step-3">
+        <div className="tf">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <div className="tf-box" onClick={() => tfHandler(1)}>
             <TagList dataList={tagController.tags} />
