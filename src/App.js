@@ -100,7 +100,7 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           
-          {/*<Route element={<RequireAuth/>}>*/}
+          <Route element={<RequireAuth/>}>
             <Route element={<MainLayout floatRef={floatRef} />}>
               <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
               <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
@@ -109,7 +109,7 @@ const App = () => {
             <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
             <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
             <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
-          {/*</Route>*/}
+          </Route>
 
           <Route element={<MainLayout floatRef={floatRef} />}>
             <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
