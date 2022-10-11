@@ -94,7 +94,7 @@ const PostItem = ({ data, detail=false }) => {
       {
         !detail ?
         (
-          data.commentCount && (
+          (data.commentCount > 0) && (
             <footer className="footer">
               <div className="row row-profile">
                 <button className="profile" onClick={data.goToPostAuthorPage} data-user-type={data.postAuthorType}>

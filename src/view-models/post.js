@@ -27,7 +27,9 @@ export default class PostViewModel {
   }
 
   _makePostItemData(post) {
+    console.log(1)
     console.log(post)
+    console.log(2)
     // const navigate = useNavigate();
     const location = store.getState().global.location;
   
@@ -49,7 +51,7 @@ export default class PostViewModel {
       postId: postId,
 
       shopThumbUrl: post.shop.thumb,
-      shopName: post.shop.name,
+      shopName: post.shop.shopName,
       shopAddress: post.shop.location.address.split(" ").slice(0, 3).join(" "),
       shopAddressDetail: post.shop.location.address,
       shopDistance: `${getDistance(location, post.shop.location)}km`,
