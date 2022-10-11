@@ -179,7 +179,9 @@ const FrameProfile = ({
 
         <footer className="main-footer">
           <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
-          <button className="button button-next" onClick={() => frame.next()}>다음</button>
+          <button className="button button-next" onClick={() => frame.next()}>
+            <p>다음</p>
+          </button>
         </footer>
       </main>
     </>

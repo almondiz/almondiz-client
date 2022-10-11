@@ -28,7 +28,9 @@ const FrameSocial = ({ frame, email, providerType }) => {
 
         <footer className="main-footer">
         <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
-        <button className="button button-next" onClick={() => frame.next()}>다음</button>
+        <button className="button button-next" onClick={() => frame.next()}>
+          <p>다음</p>
+        </button>
       </footer>
       </main>
     </>

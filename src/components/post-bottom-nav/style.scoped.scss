@@ -48,11 +48,11 @@
       }
       &>.button.button-write {
         .icon {
+          background-color: var(--content-text-color);
+          border-radius: 100%;
+          
           height: 2rem;
           width: 2rem;
-          border-radius: 100%;
-          background-color: var(--content-text-color);
-    
           ::v-deep {
             svg {
               fill: #fff;

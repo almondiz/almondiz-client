@@ -1,7 +1,13 @@
 .page {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  
   &>.top-nav {    
     z-index: 10;
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     top: 0;
@@ -32,7 +38,7 @@
   &>.content {
     padding-bottom: 3.5rem;
   
-    position: fixed;
+    position: absolute;
     left: 0;
     right: 0;
     top: 0;
@@ -55,10 +61,11 @@
       align-items: center;
     
       .help {
+        margin-bottom: 1.125rem;
+
         user-select: none;
         color: var(--secondary-text-color);
         font-size: .875rem;
-        margin-bottom: 1.25rem;
     
         button {
           color: var(--content-text-color);
@@ -66,20 +73,22 @@
       }
     
       .button-next {
-        font-size: 1rem;
-        font-weight: 700;
-        color: var(--background-color);
-        background-color: var(--content-text-color);
-      
-        height: 2.5rem;
         width: calc(100% - 6rem);
-      
+
+        height: 3rem;
+        border-radius: 1.5rem;
+        background-color: var(--content-text-color);
+
         display: flex;
         justify-content: center;
         align-items: center;
-        
-        border-radius: 1.5rem;
-        padding: 0 auto;
+
+        p {
+          font-size: 1rem;
+          font-weight: 700;
+          color: var(--background-color);
+          letter-spacing: $sparse-letter;
+        }
       }
     }
   }
@@ -105,8 +114,11 @@
 
     .menu-thumb-group {
       .menu-thumb {
+        margin-top: -1rem;
+        margin-bottom: -1rem;
+
+        height: 10rem;
         width: 6rem;
-        height: 9rem;
         position: relative;
 
         .thumbs {
@@ -182,7 +194,7 @@
           z-index: 4;
           position: absolute;
           right: .375rem;
-          bottom: -.125rem;
+          bottom: 1rem - .125rem;
   
           background-color: var(--content-text-color);
           border: 1px solid var(--background-color);
@@ -277,7 +289,6 @@
                 .icon {
                   height: 2.5rem;
                   width: 2.5rem;
-          
                   ::v-deep {
                     svg {
                       height: 1.5rem;
@@ -296,7 +307,7 @@
             background-color: transparent;
           
             .name-first {
-              left: .75rem;
+              left: 1rem;
               right: 50%;
             }
             .name-last {
