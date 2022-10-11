@@ -32,10 +32,12 @@ const TagItem = ({ idx, data, controller }) => {
   console.log(name)
 
   return (
-    <li className="tag-item" data-region={isRegion}>
+    <li className="tag-item" data-region={isRegion} onClick={() => (controller && controller.pop(idx))}>
       <p className="name">{name}</p>
       { controller && (
-        <button className="tag-delete-button" onClick={() => controller.pop(idx)}><CloseIcon /></button>
+        <button className="tag-delete-button">
+          <div className="icon"><CloseIcon /></div>
+        </button>
       )}
     </li>
   );

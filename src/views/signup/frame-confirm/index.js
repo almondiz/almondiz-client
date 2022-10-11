@@ -31,7 +31,9 @@ const FrameConfirm = ({ frame, callSignup, profile, email, nutId, tagId, getRand
 
         <footer className="main-footer">
           <p className="help">연동한 소셜 계정은 타인에게 드러나지 않습니다.</p>
-          <button className="button button-next" onClick={callSignup}>가입하기</button>
+          <button className="button button-next" onClick={callSignup}>
+            <p>가입하기</p>
+          </button>
         </footer>
       </main>
     </>

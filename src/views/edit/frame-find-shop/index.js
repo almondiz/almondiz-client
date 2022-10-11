@@ -46,7 +46,7 @@ const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
     setFoundTags(searchTags(tf));
   }, [tf]);
 
-  const DummyContent = ({ shopData }) => (
+  const BottomContent = ({ shopData }) => (
     <section className="bottom-item">
       <div className="text-wrap">
         <h3 className="title">{shopData.shopName}</h3>
@@ -76,7 +76,7 @@ const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
         setTf("");
         break;
       case 2:
-        mapBottomRef.current?.show({ content: <DummyContent shopData={shopData} /> });
+        mapBottomRef.current?.show({ content: <BottomContent shopData={shopData} /> });
         break;
       default:
         break;

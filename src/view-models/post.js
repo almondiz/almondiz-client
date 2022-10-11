@@ -27,6 +27,7 @@ export default class PostViewModel {
   }
 
   _makePostItemData(post) {
+    console.log(post)
     // const navigate = useNavigate();
     const location = store.getState().global.location;
   

@@ -52,9 +52,11 @@
         color: var(--background-color);
       }
       .tag-delete-button {
-        ::v-deep {
-          svg {
-            fill: var(--background-color);
+        .icon {
+          ::v-deep {
+            svg {
+              fill: var(--background-color);
+            }
           }
         }
       }
@@ -74,19 +76,17 @@
 
   &.editable {
     .tag-delete-button {
+      margin-right: -.5rem;
+      
       height: 1.25rem;
       width: 1.25rem;
-      
-      margin-right: -.5rem;
 
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      ::v-deep {
-        svg {
-          height: .75rem;
-          width: .75rem;
+      .icon {
+        ::v-deep {
+          svg {
+            height: .75rem;
+            width: .75rem;
+          }
         }
       }
     }

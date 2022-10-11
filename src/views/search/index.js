@@ -24,7 +24,7 @@ const Drawer = ({ contentRef }) => {
     tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
   }, [tf]);
 
-  const DummyContent = () => {
+  const PostList = () => {
     // POST API
     const dataList = (() => {
       const postViewModel = new PostViewModel(new PostModel());
@@ -46,7 +46,7 @@ const Drawer = ({ contentRef }) => {
         break;
       case 2:
         setTf("");
-        contentRef.current?.show({ content: <DummyContent /> });
+        contentRef.current?.show({ content: <PostList /> });
         break;
     }
   };

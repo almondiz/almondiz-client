@@ -24,6 +24,7 @@
       }
       .logotype {
         margin-top: -.5rem;
+        
         height: 3rem;
         ::v-deep {
           svg {
@@ -53,9 +54,15 @@
         align-items: center;
     
         .help {
+          margin-bottom: 1.125rem;
+  
+          user-select: none;
           color: var(--secondary-text-color);
           font-size: .875rem;
-          margin-bottom: 1.25rem;
+      
+          button {
+            color: var(--content-text-color);
+          }
         }
       
         .social-icons {
