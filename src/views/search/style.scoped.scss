@@ -106,11 +106,12 @@
     }
 
     .tf-box {
-      right: .625rem;
-      height: 1.75rem;
-      border-radius: 1.875rem;
+      right: 0rem;
+      height: 3rem;
+      border-top-right-radius: 1.5rem;
+      border-bottom-right-radius: 1.5rem;
 
-      overflow: scroll;
+      overflow-x: scroll;
       &::-webkit-scrollbar {
         display: none;
       }
@@ -119,10 +120,6 @@
         .tag-list {
           flex-wrap: nowrap;
           overflow: visible;
-
-          .tag-item:last-child {
-            margin-right: .75rem;
-          }
         }
       }
     }
