@@ -6,6 +6,7 @@
   right: 0;
   top: 0;
   bottom: 9rem;
+  overflow: hidden;
 
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
@@ -172,7 +173,7 @@
       background-color: var(--float-background-color);
       -webkit-backdrop-filter: blur(.5rem);
       backdrop-filter: blur(.5rem);
-      box-shadow: var(--float-nav-shadow-color);
+      box-shadow: var(--nav-shadow-color);
     }
     .bottom-item-init {}
     .bottom-item {
