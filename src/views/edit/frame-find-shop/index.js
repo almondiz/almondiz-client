@@ -43,7 +43,7 @@ const MapDrawer = ({ frame, mapBottomRef }) => {
     tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
   }, [tf]);
 
-  const DummyContent = () => (
+  const BottomContent = () => (
     <section className="bottom-item">
       <div className="text-wrap">
         <h3 className="title">팔달수제맥주</h3>
@@ -70,7 +70,7 @@ const MapDrawer = ({ frame, mapBottomRef }) => {
         break;
       case 2:
         setTf("팔달수제맥주");
-        mapBottomRef.current?.show({ content: <DummyContent /> });
+        mapBottomRef.current?.show({ content: <BottomContent /> });
         break;
     }
   };

@@ -21,7 +21,7 @@ const MapDrawer = ({ mapBottomRef }) => {
     tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
   }, [tf]);
 
-  const DummyContent = () => (
+  const BottomContent = () => (
     <section className="bottom-item">
       <div className="text-wrap">
         <h3 className="title">수원 영통구 원천동</h3>
@@ -45,7 +45,7 @@ const MapDrawer = ({ mapBottomRef }) => {
         break;
       case 2:
         setTf("아주대학교");
-        mapBottomRef.current?.show({ content: <DummyContent /> });
+        mapBottomRef.current?.show({ content: <BottomContent /> });
         break;
     }
   };
