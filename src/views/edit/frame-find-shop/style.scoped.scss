@@ -227,6 +227,14 @@
       align-items: center;
   
       .text-wrap {
+        min-width: 0;   // prevent breaking flexbox layout by white-space: nowrap
+        &>* {
+          white-space: nowrap;
+          display: inherit;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         .title {}
         .description {
           color: var(--secondary-text-color);
@@ -234,22 +242,36 @@
           margin-top: .375rem;
         }
       }
-      .text-button {
-        z-index: 1;
+
+      .button-select-shop {
+        flex-shrink: 0;     // prevent breaking flexbox layout by white-space: nowrap
         
-        font-size: .75rem;
-        font-weight: 700;
-        color: var(--background-color);
-        background-color: var(--content-text-color);
-  
-        height: 1.5rem;
-        border-radius: .75rem;
-        padding: 0 .75rem;
-  
-        margin-left: auto;
-  
         display: flex;
         align-items: center;
+        background-color: var(--content-text-color);
+  
+        height: 2rem;
+        border-radius: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      
+        .icon {
+          margin-left: -.25rem;
+          margin-right: .125rem;
+          
+          ::v-deep {
+            svg {
+              height: 1.25rem;
+              width: 1.25rem;
+              fill: var(--background-color);
+            }
+          }
+        }
+        p {
+          font-size: .75rem;
+          font-weight: 700;
+          color: var(--background-color);
+        }
       }
     }
     .bottom-item-init {
@@ -262,37 +284,6 @@
       .msg {
         font-size: .875rem;
         color: #fff;
-      }
-    }
-
-    .button-select-shop {
-      flex-shrink: 0;
-      
-      display: flex;
-      align-items: center;
-      color: var(#fff);
-      background-color: var(--content-text-color);
-
-      height: 2rem;
-      border-radius: 1rem;
-      padding-left: 1rem;
-      padding-right: 1rem;
-    
-      .icon {
-        ::v-deep {
-          svg {
-            height: 1.25rem;
-            width: 1.25rem;
-            fill: var(--background-color);
-            margin-left: -.25rem;
-            margin-right: .125rem;
-          }
-        }
-      }
-      p {
-        font-size: .75rem;
-        font-weight: 700;
-        color: var(--background-color);
       }
     }
   }

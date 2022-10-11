@@ -31,10 +31,12 @@ const TagItem = ({ idx, data, controller }) => {
   const [name, isRegion] = Array.isArray(data) ? data : [data, false];
 
   return (
-    <li className="tag-item" data-region={isRegion}>
+    <li className="tag-item" data-region={isRegion} onClick={() => controller.pop(idx)}>
       <p className="name">{name}</p>
       { controller && (
-        <button className="tag-delete-button" onClick={() => controller.pop(idx)}><CloseIcon /></button>
+        <button className="tag-delete-button">
+          <div className="icon"><CloseIcon /></div>
+        </button>
       )}
     </li>
   );
