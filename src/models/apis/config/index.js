@@ -26,6 +26,13 @@ const path = {
     default: makePath("user"),
     login: makePath("user/login"),
   },
+  post: {
+    default: makePath("post"),
+    one: (id) => makePath(`post/${id}`),
+    all: makePath("posts"),
+    byShop: (id) => makePath(`store/${id}/posts`),
+    byUser: makePath(`user/posts`),
+  }
 };
 
 export { api, path };

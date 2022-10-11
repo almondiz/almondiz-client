@@ -29,6 +29,7 @@ export class TagController {
 const TagItem = ({ idx, data, controller }) => {
   // [(태그명), (지역 태그인지 아닌지 불리언)] : ["대구", true], ["김치찌개", false]
   const [name, isRegion] = Array.isArray(data) ? data : [data, false];
+  console.log(name)
 
   return (
     <li className="tag-item" data-region={isRegion}>

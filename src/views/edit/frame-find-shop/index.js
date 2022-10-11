@@ -36,28 +36,35 @@ const FloatController = ({ floatRef }) => {
   return <></>;
 };
 
-const EditDrawer = ({ frame, mapBottomRef }) => {
+const EditDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
   const tfPlaceholder = "음식점 검색";
   const [tf, setTf] = useState("");
+  const [foundTags, setFoundTags] = useState([]);
+
   useEffect(() => {
     tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
+    setFoundTags(searchTags(tf));
   }, [tf]);
 
-  const DummyContent = () => (
+  const DummyContent = ({ shopData }) => (
     <section className="bottom-item">
       <div className="text-wrap">
-        <h3 className="title">팔달수제맥주</h3>
-        <p className="description">경기 수원시 영통구 동수원로537번길 57 (원...</p>
-        <TagList dataList={["맥주", "호프"]} small />
+        <h3 className="title">{shopData.shopName}</h3>
+        <p className="description">{shopData.shopAddress}</p>
+        <TagList dataList={shopData.tags.map(({ tagName }) => tagName)} small />
       </div>
-      <button className="button-select-shop text-button" onClick={() => frame.walk(3)}>
+      <button className="button-select-shop text-button" onClick={() => {
+          setShopData(shopData);
+          console.log(shopData)
+          frame.walk(3);
+        }}>
         <div className="icon"><LocationOnIconBorder /></div>
         
         선택
       </button>
     </section>
   );
-  const tfHandler = tfFrameIndex => {
+  const tfHandler = (tfFrameIndex, shopData) => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
@@ -68,12 +75,22 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
         setTf("");
         break;
       case 2:
-        setTf("팔달수제맥주");
-        mapBottomRef.current?.show({ content: <DummyContent /> });
+        mapBottomRef.current?.show({ content: <DummyContent shopData={shopData} /> });
+        break;
+      default:
         break;
     }
   };
 
+  const shopContent = (shopData, index) => {
+    return (
+      <li className="item" onClick={() => tfHandler(2, shopData)}>
+        <h3 className="title">{shopData.shopName}</h3>
+        <p className="description">{shopData.shopAddress}</p>
+        <TagList dataList={shopData.tags.map(({ tagName }) => tagName)} small />
+      </li>
+    )
+  }
   const tagFrame = new Frame([
     (
       <></>
@@ -81,16 +98,7 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
     (
       <div className="shop-list-group">
         <ul className="list">
-          <li className="item" onClick={() => tfHandler(2)}>
-            <h3 className="title">팔달수제맥주</h3>
-            <p className="description">경기 수원시 영통구 동수원로537번길 57 (원천동)</p>
-            <TagList dataList={["맥주", "호프"]} small />
-          </li>
-          <li className="item">
-            <h3 className="title">팔달김수산</h3>
-            <p className="description">대구 북구 팔달로 139 (노원동3가)</p>
-            <TagList dataList={["수산물"]} small />
-          </li>
+          {foundTags.map(shopContent)}
         </ul>
         <div className="if-not-found">
           <h3 className="title">원하는 음식점 결과가 없으신가요?</h3>
@@ -160,13 +168,18 @@ const MapBottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindShop = ({ frame, floatRef }) => {
+const FrameFindShop = ({ frame, searchTags, setShopData, floatRef }) => {
   const mapBottomRef = useRef();
 
   return (
     <>
       <main className="content">
-        <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
+        <EditDrawer
+          frame={frame}
+          searchTags={searchTags}
+          setShopData={setShopData}
+          mapBottomRef={mapBottomRef}
+        />
         <div className="map-container">
           <NaverMap id="map-find-shop" />
           <MapBottom ref={mapBottomRef} />

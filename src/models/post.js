@@ -77,10 +77,15 @@ export default class PostModel extends DefaultModel {
   getData(id) { return this.data[id]; }
   
   getDummyData() { return [ this.data[1], this.data[1], ]; }
+  getAllPost() { return this.callApi(() => this.api.getAllPost()); }
 
   getCommentCount(id) {
     let count = 0;
     this.data[id].comments.map(comment => count += 1 + comment.reply.length);
     return count;
+  }
+
+  createPost(body) {
+    return this.callApi(() => this.api.createPost(body));
   }
 };

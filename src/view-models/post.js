@@ -1,9 +1,7 @@
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
 import { getDistance, getTime } from "../util";
 import { UserModel } from "../models";
 
+import store from "../store";
 
 export default class PostViewModel {
   constructor(model) { this.model = model; }
@@ -14,7 +12,11 @@ export default class PostViewModel {
   }
   getDummyData(...params) {
     const resList = this.model.getDummyData(...params);
-    return resList.map(res => this._makePostItemData(res));
+    // return resList.map(res => this._makePostItemData(res));
+  }
+  async getAllPost() {
+    const { dataList } = await this.model.getAllPost();
+    return dataList.map(res => this._makePostItemData(res));
   }
 
 
@@ -24,74 +26,78 @@ export default class PostViewModel {
     return user.posts.map(postId => this.getData(postId));
   }
 
-
   _makePostItemData(post) {
-    const navigate = useNavigate();
-    const location = useSelector(state => state.global.location);
+    // const navigate = useNavigate();
+    const location = store.getState().global.location;
   
     const postModel = this.model;
     const postId = post.id;
   
     const userModel = new UserModel();
     const myUserId = userModel.getMyUserId();
-    const postAuthorId = post.userId;
+    const postAuthorId = post.user.userId;
     const postAuthor = userModel.getData(postAuthorId);
-  
-    const bestComment = post.comments[post.bestCommentIndex];
-    const bestCommentAuthorId = bestComment.userId;
-    const bestCommentAuthor = userModel.getData(bestCommentAuthorId);
     
+    const bestComment = post.commentCount && {
+      default: post.comments[post.bestCommentIndex],
+      authorId: bestComment.userId,
+      author: userModel.getData(bestComment.userId)
+    }
   
     return {
       postId: postId,
 
       shopThumbUrl: post.shop.thumb,
       shopName: post.shop.name,
-      shopAddress: post.shop.location.address,
+      shopAddress: post.shop.location.address.split(" ").slice(0, 3).join(" "),
+      shopAddressDetail: post.shop.location.address,
       shopDistance: `${getDistance(location, post.shop.location)}km`,
       goToShopPage: () => (window.location.href = post.shop.link),
 
-      postTags: post.tags,
-      postText: post.content.text,
-      postImageUrls: post.content.images,
-      goToPostPage: () => navigate(`/post`),
+      // Tag 수정필요
+      postTags: post.tags.map(({ tagName }) => tagName),
+      postText: post.text,
+      postImageUrls: post.postFileImgUrls,
+      goToPostPage: () => this?.navigate(`/post`),
   
-      postAuthorEmoji: postAuthor.profile.thumb.emoji,
-      postAuthorName: (() => {
-        if (postAuthorId === myUserId)
-          return "나";
-        else
-          return userModel.getAlias(postAuthorId);
-      })(),
-      postAuthorType: (() => {
-        if (postAuthorId === myUserId)
-          return "me";
-        else if (userModel.isSubscribing(postAuthorId))
-          return "following";
-        else
-          return "other";
-      })(),
-      goToPostAuthorPage: () => navigate(`/profile/${postAuthorId}`),
+      postAuthorEmoji: post.user.thumb.emoji,
+      postAuthorName: post.user.nickName,
+      // postAuthorName: (() => {
+      //   if (postAuthorId === myUserId)
+      //     return "나";
+      //   else
+      //     return userModel.getAlias(postAuthorId);
+      // })(),
+      postAuthorType: "other",
+      // postAuthorType: (() => {
+      //   if (postAuthorId === myUserId)
+      //     return "me";
+      //   else if (userModel.isSubscribing(postAuthorId))
+      //     return "following";
+      //   else
+      //     return "other";
+      // })(),
+      goToPostAuthorPage: () => this?.navigate(`/profile/${postAuthorId}`),
 
-      postCreatedAt: getTime(post.createdAt),
+      // 수정필요
+      postCreatedAt: "3분전",//getTime(post.createdAt),
       
       scrap: (() => {
         return (post.scrapped.indexOf(myUserId) >= 0) ? true : false;
       }),
-      scrappedCount: post.scrapped.length,
+      scrappedCount: post.scrappedCount,
   
-      commentCount: postModel.getCommentCount(postId),
-      bestCommentText: bestComment.content,
-      bestCommentAuthorEmoji: bestCommentAuthor.profile.thumb.emoji,
-
+      commentCount: post.commentCount,
+      bestCommentText: bestComment.default?.content,
+      bestCommentAuthorEmoji: bestComment.author?.profile.thumb.emoji,
 
       // used only in post detail page
-      comments: post.comments.map(comment => this._makeCommentItemData(comment, { postAuthorId })),
+      comments: post.comments?.map(comment => this._makeCommentItemData(comment, { postAuthorId })),
       //
     };
   }
   _makeCommentItemData(comment, { postAuthorId }) {
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const commentId = comment.id;
   
@@ -120,7 +126,7 @@ export default class PostViewModel {
           return "other";
       })(),
       isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
-      goToCommentAuthorPage: () => navigate(`/profile/${commentAuthorId}`),
+      goToCommentAuthorPage: () => this?.navigate(`/profile/${commentAuthorId}`),
 
       commentCreatedAt: getTime(comment.createdAt),
   

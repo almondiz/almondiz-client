@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../../util";
+import { Frame, getDistance } from "../../../util";
 import { PostModel } from "../../../models";
 import { PostViewModel } from "../../../view-models";
 
@@ -12,9 +12,11 @@ import BackdropTag from "../backdrop-tag";
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
 import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
+import { useSelector } from "react-redux";
+import { createPost } from "../../../models/apis";
 
 
-const FloatController = ({ floatRef, frame }) => {
+const FloatController = ({ floatRef, frame, createPost }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame(), footerFrame = new Frame();
@@ -42,7 +44,10 @@ const FloatController = ({ floatRef, frame }) => {
         <ArrowBackIcon />
       </button>
       <h3 className="title">리뷰 작성</h3>
-      <button className="button-next" onClick={() => navigate(`/me`)}>게시</button>
+      <button className="button-next" onClick={() => {
+        createPost();
+        navigate(`/me`);
+      }}>게시</button>
     </nav>
   );
 
@@ -56,7 +61,10 @@ const FloatController = ({ floatRef, frame }) => {
 
 
 // frame 4
-const FrameWrite = ({ frame, floatRef, backdropRef }) => {
+const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, getTags, setTags, createPost }) => {
+  const location = useSelector(state => state.global.location);
+  const [ shopData, setShopData ] = useState({});
+
   // POST API
   const data = (postId => {
     const postViewModel = new PostViewModel(new PostModel());
@@ -68,11 +76,11 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
     <div className="grid trailer" style={{ gridArea: `grid-${data.postImageUrls.length + 1}` }}>
       <div className="content">
         <div className="text-wrap">
-          <p className="name">{data.shopName}</p>
-          <p className="address">{data.shopAddress}</p>
+          <p className="name">{shopData.shopName}</p>
+          <p className="address">{shopData.shopAddress}</p>
         </div>
       </div>
-      <div className="image" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+      <div className="image" style={{ backgroundImage: `url(${shopData.shopThumbUrl})` }} />
     </div>
   );
   
@@ -83,12 +91,15 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
     obj.style.height = '1px';
     obj.style.height = obj.scrollHeight + 'px';
   };
-  useEffect(() => handleResizeHeight(), []);
-
+  useEffect(() => {
+    handleResizeHeight();
+    setShopData(getShopData());
+  }, []);
   // TAG
-  const tagController = new TagController(data.postTags);
+  const tagController = new TagController(["맥주", "호프"]);
   useEffect(() => {
     console.log(tagController.tags);
+    // setTags(...)
   }, [tagController.tags]);
   //
 
@@ -101,10 +112,13 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
           <header className="header">
             <div className="row row-shop">
               <button className="shop">
-                <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+                <div className="thumb" style={{ backgroundImage: `url(${shopData.shopThumbUrl})` }} />
                 <div className="text-wrap">
-                  <p className="name">{data.shopName}</p>
-                  <p className="description">{data.shopAddress} · {data.shopDistance}</p>
+                  <p className="name">{shopData.shopName}</p>
+                  <p className="description">{shopData.shopThumbAddress} · {getDistance(location, {
+                    lati: shopData.lati,
+                    longi: shopData.longi,
+                  })}km</p>
                 </div>
               </button>
             </div>
@@ -118,7 +132,10 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
 
           <main className="body">
             <div className="row row-text">
-              <textarea className="text" ref={textRef} onChange={handleResizeHeight} name="text" placeholder="내용을 입력하세요" autoFocus />
+              <textarea className="text" ref={textRef} onChange={({ target }) => {
+                setContent(target.value);
+                handleResizeHeight();
+              }} name="text" placeholder="내용을 입력하세요" autoFocus />
               {/*data.postText*/}
             </div>
             <div className="row row-images">
@@ -128,7 +145,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
         </article>
       </main>
 
-      <FloatController floatRef={floatRef} frame={frame} />
+      <FloatController floatRef={floatRef} frame={frame} createPost={createPost} />
     </>
   )
 };
