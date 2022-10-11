@@ -16,14 +16,17 @@
 
   p {
     font-size: .8125rem;
-    color: #666;
+    color: var(--secondary-text-color);
   }
   .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+
     ::v-deep {
       svg {
         height: 1.25rem;
         width: 1.25rem;
-        fill: #666;
+        fill: var(--secondary-text-color);
       }
     }
   }
@@ -38,7 +41,7 @@
     margin-bottom: -1rem;
   }
   & + & {
-    border-top: 1px solid #eeeeee;
+    border-top: 1px solid var(--border-color);
   }
 
   position: relative;
@@ -86,7 +89,7 @@
           margin-right: .625rem;
           border-radius: 100%;
           background-size: cover;
-          background-color: #eee;
+          background-color: var(--border-color);
           flex-shrink: 0;
         }
     
@@ -97,7 +100,7 @@
           .description {
             margin-top: .375rem;
             font-size: .8125rem;
-            color: #666;
+            color: var(--secondary-text-color);
           }
         }
       }
@@ -124,8 +127,7 @@
       margin: 0;
       padding: 0;
       margin-top: .75rem;
-
-      background-color: #eee;
+      background-color: var(--border-color);
     }
   }
   &>.footer {
@@ -134,7 +136,7 @@
       height: 3rem;
     }
     .row.row-profile {
-      background-color: #eee;
+      background-color: var(--border-color);
 
       .profile {
         height: 2.5rem;
@@ -153,8 +155,8 @@
         &[data-after]::after {
           content: attr(data-after);
           font-size: .625rem;
-          color: #666;
-          border: 1px solid #666;
+          color: var(--secondary-text-color);
+          border: 1px solid var(--secondary-text-color);
           border-radius: 1rem;
           padding: .125rem .3125rem;
           margin-left: .3125rem;
@@ -170,7 +172,7 @@
       .description {
         margin-left: .75rem;
         font-size: .8125rem;
-        color: #666;
+        color: var(--secondary-text-color);
       }
       .button-scrap {
         justify-content: flex-end;
@@ -189,13 +191,13 @@
         flex-shrink: 0;
 
         font-size: .8125rem;
-        color: #666;
+        color: var(--secondary-text-color);
       }
       .best-comment {
         overflow: hidden;
 
         margin-left: .75rem;
-        border-left: 1px solid #eee;
+        border-left: 1px solid var(--border-color);
         padding-left: .75rem;
 
         display: flex;

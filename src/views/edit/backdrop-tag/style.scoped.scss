@@ -36,7 +36,7 @@
           margin-right: .625rem;
           border-radius: 100%;
           background-size: cover;
-          background-color: #eee;
+          background-color: var(--border-color);
           flex-shrink: 0;
         }
     
@@ -47,7 +47,7 @@
           .description {
             margin-top: .375rem;
             font-size: .8125rem;
-            color: #666;
+            color: var(--secondary-text-color);
           }
         }
       }
@@ -67,7 +67,7 @@
 
       padding-top: .5rem;
       padding-bottom: .5rem;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-color);
       height: 4.5rem;
     }
     .row.row-tags {
@@ -84,7 +84,7 @@
         &>.list {
           &>.item {
             height: 2.5rem;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border-color);
   
             display: flex;
             align-items: center;
@@ -110,7 +110,7 @@
   justify-content: center;
 
   .title {
-    color: #616161;
+    color: var(--secondary-text-color);
     font-size: .875rem;
   }
 

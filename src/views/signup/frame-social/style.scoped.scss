@@ -19,8 +19,10 @@
       align-items: center;
     }
     &>.button-back {
-      height: 3rem;
-      width: 3rem;
+      .icon {
+        height: 3rem;
+        width: 3rem;
+      }
 
       position: absolute;
       left: .5rem;
@@ -46,15 +48,15 @@
       left: 0;
       right: 0;
       bottom: 0;
+      padding-bottom: 4rem;
     
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 4rem;
     
       .help {
         user-select: none;
-        color: #666;
+        color: var(--secondary-text-color);
         font-size: .875rem;
         margin-bottom: 1.25rem;
     
@@ -103,12 +105,15 @@
 
       &.google {
         border: 4px solid #ddd;
+        @media (prefers-color-scheme: dark) {
+          border: none;
+        }
       }
     }
     .email {
       margin-top: 1rem;
       font-size: 1rem;
-      color: #666;
+      color: var(--secondary-text-color);
     }
   }
 }

@@ -36,7 +36,9 @@ const Backdrop = forwardRef((_, ref) => {
     <div id="backdrop" className={motion.get("hide")}>
       <header className="header" onClick={() => hide()}>
         <h3 className="title">{title}</h3>
-        <div className="button-close"><ExpandMoreIcon /></div>
+        <div className="button button-close">
+          <div className="icon"><ExpandMoreIcon /></div>
+        </div>
       </header>
       <main className="content">{content}</main>
 

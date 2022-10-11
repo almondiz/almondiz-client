@@ -10,8 +10,8 @@ const FloatController = ({ floatRef }) => {
 
   const Top = () => (
     <nav className="float-top top-nav">
-      <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-        <ArrowBackIcon />
+      <button className="button button-back" onClick={() => navigate(-1)}>
+        <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">개인 설정</h3>
     </nav>

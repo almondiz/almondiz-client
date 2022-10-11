@@ -160,8 +160,8 @@ const FrameProfile = ({
   return (
     <>
       <nav className="top-nav">
-        <button className="button-back icon-sm" onClick={() => frame.prev()}>
-          <ArrowBackIcon />
+        <button className="button button-back" onClick={() => frame.prev()}>
+          <div className="icon"><ArrowBackIcon /></div>
         </button>
         <h3 className="title">프로필 생성</h3>
       </nav>
@@ -179,7 +179,7 @@ const FrameProfile = ({
 
         <footer className="main-footer">
           <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
-          <button className="button-next" onClick={() => frame.next()}>다음</button>
+          <button className="button button-next" onClick={() => frame.next()}>다음</button>
         </footer>
       </main>
     </>

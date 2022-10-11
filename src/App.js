@@ -21,7 +21,7 @@ import NotFoundPage from "./views/not-found";
 
 import Float from "./components/float";
 import Backdrop from "./components/backdrop";
-import MainBottomNav from "./components/main-bottom-nav";
+import PostBottomNav from "./components/post-bottom-nav";
 
 import store from "./store";
 
@@ -70,9 +70,9 @@ const ScrollToTop = () => {
 };
 
 
-const MainLayout = ({ floatRef }) => {
+const PostLayout = ({ floatRef }) => {
   useEffect(() => {
-    floatRef.current?.setBottom(<MainBottomNav />);
+    floatRef.current?.setBottom(<PostBottomNav />);
     return () => floatRef.current?.setBottom();
   });
   
@@ -100,8 +100,8 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           
-          <Route element={<RequireAuth/>}>
-            <Route element={<MainLayout floatRef={floatRef} />}>
+          {/*<Route element={<RequireAuth/>}>*/}
+            <Route element={<PostLayout floatRef={floatRef} />}>
               <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
               <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
               <Route path="/subscriptions" element={<SubscriptionsPage floatRef={floatRef} />} />
@@ -109,9 +109,9 @@ const App = () => {
             <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
             <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
             <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
-          </Route>
+          {/*</Route>*/}
 
-          <Route element={<MainLayout floatRef={floatRef} />}>
+          <Route element={<PostLayout floatRef={floatRef} />}>
             <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
             <Route path="/post" element={<PostPage floatRef={floatRef} postId={1} />} />
             <Route path="/search" element={<SearchPage floatRef={floatRef} />} />

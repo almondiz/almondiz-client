@@ -33,28 +33,28 @@
   .tag-item {
     height: 1.75rem;
     padding: 0 .625rem;
-    border: 1px solid #999;
+    border: 1px solid var(--secondary-text-color);
     border-radius: 1rem;
 
     display: flex;
     align-items: center;
 
     .name {
-      color: #666;
+      color: var(--secondary-text-color);
       font-size: .875rem;
     }
 
     &[data-region=true] {
-      background-color: #666;
+      background-color: var(--secondary-text-color);
       border: none;
   
       .name {
-        color: #fff;
+        color: var(--background-color);
       }
       .tag-delete-button {
         ::v-deep {
           svg {
-            fill: #fff;
+            fill: var(--background-color);
           }
         }
       }

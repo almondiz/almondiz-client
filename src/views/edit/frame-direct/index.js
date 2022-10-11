@@ -16,11 +16,11 @@ import ArrowBackIosIcon from "../../../asset/icons/mui/arrow-back-ios-icon";
 const FloatController = ({ floatRef, frame }) => {
   const Top = () => (
     <nav className="float-top top-nav">
-      <button className="button-back icon-sm" onClick={() => frame.prev()}>
-        <ArrowBackIcon />
+      <button className="button button-back" onClick={() => frame.prev()}>
+        <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">음식점 등록</h3>
-      <button className="button-next" onClick={() => frame.next()}>다음</button>
+      <button className="button button-next" onClick={() => frame.next()}>다음</button>
     </nav>
   );
 
@@ -33,7 +33,7 @@ const FloatController = ({ floatRef, frame }) => {
 };
 
 
-const EditDrawer = ({ mapBottomRef }) => {
+const MapDrawer = ({ mapBottomRef }) => {
   const tfPlaceholder = "장소 검색";
   const [tf, setTf] = useState("");
   useEffect(() => {
@@ -123,7 +123,7 @@ const EditDrawer = ({ mapBottomRef }) => {
     ),
   ]);
 
-  return <aside className="edit-drawer">{tfFrame.view()}</aside>;
+  return <aside className="map-drawer">{tfFrame.view()}</aside>;
 };
 
 
@@ -145,8 +145,8 @@ const MapBottom = forwardRef((_, ref) => {
 
   return (
     <footer className="map-bottom">
-      <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
-        {myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}
+      <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
+        <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>
       <div className="bottom-item-container">{content}</div>
     </footer>
@@ -161,9 +161,9 @@ const FrameDirect = ({ frame, floatRef }) => {
   return (
     <>
       <main className="content">
-        <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
+        <MapDrawer frame={frame} mapBottomRef={mapBottomRef} />
         <div className="map-container">
-          <NaverMap id="map-init-shop" />
+          <NaverMap />
           <MapBottom ref={mapBottomRef} />
         </div>
       </main>

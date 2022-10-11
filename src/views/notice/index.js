@@ -15,8 +15,8 @@ const FloatController = ({ floatRef, dataList }) => {
 
   const Top = () => (
     <nav className="float-top top-nav">
-      <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-        <ArrowBackIcon />
+      <button className="button button-back" onClick={() => navigate(-1)}>
+        <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">알림 <span className="count">{dataList.length}</span></h3>
     </nav>
@@ -46,9 +46,7 @@ const NoticePage = ({ floatRef }) => {
         {dataList.map((data, idx) => {
           return (
             <li key={idx} className={`notice-item ${data.isRead ? "" : "new"}`}>
-              <div className={`notice-icon ${data.isRead ? "" : "badge"}`}>
-                <NotificationsIconBorder />
-              </div>
+              <div className={`icon ${data.isRead ? "" : "badge"}`}><NotificationsIconBorder /></div>
               <div className="text-wrap">
                 <p className="message">{data.message}</p>
                 <p className="time">{getTime(data.createdAt)}</p>

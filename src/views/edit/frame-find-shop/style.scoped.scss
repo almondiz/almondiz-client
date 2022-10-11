@@ -5,10 +5,10 @@
 }
 #float {
   .float-top {
-    background-color: rgba(255, 255, 255, .75);
+    background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(.5rem);
     backdrop-filter: blur(.5rem);
-    box-shadow: 0 1px 3rem rgba(0, 0, 0, .125);
+    box-shadow: var(--nav-shadow-color);
 
     display: flex;
     align-items: center;
@@ -23,8 +23,10 @@
     }
     
     &>.button-back {
-      height: 3rem;
-      width: 3rem;
+      .icon {
+        height: 3rem;
+        width: 3rem;
+      }
 
       position: absolute;
       left: .5rem;
@@ -58,21 +60,20 @@
   top: 0;
   bottom: 0;
 
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
-.edit-drawer {
+.map-drawer {
   pointer-events: none;
 
   z-index: 10;
-  position: fixed;
+  position: absolute;
   left: 0;
   right: 0;
   top: 0;
   bottom: 0;
 
   .tf-frame {
-    padding-top: $float-bottom-height;
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
@@ -99,10 +100,10 @@
 
       margin-left: -.5rem;
       margin-right: -.5rem;
-      background-color: rgba(255, 255, 255, .75);
+      background-color: var(--float-background-color);
       -webkit-backdrop-filter: blur(.5rem);
       backdrop-filter: blur(.5rem);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+      box-shadow: var(--float-shadow-color);
     }
   }
   .tf-frame.tf-frame-2 {
@@ -125,11 +126,11 @@
           display: flex;
           flex-direction: column;
           justify-content: center;
-          border-bottom: 1px solid #eee;
+          border-bottom: 1px solid var(--border-color);
 
           .title {}
           .description {
-            color: #616161;
+            color: var(--secondary-text-color);
             font-size: .8125rem;
             margin-top: .5rem;
           }
@@ -149,7 +150,7 @@
     justify-content: center;
   
     .title {
-      color: #616161;
+      color: var(--secondary-text-color);
       font-size: .875rem;
     }
   
@@ -192,18 +193,11 @@
     width: 3rem;
 
     border-radius: 100%;
-    background-color: rgba(255, 255, 255, .75);
+    background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(.5rem);
     backdrop-filter: blur(.5rem);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+    box-shadow: var(--float-shadow-color);
 
-    .icon {
-      ::v-deep {
-        svg {
-          fill: #666;
-        }
-      }
-    }
     &.set {
       .icon {
         ::v-deep {
@@ -221,13 +215,13 @@
       padding-left: $padding-horiz;
       padding-right: $padding-horiz;
   
-      background-color: rgba(255, 255, 255, .75);
+      background-color: var(--float-background-color);
       -webkit-backdrop-filter: blur(.5rem);
       backdrop-filter: blur(.5rem);
-      box-shadow: 0 -1px 3px rgba(0, 0, 0, .125);
+      box-shadow: var(--nav-shadow-color);
     }
     .bottom-item {
-      height: 6.5rem;
+      height: 7rem;
   
       display: flex;
       align-items: center;
@@ -235,7 +229,7 @@
       .text-wrap {
         .title {}
         .description {
-          color: #616161;
+          color: var(--secondary-text-color);
           font-size: .8125rem;
           margin-top: .375rem;
         }
@@ -261,7 +255,7 @@
     .bottom-item-init {
       padding-top: .625rem;
       padding-bottom: .625rem;
-      background-color: rgba(0, 0, 0, .625);
+      background-color: rgba(30, 32, 34, .75);
       display: flex;
       justify-content: center;
 
@@ -272,19 +266,33 @@
     }
 
     .button-select-shop {
-      height: 2rem !important;
-      border-radius: 1rem !important;
-      padding-left: 1rem !important;
-      padding-right: 1rem !important;
+      flex-shrink: 0;
+      
+      display: flex;
+      align-items: center;
+      color: var(#fff);
+      background-color: var(--content-text-color);
+
+      height: 2rem;
+      border-radius: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
     
-      ::v-deep {
-        svg {
-          height: 1.25rem;
-          width: 1.25rem;
-          fill: #fff;
-          margin-left: -.25rem;
-          margin-right: .125rem;
+      .icon {
+        ::v-deep {
+          svg {
+            height: 1.25rem;
+            width: 1.25rem;
+            fill: var(--background-color);
+            margin-left: -.25rem;
+            margin-right: .125rem;
+          }
         }
+      }
+      p {
+        font-size: .75rem;
+        font-weight: 700;
+        color: var(--background-color);
       }
     }
   }
