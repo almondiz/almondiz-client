@@ -13,8 +13,8 @@ const FrameConfirm = ({ frame, callSignup, profile, email, nutId, tagId, getRand
   return (
     <>
       <nav className="top-nav">
-        <button className="button-back icon-sm" onClick={() => frame.prev()}>
-          <ArrowBackIcon />
+        <button className="button button-back" onClick={() => frame.prev()}>
+          <div className="icon"><ArrowBackIcon /></div>
         </button>
         <h3 className="title">프로필 생성</h3>
       </nav>
@@ -31,7 +31,7 @@ const FrameConfirm = ({ frame, callSignup, profile, email, nutId, tagId, getRand
 
         <footer className="main-footer">
           <p className="help">연동한 소셜 계정은 타인에게 드러나지 않습니다.</p>
-          <button className="button-next" onClick={callSignup}>가입하기</button>
+          <button className="button button-next" onClick={callSignup}>가입하기</button>
         </footer>
       </main>
     </>

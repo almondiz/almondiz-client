@@ -17,10 +17,26 @@
       color: var(--primary-text-color);
     }
     &>.right {
-      .button-more {
-        margin-right: -.5rem;
+      display: flex;
+      align-items: center;
+
+      &.buttons {
+        .button:last-child {
+          margin-right: -.5rem;
+        }
       }
     }
+    .buttons {
+      .button:not(:first-of-type) {
+        margin-left: .5rem;
+      }
+      .button {
+        .icon {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+      }
+    }    
   }
 }
 
@@ -29,10 +45,10 @@
   .float-header {
     &-frame.frame-1 {
       .button-back {      
-        background-color: rgba(255, 255, 255, .75);
+        background-color: var(--float-background-color);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        box-shadow: var(--float-shadow-color);
         border-radius: 1.5rem;
     
         display: flex;
@@ -50,10 +66,10 @@
     &-frame.frame-1 {
       .button-comment,
       .button-scrap {
-        background-color: rgba(255, 255, 255, .75);
+        background-color: var(--float-background-color);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        box-shadow: var(--float-shadow-color);
         border-radius: 1.5rem;
 
         display: flex;
@@ -79,10 +95,10 @@
         height: 3rem;
         width: 100%;
         
-        background-color: rgba(255, 255, 255, .75);
+        background-color: var(--float-background-color);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        box-shadow: var(--float-shadow-color);
         border-radius: 1.5rem;
 
         position: relative;
@@ -112,8 +128,8 @@
           height: 2.25rem;
           border-radius: 1.125rem;
 
-          background-color: rgb(238, 238, 238);
-          box-shadow: 0px 0px 1px rgba(0, 0, 0, .5);
+          background-color: var(--border-color);
+          box-shadow: var(--shadow-to-border-color);
 
           display: flex;
           align-items: center;

@@ -15,7 +15,7 @@ import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
 import CloseIcon from "../../asset/icons/mui/close-icon";
 
 
-const SearchDrawer = ({ contentRef }) => {
+const Drawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   const tfPlaceholder = "메뉴나 지역을 입력해 보세요";
@@ -63,8 +63,8 @@ const SearchDrawer = ({ contentRef }) => {
     (
       <>
         <TagList controller={tagController} />
-        <button className="button-search" onClick={() => tfHandler(2)}>
-          <div className="icon-sm"><SearchIconBorder /></div>
+        <button className="button button-search" onClick={() => tfHandler(2)}>
+          <div className="icon"><SearchIconBorder /></div>
           <p>검색하기</p>
         </button>
       </>
@@ -106,15 +106,21 @@ const SearchDrawer = ({ contentRef }) => {
           <ul className="list">
             <li className="item">
               <TagList dataList={[ "한식", ["서울", true] ]} />
-              <button className="button-delete-item"><CloseIcon /></button>
+              <button className="button button-delete-item">
+                <div className="icon"><CloseIcon /></div>
+              </button>
             </li>
             <li className="item">
               <TagList dataList={[ "짬뽕", ["성남 분당구", true], ["수원 팔달구 우만동", true] ]} />
-              <button className="button-delete-item"><CloseIcon /></button>
+              <button className="button button-delete-item">
+                <div className="icon"><CloseIcon /></div>
+              </button>
             </li>
             <li className="item">
               <TagList dataList={[ "스시", "마라탕", ["천안", true] ]} />
-              <button className="button-delete-item"><CloseIcon /></button>
+              <button className="button button-delete-item">
+                <div className="icon"><CloseIcon /></div>
+              </button>
             </li>
           </ul>
         </div>
@@ -154,7 +160,7 @@ const SearchDrawer = ({ contentRef }) => {
     ),
   ]);
 
-  return <aside className="search-drawer">{tfFrame.view()}</aside>;
+  return <aside className="drawer">{tfFrame.view()}</aside>;
 };
 
 
@@ -175,7 +181,7 @@ const SearchPage = ({}) => {
   return (
     <div className="page">
       <header className="header" />
-      <SearchDrawer contentRef={contentRef} />
+      <Drawer contentRef={contentRef} />
       <SearchContent ref={contentRef} />
     </div>
   );

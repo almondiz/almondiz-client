@@ -1,9 +1,9 @@
 #float {
   .float-bottom {
-    background-color: rgba(255, 255, 255, .75);
+    background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(.5rem);
     backdrop-filter: blur(.5rem);
-    box-shadow: 0 -1px 3rem rgba(0, 0, 0, .125);
+    box-shadow: var(--nav-shadow-color);
 
     border-top: 1px solid transparent;
     position: relative;
@@ -27,17 +27,22 @@
         justify-content: center;
         align-items: center;
 
-        .icon.badge {
-          position: relative;
-          &::after {
-            content: "";
-            position: absolute;
-            top: -.3125rem + .5rem;
-            right: -.3125rem + .5rem;
-            height: .5rem;
-            width: .5rem;
-            border-radius: 100%;
-            background-color: var(--content-text-color);
+        .icon {
+          width: 2.5rem;
+          height: 2.5rem;
+
+          &.badge {
+            position: relative;
+            &::after {
+              content: "";
+              position: absolute;
+              top: -.3125rem + .5rem;
+              right: -.3125rem + .5rem;
+              height: .5rem;
+              width: .5rem;
+              border-radius: 100%;
+              background-color: var(--content-text-color);
+            }
           }
         }
       }
@@ -47,7 +52,6 @@
           width: 2rem;
           border-radius: 100%;
           background-color: var(--content-text-color);
-          //box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
     
           ::v-deep {
             svg {

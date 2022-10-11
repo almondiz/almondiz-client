@@ -25,8 +25,8 @@ const FloatController = ({ floatRef, data }) => {
     headerFrame.init([
       ( // main
         <section className="float-header-frame frame-1">
-          <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-            <ArrowBackIcon />
+          <button className="button button-back" onClick={() => navigate(-1)}>
+            <div className="icon"><ArrowBackIcon /></div>
           </button>
         </section>
       ),
@@ -82,7 +82,7 @@ const FloatController = ({ floatRef, data }) => {
         <section className="float-footer-frame frame-1">
           <div className="buttons">
             <button className="button button-comment" onClick={() => commentDialog.show()}>
-              <div className="icon-sm"><ChatBubbleIconBorder /></div>
+              <div className="icon"><ChatBubbleIconBorder /></div>
               <p>댓글 쓰기</p>
             </button>
           </div>
@@ -94,14 +94,14 @@ const FloatController = ({ floatRef, data }) => {
       ( // comment
         <section className="float-footer-frame frame-2">
           <div className="comment-dialog">
-            <button className="button button-back icon-sm" onClick={() => commentDialog.hide()}>
-              <ArrowBackIosIcon />
+            <button className="button button-back" onClick={() => commentDialog.hide()}>
+              <div className="icon"><ArrowBackIosIcon /></div>
             </button>
             <div className="comment-input-box">
               <input type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
             </div>
-            <button className="button button-comment-send icon-sm right" onClick={() => commentDialog.send()}>
-              <SendIconBorder />
+            <button className="button button-comment-send" onClick={() => commentDialog.send()}>
+              <div className="icon"><SendIconBorder /></div>
             </button>
           </div>
         </section>
@@ -133,7 +133,7 @@ const PostPage = ({ floatRef, postId }) => {
     const onClick = () => setFocus(!focus);
     return (
       <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
-        <div className="icon icon-sm icon-container"><MoreHorizIcon /></div>
+        <div className="icon"><MoreHorizIcon /></div>
       </button>
     );
   };

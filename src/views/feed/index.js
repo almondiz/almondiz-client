@@ -33,13 +33,13 @@ const FeedPage = ({ backdropRef }) => {
     <div className="page">
       <header className="header">
         <h1 className="title">Feed</h1>
-        <div className="right">
-          <button className="button-location" onClick={() => showBackdropLocation()}>
-            <div className="location-text">
+        <div className="buttons right">
+          <button className="button button-location" onClick={() => showBackdropLocation()}>
+            <div className="text-wrap">
               <p className="description">{addressTokens[0]}</p>
               <h3 className="title">{addressTokens[1]}</h3>
             </div>
-            <div className="icon-sm"><LocationSearchingIcon /></div>
+            <div className="icon"><LocationSearchingIcon /></div>
           </button>
         </div>
       </header>

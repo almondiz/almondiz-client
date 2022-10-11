@@ -21,8 +21,8 @@ const FloatController = ({ floatRef }) => {
 
   const Top = () => (
     <nav className="float-top top-nav">
-      <div className="button-back icon-sm" onClick={() => navigate(-1)}>
-        <ArrowBackIcon />
+      <div className="button button-back" onClick={() => navigate(-1)}>
+        <div className="icon"><ArrowBackIcon /></div>
       </div>
       <h3 className="title">리뷰 작성</h3>
     </nav>
@@ -36,7 +36,7 @@ const FloatController = ({ floatRef }) => {
   return <></>;
 };
 
-const EditDrawer = ({ frame, mapBottomRef }) => {
+const MapDrawer = ({ frame, mapBottomRef }) => {
   const tfPlaceholder = "음식점 검색";
   const [tf, setTf] = useState("");
   useEffect(() => {
@@ -50,11 +50,12 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
         <p className="description">경기 수원시 영통구 동수원로537번길 57 (원...</p>
         <TagList dataList={["맥주", "호프"]} small />
       </div>
-      <button className="button-select-shop text-button" onClick={() => frame.walk(3)}>
-        <div className="icon"><LocationOnIconBorder /></div>
-        
-        선택
-      </button>
+      <div className="buttons right">
+        <button className="button button-select-shop" onClick={() => frame.walk(3)}>
+          <div className="icon"><LocationOnIconBorder /></div>
+          <p>선택</p>
+        </button>
+      </div>
     </section>
   );
   const tfHandler = tfFrameIndex => {
@@ -128,7 +129,7 @@ const EditDrawer = ({ frame, mapBottomRef }) => {
     ),
   ]);
 
-  return <aside className="edit-drawer">{tfFrame.view()}</aside>;
+  return <aside className="map-drawer">{tfFrame.view()}</aside>;
 };
 
 
@@ -150,7 +151,7 @@ const MapBottom = forwardRef((_, ref) => {
 
   return (
     <footer className="map-bottom">
-      <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
+      <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
         <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>
       <div className="bottom-item-container">{content}</div>
@@ -166,9 +167,9 @@ const FrameFindShop = ({ frame, floatRef }) => {
   return (
     <>
       <main className="content">
-        <EditDrawer frame={frame} mapBottomRef={mapBottomRef} />
+        <MapDrawer frame={frame} mapBottomRef={mapBottomRef} />
         <div className="map-container">
-          <NaverMap id="map-find-shop" />
+          <NaverMap />
           <MapBottom ref={mapBottomRef} />
         </div>
       </main>

@@ -14,7 +14,7 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border";
 
 
-const LocationDrawer = ({ mapBottomRef }) => {
+const MapDrawer = ({ mapBottomRef }) => {
   const tfPlaceholder = "장소 검색";
   const [tf, setTf] = useState("");
   useEffect(() => {
@@ -27,9 +27,9 @@ const LocationDrawer = ({ mapBottomRef }) => {
         <h3 className="title">수원 영통구 원천동</h3>
         <p className="description">아주대학교</p>
       </div>
-      <button className="button-select-shop text-button" onClick={() => {}}>
-        <LocationOnIconBorder />
-        설정
+      <button className="button button-select-location right" onClick={() => {}}>
+        <div className="icon"><LocationOnIconBorder /></div>
+        <p>설정</p>
       </button>
     </section>
   );
@@ -106,7 +106,7 @@ const LocationDrawer = ({ mapBottomRef }) => {
     ),
   ]);
 
-  return <aside className="location-drawer">{tfFrame.view()}</aside>;
+  return <aside className="map-drawer">{tfFrame.view()}</aside>;
 };
 
 
@@ -127,10 +127,12 @@ const MapBottom = forwardRef((_, ref) => {
         <h3 className="title">성남 분당구 백현동</h3>
         <p className="description">내 위치</p>
       </div>
-      <button className="button-select-shop text-button" onClick={() => {}}>
-        <MyLocationIconFill />
-        설정
-      </button>
+      <div className="buttons right">
+        <button className="button button-select-location" onClick={() => {}}>
+          <div className="icon"><MyLocationIconFill /></div>
+          <p>설정</p>
+        </button>
+      </div>
     </section>
   );
 
@@ -153,8 +155,8 @@ const MapBottom = forwardRef((_, ref) => {
 
   return (
     <footer className="map-bottom">
-      <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
-        {myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}
+      <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
+        <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>
       <div className="bottom-item-container">{content}</div>
     </footer>
@@ -169,9 +171,9 @@ const BackdropLocation = () => {
 
   return (
     <>
-      <LocationDrawer mapBottomRef={mapBottomRef} />
+      <MapDrawer mapBottomRef={mapBottomRef} />
       <div className="map-container">
-        <NaverMap id="map--set-location" />
+        <NaverMap />
         <MapBottom ref={mapBottomRef} />
       </div>
 

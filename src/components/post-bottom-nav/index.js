@@ -15,14 +15,14 @@ import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-b
 import AddIcon from "../../asset/icons/mui/add-icon";
 
 
-const MainBottomNav = () => {
+const PostBottomNav = () => {
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
 
   const userModel = new UserModel();
   const myUserId = userModel.getMyUserId();
-  const noticeModel = new NoticeModel();
+  const hasUnreadNotices = userModel.hasUnreadNotices(new NoticeModel());
 
   const [index, setIndex] = useState(null);
 
@@ -43,14 +43,13 @@ const MainBottomNav = () => {
     { background: `linear-gradient(to right, transparent 40%, var(--content-text-color) 70%, transparent 100%)` },
     { background: `linear-gradient(to right, transparent 60%, var(--content-text-color) 90%)` },
   ];
+
   const makeButton = idx => {
     const focus = idx === index;
     const Icon = icons[idx][focus ? 1 : 0];
     return (
       <button className="button" onClick={() => navigate(paths[idx])}>
-        <div className={`icon icon-sm icon-container ${focus ? "focus" : ""} ${(idx === 3 && userModel.hasUnreadNotices(noticeModel)) ? "badge" : ""}`}>
-          <Icon />
-        </div>
+        <div className={`icon ${focus ? "focus" : ""} ${(idx === 3 && hasUnreadNotices) ? "badge" : ""}`}><Icon /></div>
       </button>
     )
   };
@@ -58,15 +57,13 @@ const MainBottomNav = () => {
   const makeButtonWrite = () => {
     return (
       <button className="button button-write" onClick={() => navigate(`/edit`)}>
-        <div className="icon">
-          <AddIcon />
-        </div>
+        <div className="icon"><AddIcon /></div>
       </button>
     );
   };
 
   return (
-    <nav className="float-bottom main-bottom-nav">
+    <nav className="float-bottom">
       <div className="border" style={borderStyle[index]} />
       <ul className="buttons">
         {makeButton(0)}
@@ -79,4 +76,4 @@ const MainBottomNav = () => {
   );
 };
 
-export default MainBottomNav;
+export default PostBottomNav;

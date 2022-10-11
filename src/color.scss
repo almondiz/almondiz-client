@@ -1,60 +1,40 @@
+/* fonts */
 html {
   --font-family: 'Pretendard Variable', 'Pretendard',
     -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo,
     Helvetica Neue, Helvetica, Roboto, Noto Sans KR, Malgun Gothic, sans-serif,
     Apple Color Emoji, Segoe UI Emoji;
+}
 
-  // light mode colors
 
+/* colors */
+html {
+  --content-text-color: rgba(255, 134, 94);
+  --danger-color: rgb(237, 92, 94);
+  
+  // light
   --background-color: #fff;
   --primary-text-color: #000;
-  --secondary-text-color: #9e9e9e;
-  --content-text-color: #ff865e;
+  --secondary-text-color: #666;
+  --tertiary-text-color: #999;
 
-  --button-background-color: #f3f3f4;
-  --button-text-color: #363f47;
+  --border-color: #eee;
+  --shadow-to-border-color: 0px 0px 1px rgba(0, 0, 0, .5);
+  --nav-shadow-color: 0 0 2rem rgba(0, 0, 0, .125);
+  --float-background-color: rgba(255, 255, 255, .75);
+  --float-shadow-color: 0 1px 3px rgba(0, 0, 0, .375);
 
-  --tab-text-color: #6e6d7a;
-  --tab-hover-text-color: #0d0c22;
-  --tab-selected-background-color: rgba(13, 12, 34, 0.05);
+  // dark
+  @media (prefers-color-scheme: dark) {
+    --background-color: rgb(30, 32, 34); //#232326;
+    --primary-text-color: #fff;
+    --secondary-text-color: #999;
+    --tertiary-text-color: #777;
 
-  --bio-link-icon-color: rgba(0, 0, 0, 0.54);
-  --about-link-icon-color: #a8a8a8;
-
-  --chip-background-color: #f3f3f4;
-  --link-text-color: rgb(55 53 47 / 70%);
-  --post-card-border-color: rgba(0, 0, 0, 0.12);
-
-  --markdown-table-even-cell-background-color: #f6f8fa;
-  --markdown-table-border-color: #dfe2e5;
-  --markdown-blockquote-border-color: #dfe2e5;
-  --markdown-border-color: #e1e4e8;
-
-  // dark mode colors
-
-  /*@media (prefers-color-scheme: dark) {
-    --background-color: #1e2022; //#232326;
-    --primary-text-color: #e6e6e6;
-    --secondary-text-color: #768390;
-    --content-text-color: #ff865e; //#e6e6e6;
-
-    --button-background-color: #444c56;
-    --button-text-color: #363f47;
-
-    --tab-text-color: #768390;
-    --tab-hover-text-color: #acbac7;
-    --tab-selected-background-color: #373e47;
-
-    --chip-background-color: #323a42;
-    --bio-link-icon-color: #e6e6e6;
-    --about-link-icon-color: #a8a8a8;
-
-    --link-text-color: #90b0ec;
-    --post-card-border-color: #363f47;
-
-    --markdown-table-even-cell-background-color: #2d333b;
-    --markdown-table-border-color: #444c56;
-    --markdown-blockquote-border-color: #4f5864;
-    --markdown-border-color: #e1e4e8;
-  }*/
+    --border-color: rgba(255, 255, 255, .075);
+    --shadow-to-border-color: 0px 0px 1px rgba(255, 255, 255, .5);
+    --nav-shadow-color: 0 0 2rem rgba(255, 255, 255, .0625);
+    --float-background-color: rgba(30, 32, 34, .75);
+    --float-shadow-color: inset 0px 0px 1px rgba(255, 255, 255, 1), 0px 0px 1px rgba(255, 255, 255, 1);
+  }
 }
