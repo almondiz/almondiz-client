@@ -18,14 +18,14 @@ const ImageViewer = forwardRef(({ images }, ref) => {
     <div className="image-viewer">
       <div className="background" />
       <img className="image" src={image} />
-      <button className="button-close icon-md" onClick={() => setIndex(-1)}>
-        <CloseIcon />
+      <button className="button button-close" onClick={() => setIndex(-1)}>
+        <div className="icon"><CloseIcon /></div>
       </button>
-      <button className="button-prev icon-lg" onClick={() => setIndex((index + images.length - 1) % images.length)}>
-        <NavigateBeforeIcon />
+      <button className="button button-prev" onClick={() => setIndex((index + images.length - 1) % images.length)}>
+        <div className="icon"><NavigateBeforeIcon /></div>
       </button>
-      <button className="button-next icon-lg" onClick={() => setIndex((index + 1) % images.length)}>
-        <NavigateNextIcon />
+      <button className="button button-next" onClick={() => setIndex((index + 1) % images.length)}>
+        <div className="icon"><NavigateNextIcon /></div>
       </button>
       <p className="index">{`${index + 1} / ${images.length}`}</p>
 

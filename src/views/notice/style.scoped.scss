@@ -6,10 +6,10 @@
 }
 #float {
   .float-top {
-    background-color: rgba(255, 255, 255, .75);
+    background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(.5rem);
     backdrop-filter: blur(.5rem);
-    box-shadow: 0 1px 3rem rgba(0, 0, 0, .125);
+    box-shadow: var(--nav-shadow-color);
 
     display: flex;
     align-items: center;
@@ -24,8 +24,10 @@
     }
     
     &>.button-back {
-      height: 3rem;
-      width: 3rem;
+      .icon {
+        height: 3rem;
+        width: 3rem;
+      }
 
       position: absolute;
       left: .5rem;
@@ -46,23 +48,12 @@
     display: flex;
     align-items: center;
 
-    .notice-icon {
+    .icon {
       margin-left: -.5rem;
   
       height: 2.5rem;
       width: 2.5rem;
-  
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  
-      ::v-deep {
-        svg {
-          height: 1.5rem;
-          width: 1.5rem;
-        }
-      }
-  
+
       &.badge {
         position: relative;
   
@@ -90,7 +81,7 @@
       .time {
         font-size: .8125rem;
         margin-top: .25rem;
-        color: #666;
+        color: var(--secondary-text-color);
       }
     }
   }

@@ -6,10 +6,10 @@
 }
 #float {
   .float-top {
-    background-color: rgba(255, 255, 255, .75);
+    background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(.5rem);
     backdrop-filter: blur(.5rem);
-    box-shadow: 0 1px 3rem rgba(0, 0, 0, .125);
+    box-shadow: var(--nav-shadow-color);
 
     display: flex;
     align-items: center;
@@ -24,8 +24,10 @@
     }
     
     &>.button-back {
-      height: 3rem;
-      width: 3rem;
+      .icon {
+        height: 3rem;
+        width: 3rem;
+      }
 
       position: absolute;
       left: .5rem;
@@ -74,7 +76,7 @@
           margin-right: .625rem;
           border-radius: 100%;
           background-size: cover;
-          background-color: #eee;
+          background-color: var(--border-color);
           flex-shrink: 0;
         }
     
@@ -85,7 +87,7 @@
           .description {
             margin-top: .375rem;
             font-size: .8125rem;
-            color: #666;
+            color: var(--secondary-text-color);
           }
         }
       }
@@ -112,8 +114,7 @@
       margin: 0;
       padding: 0;
       margin-top: .75rem;
-
-      background-color: #eee;
+      background-color: var(--border-color);
     }
   }
 }
@@ -124,13 +125,13 @@
 
       padding-top: .5rem;
       padding-bottom: .5rem;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-color);
       height: 4.5rem;
     }
     .row.row-tags {
       padding-top: .5rem;
       padding-bottom: .5rem;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-color);
       height: 3.5rem;
 
       .buttons {
@@ -142,7 +143,7 @@
     .row.row-text {
       padding-top: .5rem + .5rem;
       padding-bottom: .5rem + .5rem;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid var(--border-color);
 
       .text {
         width: 100%;
@@ -164,10 +165,10 @@
   .float-footer {
     &-frame.frame-1 {
       .button-add-image {
-        background-color: rgba(255, 255, 255, .75);
+        background-color: var(--float-background-color);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        box-shadow: var(--float-shadow-color);
         border-radius: 1.5rem;
 
         display: flex;

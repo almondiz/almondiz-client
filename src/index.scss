@@ -20,7 +20,9 @@ body,
 body * {
   box-sizing: border-box !important;
   
+  color: var(--primary-text-color);
   font-family: var(--font-family);
+  letter-spacing: -.333333px;
 }
 
 p,
@@ -41,9 +43,7 @@ button,
 
   font-size: 1rem;
   font-weight: 400;
-  color: var(--primary-text-color);
   line-height: 1;
-  letter-spacing: -.333333px;
   
   white-space: pre-wrap;
   word-wrap: break-word;
@@ -100,73 +100,38 @@ ul {
   margin-right: -$padding-horiz;
 }
 
-.icon,
-.icon-xs,
-.icon-sm,
-.icon-md,
-.icon-lg,
-.icon-xl {
+.icon {
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.icon-xs {
-  &>svg {
-    height: 1rem;
-    width: 1rem;
-  }
-}
-.icon-sm {
-  &>svg {
-    height: 1.5rem;
-    width: 1.5rem;
-  }
-  &.icon-container {
-    min-height: 2.5rem;
-    min-width: 2.5rem;
-  }
-}
-.icon-md {
-  &>svg {
-    height: 3rem;
-    width: 3rem;
-  }
-}
-.icon-lg {
-  &>svg {
-    height: 4rem;
-    width: 4rem;
-  }
-}
-.icon-xl {
-  &>svg {
-    height: 5rem;
-    width: 5rem;
-  }
-}
 
 
 .text-button {
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  color: var(#fff);
+  background-color: var(--content-text-color);
 
-  z-index: 1;
+  flex-shrink: 0;
   
   font-size: .75rem;
   font-weight: 700;
-  color: var(--background-color);
-  background-color: var(--content-text-color);
 
   height: 1.5rem;
   border-radius: .75rem;
   padding: 0 .75rem;
-
-  display: flex;
-  align-items: center;
 }
 
 
+/* textfield */
+
+::placeholder {
+  color: var(--tertiary-text-color);
+  opacity: 1;   // firefox
+}
 .tf {
-  background-color: #eee;
+  background-color: var(--border-color);
 
   display: flex;
   align-items: center;
@@ -177,7 +142,6 @@ ul {
   font-size: .9375rem;
 
   position: relative;
-  width: 100%;
 
   .tf-icon {
     position: absolute;
@@ -192,10 +156,11 @@ ul {
     svg {
       height: 1.5rem;
       width: 1.5rem;
-      fill: #999;
+      fill: var(--tertiary-text-color);
     }
   }
   .tf-box {
+    color: var(--primary-text-color);
     position: absolute;
     left: .25rem + 2.5rem;
     right: .25rem + 2.5rem;
@@ -220,7 +185,7 @@ ul {
     svg {
       height: 1.5rem;
       width: 1.5rem;
-      fill: #999;
+      fill: var(--tertiary-text-color);
     }
   }
 }

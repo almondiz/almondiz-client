@@ -21,8 +21,8 @@ const FloatController = ({ floatRef }) => {
 
   const Top = () => (
     <nav className="float-top top-nav">
-      <div className="button-back icon-sm" onClick={() => navigate(-1)}>
-        <ArrowBackIcon />
+      <div className="button button-back" onClick={() => navigate(-1)}>
+        <div className="icon"><ArrowBackIcon /></div>
       </div>
       <h3 className="title">리뷰 작성</h3>
     </nav>
@@ -36,7 +36,7 @@ const FloatController = ({ floatRef }) => {
   return <></>;
 };
 
-const EditDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
+const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
   const tfPlaceholder = "음식점 검색";
   const [tf, setTf] = useState("");
   const [foundTags, setFoundTags] = useState([]);
@@ -53,15 +53,16 @@ const EditDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
         <p className="description">{shopData.shopAddress}</p>
         <TagList dataList={shopData.tags.map(({ tagName }) => tagName)} small />
       </div>
-      <button className="button-select-shop text-button" onClick={() => {
+      <div className="buttons right">
+        <button className="button button-select-shop" onClick={() => {
           setShopData(shopData);
           console.log(shopData)
           frame.walk(3);
         }}>
-        <div className="icon"><LocationOnIconBorder /></div>
-        
-        선택
-      </button>
+          <div className="icon"><LocationOnIconBorder /></div>
+          <p>선택</p>
+        </button>
+      </div>
     </section>
   );
   const tfHandler = (tfFrameIndex, shopData) => {
@@ -136,7 +137,7 @@ const EditDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
     ),
   ]);
 
-  return <aside className="edit-drawer">{tfFrame.view()}</aside>;
+  return <aside className="map-drawer">{tfFrame.view()}</aside>;
 };
 
 
@@ -158,7 +159,7 @@ const MapBottom = forwardRef((_, ref) => {
 
   return (
     <footer className="map-bottom">
-      <button className={`button-set-my-location icon-sm${myLocation ? " set" : ""}`} onClick={toggleMyLocation}>
+      <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
         <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>
       <div className="bottom-item-container">{content}</div>
@@ -174,14 +175,14 @@ const FrameFindShop = ({ frame, searchTags, setShopData, floatRef }) => {
   return (
     <>
       <main className="content">
-        <EditDrawer
+        <MapDrawer
           frame={frame}
           searchTags={searchTags}
           setShopData={setShopData}
           mapBottomRef={mapBottomRef}
         />
         <div className="map-container">
-          <NaverMap id="map-find-shop" />
+          <NaverMap />
           <MapBottom ref={mapBottomRef} />
         </div>
       </main>

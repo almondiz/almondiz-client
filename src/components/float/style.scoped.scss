@@ -76,12 +76,12 @@
 }
 #float.noshadow {
   ::v-deep {
-    .float-top,
-    .float-bottom {
+    .float-top {
+      background-color: transparent;
       box-shadow: none !important;
     }
-    .float-bottom {
-      border-top: 1px solid #eee;
-    }
+    /*.float-bottom {
+      border-top: 1px solid var(--border-color);
+    }*/
   }
 }

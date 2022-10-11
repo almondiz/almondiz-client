@@ -28,7 +28,7 @@ const FloatController = ({ floatRef, frame, createPost }) => {
     footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
-          <button className="button-add-image right" onClick={() => {}}>
+          <button className="button button-add-image right" onClick={() => {}}>
             <div className="icon"><AddAPhotoBorder /></div>
             <p>사진 추가</p>
           </button>
@@ -40,11 +40,11 @@ const FloatController = ({ floatRef, frame, createPost }) => {
 
   const Top = () => (
     <nav className="float-top top-nav">
-      <button className="button-back icon-sm" onClick={() => frame.walk(-3)}>
-        <ArrowBackIcon />
+      <button className="button button-back" onClick={() => frame.walk(-3)}>
+        <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">리뷰 작성</h3>
-      <button className="button-next" onClick={() => {
+      <button className="button button-next" onClick={() => {
         createPost();
         navigate(`/me`);
       }}>게시</button>
@@ -125,7 +125,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
             <nav className="row row-tags">
               <TagList dataList={tagController.tags} small />
               <div className="buttons right">
-                <button className="button-add-tag text-button" onClick={() => showBackdropTag()}>태그 추가</button>
+                <button className="button text-button" onClick={() => showBackdropTag()}>태그 추가</button>
               </div>
             </nav>
           </header>

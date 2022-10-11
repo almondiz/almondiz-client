@@ -15,11 +15,11 @@ import SellIconBorder from "../../../asset/icons/mui/sell-icon-border";
 const FloatController = ({ floatRef, frame }) => {
   const Top = () => (
     <nav className="float-top top-nav">
-      <button className="button-back icon-sm" onClick={() => frame.prev()}>
-        <ArrowBackIcon />
+      <button className="button button-back" onClick={() => frame.prev()}>
+        <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">음식점 등록</h3>
-      <button className="button-next" onClick={() => frame.walk(-2)}>등록</button>
+      <button className="button button-next" onClick={() => frame.walk(-2)}>등록</button>
     </nav>
   );
 

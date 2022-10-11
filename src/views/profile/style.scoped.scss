@@ -14,34 +14,48 @@
   
     &>.brand {
       height: 2rem;
+      ::v-deep {
+        svg {
+          width: 4.5rem;
+        }
+      }
     }
     &>.right {
       display: flex;
       align-items: center;
 
-      &>*:not(:first-of-type) {
-        margin-left: .5rem;
-      }
-
-      .button-notice {
-        &.badge {
-          position: relative;
-  
-          &::after {
-            position: absolute;
-            top: -.3125rem + .5rem;
-            right: -.3125rem + .5rem;
-  
-            content: "";
-            width: .5rem;
-            height: .5rem;
-            background-color: var(--content-text-color);
-            border-radius: 100%;
-          }
+      &.buttons {
+        .button:last-child {
+          margin-right: -.5rem;
         }
       }
-      .button-settings {
-        margin-right: -.5rem;
+    }
+    .buttons {
+      .button:not(:first-of-type) {
+        margin-left: .5rem;
+      }
+      .button {
+        .icon {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+      }
+      .button.button-notice {
+        .icon {
+          &.badge {
+            position: relative;
+            &::after {
+              content: "";
+              position: absolute;
+              top: -.3125rem + .5rem;
+              right: -.3125rem + .5rem;
+              height: .5rem;
+              width: .5rem;
+              border-radius: 100%;
+              background-color: var(--content-text-color);
+            }
+          }
+        }
       }
     }
   }
@@ -68,7 +82,7 @@
       }
       &>.row.row-following,
       &>.row.row-post-counts {
-        border-top: 1px solid #eee;
+        border-top: 1px solid var(--border-color);
       }
 
       &>.row.row-counts,
@@ -99,7 +113,7 @@
 
           user-select: none;
           overflow: hidden;
-          background-color: #eee;
+          background-color: var(--border-color);
           background-size: 75%;
           background-position: center;
           background-repeat: no-repeat;
@@ -122,8 +136,8 @@
             &[data-after]::after {
               content: attr(data-after);
               font-size: .6825rem;
-              color: #666;
-              border: 1px solid #666;
+              color: var(--secondary-text-color);
+              border: 1px solid var(--secondary-text-color);
               border-radius: 1rem;
               padding: .1875rem .375rem;
               margin-left: .375rem;
@@ -132,7 +146,7 @@
           .description {
             margin-top: .1825rem;
             font-size: .8125rem;
-            color: #666;
+            color: var(--secondary-text-color);
           }
         }
         &[data-user-type=following] {
@@ -204,10 +218,10 @@
   .float-header {
     &-frame.frame-1 {
       .button-back {      
-        background-color: rgba(255, 255, 255, .75);
+        background-color: var(--float-background-color);
         -webkit-backdrop-filter: blur(.5rem);
         backdrop-filter: blur(.5rem);
-        box-shadow: 0 1px 3px rgba(0, 0, 0, .375);
+        box-shadow: var(--float-shadow-color);
         border-radius: 1.5rem;
     
         display: flex;

@@ -13,8 +13,8 @@ const FloatController = ({ floatRef, dataList }) => {
 
   const Top = () => (
     <nav className="float-top top-nav">
-      <div className="button-back icon-sm" onClick={() => navigate(-1)}>
-        <ArrowBackIcon />
+      <div className="button button-back" onClick={() => navigate(-1)}>
+        <div className="icon"><ArrowBackIcon /></div>
       </div>
       <h3 className="title">구독 <span className="count">{dataList.length}</span></h3>
     </nav>
@@ -57,7 +57,7 @@ const SubscriptionsPage = ({ floatRef }) => {
                   <p className="name">{data.userName}</p>
                   <p className="description">{data.userNameDescription}</p>
                 </div>
-                <button className="button-unfollow">구독 취소</button>
+                <button className="button button-unfollow">구독 취소</button>
               </div>
             </li>
           );

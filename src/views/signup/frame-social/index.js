@@ -15,8 +15,8 @@ const FrameSocial = ({ frame, email, providerType }) => {
   return (
     <>
       <nav className="top-nav">
-        <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-          <ArrowBackIcon />
+        <button className="button button-back" onClick={() => navigate(-1)}>
+          <div className="icon"><ArrowBackIcon /></div>
         </button>
         <h3 className="title">회원 가입</h3>
       </nav>
@@ -28,7 +28,7 @@ const FrameSocial = ({ frame, email, providerType }) => {
 
         <footer className="main-footer">
         <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
-        <button className="button-next" onClick={() => frame.next()}>다음</button>
+        <button className="button button-next" onClick={() => frame.next()}>다음</button>
       </footer>
       </main>
     </>

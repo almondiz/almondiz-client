@@ -9,7 +9,7 @@ import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
-import LogotypeImage from "../../asset/logo/logotype.svg";
+import Logotype from "../../asset/logo/logotype";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
@@ -23,8 +23,8 @@ const FloatController = ({ floatRef, userData }) => {
     headerFrame.init([
       ( // main
         <section className="float-header-frame frame-1">
-          <button className="button-back icon-sm" onClick={() => navigate(-1)}>
-            <ArrowBackIcon />
+          <button className="button button-back" onClick={() => navigate(-1)}>
+            <div className="icon"><ArrowBackIcon /></div>
           </button>
         </section>
       ),
@@ -79,7 +79,7 @@ const ProfilePage = ({ floatRef }) => {
     const onClick =() => navigate(`/notice`);
     return (
       <button className={`button button-notice ${userData.hasUnreadNotices ? "badge" : ""}`} onClick={onClick}>
-        <div className="icon icon-sm icon-container"><NotificationsIconBorder /></div>
+        <div className={`icon ${userData.hasUnreadNotices ? "badge" : ""}`}><NotificationsIconBorder /></div>
       </button>
     );
   };
@@ -87,7 +87,7 @@ const ProfilePage = ({ floatRef }) => {
     const onClick =() => navigate(`/settings`);
     return (
       <button className="button button-settings" onClick={onClick}>
-        <div className="icon icon-sm icon-container"><SettingsIconBorder /></div>
+        <div className="icon"><SettingsIconBorder /></div>
       </button>
     );
   };
@@ -95,7 +95,7 @@ const ProfilePage = ({ floatRef }) => {
     const onClick =() => {};
     return (
       <button className="button button-more" onClick={onClick}>
-        <div className="icon icon-sm icon-container"><MoreHorizIcon /></div>
+        <div className="icon"><MoreHorizIcon /></div>
       </button>
     );
   };
@@ -109,7 +109,7 @@ const ProfilePage = ({ floatRef }) => {
           case "me":
             return (
               <header className="header">
-                <img className="brand" alt="brand" src={LogotypeImage} />
+                <div className="brand"><Logotype /></div>
                 <div className="buttons right">
                   <ButtonNotice userData={userData} />
                   <ButtonSettings />
@@ -151,14 +151,14 @@ const ProfilePage = ({ floatRef }) => {
               case "following":
                 return (
                   <div className="row row-follow">
-                    <button className="button-unfollow">구독 취소</button>
-                    <button className="button-change-alias">별명 변경</button>
+                    <button className="button button-unfollow">구독 취소</button>
+                    <button className="button button-change-alias">별명 변경</button>
                   </div>
                 );
               case "other":
                 return (
                   <div className="row row-follow">
-                    <button className="button-follow">구독</button>
+                    <button className="button button-follow">구독</button>
                   </div>
                 );
             }
@@ -180,7 +180,7 @@ const ProfilePage = ({ floatRef }) => {
                 <p>{userData.followingCount}</p>
               </div>
               <FollowingEmojiList userData={userData} />
-              <button className="button-following-list" onClick={goToFollowingsPage}>보기</button>
+              <button className="button button-following-list" onClick={goToFollowingsPage}>보기</button>
             </div>
           )}
           
