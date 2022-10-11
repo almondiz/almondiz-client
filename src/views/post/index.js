@@ -140,7 +140,7 @@ const PostPage = ({ floatRef, postId }) => {
 
 
   return (
-    <div className="page">
+    <div id="page">
       <header className="header">
         <div className="right">
           <ButtonMore />

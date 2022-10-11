@@ -28,7 +28,7 @@ const FloatController = ({ floatRef }) => {
 
 const SettingsPage = ({ floatRef }) => {
   return (
-    <div className="page">
+    <div id="page">
       <main className="content">
         <ul className="settings-list">
           <li className="settings-item">

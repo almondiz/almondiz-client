@@ -18,7 +18,7 @@ const ScrapPage = ({}) => {
 
 
   return (
-    <div className="page">
+    <div id="page">
       <header className="header">
         <h1 className="title">Scrapped</h1>
         <div className="right" />

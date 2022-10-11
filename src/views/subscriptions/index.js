@@ -67,7 +67,7 @@ const SubscriptionsPage = ({ floatRef }) => {
   };
 
   return (
-    <div className="page">
+    <div id="page">
       <main className="content">
         <FollowingList dataList={dataList} />
       </main>

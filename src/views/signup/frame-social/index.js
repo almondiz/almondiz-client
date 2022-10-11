@@ -25,14 +25,13 @@ const FrameSocial = ({ frame, email, providerType }) => {
         <p className="description">{`아래의 소셜 계정으로\n가입을 진행합니다.`}</p>
         {showProviderLogo(providerType)}
         <p className="email">{email}</p>
-
-        <footer className="main-footer">
-        <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
-        <button className="button button-next" onClick={() => frame.next()}>
-          <p>다음</p>
-        </button>
-      </footer>
       </main>
+      <footer className="footer">
+      <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
+      <button className="button button-next" onClick={() => frame.next()}>
+        <p>다음</p>
+      </button>
+    </footer>
     </>
   );
 };
