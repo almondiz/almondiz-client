@@ -65,15 +65,8 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
   const location = useSelector(state => state.global.location);
   const [ shopData, setShopData ] = useState({});
 
-  // POST API
-  const data = (postId => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getData(postId);
-  })(1);
-  //
-
   const ImageGridTrailer = ({ data }) => (
-    <div className="grid trailer" style={{ gridArea: `grid-${data.postImageUrls.length + 1}` }}>
+    <div className="grid trailer" style={{ gridArea: `grid-${data?.postImageUrls.length + 1}` }}>
       <div className="content">
         <div className="text-wrap">
           <p className="name">{shopData.shopName}</p>
@@ -139,7 +132,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
               {/*data.postText*/}
             </div>
             <div className="row row-images">
-              <ImageGrid images={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} editable />
+              <ImageGrid images={[]} trailer={<ImageGridTrailer data={[]} />} editable />
             </div>
           </main>
         </article>
