@@ -27,11 +27,11 @@ const FrameSocial = ({ frame, email, providerType }) => {
         <p className="email">{email}</p>
       </main>
       <footer className="footer">
-      <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
-      <button className="button button-next" onClick={() => frame.next()}>
-        <p>다음</p>
-      </button>
-    </footer>
+        <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
+        <button className="button button-next" onClick={() => frame.next()}>
+          <p>다음</p>
+        </button>
+      </footer>
     </>
   );
 };
