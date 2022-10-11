@@ -1,15 +1,9 @@
 @import "./pretendardvariable";
 
 body {
-  -webkit-overflow-scrolling : touch !important;
-  overflow: auto !important;
-  height: 100% !important;
-}
-
-body {
   margin: 0;
   padding: 0;
-  min-height: 100%;
+  //min-height: 100%;
   width: 100%;
 
   overflow-x: hidden;
@@ -87,13 +81,13 @@ ul {
 }
 
 .noscroll {
-  margin: 0;
-  height: 100%;
-  overflow: hidden;
+  margin: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
 }
 
 .noselect {
-  user-select: none;
+  user-select: none !important;
 }
 
 .right {
