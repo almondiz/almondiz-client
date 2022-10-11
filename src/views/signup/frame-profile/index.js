@@ -171,19 +171,17 @@ const FrameProfile = ({
           <MenuThumb getRandomThumb={getRandomProfile} changeThumb={changeProfile} />
           <h5 className="description">이모지</h5>
         </div>
-
         <div className="menu-name-group">
           <MenuName getRandomNut={getRandomNut} changeNut={changeNut} />
           <h5 className="description">닉네임</h5>
         </div>
-
-        <footer className="main-footer">
-          <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
-          <button className="button button-next" onClick={() => frame.next()}>
-            <p>다음</p>
-          </button>
-        </footer>
       </main>
+      <footer className="footer">
+        <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
+        <button className="button button-next" onClick={() => frame.next()}>
+          <p>다음</p>
+        </button>
+      </footer>
     </>
   );
 };

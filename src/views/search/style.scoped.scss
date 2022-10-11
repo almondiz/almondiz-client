@@ -1,4 +1,4 @@
-.page {
+#page {
   padding-bottom: $float-bottom-height;
 
   &>.header {
@@ -35,7 +35,7 @@
     pointer-events: auto;
   }
   
-  z-index: 10;
+  z-index: 100;
   position: absolute;
   left: 0;
   right: 0;
@@ -81,9 +81,42 @@
   .tf-frame.tf-frame-1,
   .tf-frame.tf-frame-2 {
     pointer-events: auto;
-    background-color: var(--background-color);
   }
   .tf-frame.tf-frame-2 {
+    background-color: var(--background-color);
+
+    .button-search {
+      position: absolute;
+      bottom: $padding-horiz;
+      left: $padding-horiz;
+      right: $padding-horiz;
+    
+      height: 3rem;
+      border-radius: 1.5rem;
+      background-color: var(--content-text-color);
+    
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+      p {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--background-color);
+        letter-spacing: $sparse-letter;
+      }
+    
+      .icon {
+        margin-right: .5rem;
+    
+        ::v-deep {
+          svg {
+            fill: var(--background-color);
+          }
+        }
+      }
+    }
+
     ::v-deep {
       .tag-list {
         margin-top: 1.5rem;
@@ -168,39 +201,6 @@
             }
           }
         }
-      }
-    }
-  }
-}
-
-
-.button-search {
-  position: absolute;
-  bottom: $float-bottom-height + 1.5rem;
-  left: $padding-horiz;
-  right: $padding-horiz;
-
-  height: 3rem;
-  border-radius: 1.5rem;
-  background-color: var(--content-text-color);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  p {
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--background-color);
-    letter-spacing: $sparse-letter;
-  }
-
-  .icon {
-    margin-right: .5rem;
-
-    ::v-deep {
-      svg {
-        fill: var(--background-color);
       }
     }
   }

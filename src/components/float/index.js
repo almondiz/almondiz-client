@@ -35,10 +35,11 @@ const Float = forwardRef((_, ref) => {
 
   const { pathname } = useLocation();
   useEffect(() => {
+    const floatDOM = document.querySelector("#float");
     if (document.body.scrollHeight <= window.innerHeight)
-      document.querySelector("#float").classList.add("noshadow");
+      floatDOM.classList.add("noshadow");
     else
-      document.querySelector("#float").classList.remove("noshadow");
+      floatDOM.classList.remove("noshadow");
   }, [pathname, top, bottom]);
 
   const FloatHeader = () => (

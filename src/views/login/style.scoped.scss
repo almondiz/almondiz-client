@@ -1,13 +1,8 @@
-.page {
+#page {
   &>.content {
-    padding-bottom: 3.5rem;
-  
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-  
+    padding-top: 4rem;
+
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -37,56 +32,52 @@
         margin-top: 1.5rem;
       }
     }
-
-    &>.main-footer {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding-bottom: 4rem;
-    
+  }
+  &>.footer {
+    padding-bottom: 4rem;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .social {
       display: flex;
       flex-direction: column;
-    
-      .social {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    
-        .help {
-          margin-bottom: 1.125rem;
+      align-items: center;
   
-          user-select: none;
-          color: var(--secondary-text-color);
-          font-size: .875rem;
-      
-          button {
-            color: var(--content-text-color);
-          }
+      .help {
+        margin-bottom: 1.125rem;
+
+        user-select: none;
+        color: var(--secondary-text-color);
+        font-size: .875rem;
+    
+        button {
+          color: var(--content-text-color);
         }
-      
-        .social-icons {
-          list-style: none;
-          padding: 0;
-          margin: 0;
+      }
     
-          display: flex;
-          flex-direction: row;
-      
-          .social-icon + .social-icon {
-            margin-left: 1.5rem;
-          }
-          .social-icon {
-            height: 3.5rem;
-            width: 3.5rem;
+      .social-icons {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+  
+        display: flex;
+        flex-direction: row;
     
-            border-radius: 100%;
-    
-            &.google {
-              border: 2px solid #ddd;
-              @media (prefers-color-scheme: dark) {
-                border: none;
-              }
+        .social-icon + .social-icon {
+          margin-left: 1.5rem;
+        }
+        .social-icon {
+          height: 3.5rem;
+          width: 3.5rem;
+  
+          border-radius: 100%;
+  
+          &.google {
+            border: 2px solid #ddd;
+            @media (prefers-color-scheme: dark) {
+              border: none;
             }
           }
         }

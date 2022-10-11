@@ -5,8 +5,9 @@ import "./style.scoped.scss";
 
 
 const generateRandomGrid = (Y, X, TILES) => {
+  if (TILES <= 0)   return "";
+  
   let ret;
-
   while (true) {
     const map = Array.from(Array(Y), () => Array(X).fill(0));
     const seed = new Array(TILES + 1);
@@ -151,7 +152,11 @@ const generateRandomGrid = (Y, X, TILES) => {
 };
 
 
-const ImageGrid = ({ images, trailer, action=(() => {}), editable }) => {
+const ImageGrid = ({ imageUrls=[], trailer, action=(() => {}), editable }) => {
+  let TILES = imageUrls.length;                                   // # of tiles
+  let M = 3;                                                      // # of columns
+  let N = (TILES > 0) ? Math.max(2, Math.ceil(TILES / 2)) : 0;    // # of rows
+
   const makeCell = (src, idx) => (
     <div key={idx} className="grid" onClick={() => action(idx)}
       style={{ gridArea: `grid-${idx + 1}`, backgroundImage: `url(${src})` }}
@@ -164,10 +169,6 @@ const ImageGrid = ({ images, trailer, action=(() => {}), editable }) => {
     </div>
   );
   const makeGridStyle = hasTrailer => {
-    let N = Math.max(3, Math.ceil(images.length / 2));    // # of rows
-    let M = 3;                                            // # of columns
-    let TILES = images.length;                            // # of tiles
-
     if (hasTrailer) {
       return {
         gridTemplateRows: `repeat(${N + 1}, 1fr)`,
@@ -186,10 +187,9 @@ const ImageGrid = ({ images, trailer, action=(() => {}), editable }) => {
   };
 
   return (
-    <div className={`image-grid ${editable ? "editable" : ""}`} style={makeGridStyle(trailer ? true : false )}
-    >
-      {images.map(makeCell)}
-      {trailer}
+    <div className={`image-grid ${editable ? "editable" : ""}`} style={makeGridStyle(trailer ? true : false )}>
+      {imageUrls.map(makeCell)}
+      {trailer && <div className="grid trailer" style={{ gridArea: `grid-${TILES + 1}` }}>{trailer}</div>}
     </div>
   );
 };

@@ -17,7 +17,7 @@ const PostItem = ({ data, detail=false }) => {
   const imageViewerRef = useRef();
   const imageGridAction = index => imageViewerRef.current?.setIndex(index);
   const ImageGridTrailer = ({ data }) => (
-    <div onClick={data.goToShopPage} className="grid trailer" style={{ gridArea: `grid-${data.postImageUrls.length + 1}` }}>
+    <div className="image-grid-trailer" onClick={data.goToShopPage}>
       <div className="content">
         <div className="text-wrap">
           <p className="name">{data.shopName}</p>
@@ -80,12 +80,12 @@ const PostItem = ({ data, detail=false }) => {
           !detail ?
           (
             <div className="row row-images" onClick={data.goToPostPage}>
-              <ImageSlider images={data.postImageUrls} />
+              <ImageSlider imageUrls={data.postImageUrls} />
             </div>
           ) :
           (
             <div className="row row-images">
-              <ImageGrid images={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} action={imageGridAction} />
+              <ImageGrid imageUrls={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} action={imageGridAction} />
             </div>
           )
         }

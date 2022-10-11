@@ -8,7 +8,7 @@ const NotFoundPage = () => {
   const DESCRIPTION = `이게 머선 페이지고?`;
 
   return (
-    <div className="page">
+    <div id="page">
       <main className="content">
         <p className="pic-text" >{PIC_TEXT}</p>
         <p className="description">{DESCRIPTION}</p>

@@ -18,7 +18,7 @@ const EditPage = ({ floatRef, backdropRef }) => {
   ]);
 
   return (
-    <div className="page">{frame.view()}</div>
+    <div id="page">{frame.view()}</div>
   );
 };
 
