@@ -60,7 +60,7 @@ const NoticePage = ({ floatRef }) => {
 
 
   return (
-    <div className="page">
+    <div id="page">
       <main className="content">
         <NoticeList dataList={dataList} />
       </main>

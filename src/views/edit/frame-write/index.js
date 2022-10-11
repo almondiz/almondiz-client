@@ -66,7 +66,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
   const [ shopData, setShopData ] = useState({});
 
   const ImageGridTrailer = ({ data }) => (
-    <div className="grid trailer" style={{ gridArea: `grid-${data?.postImageUrls.length + 1}` }}>
+    <div className="image-grid-trailer" onClick={data.goToShopPage}>
       <div className="content">
         <div className="text-wrap">
           <p className="name">{shopData.shopName}</p>
@@ -76,7 +76,6 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
       <div className="image" style={{ backgroundImage: `url(${shopData.shopThumbUrl})` }} />
     </div>
   );
-  
 
   const textRef = useRef();
   const handleResizeHeight = () => {

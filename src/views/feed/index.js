@@ -37,7 +37,7 @@ const FeedPage = ({ backdropRef }) => {
 
 
   return (
-    <div className="page">
+    <div id="page">
       <header className="header">
         <h1 className="title">Feed</h1>
         <div className="buttons right">

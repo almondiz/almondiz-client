@@ -179,7 +179,7 @@ const SearchPage = ({}) => {
   const contentRef = useRef();
 
   return (
-    <div className="page">
+    <div id="page">
       <header className="header" />
       <Drawer contentRef={contentRef} />
       <SearchContent ref={contentRef} />

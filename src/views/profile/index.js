@@ -103,7 +103,7 @@ const ProfilePage = ({ floatRef }) => {
 
 
   return (
-    <div className="page">
+    <div id="page">
       {(() => {
         switch (userData.userType) {
           case "me":

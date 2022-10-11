@@ -62,40 +62,38 @@ const LoginPage = () => {
   }, []);
 
   return (
-    <div className="page">
+    <div id="page">
       <main className="content">
         <div className="brand">
           <img className="symbol" alt="Symbol" src={SymbolImage} />
           <div className="logotype"><Logotype /></div>
           <p className="description">나만의 맛있는 스크랩북</p>
         </div>
-
-        <footer className="main-footer">
-          <div className="social">
-            <p className="help">소셜 계정으로 시작하기</p>
-            <nav className="social-icons">
-              {/*<img className="social-icon" alt="Apple" src={AppleSocialImage} onClick={() => navigate(`/signup`)} />*/}
-              <img className="social-icon naver" alt="Naver" src={NaverSocialImage} onClick={() => navigate(`/signup`)} />
-              <GoogleLogin
-                className="google-button"
-                clientId={clientId}
-                buttonText=""
-                render={({ onClick }) => (
-                  <img
-                    onClick={onClick}
-                    className="social-icon google"
-                    alt="Google"
-                    src={GoogleSocialImage}
-                  />
-                )}
-                onSuccess={onSuccess}
-                onFailure={onFailure}
-              />
-              <img className="social-icon kakao" alt="Kakao" src={KakaoSocialImage} onClick={() => navigate(`/signup`)} />
-            </nav>
-          </div>
-        </footer>
       </main>
+      <footer className="footer">
+        <div className="social">
+          <p className="help">소셜 계정으로 시작하기</p>
+          <nav className="social-icons">
+            <img className="social-icon naver" alt="Naver" src={NaverSocialImage} onClick={() => navigate(`/signup`)} />
+            <GoogleLogin
+              className="google-button"
+              clientId={clientId}
+              buttonText=""
+              render={({ onClick }) => (
+                <img
+                  onClick={onClick}
+                  className="social-icon google"
+                  alt="Google"
+                  src={GoogleSocialImage}
+                />
+              )}
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+            />
+            <img className="social-icon kakao" alt="Kakao" src={KakaoSocialImage} onClick={() => navigate(`/signup`)} />
+          </nav>
+        </div>
+      </footer>
     </div>
   );
 };

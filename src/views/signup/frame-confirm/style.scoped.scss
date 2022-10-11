@@ -1,16 +1,5 @@
-.page {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-
+#page {
   &>.top-nav {    
-    z-index: 10;
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
     height: $float-bottom-height;
   
     display: flex;
@@ -36,117 +25,103 @@
   }
 
   &>.content {
-    padding-bottom: 3.5rem;
-  
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-  
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-    &>.main-footer {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      padding-bottom: 4rem;
-    
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    
-      .help {
-        margin-bottom: 1.125rem;
-        
-        user-select: none;
-        color: var(--secondary-text-color);
-        font-size: .875rem;
-    
-        button {
-          color: var(--content-text-color);
-        }
+  }
+  &>.footer {
+    padding-bottom: 4rem;
+  
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  
+    .help {
+      margin-bottom: 1.125rem;
+      
+      user-select: none;
+      color: var(--secondary-text-color);
+      font-size: .875rem;
+  
+      button {
+        color: var(--content-text-color);
       }
-    
-      .button-next {
-        width: calc(100% - 6rem);
+    }
+  
+    .button-next {
+      width: calc(100% - 6rem);
 
-        height: 3rem;
-        border-radius: 1.5rem;
-        background-color: var(--content-text-color);
+      height: 3rem;
+      border-radius: 1.5rem;
+      background-color: var(--content-text-color);
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-        p {
-          font-size: 1rem;
-          font-weight: 700;
-          color: var(--background-color);
-          letter-spacing: $sparse-letter;
-        }
+      p {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--background-color);
+        letter-spacing: $sparse-letter;
       }
     }
   }
 }
 
     
-.page {
-  &>.content {
-    .description {
-      margin-bottom: 1.5rem;
-  
-      font-size: 1.375rem;
-      font-weight: 700;
-      line-height: 1.5;
-  
-      text-align: center;
+.content {
+  .description {
+    margin-bottom: 1.5rem;
+
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.5;
+
+    text-align: center;
+  }
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .thumb {
+      height: 5rem;
+      width: 5rem;
+      border-radius: 100%;
+
+      user-select: none;
+      overflow: hidden;
+      background-color: var(--border-color);
+      background-size: 75%;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3.75rem;
+      line-height: 5rem;
     }
-    .profile {
+    .text-wrap {
+      margin-top: 1rem;
+
       display: flex;
       flex-direction: column;
       align-items: center;
-  
-      .thumb {
-        height: 5rem;
-        width: 5rem;
-        border-radius: 100%;
-  
-        user-select: none;
-        overflow: hidden;
-        background-color: var(--border-color);
-        background-size: 75%;
-        background-position: center;
-        background-repeat: no-repeat;
+
+      .name {
+        width: fit-content;
+        font-size: 1.375rem;
+
         display: flex;
-        justify-content: center;
         align-items: center;
-        font-size: 3.75rem;
-        line-height: 5rem;
       }
-      .text-wrap {
-        margin-top: 1rem;
-  
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-  
-        .name {
-          width: fit-content;
-          font-size: 1.375rem;
-  
-          display: flex;
-          align-items: center;
-        }
-        .email {
-          margin-top: .5rem;
-          font-size: .9375rem;
-          color: var(--secondary-text-color);
-        }
+      .email {
+        margin-top: .5rem;
+        font-size: .9375rem;
+        color: var(--secondary-text-color);
       }
     }
   }

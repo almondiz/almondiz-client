@@ -34,8 +34,9 @@ export class Pipe {
 
 export const NoScroll = () => {
   useEffect(() => {
-    document.body.classList.add("noscroll");
-    return () => document.body.classList.remove("noscroll");
+    const bodyDOM = document.body;
+    bodyDOM.classList.add("noscroll");
+    return () => bodyDOM.classList.remove("noscroll");
   }, []);
 
   return <></>;
