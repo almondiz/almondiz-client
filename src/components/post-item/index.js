@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import TagList from "../../components/tag-list";
 import CommentList from "../../components/comment-list";
@@ -14,10 +15,12 @@ import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
 const PostItem = ({ data, detail=false }) => {
+  const navigate = useNavigate();
+
   const imageViewerRef = useRef();
   const imageGridAction = index => imageViewerRef.current?.setIndex(index);
   const ImageGridTrailer = ({ data }) => (
-    <div className="image-grid-trailer" onClick={data.goToShopPage}>
+    <div className="image-grid-trailer" onClick={() => data.goToShopPage(navigate)}>
       <div className="content">
         <div className="text-wrap">
           <p className="name">{data.shopName}</p>
@@ -51,12 +54,12 @@ const PostItem = ({ data, detail=false }) => {
 
   return (
     <article className={`post ${!detail ? "post-item" : ""}`} data-id={data.postId}>
-      {!detail && <div className="background" onClick={data.goToPostPage} />}
+      {!detail && <div className="background" onClick={() => data.goToPostPage(navigate)} />}
       {detail && <ImageViewer imageUrls={data.postImageUrls} ref={imageViewerRef} />}
 
       <header className="header">
         <div className="row row-shop">
-          <button className="shop" onClick={data.goToShopPage}>
+          <button className="shop" onClick={() => data.goToShopPage(navigate)}>
             <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
             <div className="text-wrap">
               <p className="name">{data.shopName}</p>
@@ -79,7 +82,7 @@ const PostItem = ({ data, detail=false }) => {
         { 
           !detail ?
           (
-            <div className="row row-images" onClick={data.goToPostPage}>
+            <div className="row row-images" onClick={() => data.goToPostPage(navigate)}>
               <ImageSlider imageUrls={data.postImageUrls} />
             </div>
           ) :
@@ -97,7 +100,7 @@ const PostItem = ({ data, detail=false }) => {
           (data.commentCount > 0) && (
             <footer className="footer">
               <div className="row row-profile">
-                <button className="profile" onClick={data.goToPostAuthorPage} data-user-type={data.postAuthorType}>
+                <button className="profile" onClick={() => data.goToPostAuthorPage(navigate)} data-user-type={data.postAuthorType}>
                   <p className="emoji">{data.postAuthorEmoji}</p>
                   <p className="name">{data.postAuthorName}</p>
                 </button>
@@ -119,7 +122,7 @@ const PostItem = ({ data, detail=false }) => {
         (
           <footer className="footer">
             <div className="row row-profile">
-              <button className="profile" onClick={data.goToPostAuthorPage}>
+              <button className="profile" onClick={() => data.goToPostAuthorPage(navigate)}>
                 <p className="emoji">{data.postAuthorEmoji}</p>
                 <p className="name">{data.postAuthorName}</p>
               </button>

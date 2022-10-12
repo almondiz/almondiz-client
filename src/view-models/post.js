@@ -4,12 +4,10 @@ import { UserModel } from "../models";
 
 
 import store from "../store";
-import { useNavigate } from "react-router-dom";
 
 export default class PostViewModel {
   constructor(model) {
     this.model = model;
-    this.navigate = useNavigate();
   }
 
   getData(id) {
@@ -58,13 +56,13 @@ export default class PostViewModel {
       shopAddress: post.shop.location.address.split(" ").slice(0, 3).join(" "),
       shopAddressDetail: post.shop.location.address,
       shopDistance: `${getDistance(location, post.shop.location)}km`,
-      goToShopPage: () => (window.location.href = post.shop.link),
+      goToShopPage: navigate => (window.location.href = post.shop.link),
 
       // Tag 수정필요
       postTags: post.tags,
       postText: post.text,
       postImageUrls: post.postFileImgUrls,
-      goToPostPage: () => this.navigate(`/post`),
+      goToPostPage: navigate => navigate(`/post`),
   
       postAuthorEmoji: "🇨🇦",//post.user.thumb.emoji,
       postAuthorName: "🇨🇦", //post.user.nickName,
@@ -83,7 +81,7 @@ export default class PostViewModel {
       //   else
       //     return "other";
       // })(),
-      goToPostAuthorPage: () => this.navigate(`/profile/${postAuthorId}`),
+      goToPostAuthorPage: navigate => navigate(`/profile/${postAuthorId}`),
 
       // 수정필요
       postCreatedAt: "3분전",//getTime(post.createdAt),
@@ -132,7 +130,7 @@ export default class PostViewModel {
           return "other";
       })(),
       isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
-      goToCommentAuthorPage: () => this?.navigate(`/profile/${commentAuthorId}`),
+      goToCommentAuthorPage: navigate => navigate(`/profile/${commentAuthorId}`),
 
       commentCreatedAt: getTime(comment.createdAt),
   

@@ -65,8 +65,8 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
   const location = useSelector(state => state.global.location);
   const [ shopData, setShopData ] = useState({});
 
-  const ImageGridTrailer = ({ data }) => (
-    <div className="image-grid-trailer" onClick={data.goToShopPage}>
+  const ImageGridTrailer = ({ shopData }) => (
+    <div className="image-grid-trailer">
       <div className="content">
         <div className="text-wrap">
           <p className="name">{shopData.shopName}</p>
@@ -131,7 +131,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
               {/*data.postText*/}
             </div>
             <div className="row row-images">
-              <ImageGrid images={[]} trailer={<ImageGridTrailer data={[]} />} editable />
+              <ImageGrid images={[]} trailer={<ImageGridTrailer shopData={[]} />} editable />
             </div>
           </main>
         </article>

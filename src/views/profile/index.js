@@ -99,7 +99,7 @@ const ProfilePage = ({ floatRef }) => {
       </button>
     );
   };
-  const goToFollowingsPage = () => navigate(`/subscriptions`);
+  const goToFollowingsPage = navigate => navigate(`/subscriptions`);
 
 
   return (
@@ -180,7 +180,7 @@ const ProfilePage = ({ floatRef }) => {
                 <p>{userData.followingCount}</p>
               </div>
               <FollowingEmojiList userData={userData} />
-              <button className="button button-following-list" onClick={goToFollowingsPage}>보기</button>
+              <button className="button button-following-list" onClick={() => goToFollowingsPage(navigate)}>보기</button>
             </div>
           )}
           

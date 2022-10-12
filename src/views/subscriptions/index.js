@@ -45,11 +45,11 @@ const SubscriptionsPage = ({ floatRef }) => {
     return (
       <ul className="following-list">
         {dataList.map((data, idx) => {
-          const goToProfilePage = () => navigate(`/profile/${data.userId}`);
+          const goToProfilePage = navigate => navigate(`/profile/${data.userId}`);
 
           return (
             <li key={idx} className="following-item">
-              <div className="link" onClick={goToProfilePage} />
+              <div className="link" onClick={() => goToProfilePage(navigate)} />
       
               <div className="row row-profile">
                 <div className="thumb" style={{ backgroundColor: data.userColor }}>{data.userEmoji}</div>

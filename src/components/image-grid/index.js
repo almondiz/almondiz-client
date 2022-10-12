@@ -15,6 +15,17 @@ const generateRandomGrid = (Y, X, TILES) => {
     const _plant = () => {
       let tile;
       let y, x, tmp;
+
+      const map = new Array(Y * X).fill(0);
+      for (let i = 0; i < TILES; i++)
+        map[i] = i + 1;
+      for (let i = 0; i < Y * X; i++) {
+        
+      }
+
+
+      
+
       for (tile = 1; tile <= TILES; tile++) {
         while (true) {
           tmp = Math.floor(Math.random() * (Y * X));
