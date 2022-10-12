@@ -3,12 +3,12 @@ import { api, path } from "./config";
 
 /** GET /api/post/{postId} */
 export const getPostByPostId = postId => {
-  api.get(path.post.one(postId));
+  return api.get(path.post.one(postId));
 };
 
 /** GET /api/posts */
 export const getAllPosts = () => {
-  api.get(path.post.all);
+  return api.get(path.post.all);
 };
 
 /** GET /api/user/posts */

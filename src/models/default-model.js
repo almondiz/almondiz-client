@@ -7,11 +7,11 @@ export default class defaultModel {
   async callApi(api) {
     try {
       const res = await api();
-      console.log("[callApi]", res);
+      console.log("[callApi]", api, res);
       const { data } = res;
       return data;
     } catch (e) {
-      console.error("[callApi]", e);
+      console.error("[callApi]", api, e);
       return e.response.data;
     }
   }

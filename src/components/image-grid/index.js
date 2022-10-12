@@ -6,7 +6,8 @@ import "./style.scoped.scss";
 
 const generateRandomGrid = (Y, X, TILES) => {
   const _shuffleArray = (arr, endIdx, action=(() => {})) => {
-    if (!endIdx)  endIdx = arr.length - 1;
+    if (!endIdx || endIdx > arr.length - 1)
+      endIdx = arr.length - 1;
 
     let i, j, tmp;
     for (i = 0; i < endIdx; i++) {
@@ -26,13 +27,14 @@ const generateRandomGrid = (Y, X, TILES) => {
     _shuffleArray(map1D, TILES, (i, j) => {
       let tmp;
       if (tmp = map1D[j])
-        seed[-tmp] = { y: Math.floor(j / Y) , x: j % Y };
+        seed[-tmp] = { y: Math.floor(j / X) , x: j % X };
       if (tmp = map1D[i])
-        seed[-tmp] = { y: Math.floor(i / Y) , x: i % Y };
+        seed[-tmp] = { y: Math.floor(i / X) , x: i % X };
     });
 
-    for (let i = 0; i < Y; i++)
-      map.push(map1D.slice(i * Y, (i + 1) * Y));
+    while (map1D.length)
+      map.push(map1D.splice(0, X));
+    
     return [ map, seed ];
   };
   const _grow = (map, seed, tile) => {
@@ -155,25 +157,14 @@ const generateRandomGrid = (Y, X, TILES) => {
       break;
     }
   }
-  //console.log("[ImageGrid.generateRandomGrid]", ret);
   return ret;
 };
 
 
-const ImageGrid = ({ imageUrls=[], trailer, action=(() => {}), editable }) => {
-  /*imageUrls = [
-    "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200512_270%2F1589240248177WIr4l_JPEG%2FKakaoTalk_Photo_2019-11-15-21-09-35.jpeg",
-    "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20160222_124%2F1456108689766cGsT8_JPEG%2F176172516828220_1.jpeg",
-    "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20160222_65%2F1456108689887hMVWw_JPEG%2F176172516828220_2.jpeg",
-    "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyMjA4MDVfMTg1%2FMDAxNjU5NjU1NjY2MDY0.9OVwKR1z4PPRPc261Bm6s7uijG0StPCpIjmpGNTN7gog.k3_zLr9zb9AO4HIUhxSAEAMHwMn-fDUtJWv6ggqm_i4g.JPEG%2Fupload_7a34a53d254c06cf9240f8ac12b01655.jpeg",
-    "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_50%2F1640014951911xYfbU_JPEG%2Fupload_72846c3e27e83636fc5315a45bb4ee53.jpeg",
-    "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_238%2F164001495200947VEL_JPEG%2Fupload_438a1fb5d2e2bdf650c5ccc9ae140291.jpeg",
-    "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_245%2F1640014952265p4T4U_JPEG%2Fupload_74f2d577c28ecb075f4f90f026ffd1f1.jpeg",
-  ];*/
-  
+const ImageGrid = ({ imageUrls=[], trailer, action=(() => {}), editable }) => {  
   const TILES = imageUrls.length;                                   // # of tiles
-  const M = 3;                                                      // # of columns
-  const N = (TILES > 0) ? Math.max(2, Math.ceil(TILES / 2)) : 0;    // # of rows
+  const Y = (TILES > 0) ? Math.max(2, Math.ceil(TILES / 2)) : 0;    // # of rows
+  const X = 3;                                                      // # of columns
 
   const makeCell = (src, idx) => (
     <div key={idx} className="grid" onClick={() => action(idx)}
@@ -187,19 +178,22 @@ const ImageGrid = ({ imageUrls=[], trailer, action=(() => {}), editable }) => {
     </div>
   );
   const makeGridStyle = hasTrailer => {
+    const randomGrid = generateRandomGrid(Y, X, TILES);
+    //console.log("[ImageGrid.randomGrid]", randomGrid);
+
     if (hasTrailer) {
       return {
-        gridTemplateRows: `repeat(${N + 1}, 1fr)`,
-        gridTemplateColumns: `repeat(${M}, 1fr)`,
-        height: `${8 * (N + 1)}rem`,
-        gridTemplateAreas: generateRandomGrid(N, M, TILES) + (`"` + `grid-${TILES + 1} `.repeat(M) + `"\n`),
+        gridTemplateRows: `repeat(${Y + 1}, 1fr)`,
+        gridTemplateColumns: `repeat(${X}, 1fr)`,
+        height: `${8 * (Y + 1)}rem`,
+        gridTemplateAreas: randomGrid + (`"` + `grid-${TILES + 1} `.repeat(X) + `"\n`),
       };
     } else {
       return {
-        gridTemplateRows: `repeat(${N}, 1fr)`,
-        gridTemplateColumns: `repeat(${M}, 1fr)`,
-        height: `${8 * N}rem`,
-        gridTemplateAreas: generateRandomGrid(N, M, TILES),
+        gridTemplateRows: `repeat(${Y}, 1fr)`,
+        gridTemplateColumns: `repeat(${X}, 1fr)`,
+        height: `${8 * Y}rem`,
+        gridTemplateAreas: randomGrid,
       };
     }
   };

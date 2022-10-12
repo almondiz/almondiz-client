@@ -62,6 +62,7 @@ export default class PostViewModel {
       authorId: bestComment.userId,
       author: userModel.getData(bestComment.userId)
     };
+    post.comments = this.model.data[1].comments;        // temp
   
     return {
       postId: postId,
