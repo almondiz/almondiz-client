@@ -16,10 +16,10 @@ export class Pipe {
   static set(key, val) {
     useEffect(() => {
       Pipe.data[key] = val;
-      console.log(`key '${key}' added`);
+      //console.log("[Pipe]", `key '${key}' added`);
       return () => {
         delete Pipe.data[key];
-        console.log(`key '${key}' deleted`);
+        //console.log("[Pipe]", `key '${key}' deleted`);
       };
     }, []);
   }

@@ -53,7 +53,7 @@ const PostItem = ({ data, detail=false }) => {
   };
 
   return (
-    <article className={`post ${!detail ? "post-item" : ""}`} data-id={data.postId}>
+    <article className={`post ${!detail ? "post-item" : ""}`} data-post-id={data.postId}>
       {!detail && <div className="background" onClick={() => data.goToPostPage(navigate)} />}
       {detail && <ImageViewer imageUrls={data.postImageUrls} ref={imageViewerRef} />}
 
@@ -97,18 +97,18 @@ const PostItem = ({ data, detail=false }) => {
       {
         !detail ?
         (
-          (data.commentCount > 0) && (
-            <footer className="footer">
-              <div className="row row-profile">
-                <button className="profile" onClick={() => data.goToPostAuthorPage(navigate)} data-user-type={data.postAuthorType}>
-                  <p className="emoji">{data.postAuthorEmoji}</p>
-                  <p className="name">{data.postAuthorName}</p>
-                </button>
-                <p className="description">{data.postCreatedAt}</p>
-                <div className="buttons right">
-                  <ButtonScrap data={data} />
-                </div>
+          <footer className="footer">
+            <div className="row row-profile">
+              <button className="profile" onClick={() => data.goToPostAuthorPage(navigate)} data-user-type={data.postAuthorType}>
+                <p className="emoji">{data.postAuthorEmoji}</p>
+                <p className="name">{data.postAuthorName}</p>
+              </button>
+              <p className="description">{data.postCreatedAt}</p>
+              <div className="buttons right">
+                <ButtonScrap data={data} />
               </div>
+            </div>
+            { (data.commentCount > 0) && (
               <div className="row row-counts">
                 <p className="description">댓글 <span className="count">{data.commentCount}</span></p>
                 <div className="best-comment">
@@ -116,8 +116,8 @@ const PostItem = ({ data, detail=false }) => {
                   <p className="text">{data.bestCommentText}</p>
                 </div>
               </div>
-            </footer>
-          )
+            )}
+          </footer>
         ) :
         (
           <footer className="footer">

@@ -16,7 +16,7 @@ const EditPage = ({ floatRef, backdropRef }) => {
   const [ tags, setTags ] = useState([]);
 
   useEffect(() => {
-    console.log(shopData);
+    console.log("[EditPage]", shopData);
     shopData.tags && setTags([...shopData.tags]);
   }, [shopData]);
 

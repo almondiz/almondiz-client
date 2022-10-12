@@ -155,7 +155,7 @@ const generateRandomGrid = (Y, X, TILES) => {
       break;
     }
   }
-  console.log(ret);
+  //console.log("[ImageGrid.generateRandomGrid]", ret);
   return ret;
 };
 

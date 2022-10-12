@@ -82,7 +82,7 @@ export default class UserViewModel {
   }
 
 
-  signup(body) { return this.model.signup(body); }
+  signup(body) {return this.model.signup(body); }
   login(providerType, providerUid) { return this.model.login(providerType, providerUid); }
   async checkAccount({ providerType, providerUid } , goSignup, goMain) {
     const { success, ...result } = await this.login(providerType, providerUid);
@@ -93,16 +93,16 @@ export default class UserViewModel {
           goSignup();
           break;
         case "옳지 않은 이메일입니다. 이메일 형식을 확인해주세요":
-          console.log(result.msg);
+          console.error("[login] : ", result.msg);
           break;
         default:
-          console.log(result.msg);
+          console.error("[login] : ", result.msg);
           break;
       }
       return;
     }
 
-    console.log(result.data)
+    console.log("[login] : ", result.data);
     goMain(result.data);
   }
 };

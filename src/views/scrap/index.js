@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
@@ -9,12 +9,12 @@ import "./style.scoped.scss";
 
 
 const ScrapPage = ({}) => {
-  // POST API
-  const dataList = (() => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getDummyData();
-  })();
-  //
+  /** POST API */
+  const postViewModel = new PostViewModel(new PostModel());
+  const [dataList, setDataList] = useState([]);
+  const getAllPosts = async () => { setDataList(await postViewModel.getAllPosts()); };
+  useEffect(() => { getAllPosts(); }, []);
+  /** */
 
 
   return (

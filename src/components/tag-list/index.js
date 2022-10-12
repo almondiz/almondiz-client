@@ -33,7 +33,7 @@ const TagItem = ({ idx, data, controller }) => {
   const _data = (typeof data === "object") ? data : { tagId: -1, tagName: data, tagType: "food" };
   if (!_data.tagId && _data.tagId !== 0)
     _data.tagId = -1;
-  console.log(_data);
+  //console.log("[TagItem]", _data);
 
   const { tagId, tagName, tagType } = _data;
  

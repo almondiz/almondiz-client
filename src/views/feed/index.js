@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
 import { PostModel } from "../../models";
@@ -12,19 +12,12 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 
 
 const FeedPage = ({ backdropRef }) => {
+  /** POST API */
   const postViewModel = new PostViewModel(new PostModel());
-  const [ dataList, setDataList] = useState([]);
-
-  // setDataList(postViewModel.getDummyData());
-
-  const getAllPost = async () => {
-    setDataList(await postViewModel.getAllPost());
-  }
-
-  useEffect(() => {
-    getAllPost();
-
-  }, []);
+  const [dataList, setDataList] = useState([]);
+  const getAllPosts = async () => { setDataList(await postViewModel.getAllPosts()); };
+  useEffect(() => { getAllPosts(); }, []);
+  /** */
 
 
   const addressTokens = (() => {

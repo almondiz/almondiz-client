@@ -34,7 +34,7 @@ const FloatController = ({ floatRef, frame }) => {
 
 // frame 3
 const FrameDirectTag = ({ frame, floatRef }) => {
-  // POST API
+  // POST API (DUMMY)
   const data = (postId => {
     const postViewModel = new PostViewModel(new PostModel());
     return postViewModel.getData(postId);

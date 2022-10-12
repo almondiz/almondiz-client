@@ -33,7 +33,7 @@ const SubscriptionsPage = ({ floatRef }) => {
   const navigate = useNavigate();
 
 
-  // FOLLOW API (USER API)
+  // FOLLOW API (DUMMY)
   const dataList = (() => {
     const userViewModel = new UserViewModel(new UserModel());
     return userViewModel.getMyFollowingData();

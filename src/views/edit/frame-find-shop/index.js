@@ -56,7 +56,7 @@ const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
       <div className="buttons right">
         <button className="button button-select-shop" onClick={() => {
           setShopData(shopData);
-          console.log(shopData)
+          console.log("[FrameFindShop]", shopData)
           frame.walk(3);
         }}>
           <div className="icon"><LocationOnIconBorder /></div>

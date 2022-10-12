@@ -100,8 +100,13 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           
-          {/*<Route element={<RequireAuth/>}>*/}
+          <Route element={<RequireAuth/>}>
             <Route element={<PostLayout floatRef={floatRef} />}>
+              <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
+              <Route path="/post/:postId" element={<PostPage floatRef={floatRef} />} />
+              <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
+              <Route path="/profile/:userId" element={<ProfilePage floatRef={floatRef} />} />
+
               <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
               <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
               <Route path="/subscriptions" element={<SubscriptionsPage floatRef={floatRef} />} />
@@ -109,14 +114,14 @@ const App = () => {
             <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
             <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
             <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
-          {/*</Route>*/}
+          </Route>
 
-          <Route element={<PostLayout floatRef={floatRef} />}>
+          {/*<Route element={<PostLayout floatRef={floatRef} />}>
             <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
-            <Route path="/post" element={<PostPage floatRef={floatRef} postId={1} />} />
+            <Route path="/post/:postId" element={<PostPage floatRef={floatRef} />} />
             <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
             <Route path="/profile/:userId" element={<ProfilePage floatRef={floatRef} />} />
-          </Route>
+          </Route>*/}
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

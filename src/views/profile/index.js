@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { Frame } from "../../util";
-import { UserModel, PostModel, NoticeModel } from "../../models";
+import { UserModel, PostModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -42,22 +42,23 @@ const FloatController = ({ floatRef, userData }) => {
 
 
 const ProfilePage = ({ floatRef }) => {
-  const navigate = useNavigate();
   const { userId } = useParams();
 
+  const navigate = useNavigate();
   
-  // POST API
-  const postDataList = (() => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getAllDataByUser(userId);
-  })(userId);
-  //
+  /** POST API */
+  const postViewModel = new PostViewModel(new PostModel());
+  const [postDataList, setPostDataList] = useState([]);
+  const getAllPostsByUserId = async () => { setPostDataList(await postViewModel.getAllPostsByUserId(userId)); };
+  useEffect(() => { getAllPostsByUserId(); }, []);
+  /** */
 
-  // USER API
+  // USER API (DUMMY)
   const userData = (() => {
     const userViewModel = new UserViewModel(new UserModel());
     return userViewModel.getData(userId);
   })(userId);
+  //
 
 
   const FollowingEmojiList = ({ userData }) => {

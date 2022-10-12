@@ -25,12 +25,12 @@ const Drawer = ({ contentRef }) => {
   }, [tf]);
 
   const PostList = () => {
-    // POST API
-    const dataList = (() => {
-      const postViewModel = new PostViewModel(new PostModel());
-      return postViewModel.getDummyData();
-    })();
-    //
+    /** POST API */
+    const postViewModel = new PostViewModel(new PostModel());
+    const [dataList, setDataList] = useState([]);
+    const getAllPosts = async () => { setDataList(await postViewModel.getAllPosts()); };
+    useEffect(() => { getAllPosts(); }, []);
+    /** */
     
     return <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
   };

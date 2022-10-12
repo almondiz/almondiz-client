@@ -13,12 +13,12 @@ const _api = axios.create({
 
 const patchToken = (method, ...params) => {
   return _api[method](...params, { headers: { "AUTH-TOKEN": store.getState().account.accessToken } });
-}
+};
 
 const api = {
-  post: (...params) => patchToken("post", ...params),
   get: (...params) => patchToken("get", ...params),
-}
+  post: (...params) => patchToken("post", ...params),
+};
 
 const makePath = (path) => `api/${path}`;
 const path = {

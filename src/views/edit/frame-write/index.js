@@ -90,7 +90,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
   // TAG
   const tagController = new TagController(["맥주", "호프"]);
   useEffect(() => {
-    console.log(tagController.tags);
+    console.log("[FrameWrite]", tagController.tags);
     // setTags(...)
   }, [tagController.tags]);
   //

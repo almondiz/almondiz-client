@@ -45,7 +45,7 @@ const LoginPage = () => {
   }
 
   const onFailure = async (res) => {
-    console.log(res);
+    console.error(["LoginPage.onFailure"], res);
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID_NETLIFY;

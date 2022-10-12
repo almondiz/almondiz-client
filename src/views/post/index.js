@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { Frame, Pipe } from "../../util";
 import { PostModel } from "../../models";
@@ -47,9 +47,9 @@ const FloatController = ({ floatRef, data }) => {
     const commentDialog = {
       send: () => {
         if (repliedCommentUnit)
-          console.log(`[${repliedCommentUnit.repliedCommentId}에게 답글] ${tf}`);
+          console.log("[Post.commentDialog]", `${repliedCommentUnit.repliedCommentId}에게 답글 : ${tf}`);
         else
-          console.log(`[댓글] ${tf}`);
+          console.log("[Post.commentDialog]", `댓글 : ${tf}`);
         commentDialog.hide();
       },
 
@@ -119,13 +119,15 @@ const FloatController = ({ floatRef, data }) => {
 };
 
 
-const PostPage = ({ floatRef, postId }) => {
-  // POST API
-  const data = (postId => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getData(postId);
-  })(postId);
-  //
+const PostPage = ({ floatRef }) => {
+  const { postId } = useParams();
+
+  /** POST API */
+  const postViewModel = new PostViewModel(new PostModel());
+  const [data, setData] = useState([]);
+  const getPostByPostId = async () => { setData(await postViewModel.getPostByPostId(postId)); };
+  useEffect(() => { getPostByPostId(); }, []);
+  /** */
 
 
   const ButtonMore = ({ data }) => {

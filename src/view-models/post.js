@@ -10,69 +10,83 @@ export default class PostViewModel {
     this.model = model;
   }
 
+
+  // [DEPRECATED] -> getPostByPostId(postId)
   getData(id) {
     const res = this.model.getData(id);
     return this._makePostItemData(res);
   }
-  getDummyData(...params) {
-    const resList = this.model.getDummyData(...params);
-    // return resList.map(res => this._makePostItemData(res));
+
+
+  /** GET /api/post/{postId} */
+  async getPostByPostId(postId) {
+    const { data } = await this.model.getPostByPostId(postId);
+    console.log("[PostViewModel.getPostByPostId]", data);
+
+    const myLocation = this._getMyLocation();
+    return this._makePostItemData(data, { myLocation });
   }
-  async getAllPost() {
-    const { dataList } = await this.model.getAllPost();
-    return dataList.map(res => this._makePostItemData(res));
+
+  /** GET /api/posts */
+  async getAllPosts() {
+    const { dataList } = await this.model.getAllPosts();
+    console.log("[PostViewModel.getAllPosts]", dataList);
+
+    const myLocation = this._getMyLocation();
+    return dataList.map(res => this._makePostItemData(res, { myLocation }));
+  }
+
+  /** GET /api/user/posts */
+  async getAllPostsByUserId(userId) {
+    const { dataList } = await this.model.getAllPostsByUserId();
+    console.log("[PostViewModel.getAllPostsByUserId]", dataList);
+
+    const myLocation = this._getMyLocation();
+    return dataList.map(res => this._makePostItemData(res, { myLocation }));
   }
 
 
-  getAllDataByUser(userId) {
-    const userModel = new UserModel();
-    const user = userModel.getData(userId);
-    return user.posts.map(postId => this.getData(postId));
-  }
+  _getMyLocation() { return store.getState().global.location; }
 
-  _makePostItemData(post) {
-    console.log(post)
-    const location = store.getState().global.location;
+  _makePostItemData(post, { myLocation }) {
+    //const postModel = this.model;
+    const postId = post.postId;
   
-    const postModel = this.model;
-    const postId = post.id;
-  
     const userModel = new UserModel();
-    const myUserId = userModel.getMyUserId();
-    const postAuthorId = post.userId;//post.user.userId;
-    const postAuthor = userModel.getData(postAuthorId);
+    //const myUserId = userModel.getMyUserId();
+    const postAuthorId = post.user.userId;
+    //const postAuthor = userModel.getData(postAuthorId);
     
-    const bestComment = post.commentCount && {
+    const bestComment = post.commentCount && {          // temp
       default: post.comments[post.bestCommentIndex],
       authorId: bestComment.userId,
       author: userModel.getData(bestComment.userId)
-    }
+    };
   
     return {
       postId: postId,
 
       shopThumbUrl: post.shop.thumb,
       shopName: post.shop.shopName,
-      shopAddress: post.shop.location.address.split(" ").slice(0, 3).join(" "),
+      shopAddress: post.shop.location.address.split(" ").slice(0, 3).join(" "),   // ### HMM (지번만 필요함. 서버에서 도로명 주지 않도록 해야 할 듯)
       shopAddressDetail: post.shop.location.address,
-      shopDistance: `${getDistance(location, post.shop.location)}km`,
-      goToShopPage: navigate => (window.location.href = post.shop.link),
+      shopDistance: `${getDistance(myLocation, post.shop.location)}km`,
+      goToShopPage: navigate => (window.location.href = post.shop.link),          // ### Future Works
 
-      // Tag 수정필요
       postTags: post.tags,
       postText: post.text,
       postImageUrls: post.postFileImgUrls,
-      goToPostPage: navigate => navigate(`/post`),
+      goToPostPage: navigate => navigate(`/post/${postId}`),
   
-      postAuthorEmoji: "🇨🇦",//post.user.thumb.emoji,
-      postAuthorName: "🇨🇦", //post.user.nickName,
+      postAuthorEmoji: post.user.thumb.emoji,
+      postAuthorName: post.user.nickName,                                         // ### HMM ('나'를 판별할 수 있어야 함)
       // postAuthorName: (() => {
       //   if (postAuthorId === myUserId)
       //     return "나";
       //   else
       //     return userModel.getAlias(postAuthorId);
       // })(),
-      postAuthorType: "other",
+      postAuthorType: "other",                                                    // ### 안 고침
       // postAuthorType: (() => {
       //   if (postAuthorId === myUserId)
       //     return "me";
@@ -83,17 +97,14 @@ export default class PostViewModel {
       // })(),
       goToPostAuthorPage: navigate => navigate(`/profile/${postAuthorId}`),
 
-      // 수정필요
-      postCreatedAt: "3분전",//getTime(post.createdAt),
+      postCreatedAt: "3분 전",//getTime(post.createdAt),                           // ### 안 고침 (유닉스 타임스탬프)
       
-      scrap: (() => {
-        return (post.scrapped.indexOf(myUserId) >= 0) ? true : false;
-      }),
+      scrap: post.scrap,
       scrappedCount: post.scrappedCount,
   
       commentCount: post.commentCount,
-      bestCommentText: bestComment?.default?.content,
-      bestCommentAuthorEmoji: bestComment?.author?.profile.thumb.emoji,
+      bestCommentText: bestComment?.default?.content,                             // ### 안 고침
+      bestCommentAuthorEmoji: bestComment?.author?.profile.thumb.emoji,           // ### 안 고침
 
       // used only in post detail page
       comments: post.comments?.map(comment => this._makeCommentItemData(comment, { postAuthorId })),
