@@ -61,7 +61,7 @@ export default class PostViewModel {
       goToShopPage: () => (window.location.href = post.shop.link),
 
       // Tag 수정필요
-      postTags: post.tags.map(({ tagName }) => tagName),
+      postTags: post.tags,
       postText: post.text,
       postImageUrls: post.postFileImgUrls,
       goToPostPage: () => this.navigate(`/post`),

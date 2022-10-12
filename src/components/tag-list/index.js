@@ -27,17 +27,20 @@ export class TagController {
 
 
 const TagItem = ({ idx, data, controller }) => {
-  // ### { id:(태그 ID), name:(태그명), type:(음식/지역) } :
-  // ###   { name:"대구", type="region" },
+  // ### { tagId:(태그 ID), tagName:(태그명), tagType:(음식/지역) } :
+  // ###   { tagName:"대구", tagType="region" },
   // ###   "김치찌개" -> 이런 것도 일단은 임시로 가능. 자동으로 음식 태그로 변환
-  const _data = (typeof data === "object") ? data : { name: data, type: "food" };
+  const _data = (typeof data === "object") ? data : { tagId: -1, tagName: data, tagType: "food" };
+  if (!_data.tagId && _data.tagId !== 0)
+    _data.tagId = -1;
   console.log(_data);
 
-  const { name, type } = _data;
+  const { tagId, tagName, tagType } = _data;
+ 
 
   return (
-    <li className="tag-item" data-tag-type={type} onClick={() => (controller && controller.pop(idx))}>
-      <p className="name">{name}</p>
+    <li className="tag-item" data-tag-id={tagId} data-tag-type={tagType} onClick={() => (controller && controller.pop(idx))}>
+      <p className="name">{tagName}</p>
       { controller && (
         <button className="tag-delete-button">
           <div className="icon"><CloseIcon /></div>

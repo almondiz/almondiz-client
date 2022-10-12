@@ -80,11 +80,11 @@ const Drawer = ({ contentRef }) => {
         <div className="tag-list-group">
           <h3 className="subheader">지역</h3>
           <ul className="list">
-            <li className="item" onClick={() => onClickTagItem({ name: "대구", type: "region" })}>대구</li>
-            <li className="item" onClick={() => onClickTagItem({ name: "대구 남구", type: "region" })}>대구 남구</li>
-            <li className="item" onClick={() => onClickTagItem({ name: "대구 달서구", type: "region" })}>대구 달서구</li>
-            <li className="item" onClick={() => onClickTagItem({ name: "대구 북구", type: "region" })}>대구 북구</li>
-            <li className="item" onClick={() => onClickTagItem({ name: "대구 중구", type: "region" })}>대구 중구</li>
+            <li className="item" onClick={() => onClickTagItem({ tagName: "대구", tagType: "region" })}>대구</li>
+            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 남구", tagType: "region" })}>대구 남구</li>
+            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 달서구", tagType: "region" })}>대구 달서구</li>
+            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 북구", tagType: "region" })}>대구 북구</li>
+            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 중구", tagType: "region" })}>대구 중구</li>
           </ul>
         </div>
       </>
@@ -105,19 +105,19 @@ const Drawer = ({ contentRef }) => {
           <h3 className="subheader">검색 기록</h3>
           <ul className="list">
             <li className="item">
-              <TagList dataList={[ "한식", {name: "서울", type: "region"}]} />
+              <TagList dataList={[ "한식", {tagName: "서울", tagType: "region"}]} />
               <button className="button button-delete-item">
                 <div className="icon"><CloseIcon /></div>
               </button>
             </li>
             <li className="item">
-              <TagList dataList={[ "짬뽕", {name: "성남 분당구", type: "region"}, {name: "수원 팔달구 우만동", type: "region"} ]} />
+              <TagList dataList={[ "짬뽕", {tagName: "성남 분당구", tagType: "region"}, {tagName: "수원 팔달구 우만동", tagType: "region"} ]} />
               <button className="button button-delete-item">
                 <div className="icon"><CloseIcon /></div>
               </button>
             </li>
             <li className="item">
-              <TagList dataList={[ "스시", "마라탕", {name: "천안", type: "region"} ]} />
+              <TagList dataList={[ "스시", "마라탕", {tagName: "천안", tagType: "region"} ]} />
               <button className="button button-delete-item">
                 <div className="icon"><CloseIcon /></div>
               </button>
