@@ -1,10 +1,16 @@
 import { getDistance, getTime } from "../util";
 import { UserModel } from "../models";
 
+
+
 import store from "../store";
+import { useNavigate } from "react-router-dom";
 
 export default class PostViewModel {
-  constructor(model) { this.model = model; }
+  constructor(model) {
+    this.model = model;
+    this.navigate = useNavigate();
+  }
 
   getData(id) {
     const res = this.model.getData(id);
@@ -27,10 +33,7 @@ export default class PostViewModel {
   }
 
   _makePostItemData(post) {
-    console.log(1)
     console.log(post)
-    console.log(2)
-    // const navigate = useNavigate();
     const location = store.getState().global.location;
   
     const postModel = this.model;
@@ -38,7 +41,7 @@ export default class PostViewModel {
   
     const userModel = new UserModel();
     const myUserId = userModel.getMyUserId();
-    const postAuthorId = post.user.userId;
+    const postAuthorId = post.userId;//post.user.userId;
     const postAuthor = userModel.getData(postAuthorId);
     
     const bestComment = post.commentCount && {
@@ -61,10 +64,10 @@ export default class PostViewModel {
       postTags: post.tags.map(({ tagName }) => tagName),
       postText: post.text,
       postImageUrls: post.postFileImgUrls,
-      goToPostPage: () => this?.navigate(`/post`),
+      goToPostPage: () => this.navigate(`/post`),
   
-      postAuthorEmoji: post.user.thumb.emoji,
-      postAuthorName: post.user.nickName,
+      postAuthorEmoji: "🇨🇦",//post.user.thumb.emoji,
+      postAuthorName: "🇨🇦", //post.user.nickName,
       // postAuthorName: (() => {
       //   if (postAuthorId === myUserId)
       //     return "나";
@@ -80,7 +83,7 @@ export default class PostViewModel {
       //   else
       //     return "other";
       // })(),
-      goToPostAuthorPage: () => this?.navigate(`/profile/${postAuthorId}`),
+      goToPostAuthorPage: () => this.navigate(`/profile/${postAuthorId}`),
 
       // 수정필요
       postCreatedAt: "3분전",//getTime(post.createdAt),
@@ -91,8 +94,8 @@ export default class PostViewModel {
       scrappedCount: post.scrappedCount,
   
       commentCount: post.commentCount,
-      bestCommentText: bestComment.default?.content,
-      bestCommentAuthorEmoji: bestComment.author?.profile.thumb.emoji,
+      bestCommentText: bestComment?.default?.content,
+      bestCommentAuthorEmoji: bestComment?.author?.profile.thumb.emoji,
 
       // used only in post detail page
       comments: post.comments?.map(comment => this._makeCommentItemData(comment, { postAuthorId })),

@@ -52,7 +52,7 @@ const PostItem = ({ data, detail=false }) => {
   return (
     <article className={`post ${!detail ? "post-item" : ""}`} data-id={data.postId}>
       {!detail && <div className="background" onClick={data.goToPostPage} />}
-      {detail && <ImageViewer images={data.postImageUrls} ref={imageViewerRef} />}
+      {detail && <ImageViewer imageUrls={data.postImageUrls} ref={imageViewerRef} />}
 
       <header className="header">
         <div className="row row-shop">

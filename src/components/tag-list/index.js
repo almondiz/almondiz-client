@@ -27,12 +27,16 @@ export class TagController {
 
 
 const TagItem = ({ idx, data, controller }) => {
-  // [(태그명), (지역 태그인지 아닌지 불리언)] : ["대구", true], ["김치찌개", false]
-  const [name, isRegion] = Array.isArray(data) ? data : [data, false];
-  console.log(name)
+  // ### { id:(태그 ID), name:(태그명), type:(음식/지역) } :
+  // ###   { name:"대구", type="region" },
+  // ###   "김치찌개" -> 이런 것도 일단은 임시로 가능. 자동으로 음식 태그로 변환
+  const _data = (typeof data === "object") ? data : { name: data, type: "food" };
+  console.log(_data);
+
+  const { name, type } = _data;
 
   return (
-    <li className="tag-item" data-region={isRegion} onClick={() => (controller && controller.pop(idx))}>
+    <li className="tag-item" data-tag-type={type} onClick={() => (controller && controller.pop(idx))}>
       <p className="name">{name}</p>
       { controller && (
         <button className="tag-delete-button">
@@ -43,7 +47,7 @@ const TagItem = ({ idx, data, controller }) => {
   );
 };
 
-const TagList = ({ controller, dataList, small=false }) => {
+const TagList = ({ controller, dataList=[], small=false }) => {
   if (controller) {   // editable
     return (
       <ul className={`tag-list editable ${small ? "small" : ""}`}>

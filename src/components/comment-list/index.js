@@ -8,7 +8,7 @@ import FavoriteIconFill from "../../asset/icons/mui/favorite-icon-fill";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
-const CommentUnit = ({ data, root=false }) => {
+const CommentUnit = ({ data={}, root=false }) => {
   const commentUnitRef = useRef();
 
   const ButtonLike = ({ data }) => {
@@ -92,7 +92,7 @@ const CommentUnit = ({ data, root=false }) => {
 };
 
 
-const CommentItem = ({ data, root=false }) => {
+const CommentItem = ({ data={}, root=false }) => {
   return (
     <li className="comment-item">
       <CommentUnit data={data} root={root} />
@@ -101,7 +101,7 @@ const CommentItem = ({ data, root=false }) => {
   );
 };
 
-const CommentList = ({ dataList, root=false }) => {
+const CommentList = ({ dataList=[], root=false }) => {
   return (
     <ul className={`comment-list ${root ? "root" : ""}`}>
       {dataList.map((data, idx) => <CommentItem key={idx} data={data} root={root} />)}
