@@ -79,7 +79,7 @@ const MapDrawer = ({ mapBottomRef }) => {
   ]);
   const tfFrame = new Frame([
     (
-      <section className="tf-frame tf-frame-1">
+      <section className="tf-frame tf-frame-1 light">
         <div className="tf" onClick={() => tfHandler(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
@@ -97,7 +97,7 @@ const MapDrawer = ({ mapBottomRef }) => {
       </section>
     ),
     (
-      <section className="tf-frame tf-frame-3">
+      <section className="tf-frame tf-frame-3 light">
         <div className="tf">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly onClick={() => tfHandler(1)} />
@@ -154,7 +154,7 @@ const MapBottom = forwardRef((_, ref) => {
   };
 
   return (
-    <footer className="map-bottom">
+    <footer className="map-bottom light">
       <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
         <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>

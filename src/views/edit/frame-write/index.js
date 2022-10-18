@@ -35,7 +35,7 @@ const FloatController = ({ floatRef, frame, createPost }) => {
         </section>
       ),
     ]);
-    return <div className="float-footer">{footerFrame.view()}</div>;
+    return <div className="float-footer light">{footerFrame.view()}</div>;
   }
 
   const Top = () => (

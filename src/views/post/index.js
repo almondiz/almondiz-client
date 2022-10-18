@@ -31,7 +31,7 @@ const FloatController = ({ floatRef, data }) => {
         </section>
       ),
     ]);
-    return <div className="float-header">{headerFrame.view()}</div>;
+    return <div className="float-header light">{headerFrame.view()}</div>;
   };
   const Footer = () => {
     const tfPlaceholder = "댓글 입력";
@@ -107,7 +107,7 @@ const FloatController = ({ floatRef, data }) => {
         </section>
       ),
     ]);
-    return <div className="float-footer">{footerFrame.view()}</div>;
+    return <div className="float-footer light">{footerFrame.view()}</div>;
   }
 
   useEffect(() => {

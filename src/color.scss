@@ -8,11 +8,7 @@ html {
 
 
 /* colors */
-html {
-  --content-text-color: rgba(255, 134, 94);
-  --danger-color: rgb(237, 92, 94);
-  
-  // light
+@mixin light-color-scheme {
   --background-color: #fff;
   --primary-text-color: #000;
   --secondary-text-color: #666;
@@ -23,18 +19,38 @@ html {
   --nav-shadow-color: 0 0 2rem rgba(0, 0, 0, .125);
   --float-background-color: rgba(255, 255, 255, .75);
   --float-shadow-color: 0 1px 3px rgba(0, 0, 0, .375);
+}
+
+@mixin dark-color-scheme {
+  --background-color: rgb(30, 32, 34); //#232326;
+  --primary-text-color: #fff;
+  --secondary-text-color: #999;
+  --tertiary-text-color: #777;
+
+  --border-color: rgb(47, 49, 50); //rgba(255, 255, 255, .075);
+  --shadow-to-border-color: 0px 0px 1px rgba(255, 255, 255, .5);
+  --nav-shadow-color: 0 0 2rem rgba(255, 255, 255, .0625);
+  --float-background-color: rgba(30, 32, 34, .75);
+  --float-shadow-color: inset 0px 0px 1px rgba(255, 255, 255, 1), 0px 0px 1px rgba(255, 255, 255, 1);
+}
+
+
+html {
+  --content-text-color: rgba(255, 134, 94);
+  --danger-color: rgb(237, 92, 94);
+  
+  // light
+  @include light-color-scheme;
 
   // dark
   @media (prefers-color-scheme: dark) {
-    --background-color: rgb(30, 32, 34); //#232326;
-    --primary-text-color: #fff;
-    --secondary-text-color: #999;
-    --tertiary-text-color: #777;
-
-    --border-color: rgb(47, 49, 50); //rgba(255, 255, 255, .075);
-    --shadow-to-border-color: 0px 0px 1px rgba(255, 255, 255, .5);
-    --nav-shadow-color: 0 0 2rem rgba(255, 255, 255, .0625);
-    --float-background-color: rgba(30, 32, 34, .75);
-    --float-shadow-color: inset 0px 0px 1px rgba(255, 255, 255, 1), 0px 0px 1px rgba(255, 255, 255, 1);
+    @include dark-color-scheme;
   }
+}
+
+.light {
+  @include light-color-scheme;
+}
+.dark {
+  @include dark-color-scheme;
 }

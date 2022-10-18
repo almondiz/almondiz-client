@@ -29,7 +29,7 @@ const FloatController = ({ floatRef, userData }) => {
         </section>
       ),
     ]);
-    return (userData.userType !== "me") && <div className="float-header">{headerFrame.view()}</div>;
+    return (userData.userType !== "me") && <div className="float-header light">{headerFrame.view()}</div>;
   };
 
   useEffect(() => {
