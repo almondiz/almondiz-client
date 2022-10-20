@@ -15,7 +15,7 @@ import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
-const FloatController = ({ floatRef, userData }) => {
+const FloatController = ({ floatRef, user }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame();
@@ -29,7 +29,7 @@ const FloatController = ({ floatRef, userData }) => {
         </section>
       ),
     ]);
-    return (userData.userType !== "me") && <div className="float-header light">{headerFrame.view()}</div>;
+    return (user.userRelation !== "me") && <div className="float-header light">{headerFrame.view()}</div>;
   };
 
   useEffect(() => {
@@ -54,17 +54,17 @@ const ProfilePage = ({ floatRef }) => {
   /** */
 
   // USER API (DUMMY)
-  const userData = (() => {
+  const user = (() => {
     const userViewModel = new UserViewModel(new UserModel());
     return userViewModel.getData(userId);
   })(userId);
   //
 
 
-  const FollowingEmojiList = ({ userData }) => {
+  const FollowingEmojiList = ({ user }) => {
     return (
       <div className="emojis">
-        {userData.followingEmojis.map((emoji, idx) => <div key={idx} className="emoji">{emoji}</div>)}
+        {user.followingEmojis.map((emoji, idx) => <div key={idx} className="emoji">{emoji}</div>)}
       </div>
     );
   };
@@ -76,11 +76,11 @@ const ProfilePage = ({ floatRef }) => {
     );
   };
 
-  const ButtonNotice = ({ userData }) => {
+  const ButtonNotice = ({ user }) => {
     const onClick =() => navigate(`/notice`);
     return (
-      <button className={`button button-notice ${userData.hasUnreadNotices ? "badge" : ""}`} onClick={onClick}>
-        <div className={`icon ${userData.hasUnreadNotices ? "badge" : ""}`}><NotificationsIconBorder /></div>
+      <button className={`button button-notice ${user.hasUnreadNotices ? "badge" : ""}`} onClick={onClick}>
+        <div className={`icon ${user.hasUnreadNotices ? "badge" : ""}`}><NotificationsIconBorder /></div>
       </button>
     );
   };
@@ -106,13 +106,13 @@ const ProfilePage = ({ floatRef }) => {
   return (
     <div id="page">
       {(() => {
-        switch (userData.userType) {
+        switch (user.userRelation) {
           case "me":
             return (
               <header className="header">
                 <div className="brand"><Logotype /></div>
                 <div className="buttons right">
-                  <ButtonNotice userData={userData} />
+                  <ButtonNotice user={user} />
                   <ButtonSettings />
                 </div>
               </header>
@@ -129,26 +129,26 @@ const ProfilePage = ({ floatRef }) => {
       })()}
       <main className="body">
         <div className="rows">
-          <div className="row row-profile" data-user-type={userData.userType}>
-            <div className="thumb" style={{ backgroundColor: userData.userColor }}>{userData.userEmoji}</div>
+          <div className="row row-profile" data-user-relation={user.userRelation}>
+            <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
             <div className="text-wrap">
               <p className="name"
                 data-after={(() => {
-                  switch (userData.userType) {
+                  switch (user.userRelation) {
                     case "me":        return "나";
                     case "following": return "구독";
                   }
                   return undefined;
                 })()}
               >
-                {userData.userName}
+                {user.userName}
               </p>
-              {(userData.userType !== "other") && <p className="description">{userData.userNameDescription}</p>}
+              {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
             </div>
           </div>
 
           {(() => {
-            switch (userData.userType) {
+            switch (user.userRelation) {
               case "following":
                 return (
                   <div className="row row-follow">
@@ -167,20 +167,20 @@ const ProfilePage = ({ floatRef }) => {
 
           <div className="row row-counts">
             <div className="count half">
-              <h5>구독자 수</h5><p>{userData.followedCount}</p>
+              <h5>구독자 수</h5><p>{user.followedCount}</p>
             </div>
             <div className="count half">
-              <h5>스크랩된 수</h5><p>{userData.scrappedCount}</p>
+              <h5>스크랩된 수</h5><p>{user.scrappedCount}</p>
             </div>
           </div>
           
-          {(userData.userType === "me") && (
+          {(user.userRelation === "me") && (
             <div className="row row-following">
               <div className="count">
                 <h5>구독</h5>
-                <p>{userData.followingCount}</p>
+                <p>{user.followingCount}</p>
               </div>
-              <FollowingEmojiList userData={userData} />
+              <FollowingEmojiList user={user} />
               <button className="button button-following-list" onClick={() => goToFollowingsPage(navigate)}>보기</button>
             </div>
           )}
@@ -194,7 +194,7 @@ const ProfilePage = ({ floatRef }) => {
         <PostList postDataList={postDataList} />
       </main>
 
-      <FloatController floatRef={floatRef} userData={userData} />
+      <FloatController floatRef={floatRef} user={user} />
     </div>
   );
 };

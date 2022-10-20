@@ -95,8 +95,8 @@
             margin-left: .3125rem;
           }
 
-          &[data-user-type=me],
-          &[data-user-type=following] {
+          &[data-user-relation=me],
+          &[data-user-relation=following] {
             .name {
               font-weight: 700;
             }

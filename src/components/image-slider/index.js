@@ -14,7 +14,7 @@ const ImageSlider = ({ imageUrls=[] }) => {
     imageUrls.forEach((_, idx) => {
       indicator.push(
         <div
-          data-id={idx}
+          data-index={idx}
           className={idx === 0 ? "highlight" : ""}
           key={`indicator-${idx}`}
         ></div>
@@ -33,7 +33,7 @@ const ImageSlider = ({ imageUrls=[] }) => {
     const index = Math.round(target.scrollLeft / target.clientWidth);
     if (index < 0 || index >= imageUrls.length) return;
     const indicatorDOM = target.parentNode.querySelector(".indicator");
-    setHighLight(indicatorDOM, indicatorDOM.querySelector(`div[data-id="${index}"]`));
+    setHighLight(indicatorDOM, indicatorDOM.querySelector(`div[data-index="${index}"]`));
   };
   
   return (

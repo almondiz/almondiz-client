@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { useDispatch } from "react-redux";
 import {
   setAccessToken,
   setRefreshToken,
+  setMyUserId,
   setProviderUid,
   setEmail,
   setProviderType
@@ -36,10 +37,12 @@ const LoginPage = () => {
     await userViewModel.checkAccount(
       { providerType, providerUid },
       () => navigate(`/signup`),
-      ({ accessToken, refreshToken }) => {
+      ({ token, userId }) => {
+        const { accessToken, refreshToken } = token;
         dispatch(setAccessToken(accessToken));
         dispatch(setRefreshToken(refreshToken));
-        navigate(`/feed`)
+        dispatch(setMyUserId(userId));
+        navigate(`/feed`);
       },
     );
   }

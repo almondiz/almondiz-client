@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { Frame, Pipe } from "../../util";
-import { PostModel } from "../../models";
-import { PostViewModel } from "../../view-models";
+import { PostModel, CommentModel } from "../../models";
+import { PostViewModel, CommentViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
 
@@ -17,7 +17,7 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import SendIconBorder from "../../asset/icons/mui/send-icon-border";
 
 
-const FloatController = ({ floatRef, data }) => {
+const FloatController = ({ floatRef, post, createComment }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame(), footerFrame = new Frame();
@@ -46,10 +46,12 @@ const FloatController = ({ floatRef, data }) => {
 
     const commentDialog = {
       send: () => {
-        if (repliedCommentUnit)
+        if (repliedCommentUnit) {
           console.log("[Post.commentDialog]", `${repliedCommentUnit.repliedCommentId}에게 답글 : ${tf}`);
-        else
+        } else {
+          createComment(tf);
           console.log("[Post.commentDialog]", `댓글 : ${tf}`);
+        }
         commentDialog.hide();
       },
 
@@ -66,8 +68,8 @@ const FloatController = ({ floatRef, data }) => {
     Pipe.set("commentDialog", commentDialog);
 
 
-    const ButtonScrap = ({ data }) => {
-      const [focus, setFocus] = useState(data.scrap);
+    const ButtonScrap = ({ post }) => {
+      const [focus, setFocus] = useState(post.scrap);
       const onClick = () => setFocus(!focus);
       return (
         <button className={`button button-scrap ${focus ? "focus" : ""}`} onClick={onClick}>
@@ -87,7 +89,7 @@ const FloatController = ({ floatRef, data }) => {
             </button>
           </div>
           <div className="buttons right">
-            <ButtonScrap data={data} />
+            <ButtonScrap post={post} />
           </div>
         </section>
       ),
@@ -122,15 +124,42 @@ const FloatController = ({ floatRef, data }) => {
 const PostPage = ({ floatRef }) => {
   const { postId } = useParams();
 
-  /** POST API */
+
+  /** 4-0. POST API */
   const postViewModel = new PostViewModel(new PostModel());
-  const [data, setData] = useState([]);
-  const getPostByPostId = async () => { setData(await postViewModel.getPostByPostId(postId)); };
-  useEffect(() => { getPostByPostId(); }, []);
+  const [post, setPost] = useState([]);
+  const readPost = async () => {
+    setPost(await postViewModel.getPostByPostId(postId));
+  };
+  useEffect(() => { readPost(); }, []);
   /** */
 
+  /** 5-0. COMMENT API */
+  const commentViewModel = new CommentViewModel(new CommentModel());
+  const [comments, setComments] = useState([]);
+  const readComments = async () => {
+    if (!post)  return;
+    const postAuthorId = post.postAuthorId;
+    setComments(await commentViewModel.readAllComments(postId, { postAuthorId }));
+  };
+  useEffect(() => { readComments(); }, [post]);
 
-  const ButtonMore = ({ data }) => {
+  const createComment = async (text) => {
+    if (!post)  return;
+    const success = await commentViewModel.createComment(post.postId, text);
+    if (success)
+      Pipe.get("reload")?.comments();
+  };
+  /** */
+
+  Pipe.set("reload", {
+    all: () => { readPost(); readComments(); },
+    post: readPost,
+    comments: readComments,
+  });
+
+
+  const ButtonMore = ({ post }) => {
     const [focus, setFocus] = useState(false);
     const onClick = () => setFocus(!focus);
     return (
@@ -149,9 +178,9 @@ const PostPage = ({ floatRef }) => {
         </div>
       </header>
 
-      <main className="content"><PostItem data={data} detail={true} /></main>
+      <main className="content"><PostItem post={post} comments={comments} detail={true} /></main>
 
-      <FloatController floatRef={floatRef} data={data} />
+      <FloatController floatRef={floatRef} post={post} createComment={createComment} />
     </div>
   );
 };

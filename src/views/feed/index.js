@@ -14,8 +14,8 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 const FeedPage = ({ backdropRef }) => {
   /** POST API */
   const postViewModel = new PostViewModel(new PostModel());
-  const [dataList, setDataList] = useState([]);
-  const getAllPosts = async () => { setDataList(await postViewModel.getAllPosts()); };
+  const [posts, setPosts] = useState([]);
+  const getAllPosts = async () => { setPosts(await postViewModel.getAllPosts()); };
   useEffect(() => { getAllPosts(); }, []);
   /** */
 
@@ -44,7 +44,7 @@ const FeedPage = ({ backdropRef }) => {
         </div>
       </header>
       <main className="content">
-        <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
+        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
       </main>
     </div>
   );

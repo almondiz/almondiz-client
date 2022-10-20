@@ -18,21 +18,36 @@ const patchToken = (method, ...params) => {
 const api = {
   get: (...params) => patchToken("get", ...params),
   post: (...params) => patchToken("post", ...params),
+  patch: (...params) => patchToken("patch", ...params),
+  delete: (...params) => patchToken("delete", ...params),
 };
 
 const makePath = (path) => `api/${path}`;
 const path = {
+  // 1. USER AUTH API
   user: {
-    default: makePath("user"),
-    login: makePath("user/login"),
+    default: makePath(`user`),
+    login: makePath(`user/login`),
   },
+  // 4-0. POST API
   post: {
-    default: makePath("post"),
+    default: makePath(`post`),
     one: (id) => makePath(`post/${id}`),
-    all: makePath("posts"),
     byShop: (id) => makePath(`store/${id}/posts`),
     byUser: makePath(`user/posts`),
-  }
+
+    all: makePath(`posts`),
+  },
+  // 5-0. COMMENT API
+  comment: {
+    delete: (commentId) => makePath(`comment/${commentId}`),
+    update: (commentId) => makePath(`comment/${commentId}`),
+    create: (postId) => makePath(`post/${postId}/comment`),
+    read: (postId) => makePath(`post/${postId}/comments`),
+
+    like: (commentId) => makePath(`comment/${commentId}/like`),
+    unlike: (commentId) => makePath(`comment/${commentId}/like`),
+  },
 };
 
 export { api, path };

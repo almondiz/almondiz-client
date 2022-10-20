@@ -149,7 +149,7 @@
             color: var(--secondary-text-color);
           }
         }
-        &[data-user-type=following] {
+        &[data-user-relation=following] {
           .text-wrap {
             .name {
               font-weight: 700;

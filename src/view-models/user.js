@@ -37,7 +37,7 @@ export default class UserViewModel {
         else
           return undefined;
       })(),
-      userType: (() => {
+      userRelation: (() => {
         if (userId === myUserId)
           return "me";
         else if (userModel.isSubscribing(userId))
@@ -76,7 +76,7 @@ export default class UserViewModel {
         userColor: user.profile.thumb.background,
         userName: userModel.getAlias(userId),
         userNameDescription: user.profile.name,
-        userType: "following",
+        userRelation: "following",
       };
     });
   }
@@ -84,7 +84,7 @@ export default class UserViewModel {
 
   signup(body) {return this.model.signup(body); }
   login(providerType, providerUid) { return this.model.login(providerType, providerUid); }
-  async checkAccount({ providerType, providerUid } , goSignup, goMain) {
+  async checkAccount({ providerType, providerUid }, goSignup, goMain) {
     const { success, ...result } = await this.login(providerType, providerUid);
 
     if (!success) {
@@ -101,7 +101,6 @@ export default class UserViewModel {
       }
       return;
     }
-
     console.log("[login] : ", result.data);
     goMain(result.data);
   }

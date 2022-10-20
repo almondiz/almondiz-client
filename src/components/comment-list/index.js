@@ -8,20 +8,27 @@ import FavoriteIconFill from "../../asset/icons/mui/favorite-icon-fill";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
-const CommentUnit = ({ data={}, root=false }) => {
+const CommentUnit = ({ comment={}, root=false }) => {
   const commentUnitRef = useRef();
 
-  const ButtonLike = ({ data }) => {
-    const [focus, setFocus] = useState(data.like);
-    const onClick = () => setFocus(!focus);
+  const ButtonLike = ({ comment }) => {
+    const [focus, setFocus] = useState(comment.like);
+    const onClick = async () => {
+      const func = focus ? comment.unlikeComment : comment.likeComment;
+      const success = await func();
+      if (success) {
+        //setFocus(!focus);
+        Pipe.get("reload")?.comments();
+      }
+    };
     return (
       <button className={`button button-comment-like ${focus ? "focus" : ""}`} onClick={onClick}>
         <div className="icon">{focus ? <FavoriteIconFill /> : <FavoriteIconBorder />}</div>
-        <p>{data.commentLikedCount}</p>
+        <p>{comment.commentLikedCount}</p>
       </button>
     );
   };
-  const ButtonReply = ({ data, commentUnitRef }) => {
+  const ButtonReply = ({ comment, commentUnitRef }) => {
     const [focus, setFocus] = useState(false);
     const onClick = () => {
       const onShow = () => {
@@ -37,7 +44,7 @@ const CommentUnit = ({ data={}, root=false }) => {
         Pipe.get("commentDialog")?.hide();
       else
         Pipe.get("commentDialog")?.show({
-          repliedCommentId: data.commentId,
+          repliedCommentId: comment.commentId,
           onShow,
           onHide
         });
@@ -48,9 +55,14 @@ const CommentUnit = ({ data={}, root=false }) => {
       </button>
     );
   };
-  const ButtonMore = ({ data }) => {
+  const ButtonMore = ({ comment }) => {
     const [focus, setFocus] = useState(false);
-    const onClick = () => setFocus(!focus);
+    const onClick = async () => {
+      const success = await comment.deleteComment();
+      if (success)
+        Pipe.get("reload")?.comments();
+    }
+    //const onClick = () => setFocus(!focus);
     return (
       <button className={`button button-comment-more ${focus ? "focus" : ""}`} onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
@@ -59,32 +71,32 @@ const CommentUnit = ({ data={}, root=false }) => {
   };
 
   return (
-    <article className="comment-unit" data-id={data.commentId} ref={commentUnitRef}>
+    <article className="comment-unit" data-comment-id={comment.commentId} ref={commentUnitRef}>
       <div className="background" />
 
       <header className="header">
-        <button className="profile" onClick={data.goToCommentAuthorPage}
-          data-user-type={data.commentAuthorType}
-          data-is-author={data.isCommentAuthorPostAuthor}
-          data-after={data.isCommentAuthorPostAuthor ? "글쓴이" : undefined}
+        <button className="profile" onClick={comment.goToCommentAuthorPage}
+          data-user-relation={comment.commentAuthorRelation}
+          data-is-author={comment.isCommentAuthorPostAuthor}
+          data-after={comment.isCommentAuthorPostAuthor ? "글쓴이" : undefined}
         >
-          <p className="emoji">{data.commentAuthorEmoji}</p>
-          <p className="name">{data.commentAuthorName}</p>
+          <p className="emoji">{comment.commentAuthorEmoji}</p>
+          <p className="name">{comment.commentAuthorName}</p>
         </button>
-        <p className="description">{data.commentCreatedAt}</p>
+        <p className="description">{comment.commentCreatedAt}</p>
         <div className="buttons right">
-          <ButtonMore data={data} />
+          <ButtonMore comment={comment} />
         </div>
       </header>
-      <p className="text">{data.commentText}</p>
+      <p className="text">{comment.commentText}</p>
       <footer className="footer">
         { root && (
           <div className="buttons">
-            <ButtonReply data={data} commentUnitRef={commentUnitRef} /> 
+            <ButtonReply comment={comment} commentUnitRef={commentUnitRef} /> 
           </div>
         )}
         <div className="buttons right">
-          <ButtonLike data={data} />
+          <ButtonLike comment={comment} />
         </div>
       </footer>
     </article>
@@ -92,19 +104,19 @@ const CommentUnit = ({ data={}, root=false }) => {
 };
 
 
-const CommentItem = ({ data={}, root=false }) => {
+const CommentItem = ({ comment={}, root=false }) => {
   return (
     <li className="comment-item">
-      <CommentUnit data={data} root={root} />
-      { root && <CommentList dataList={data.replyComments} root={false} /> }
+      <CommentUnit comment={comment} root={root} />
+      { root && <CommentList comments={comment.replyComments} root={false} /> }
     </li>
   );
 };
 
-const CommentList = ({ dataList=[], root=false }) => {
+const CommentList = ({ comments=[], root=false }) => {
   return (
     <ul className={`comment-list ${root ? "root" : ""}`}>
-      {dataList.map((data, idx) => <CommentItem key={idx} data={data} root={root} />)}
+      {comments.map((comment, idx) => <CommentItem key={idx} comment={comment} root={root} />)}
     </ul>
   );
 };

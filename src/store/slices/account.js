@@ -7,6 +7,7 @@ const initialState = {
   providerUid: null,
   accessToken: null,
   refreshToken: null,
+  myUserId: null,
 };
 
 const accountSlice = createSlice({
@@ -18,6 +19,7 @@ const accountSlice = createSlice({
     setProviderUid: (state, action) => { state.providerUid = action.payload; },
     setAccessToken: (state, action) => { state.accessToken = action.payload; },
     setRefreshToken: (state, action) => { state.refreshToken = action.payload; },
+    setMyUserId: (state, action) => { state.myUserId = action.payload; },
     resetAccount: (state, action) => {
       state = {
         ...state,
@@ -31,6 +33,7 @@ export const {
   setEmail,
   setAccessToken,
   setRefreshToken,
+  setMyUserId,
   setProviderUid,
   setProviderType,
   resetAccount,
