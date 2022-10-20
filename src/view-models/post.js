@@ -1,7 +1,4 @@
-import { getDistance, getTime } from "../util";
-import { UserModel } from "../models";
-
-import store from "../store";
+import { getMyLocation, getDistance, getTime } from "../util";
 
 
 export default class PostViewModel {
@@ -10,43 +7,31 @@ export default class PostViewModel {
   }
 
 
-  // [DEPRECATED] -> getPostByPostId(postId)
-  getData(id) {
-    const res = this.model.getData(id);
-    return this._makePostItemData(res);
-  }
-
-
-  /** GET /api/post/{postId} */
+  /** 4-0. POST API */
+  // GET /api/post/{postId}
   async getPostByPostId(postId) {
     const { data } = await this.model.getPostByPostId(postId);
     console.log("[PostViewModel.getPostByPostId]", data);
 
-    const myLocation = this._getMyLocation();
+    const myLocation = getMyLocation();
     return this._makePostItemData(data, { myLocation });
   }
-
-  /** GET /api/posts */
+  // GET /api/posts
   async getAllPosts() {
     const { dataList } = await this.model.getAllPosts();
     console.log("[PostViewModel.getAllPosts]", dataList);
 
-    const myLocation = this._getMyLocation();
+    const myLocation = getMyLocation();
     return dataList.map((data) => this._makePostItemData(data, { myLocation }));
   }
-
-  /** GET /api/user/posts */
+  // GET /api/user/posts
   async getAllPostsByUserId(userId) {
     const { dataList } = await this.model.getAllPostsByUserId();
     console.log("[PostViewModel.getAllPostsByUserId]", dataList);
 
-    const myLocation = this._getMyLocation();
+    const myLocation = getMyLocation();
     return dataList.map((data) => this._makePostItemData((data), { myLocation }));
   }
-
-
-  _getMyLocation() { return store.getState().global.location; }
-
   _makePostItemData(data, { myLocation }) {
     const postId = data.postId;
 
@@ -87,12 +72,34 @@ export default class PostViewModel {
       postCreatedAt: data.createdAt,
       //postCreatedAt: getTime(data.createdAt),
       
-      scrap: data.scrap,
+      isScrapped: data.scrap,
       scrappedCount: data.scrappedCount,
   
       commentCount: data.commentCount,
       bestCommentText: data.bestComment?.text,
       bestCommentAuthorEmoji: data.bestComment?.user.thumb.emoji,
+
+
+      scrap: async (b) => {
+        const action = this.model[b ? "unscrap" : "scrap"].bind(this.model);
+        const success = await action(postId);
+        console.log("[postViewModel.scrap]", action, success);
+        return success;
+      },
     };
+  }
+
+
+  
+
+
+
+
+
+
+  // [DEPRECATED] -> getPostByPostId(postId)
+  getData(id) {
+    const res = this.model.getData(id);
+    return this._makePostItemData(res);
   }
 };

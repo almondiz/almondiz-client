@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 
+import store from "./store";
+
+
 const NUTS = [
   { id: 1, name: "호두" }, 
   { id: 2, name: "피스타치오" }, 
@@ -154,6 +157,9 @@ export class Motion {
 
 /** functions */
 
+export const getMyLocation = () => {
+  return store.getState().global.location;
+};
 export const getDistance = (location_1, location_2) => {  // generally used geo measurement function
   let R = 6378.137; // radius of earth in KM
   let dLati = (location_2.lati - location_1.lati) * Math.PI / 180;

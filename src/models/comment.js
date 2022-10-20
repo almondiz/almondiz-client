@@ -18,12 +18,19 @@ export default class CommentModel extends DefaultModel {
 
 
   /** 5-1. COMMENT LIKE API */
-  // POST /api/comment/{postId}/comments
-  likeComment(commentId) {
-    return this.callApi(() => this.api.likeComment(commentId));
+  // POST /api/comment/{postId}/like
+  like(commentId) {
+    return this.callApi(() => this.api.like(commentId));
   }
-  // DELETE /api/comment/{postId}/comments
-  unlikeComment(commentId) {
-    return this.callApi(() => this.api.unlikeComment(commentId));
+  // DELETE /api/comment/{postId}/like
+  unlike(commentId) {
+    return this.callApi(() => this.api.unlike(commentId));
+  }
+
+
+  /** 6-0. REPLY API */
+  // POST /api/comment/{commentId}/reply
+  reply(commentId, body) {
+    return this.callApi(() => this.api.reply(commentId, body));
   }
 };

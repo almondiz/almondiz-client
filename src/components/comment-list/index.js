@@ -12,13 +12,11 @@ const CommentUnit = ({ comment={}, root=false }) => {
   const commentUnitRef = useRef();
 
   const ButtonLike = ({ comment }) => {
-    const [focus, setFocus] = useState(comment.like);
+    const [focus, setFocus] = useState(comment.isLiked);
     const onClick = async () => {
-      const func = focus ? comment.unlikeComment : comment.likeComment;
-      const success = await func();
+      const success = await comment.like(focus);
       if (success) {
-        //setFocus(!focus);
-        Pipe.get("reload")?.comments();
+        setFocus(!focus);
       }
     };
     return (
@@ -40,25 +38,22 @@ const CommentUnit = ({ comment={}, root=false }) => {
         commentUnitRef.current?.classList.remove("focus");
       };
 
+      const commentDialogController = Pipe.get("commentDialogController");
       if (focus)
-        Pipe.get("commentDialog")?.hide();
+        commentDialogController?.hide();
       else
-        Pipe.get("commentDialog")?.show({
-          repliedCommentId: comment.commentId,
-          onShow,
-          onHide
-        });
+        commentDialogController?.show({ onShow, onHide, reply: comment.reply });
     };
     return (
       <button className={`button button-comment-reply ${focus ? "focus" : ""}`} onClick={onClick}>
-        <p>{focus ? "답글 작성 중..." : "답글"}</p>
+        <p>{focus ? "답글 올리는 중..." : "답글"}</p>
       </button>
     );
   };
   const ButtonMore = ({ comment }) => {
     const [focus, setFocus] = useState(false);
     const onClick = async () => {
-      const success = await comment.deleteComment();
+      const success = await comment.delete();
       if (success)
         Pipe.get("reload")?.comments();
     }

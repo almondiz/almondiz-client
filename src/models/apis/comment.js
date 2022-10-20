@@ -6,10 +6,10 @@ import { api, path } from "./config";
 export const deleteComment = (commentId) => {
   return api.delete(path.comment.delete(commentId));
 };
-// PATCH /api/comment/{commentId} : not used
-export const updateComment = (commentId, body) => {
+// PATCH /api/comment/{commentId} : unused
+/*export const updateComment = (commentId, body) => {
   return api.patch(path.comment.update(commentId), body);
-};
+};*/
 // POST /api/post/{postId}/comment
 export const createComment = (postId, body) => {
   return api.post(path.comment.create(postId), body);
@@ -21,11 +21,18 @@ export const readAllComments = (postId) => {
 
 
 /** 5-1. COMMENT LIKE API */
-// POST /api/comment/{postId}/comments
-export const likeComment = (commentId) => {
+// POST /api/comment/{commentId}/like
+export const like = (commentId) => {
   return api.post(path.comment.like(commentId), {});
 };
-// DELETE /api/comment/{postId}/comments
-export const unlikeComment = (commentId) => {
+// DELETE /api/comment/{commentId}/like
+export const unlike = (commentId) => {
   return api.delete(path.comment.unlike(commentId));
+};
+
+
+/** 6-0. REPLY API */
+// POST /api/comment/{commentId}/reply
+export const reply = (commentId, body) => {
+  return api.post(path.comment.reply(commentId), body);
 };

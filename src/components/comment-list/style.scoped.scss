@@ -72,6 +72,8 @@
       }
       &>.header {
         .profile {
+          flex-shrink: 0;
+
           height: 2.5rem;
           display: flex;
           align-items: center;
@@ -81,6 +83,10 @@
             font-size: 1.125rem;
           }
           .name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
             font-size: .875rem;
             display: flex;
             align-items: center;
@@ -103,6 +109,10 @@
           }
         }
         .description {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
           margin-left: .75rem;
           font-size: .8125rem;
           color: var(--secondary-text-color);

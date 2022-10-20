@@ -42,8 +42,13 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
     );
   };
   const ButtonScrap = ({ post }) => {
-    const [focus, setFocus] = useState(post.scrap);
-    const onClick = () => setFocus(!focus);
+    const [focus, setFocus] = useState(post.isScrapped);
+    const onClick = async () => {
+      const success = await post.scrap(focus);
+      if (success) {
+        setFocus(!focus);
+      }
+    };
     return (
       <button className={`button button-scrap ${focus ? "focus" : ""}`} onClick={onClick}>
         <div className="icon">{focus ? <BookmarkIconFill /> : <BookmarkIconBorder />}</div>

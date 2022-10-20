@@ -37,40 +37,46 @@ const FloatController = ({ floatRef, post, createComment }) => {
     const tfPlaceholder = "댓글 입력";
     const [tf, setTf] = useState("");
 
-
-    const [repliedCommentUnit, setRepliedCommentUnit] = useState(null);
+    const [replyController, setReplyController] = useState(null);
     useEffect(() => {
-      repliedCommentUnit && repliedCommentUnit.onShow();
-      return () => (repliedCommentUnit && repliedCommentUnit.onHide());
-    }, [repliedCommentUnit]);
+      replyController && replyController.onShow();
+      return () => (replyController && replyController.onHide());
+    }, [replyController]);
 
-    const commentDialog = {
-      send: () => {
-        if (repliedCommentUnit) {
-          console.log("[Post.commentDialog]", `${repliedCommentUnit.repliedCommentId}에게 답글 : ${tf}`);
-        } else {
-          createComment(tf);
-          console.log("[Post.commentDialog]", `댓글 : ${tf}`);
-        }
-        commentDialog.hide();
+    const commentDialogController = {
+      send: async () => {
+        if (!post)  return;
+        const text = tf;
+        const action = replyController ? replyController.reply : createComment;
+        const success = await action(text);
+        if (success)
+          Pipe.get("reload")?.comments();
+        
+        commentDialogController.hide();
       },
 
-      show: (_repliedCommentUnit) => {  // repliedCommentId, onShow, onHide
-        setRepliedCommentUnit(_repliedCommentUnit);
+      show: (_replyController) => {  // reply, onShow, onHide
+        console.log(_replyController);
+        setReplyController(_replyController);
         footerFrame.move(1);
       },
       hide: () => {
-        setRepliedCommentUnit(null);
+        setReplyController(null);
         setTf("");
         footerFrame.move(0);
       },
     };
-    Pipe.set("commentDialog", commentDialog);
+    Pipe.set("commentDialogController", commentDialogController);
 
 
     const ButtonScrap = ({ post }) => {
-      const [focus, setFocus] = useState(post.scrap);
-      const onClick = () => setFocus(!focus);
+      const [focus, setFocus] = useState(post.isScrapped);
+      const onClick = async () => {
+        const success = await post.scrap(focus);
+        if (success) {
+          setFocus(!focus);
+        }
+      };
       return (
         <button className={`button button-scrap ${focus ? "focus" : ""}`} onClick={onClick}>
           <div className="icon">{focus ? <BookmarkIconFill /> : <BookmarkIconBorder />}</div>
@@ -83,7 +89,7 @@ const FloatController = ({ floatRef, post, createComment }) => {
       ( // main
         <section className="float-footer-frame frame-1">
           <div className="buttons">
-            <button className="button button-comment" onClick={() => commentDialog.show()}>
+            <button className="button button-comment" onClick={() => commentDialogController.show()}>
               <div className="icon"><ChatBubbleIconBorder /></div>
               <p>댓글 쓰기</p>
             </button>
@@ -96,13 +102,13 @@ const FloatController = ({ floatRef, post, createComment }) => {
       ( // comment
         <section className="float-footer-frame frame-2">
           <div className="comment-dialog">
-            <button className="button button-back" onClick={() => commentDialog.hide()}>
+            <button className="button button-back" onClick={() => commentDialogController.hide()}>
               <div className="icon"><ArrowBackIosIcon /></div>
             </button>
             <div className="comment-input-box">
               <input type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
             </div>
-            <button className="button button-comment-send" onClick={() => commentDialog.send()}>
+            <button className="button button-comment-send" onClick={() => commentDialogController.send()}>
               <div className="icon"><SendIconBorder /></div>
             </button>
           </div>
@@ -137,25 +143,20 @@ const PostPage = ({ floatRef }) => {
   /** 5-0. COMMENT API */
   const commentViewModel = new CommentViewModel(new CommentModel());
   const [comments, setComments] = useState([]);
-  const readComments = async () => {
+  const readAllComments = async () => {
     if (!post)  return;
     const postAuthorId = post.postAuthorId;
     setComments(await commentViewModel.readAllComments(postId, { postAuthorId }));
   };
-  useEffect(() => { readComments(); }, [post]);
+  useEffect(() => { readAllComments(); }, [post]);
 
-  const createComment = async (text) => {
-    if (!post)  return;
-    const success = await commentViewModel.createComment(post.postId, text);
-    if (success)
-      Pipe.get("reload")?.comments();
-  };
+  const createComment = (text) => commentViewModel.createComment(postId, text);
   /** */
 
   Pipe.set("reload", {
-    all: () => { readPost(); readComments(); },
-    post: readPost,
-    comments: readComments,
+    //all: () => { readPost(); readComments(); },
+    //post: readPost,
+    comments: readAllComments,
   });
 
 

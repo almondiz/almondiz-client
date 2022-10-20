@@ -1,7 +1,4 @@
-import { getDistance, getTime } from "../util";
-import { UserModel } from "../models";
-
-import store from "../store";
+import { getTime } from "../util";
 
 
 export default class CommentViewModel {
@@ -13,6 +10,8 @@ export default class CommentViewModel {
   /** 5-0. COMMENT API */
   // POST /api/post/{postId}/comment
   async createComment(postId, text) {
+    if ((text = text.trim()) === "")  return false;
+
     const body = { text, };
     const { success } = await this.model.createComment(postId, body);
     console.log("[CommentViewModel.createComment]", success);
@@ -55,7 +54,7 @@ export default class CommentViewModel {
   
       commentText: data.text,
       
-      like: data.like,
+      isLiked: data.like,
       commentLikedCount: data.likedCount,
   
       replyComments: (() => {
@@ -66,22 +65,24 @@ export default class CommentViewModel {
       })(),
 
 
-      deleteComment: async () => {
-        console.log(1);
-        const success = await this.model.deleteComment(commentId);
-        console.log("[CommentViewModel.deleteComment]", success);
+      delete: async () => {
+        const success = await this.model.delete(commentId);
+        console.log("[CommentViewModel.delete]", success);
         return success;
       },
-      likeComment: async () => {
-        console.log(2);
-        const success = await this.model.likeComment(commentId);
-        console.log("[CommentViewModel.likeComment]", success);
+
+      like: async (b) => {
+        const action = this.model[b ? "unlike" : "like"].bind(this.model);
+        const success = await action(commentId);
+        console.log("[CommentViewModel.like]", action, success);
         return success;
       },
-      unlikeComment: async () => {
-        console.log(3);
-        const success = await this.model.unlikeComment(commentId);
-        console.log("[CommentViewModel.unlikeComment]", success);
+      reply: async (text) => {
+        if ((text = text.trim()) === "")  return false;
+        
+        const body = { text, };
+        const { success } = await this.model.reply(commentId, body);
+        console.log("[CommentViewModel.reply]", success);
         return success;
       },
     }

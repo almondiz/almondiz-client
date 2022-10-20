@@ -20,16 +20,18 @@ const api = {
   post: (...params) => patchToken("post", ...params),
   patch: (...params) => patchToken("patch", ...params),
   delete: (...params) => patchToken("delete", ...params),
+  //put: (...params) => patchToken("put", ...params),
 };
 
 const makePath = (path) => `api/${path}`;
 const path = {
-  // 1. USER AUTH API
+  /** 1. USER AUTH API */
   user: {
     default: makePath(`user`),
     login: makePath(`user/login`),
   },
-  // 4-0. POST API
+  
+  /** 4. POST API */
   post: {
     default: makePath(`post`),
     one: (id) => makePath(`post/${id}`),
@@ -37,16 +39,22 @@ const path = {
     byUser: makePath(`user/posts`),
 
     all: makePath(`posts`),
+
+    scrap: (postId) => makePath(`postScrap/post/${postId}/user`),
+    unscrap: (postId) => makePath(`postScrap/post/${postId}`),
   },
-  // 5-0. COMMENT API
+
+  /** 5. COMMENT API */
   comment: {
     delete: (commentId) => makePath(`comment/${commentId}`),
-    update: (commentId) => makePath(`comment/${commentId}`),
+    //update: (commentId) => makePath(`comment/${commentId}`),    // unused
     create: (postId) => makePath(`post/${postId}/comment`),
     read: (postId) => makePath(`post/${postId}/comments`),
 
     like: (commentId) => makePath(`comment/${commentId}/like`),
     unlike: (commentId) => makePath(`comment/${commentId}/like`),
+
+    reply: (commentId) => makePath(`comment/${commentId}/reply`),
   },
 };
 

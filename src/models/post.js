@@ -2,17 +2,16 @@ import DefaultModel from "./default-model";
 
 
 export default class PostModel extends DefaultModel {
-  /** GET /api/post/{postId} */
+  /** 4-0. POST API */
+  // GET /api/post/{postId}
   getPostByPostId(postId) {
     return this.callApi(() => this.api.getPostByPostId(postId));
   }
-
-  /** GET /api/posts */
+  // GET /api/posts
   getAllPosts() {
     return this.callApi(() => this.api.getAllPosts());
   }
-
-  /** GET /api/user/posts */
+  // GET /api/user/posts
   getAllPostsByUserId(postId) {
     return this.callApi(() => this.api.getAllPostsByUserId(postId));
   }
@@ -22,7 +21,21 @@ export default class PostModel extends DefaultModel {
   }
 
 
+  /** 4-1. POST SCRAP API */
+  // POST /api/postScrap/post/{postId}/user
+  scrap(postId) {
+    return this.callApi(() => this.api.scrap(postId));
+  }
+  // DELETE /api/postScrap/post/{postId}
+  unscrap(postId) {
+    return this.callApi(() => this.api.unscrap(postId));
+  }
 
+
+
+
+
+  
   // [DEPRECATED]
   data = {
     1: {
