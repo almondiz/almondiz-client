@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 import { Frame } from "../../util";
 import { EditViewModel } from "../../view-models";
@@ -8,17 +8,18 @@ import FrameDirect from "./frame-direct";
 import FrameDirectTag from "./frame-direct-tag";
 import FrameWrite from "./frame-write";
 
+
 const EditPage = ({ floatRef, backdropRef }) => {
   const frame = new Frame();
   const editViewModel = new EditViewModel();
-  const [ shopData, setShopData ] = useState({});
-  const [ content, setContent ] = useState("");
-  const [ tags, setTags ] = useState([]);
+  const [ shop, setShop ] = useState({});
+  //const [ content, setContent ] = useState("");
+  //const [ tags, setTags ] = useState([]);
 
-  useEffect(() => {
-    console.log("[EditPage]", shopData);
-    shopData.tags && setTags([...shopData.tags]);
-  }, [shopData]);
+  //useEffect(() => {
+    //console.log("[EditPage]", shop);
+    //shop.tags && setTags([...shop.tags]);
+  //}, [shop]);
 
   const createPost = async () => {
     await editViewModel.createPost({
@@ -32,31 +33,30 @@ const EditPage = ({ floatRef, backdropRef }) => {
         "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_238%2F164001495200947VEL_JPEG%2Fupload_438a1fb5d2e2bdf650c5ccc9ae140291.jpeg",
         "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_245%2F1640014952265p4T4U_JPEG%2Fupload_74f2d577c28ecb075f4f90f026ffd1f1.jpeg",
       ],
-      shopId: shopData.shopId,
+      shopId: shop.shopId,
       // 태그 기능 제대로 구현 필요
-      tags: shopData.tags.map(({ tagId }) => tagId),
-      lati: shopData.lati,
-      longi: shopData.longi,
+      tags: shop.tags.map(({ tagId }) => tagId),
+      lati: shop.lati,
+      longi: shop.longi,
     });
   }
 
   frame.init([
     <FrameFindShop
       searchTags={editViewModel.searchTags}
-      setShopData={setShopData}
+      setShop={setShop}
       frame={frame}
       floatRef={floatRef}
     />,
     <FrameDirect frame={frame} floatRef={floatRef} />,
-    <FrameDirectTag frame={frame} floatRef={floatRef} />,
-    <FrameWrite
-      frame={frame}
-      floatRef={floatRef}
-      backdropRef={backdropRef}
-      getShopData={() => shopData}
-      getTags={() => tags}
-      setContent={setContent}
-      setTags={setTags}
+    <FrameDirectTag frame={frame} floatRef={floatRef}
+      getShop={() => shop}
+    />,
+    <FrameWrite frame={frame} floatRef={floatRef} backdropRef={backdropRef}
+      getShop={() => shop}
+      //getTags={() => tags}
+      //setContent={setContent}
+      //setTags={setTags}
       createPost={createPost}
     />,
   ]);

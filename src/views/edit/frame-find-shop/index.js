@@ -36,7 +36,7 @@ const FloatController = ({ floatRef }) => {
   return <></>;
 };
 
-const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
+const MapDrawer = ({ frame, searchTags, setShop, mapBottomRef }) => {
   const tfPlaceholder = "음식점 검색";
   const [tf, setTf] = useState("");
   const [foundTags, setFoundTags] = useState([]);
@@ -46,17 +46,17 @@ const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
     setFoundTags(searchTags(tf));
   }, [tf]);
 
-  const BottomContent = ({ shopData }) => (
+  const BottomContent = ({ shop }) => (
     <section className="bottom-item">
       <div className="text-wrap">
-        <h3 className="title">{shopData.shopName}</h3>
-        <p className="description">{shopData.shopAddress}</p>
-        <TagList dataList={shopData.tags.map(({ tagName }) => tagName)} small />
+        <h3 className="title">{shop.shopName}</h3>
+        <p className="description">{shop.shopAddress}</p>
+        <TagList tags={shop.tags} small />
       </div>
       <div className="buttons right">
         <button className="button button-select-shop" onClick={() => {
-          setShopData(shopData);
-          console.log("[FrameFindShop]", shopData)
+          setShop(shop);
+          console.log("[FrameFindShop]", shop)
           frame.walk(3);
         }}>
           <div className="icon"><LocationOnIconBorder /></div>
@@ -65,7 +65,7 @@ const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
       </div>
     </section>
   );
-  const tfHandler = (tfFrameIndex, shopData) => {
+  const tfHandler = (tfFrameIndex, shop) => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
@@ -76,19 +76,19 @@ const MapDrawer = ({ frame, searchTags, setShopData, mapBottomRef }) => {
         setTf("");
         break;
       case 2:
-        mapBottomRef.current?.show({ content: <BottomContent shopData={shopData} /> });
+        mapBottomRef.current?.show({ content: <BottomContent shop={shop} /> });
         break;
       default:
         break;
     }
   };
 
-  const shopContent = (shopData, index) => {
+  const shopContent = (shop, idx) => {
     return (
-      <li className="item" onClick={() => tfHandler(2, shopData)}>
-        <h3 className="title">{shopData.shopName}</h3>
-        <p className="description">{shopData.shopAddress}</p>
-        <TagList dataList={shopData.tags.map(({ tagName }) => tagName)} small />
+      <li className="item" key={idx} onClick={() => tfHandler(2, shop)}>
+        <h3 className="title">{shop.shopName}</h3>
+        <p className="description">{shop.shopAddress}</p>
+        <TagList tags={shop.tags} small />
       </li>
     )
   }
@@ -169,7 +169,7 @@ const MapBottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindShop = ({ frame, searchTags, setShopData, floatRef }) => {
+const FrameFindShop = ({ frame, searchTags, setShop, floatRef }) => {
   const mapBottomRef = useRef();
 
   return (
@@ -178,7 +178,7 @@ const FrameFindShop = ({ frame, searchTags, setShopData, floatRef }) => {
         <MapDrawer
           frame={frame}
           searchTags={searchTags}
-          setShopData={setShopData}
+          setShop={setShop}
           mapBottomRef={mapBottomRef}
         />
         <div className="map-container">

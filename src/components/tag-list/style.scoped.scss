@@ -77,11 +77,12 @@
   &.editable {
     .tag-delete-button {
       margin-right: -.5rem;
-      
-      height: 1.25rem;
-      width: 1.25rem;
 
+      height: 100%;
+      width: 1.25rem;
       .icon {
+        height: 100%;
+        width: 100%;
         ::v-deep {
           svg {
             height: .75rem;

@@ -1,11 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame, getDistance } from "../../../util";
-import { PostModel } from "../../../models";
-import { PostViewModel } from "../../../view-models";
+import { Frame } from "../../../util";
 
-import TagList, { TagController } from "../../../components/tag-list";
+import TagList from "../../../components/tag-list";
 import ImageGrid from "../../../components/image-grid";
 import BackdropTag from "../backdrop-tag";
 
@@ -61,41 +59,46 @@ const FloatController = ({ floatRef, frame, createPost }) => {
 
 
 // frame 4
-const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, getTags, setTags, createPost }) => {
-  const location = useSelector(state => state.global.location);
-  const [ shopData, setShopData ] = useState({});
+const FrameWrite = ({ frame, floatRef, backdropRef, getShop, createPost }) => {
+  const [ shop, setShop ] = useState({});
+  const [ postTags, setPostTags ] = useState([]);
+  const [ postText, setPostText ] = useState("");
+  const [ postImageUrls, setPostImageUrls ] = useState([]);
+  useEffect(() => {
+    const { shopId, shopName, shopThumbUrl, shopAddress, tags } = getShop();
+    setShop({ shopId, shopName, shopThumbUrl, shopAddress });
+    setPostTags(tags);
+  }, []);
+  useEffect(() => {
+    console.log(postTags);
+  }, [postTags]);
 
-  const ImageGridTrailer = ({ shopData }) => (
-    <div className="image-grid-trailer">
-      <div className="content">
-        <div className="text-wrap">
-          <p className="name">{shopData.shopName}</p>
-          <p className="address">{shopData.shopAddress}</p>
-        </div>
-      </div>
-      <div className="image" style={{ backgroundImage: `url(${shopData.shopThumbUrl})` }} />
-    </div>
-  );
-
+  // textarea
   const textRef = useRef();
   const handleResizeHeight = () => {
     const obj = textRef.current;
     obj.style.height = '1px';
     obj.style.height = obj.scrollHeight + 'px';
   };
-  useEffect(() => {
-    handleResizeHeight();
-    setShopData(getShopData());
-  }, []);
-  // TAG
-  const tagController = new TagController(["맥주", "호프"]);
-  useEffect(() => {
-    console.log("[FrameWrite]", tagController.tags);
-    // setTags(...)
-  }, [tagController.tags]);
-  //
+  useEffect(() => { handleResizeHeight(); }, []);
 
-  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag tagController={tagController} /> });
+  const ImageGridTrailer = ({ shop }) => (
+    <div className="image-grid-trailer">
+      <div className="content">
+        <div className="text-wrap">
+          <p className="name">{shop.shopName}</p>
+          <p className="address">{shop.shopAddress}</p>
+        </div>
+      </div>
+      <div className="image" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+    </div>
+  );
+  const showBackdropTag = () => {
+    backdropRef.current?.show({
+      title: "태그 추가",
+      content: <BackdropTag shop={shop} postTags={postTags} setPostTags={setPostTags} />,
+    });
+  };
 
   return (
     <>
@@ -104,18 +107,15 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
           <header className="header">
             <div className="row row-shop">
               <button className="shop">
-                <div className="thumb" style={{ backgroundImage: `url(${shopData.shopThumbUrl})` }} />
+                <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
                 <div className="text-wrap">
-                  <p className="name">{shopData.shopName}</p>
-                  <p className="description">{shopData.shopThumbAddress} · {getDistance(location, {
-                    lati: shopData.lati,
-                    longi: shopData.longi,
-                  })}km</p>
+                  <p className="name">{shop.shopName}</p>
+                  <p className="description">{shop.shopAddress}</p>
                 </div>
               </button>
             </div>
             <nav className="row row-tags">
-              <TagList dataList={tagController.tags} small />
+              <TagList tags={postTags} small />
               <div className="buttons right">
                 <button className="button text-button" onClick={() => showBackdropTag()}>태그 추가</button>
               </div>
@@ -125,13 +125,13 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, get
           <main className="body">
             <div className="row row-text">
               <textarea className="text" ref={textRef} onChange={({ target }) => {
-                setContent(target.value);
+                setPostText(target.value);
                 handleResizeHeight();
               }} name="text" placeholder="내용을 입력하세요" autoFocus />
-              {/*data.postText*/}
+              {/*postText*/}
             </div>
             <div className="row row-images">
-              <ImageGrid images={[]} trailer={<ImageGridTrailer shopData={[]} />} editable />
+              <ImageGrid images={postImageUrls} trailer={<ImageGridTrailer shop={shop} />} editable />
             </div>
           </main>
         </article>

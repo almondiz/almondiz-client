@@ -5,7 +5,7 @@ import { Frame, NoScroll } from "../../util";
 import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
-import TagList, { TagController } from "../../components/tag-list";
+import TagList, { pushTag } from "../../components/tag-list";
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
@@ -52,9 +52,41 @@ const Drawer = ({ contentRef }) => {
   };
 
   // TAG
-  const tagController = new TagController([ "맥주", "호프", ["대구", true] ]);
-  const onClickTagItem = data => {
-    tagController.push(data);
+  const DUMMY_RECORD_TAGS_LIST = [
+    [
+      { tagType: "food", tagId: 1, tagName: "힌식" },
+      { tagType: "region", tagName: "서울" },
+    ],
+    [
+      { tagType: "food", tagId: 2, tagName: "짬뽕" },
+      { tagType: "region", tagName: "성남 분당구" }, { tagType: "region", tagName: "수원 팔달구 우만동" },
+    ],
+    [
+      { tagType: "food", tagId: 3, tagName: "스시" }, { tagType: "food", tagId: 4, tagName: "마라탕" },
+      { tagType: "region", tagName: "천안" },
+    ],
+  ];
+  const DUMMY_INIT_TAG_LIST = [
+    { tagType: "food", tagId: 3, tagName: "맥주" },
+    { tagType: "food", tagId: 4, tagName: "호프" },
+    { tagType: "region", tagName: "대구" },
+  ];
+  const DUMMY_SEARCH_TAG_LIST = {
+    foods: [
+      { tagType: "food", tagId: 14, tagName: "대구" },
+    ],
+    regions: [
+      { tagType: "region", tagName: "대구" },
+      { tagType: "region", tagName: "대구 남구" },
+      { tagType: "region", tagName: "대구 달서구" },
+      { tagType: "region", tagName: "대구 북구" },
+      { tagType: "region", tagName: "대구 중구" },
+    ],
+  };
+
+  const [ tags, setTags ] = useState([...DUMMY_INIT_TAG_LIST]);
+  const onClickTagItem = e => {
+    pushTag(tags, setTags, e);
     setTf("");
   };
   //
@@ -62,7 +94,7 @@ const Drawer = ({ contentRef }) => {
   const tagFrame = new Frame([
     (
       <>
-        <TagList controller={tagController} />
+        <TagList tags={tags} editable setTags={setTags} />
         <button className="button button-search" onClick={() => tfHandler(2)}>
           <div className="icon"><SearchIconBorder /></div>
           <p>검색하기</p>
@@ -74,22 +106,19 @@ const Drawer = ({ contentRef }) => {
         <div className="tag-list-group">
           <h3 className="subheader">음식</h3>
           <ul className="list">
-            <li className="item" onClick={() => onClickTagItem("대구탕")}>대구탕</li>
+            {DUMMY_SEARCH_TAG_LIST.foods.map((tag, idx) => <li key={idx} className="item" onClick={() => onClickTagItem(tag)}>{tag.tagName}</li>)}
           </ul>
         </div>
         <div className="tag-list-group">
           <h3 className="subheader">지역</h3>
           <ul className="list">
-            <li className="item" onClick={() => onClickTagItem({ tagName: "대구", tagType: "region" })}>대구</li>
-            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 남구", tagType: "region" })}>대구 남구</li>
-            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 달서구", tagType: "region" })}>대구 달서구</li>
-            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 북구", tagType: "region" })}>대구 북구</li>
-            <li className="item" onClick={() => onClickTagItem({ tagName: "대구 중구", tagType: "region" })}>대구 중구</li>
+            {DUMMY_SEARCH_TAG_LIST.regions.map((tag, idx) => <li key={idx} className="item" onClick={() => onClickTagItem(tag)}>{tag.tagName}</li>)}
           </ul>
         </div>
       </>
     ),
   ]);
+
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
@@ -104,24 +133,14 @@ const Drawer = ({ contentRef }) => {
         <div className="history-list-group">
           <h3 className="subheader">검색 기록</h3>
           <ul className="list">
-            <li className="item">
-              <TagList dataList={[ "한식", {tagName: "서울", tagType: "region"}]} />
-              <button className="button button-delete-item">
-                <div className="icon"><CloseIcon /></div>
-              </button>
-            </li>
-            <li className="item">
-              <TagList dataList={[ "짬뽕", {tagName: "성남 분당구", tagType: "region"}, {tagName: "수원 팔달구 우만동", tagType: "region"} ]} />
-              <button className="button button-delete-item">
-                <div className="icon"><CloseIcon /></div>
-              </button>
-            </li>
-            <li className="item">
-              <TagList dataList={[ "스시", "마라탕", {tagName: "천안", tagType: "region"} ]} />
-              <button className="button button-delete-item">
-                <div className="icon"><CloseIcon /></div>
-              </button>
-            </li>
+            {DUMMY_RECORD_TAGS_LIST.map((tags, idx) => (
+              <li key={idx} className="item">
+                <TagList tags={tags} />
+                <button className="button button-delete-item">
+                  <div className="icon"><CloseIcon /></div>
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
 
@@ -153,7 +172,7 @@ const Drawer = ({ contentRef }) => {
         <div className="tf">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <div className="tf-box" onClick={() => tfHandler(1)}>
-            <TagList dataList={tagController.tags} />
+            <TagList tags={tags} />
           </div>
         </div>
       </section>

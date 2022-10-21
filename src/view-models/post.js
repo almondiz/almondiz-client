@@ -100,6 +100,8 @@ export default class PostViewModel {
   // [DEPRECATED] -> getPostByPostId(postId)
   getData(id) {
     const res = this.model.getData(id);
-    return this._makePostItemData(res);
+
+    const myLocation = getMyLocation();
+    return this._makePostItemData(res, { myLocation });
   }
 };

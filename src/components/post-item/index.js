@@ -75,7 +75,11 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
             <div className="thumb" style={{ backgroundImage: `url(${post.shopThumbUrl})` }} />
             <div className="text-wrap">
               <p className="name">{post.shopName}</p>
-              <p className="description">{post.shopAddress} · {post.shopDistance}</p>
+              {!detail ? (
+                <p className="description">{post.shopAddress} · {post.shopDistance}</p>
+              ) : (
+                <p className="description">{post.shopAddress}</p>
+              )}
             </div>
           </button>
           {!detail && (
@@ -84,7 +88,7 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
             </div>
           )}
         </div>
-        <nav className="row row-tags"><TagList dataList={post.postTags} small /></nav>
+        <nav className="row row-tags"><TagList tags={post.postTags} small /></nav>
       </header>
 
       <main className="body">

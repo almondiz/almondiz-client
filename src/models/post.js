@@ -37,7 +37,7 @@ export default class PostModel extends DefaultModel {
 
   
   // [DEPRECATED]
-  data = {
+  /*data = {
     1: {
       id: 1,
       createdAt: 1660993200000,
@@ -113,5 +113,5 @@ export default class PostModel extends DefaultModel {
     let count = 0;
     this.data[id].comments.map(comment => count += 1 + comment.reply.length);
     return count;
-  }
+  }*/
 };

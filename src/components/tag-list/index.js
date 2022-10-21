@@ -1,69 +1,47 @@
-import React, { useEffect, useState, forwardRef, useImperativeHandle } from "react";
+import React from "react";
 
 import "./style.scoped.scss";
 import CloseIcon from "../../asset/icons/mui/close-icon";
 
 
-
-export class TagController {
-  tags;
-  setTags;
-
-  constructor(dataList) {
-    [this.tags, this.setTags] = useState(dataList);
-  }
-
-  push(data) {
-    let newTags = this.tags.slice();
-    newTags.push(data);
-    this.setTags(newTags);
-  }
-  pop(idx) {
-    let newTags = this.tags.slice();
-    newTags.splice(idx, 1);
-    this.setTags(newTags);
-  }
-}
+// valid on editable
+export const pushTag = (tags, setTags, e) => {
+  if (tags.find(tag => (tag.tagType === e.tagType && tag.tagId === e.tagId)) !== undefined)
+    return false;
+  setTags([...tags, e]);
+  return true;
+};
+export const popTag = (tags, setTags, idx) => {
+  const _tags = [...tags];
+  _tags.splice(idx, 1);
+  setTags(_tags);
+};
 
 
-const TagItem = ({ idx, data, controller }) => {
-  // ### { tagId:(태그 ID), tagName:(태그명), tagType:(음식/지역) } :
-  // ###   { tagName:"대구", tagType="region" },
-  // ###   "김치찌개" -> 이런 것도 일단은 임시로 가능. 자동으로 음식 태그로 변환
-  const _data = (typeof data === "object") ? data : { tagId: -1, tagName: data, tagType: "food" };
-  if (!_data.tagId && _data.tagId !== 0)
-    _data.tagId = -1;
-  //console.log("[TagItem]", _data);
-
-  const { tagId, tagName, tagType } = _data;
- 
+const TagItem = ({ tag, editable, onClick }) => {
+  const { tagType="food", tagId, tagName } = tag;
 
   return (
-    <li className="tag-item" data-tag-id={tagId} data-tag-type={tagType} onClick={() => (controller && controller.pop(idx))}>
+    <button className="tag-item" data-tag-type={tagType} data-tag-id={tagId} onClick={onClick}>
       <p className="name">{tagName}</p>
-      { controller && (
-        <button className="tag-delete-button">
+      {editable && (
+        <div className="tag-delete-button">
           <div className="icon"><CloseIcon /></div>
-        </button>
+        </div>
       )}
-    </li>
+    </button>
   );
 };
 
-const TagList = ({ controller, dataList=[], small=false }) => {
-  if (controller) {   // editable
-    return (
-      <ul className={`tag-list editable ${small ? "small" : ""}`}>
-        {controller.tags.map((data, idx) => <TagItem key={idx} idx={idx} data={data} controller={controller} />)}
-      </ul>
-    );
-  } else {
-    return (
-      <ul className={`tag-list ${small ? "small" : ""}`}>
-        {dataList.map((data, idx) => <TagItem key={idx} idx={idx} data={data} controller={controller} />)}
-      </ul>
-    );
-  }
+const TagList = ({ tags=[], small=false, onClick=(() => {}), editable=false, setTags }) => {
+  if (editable)
+    onClick = idx => popTag(tags, setTags, idx);
+
+  return (
+    <ul className={`tag-list ${editable ? "editable" : ""} ${small ? "small" : ""}`}>
+      {tags.map((tag, idx) => <TagItem key={idx} tag={tag} editable={editable} onClick={() => onClick(idx)} />)}
+    </ul>
+  );
 };
 
 export default TagList;
