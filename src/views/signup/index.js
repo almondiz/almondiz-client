@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { Frame, getRandomProfile, getRandomNutList, getRandomNut } from "../../util";
-import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
 import FrameSocial from "./frame-social";
@@ -29,7 +28,7 @@ const SignupPage = () => {
   const changeTag = (id) => setTagId(id || 1);
 
   const callSignup = async () => {
-    const userViewModel = new UserViewModel(new UserModel());
+    const userViewModel = new UserViewModel();
     const { success, msg, data } = await userViewModel.signup({
       email: account.email,
       providerType: account.providerType,

@@ -2,6 +2,10 @@ import { api, path } from "./config";
 
 
 /** 4-0. POST API */
+// POST /api/post
+export const createPost = body => {
+  return api.post(path.post.default, body);
+};
 // GET /api/post/{postId}
 export const getPostByPostId = postId => {
   return api.get(path.post.one(postId));
@@ -16,16 +20,12 @@ export const getAllPostsByUserId = userId => {
   return api.post(path.post.byUser, body);
 };
 
-
-export const createPost = body => api.post(path.post.default, body);
-
-
 /** 4-1. POST SCRAP API */
 // POST /api/postScrap/post/{postId}/user
-export const scrap = (postId) => {
+export const scrap = postId => {
   return api.post(path.post.scrap(postId), {});
 };
 // DELETE /api/postScrap/post/{postId}
-export const unscrap = (postId) => {
+export const unscrap = postId => {
   return api.delete(path.post.unscrap(postId));
 };

@@ -25,17 +25,24 @@ const api = {
 
 const makePath = (path) => `api/${path}`;
 const path = {
-  /** 1. USER AUTH API */
   user: {
+    /** 1. USER API */
     default: makePath(`user`),
+    one: (userId) => makePath(`user/${userId}`),
     login: makePath(`user/login`),
+
+    /** 2. FOLLOW API */
+    followings: makePath(`api/followings`),
+
+    /** 3. NOTIFICATION API */
+    notices: makePath(`notifications`),
   },
   
   /** 4. POST API */
   post: {
     default: makePath(`post`),
-    one: (id) => makePath(`post/${id}`),
-    byShop: (id) => makePath(`store/${id}/posts`),
+    one: (postId) => makePath(`post/${postId}`),
+    byShop: (shopId) => makePath(`store/${shopId}/posts`),
     byUser: makePath(`user/posts`),
 
     all: makePath(`posts`),

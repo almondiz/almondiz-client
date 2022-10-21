@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { Frame, Pipe } from "../../util";
-import { PostModel, CommentModel } from "../../models";
 import { PostViewModel, CommentViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -49,14 +48,14 @@ const FloatController = ({ floatRef, post, createComment }) => {
         const text = tf;
         const action = replyController ? replyController.reply : createComment;
         const success = await action(text);
-        if (success)
+        if (success) {
           Pipe.get("reload")?.comments();
+        }
         
         commentDialogController.hide();
       },
 
       show: (_replyController) => {  // reply, onShow, onHide
-        console.log(_replyController);
         setReplyController(_replyController);
         footerFrame.move(1);
       },
@@ -128,20 +127,17 @@ const FloatController = ({ floatRef, post, createComment }) => {
 
 
 const PostPage = ({ floatRef }) => {
-  const { postId } = useParams();
-
+  const postId = parseInt(useParams().postId);
 
   /** 4-0. POST API */
-  const postViewModel = new PostViewModel(new PostModel());
+  const postViewModel = new PostViewModel();
   const [post, setPost] = useState([]);
-  const readPost = async () => {
-    setPost(await postViewModel.getPostByPostId(postId));
-  };
+  const readPost = async () => setPost(await postViewModel.getPostByPostId(postId));
   useEffect(() => { readPost(); }, []);
   /** */
 
   /** 5-0. COMMENT API */
-  const commentViewModel = new CommentViewModel(new CommentModel());
+  const commentViewModel = new CommentViewModel();
   const [comments, setComments] = useState([]);
   const readAllComments = async () => {
     if (!post)  return;
@@ -150,7 +146,7 @@ const PostPage = ({ floatRef }) => {
   };
   useEffect(() => { readAllComments(); }, [post]);
 
-  const createComment = (text) => commentViewModel.createComment(postId, text);
+  const createComment = async (text) => (await commentViewModel.createComment(postId, text));
   /** */
 
   Pipe.set("reload", {

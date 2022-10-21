@@ -67,7 +67,7 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
   return (
     <article className={`post ${!detail ? "post-item" : ""}`} data-post-id={post.postId}>
       {!detail && <div className="background" onClick={() => post.goToPostPage(navigate)} />}
-      {detail && <ImageViewer imageUrls={post.postImageUrls} ref={imageViewerRef} />}
+      {detail && <ImageViewer images={post.postImages} ref={imageViewerRef} />}
 
       <header className="header">
         <div className="row row-shop">
@@ -99,12 +99,12 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
           !detail ?
           (
             <div className="row row-images" onClick={() => post.goToPostPage(navigate)}>
-              <ImageSlider imageUrls={post.postImageUrls} />
+              <ImageSlider images={post.postImages} />
             </div>
           ) :
           (
             <div className="row row-images">
-              <ImageGrid imageUrls={post.postImageUrls} trailer={<ImageGridTrailer post={post} />} action={imageGridAction} />
+              <ImageGrid images={post.postImages} trailer={<ImageGridTrailer post={post} />} action={imageGridAction} />
             </div>
           )
         }

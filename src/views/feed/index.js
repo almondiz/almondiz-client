@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -12,10 +11,10 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 
 
 const FeedPage = ({ backdropRef }) => {
-  /** POST API */
-  const postViewModel = new PostViewModel(new PostModel());
+  /** 4-0. POST API */
+  const postViewModel = new PostViewModel();
   const [posts, setPosts] = useState([]);
-  const getAllPosts = async () => { setPosts(await postViewModel.getAllPosts()); };
+  const getAllPosts = async () => setPosts(await postViewModel.getAllPosts());
   useEffect(() => { getAllPosts(); }, []);
   /** */
 

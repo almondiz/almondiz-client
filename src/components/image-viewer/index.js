@@ -8,26 +8,26 @@ import NavigateBeforeIcon from "../../asset/icons/mui/navigate-before-icon";
 import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
-const ImageViewer = forwardRef(({ imageUrls=[] }, ref) => {
+const ImageViewer = forwardRef(({ images=[] }, ref) => {
   const [index, setIndex] = useState(-1);
   useImperativeHandle(ref, () => ({ index: index, setIndex: setIndex, }));
 
-  const image = imageUrls[index];
+  const image = images[index];
 
   return (index !== -1) && (
     <div className="image-viewer">
       <div className="background" />
-      <img className="image" src={image} />
+      <img className="image" src={image.url} />
       <button className="button button-close" onClick={() => setIndex(-1)}>
         <div className="icon"><CloseIcon /></div>
       </button>
-      <button className="button button-prev" onClick={() => setIndex((index + imageUrls.length - 1) % imageUrls.length)}>
+      <button className="button button-prev" onClick={() => setIndex((index + images.length - 1) % images.length)}>
         <div className="icon"><NavigateBeforeIcon /></div>
       </button>
-      <button className="button button-next" onClick={() => setIndex((index + 1) % imageUrls.length)}>
+      <button className="button button-next" onClick={() => setIndex((index + 1) % images.length)}>
         <div className="icon"><NavigateNextIcon /></div>
       </button>
-      <p className="index">{`${index + 1} / ${imageUrls.length}`}</p>
+      <p className="index">{`${index + 1} / ${images.length}`}</p>
 
       <NoScroll />
     </div>

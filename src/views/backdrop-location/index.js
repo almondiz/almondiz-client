@@ -79,8 +79,8 @@ const MapDrawer = ({ mapBottomRef }) => {
   ]);
   const tfFrame = new Frame([
     (
-      <section className="tf-frame tf-frame-1 light">
-        <div className="tf" onClick={() => tfHandler(1)}>
+      <section className="tf-frame tf-frame-1">
+        <div className="tf light" onClick={() => tfHandler(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
         </div>
@@ -97,8 +97,8 @@ const MapDrawer = ({ mapBottomRef }) => {
       </section>
     ),
     (
-      <section className="tf-frame tf-frame-3 light">
-        <div className="tf">
+      <section className="tf-frame tf-frame-3">
+        <div className="tf light">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly onClick={() => tfHandler(1)} />
         </div>

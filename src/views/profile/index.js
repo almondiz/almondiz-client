@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { Frame } from "../../util";
-import { UserModel, PostModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -41,37 +40,40 @@ const FloatController = ({ floatRef, user }) => {
 };
 
 
-const ProfilePage = ({ floatRef }) => {
-  const { userId } = useParams();
+const ProfilePage = ({ floatRef, myUserId }) => {
+  const userId = parseInt(useParams().userId);
 
-  const navigate = useNavigate();
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  const [user, setUser] = useState([]);
+  const getUser = async () => setUser((userId === myUserId) ? (await userViewModel.whoami()) : (await userViewModel.get(userId)));
+  useEffect(() => { getUser(); }, []);
+  /** */
   
-  /** POST API */
-  const postViewModel = new PostViewModel(new PostModel());
-  const [postDataList, setPostDataList] = useState([]);
-  const getAllPostsByUserId = async () => { setPostDataList(await postViewModel.getAllPostsByUserId(userId)); };
-  useEffect(() => { getAllPostsByUserId(); }, []);
+  /** 4-0. POST API */
+  const postViewModel = new PostViewModel();
+  const [posts, setPosts] = useState([]);
+  //const getAllPostsByUserId = async () => setPosts(await postViewModel.getAllPostsByUserId(userId));
+  //useEffect(() => { getAllPostsByUserId(); }, []);
   /** */
 
-  // USER API (DUMMY)
-  const user = (() => {
-    const userViewModel = new UserViewModel(new UserModel());
-    return userViewModel.getData(userId);
-  })(userId);
-  //
 
-
-  const FollowingEmojiList = ({ user }) => {
+  const navigate = useNavigate();
+  const FollowingsHead = ({ followingsHead }) => {
     return (
       <div className="emojis">
-        {user.followingEmojis.map((emoji, idx) => <div key={idx} className="emoji">{emoji}</div>)}
+        {followingsHead.map((following, idx) => (
+          <button key={idx} className="emoji" onClick={() => following.goToUserPage(navigate)}>
+            {following.userEmoji}
+          </button>
+        ))}
       </div>
     );
   };
-  const PostList = ({ postDataList }) => {
+  const PostList = ({ posts }) => {
     return (
       <section className="post-list">
-        {postDataList.map((data, idx) => <PostItem key={idx} data={data} />)}
+        {posts.map((post, idx) => <PostItem key={idx} post={post} />)}
       </section>
     );
   };
@@ -100,7 +102,7 @@ const ProfilePage = ({ floatRef }) => {
       </button>
     );
   };
-  const goToFollowingsPage = navigate => navigate(`/subscriptions`);
+  const goToFollowingsPage = navigate => navigate(`/following`);
 
 
   return (
@@ -180,18 +182,18 @@ const ProfilePage = ({ floatRef }) => {
                 <h5>구독</h5>
                 <p>{user.followingCount}</p>
               </div>
-              <FollowingEmojiList user={user} />
+              <FollowingsHead followingsHead={user.followingsHead} />
               <button className="button button-following-list" onClick={() => goToFollowingsPage(navigate)}>보기</button>
             </div>
           )}
           
           <div className="row row-post-counts">
             <div className="count">
-              <h5>글</h5><p>{postDataList.length}</p>
+              <h5>글</h5><p>{posts.length}</p>
             </div>
           </div>
         </div>
-        <PostList postDataList={postDataList} />
+        <PostList posts={posts} />
       </main>
 
       <FloatController floatRef={floatRef} user={user} />

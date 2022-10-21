@@ -1,10 +1,10 @@
+import { CommentModel } from "../models";
 import { getTime } from "../util";
 
 
 export default class CommentViewModel {
-  constructor(model) {
-    this.model = model;
-  }
+  model;
+  constructor(model=(new CommentModel())) { this.model = model; }
 
 
   /** 5-0. COMMENT API */
@@ -13,16 +13,17 @@ export default class CommentViewModel {
     if ((text = text.trim()) === "")  return false;
 
     const body = { text, };
-    const { success } = await this.model.createComment(postId, body);
-    console.log("[CommentViewModel.createComment]", success);
+    const res = await this.model.createComment(postId, body);
+    console.log("[CommentViewModel.createComment]", res);
+    const { success } = res;
     return success;
   }
   // GET /api/post/{postId}/comments
   async readAllComments(postId, { postAuthorId }) {
-    const { dataList } = await this.model.readAllComments(postId);
-    console.log("[CommentViewModel.readAllComments]", dataList);
-
-    return dataList.map((data) => this._makeCommentItemData(data, { postAuthorId }));
+    const res = await this.model.readAllComments(postId);
+    console.log("[CommentViewModel.readAllComments]", res);
+    const { dataList } = res;
+    return dataList.map(data => this._makeCommentItemData(data, { postAuthorId }));
   }
   _makeCommentItemData(data, { postAuthorId }) {
     const commentId = data.commentId;
@@ -31,7 +32,7 @@ export default class CommentViewModel {
     const commentAuthorId = commentAuthor.userId;
   
     return {
-      commentId: commentId,
+      commentId,
 
       commentAuthorEmoji: commentAuthor.thumb.emoji,
       commentAuthorName: (() => {
@@ -47,7 +48,7 @@ export default class CommentViewModel {
       })(),
       commentAuthorRelation: commentAuthor.relation,
       isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
-      goToCommentAuthorPage: (navigate) => navigate(`/profile/${commentAuthorId}`),
+      goToCommentAuthorPage: navigate => navigate(`/profile/${commentAuthorId}`),
 
       commentCreatedAt: data.createdAt,
       //commentCreatedAt: getTime(data.createdAt),
@@ -66,23 +67,26 @@ export default class CommentViewModel {
 
 
       delete: async () => {
-        const success = await this.model.delete(commentId);
-        console.log("[CommentViewModel.delete]", success);
+        const res = await this.model.delete(commentId);
+        console.log("[CommentViewModel.delete]", res);
+        const { success } = res;
         return success;
       },
 
       like: async (b) => {
         const action = this.model[b ? "unlike" : "like"].bind(this.model);
-        const success = await action(commentId);
-        console.log("[CommentViewModel.like]", action, success);
+        const res = await action(commentId);
+        console.log("[CommentViewModel.like]", action, res);
+        const { success } = res;
         return success;
       },
       reply: async (text) => {
         if ((text = text.trim()) === "")  return false;
         
         const body = { text, };
-        const { success } = await this.model.reply(commentId, body);
-        console.log("[CommentViewModel.reply]", success);
+        const res = await this.model.reply(commentId, body);
+        console.log("[CommentViewModel.reply]", res);
+        const { success } = res;
         return success;
       },
     }

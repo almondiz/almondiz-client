@@ -12,7 +12,6 @@ import {
   setProviderType
 } from "../../store/slices/account";
 
-import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
@@ -26,7 +25,7 @@ import KakaoSocialImage from "../../asset/social/kakao.svg";
 const LoginPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate();
-  const userViewModel = new UserViewModel(new UserModel());
+  const userViewModel = new UserViewModel();
 
   const onSuccess = async (res) => {
     const { cu: email, NT: providerUid } = res.getBasicProfile();

@@ -1,33 +1,36 @@
+import { PostModel } from "../models";
 import { getMyLocation, getDistance, getTime } from "../util";
 
 
 export default class PostViewModel {
-  constructor(model) {
-    this.model = model;
-  }
+  model;
+  constructor(model=(new PostModel())) { this.model = model; }
 
 
   /** 4-0. POST API */
   // GET /api/post/{postId}
   async getPostByPostId(postId) {
-    const { data } = await this.model.getPostByPostId(postId);
-    console.log("[PostViewModel.getPostByPostId]", data);
+    const res = await this.model.getPostByPostId(postId);
+    console.log("[PostViewModel.getPostByPostId]", res);
+    const { data } = res;
 
     const myLocation = getMyLocation();
     return this._makePostItemData(data, { myLocation });
   }
   // GET /api/posts
   async getAllPosts() {
-    const { dataList } = await this.model.getAllPosts();
-    console.log("[PostViewModel.getAllPosts]", dataList);
+    const res = await this.model.getAllPosts();
+    console.log("[PostViewModel.getAllPosts]", res);
+    const { dataList } = res;
 
     const myLocation = getMyLocation();
     return dataList.map((data) => this._makePostItemData(data, { myLocation }));
   }
   // GET /api/user/posts
   async getAllPostsByUserId(userId) {
-    const { dataList } = await this.model.getAllPostsByUserId();
-    console.log("[PostViewModel.getAllPostsByUserId]", dataList);
+    const res = await this.model.getAllPostsByUserId(userId);
+    console.log("[PostViewModel.getAllPostsByUserId]", res);
+    const { dataList } = res;
 
     const myLocation = getMyLocation();
     return dataList.map((data) => this._makePostItemData((data), { myLocation }));
@@ -39,19 +42,19 @@ export default class PostViewModel {
     const postAuthorId = postAuthor.userId;
   
     return {
-      postId: postId,
+      postId,
 
       shopThumbUrl: data.shop.thumb,
       shopName: data.shop.shopName,
       shopAddress: data.shop.location.address.split(" ").slice(0, 3).join(" "),     // ### HMM (지번만 필요함. 서버에서 도로명 주지 않도록 해야 할 듯)
       shopAddressDetail: data.shop.location.address,
       shopDistance: `${getDistance(myLocation, data.shop.location)}km`,
-      goToShopPage: (navigate) => (window.location.href = data.shop.link),          // ### Future Works
+      goToShopPage: navigate => (window.location.href = data.shop.link),          // ### FUTURE WORKS
 
       postTags: data.tags,
       postText: data.text,
-      postImageUrls: data.postFileImgUrls,
-      goToPostPage: (navigate) => navigate(`/post/${postId}`),
+      postImages: data.postFileImgUrls.map((url) => ({ url })),
+      goToPostPage: navigate => navigate(`/post/${postId}`),
   
       postAuthorId: postAuthorId,
       postAuthorEmoji: postAuthor.thumb.emoji,
@@ -67,7 +70,7 @@ export default class PostViewModel {
         }
       })(),
       postAuthorRelation: postAuthor.relation,
-      goToPostAuthorPage: (navigate) => navigate(`/profile/${postAuthorId}`),
+      goToPostAuthorPage: navigate => navigate(`/profile/${postAuthorId}`),
 
       postCreatedAt: data.createdAt,
       //postCreatedAt: getTime(data.createdAt),
@@ -87,21 +90,5 @@ export default class PostViewModel {
         return success;
       },
     };
-  }
-
-
-  
-
-
-
-
-
-
-  // [DEPRECATED] -> getPostByPostId(postId)
-  getData(id) {
-    const res = this.model.getData(id);
-
-    const myLocation = getMyLocation();
-    return this._makePostItemData(res, { myLocation });
   }
 };

@@ -2,7 +2,8 @@ import DefaultModel from "./default-model";
 
 
 export default class NoticeModel extends DefaultModel {
-  data = {
+  // [DEPRECATED]
+  /*data = {
     1: {
       id: 1,
 
@@ -21,7 +22,5 @@ export default class NoticeModel extends DefaultModel {
       },
       message: `닭발 피스타치오님이 대댓글을 달았습니다.\n"고마워요 :)"`,
     },
-  };
-
-  getData(id) { return this.data[id]; }
+  };*/
 };

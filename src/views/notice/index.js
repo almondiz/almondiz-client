@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { getTime } from "../../util";
-import { NoticeModel } from "../../models";
 import { NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
@@ -10,7 +9,7 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
-const FloatController = ({ floatRef, dataList }) => {
+const FloatController = ({ floatRef, notices }) => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -18,7 +17,7 @@ const FloatController = ({ floatRef, dataList }) => {
       <button className="button button-back" onClick={() => navigate(-1)}>
         <div className="icon"><ArrowBackIcon /></div>
       </button>
-      <h3 className="title">알림 <span className="count">{dataList.length}</span></h3>
+      <h3 className="title">알림 <span className="count">{notices.length}</span></h3>
     </nav>
   );
 
@@ -32,24 +31,24 @@ const FloatController = ({ floatRef, dataList }) => {
 
 
 const NoticePage = ({ floatRef }) => {
-  // NOTICE API
-  const dataList = (() => {
-    const noticeViewModel = new NoticeViewModel(new NoticeModel());
-    return noticeViewModel.getMyNoticeData();
-  })();
-  //
+  /** 3. NOTIFICATION API */
+  const noticeViewModel = new NoticeViewModel();
+  const [notices, setNotices] = useState([]);
+  const getMyNoticeData = async () => setNotices(await noticeViewModel.getMyNoticeData());
+  useEffect(() => { getMyNoticeData(); }, []);
+  /** */
 
 
-  const NoticeList = ({ dataList }) => {
+  const NoticeList = ({ notices }) => {
     return (
       <ul className="notice-list">
-        {dataList.map((data, idx) => {
+        {notices.map((notice, idx) => {
           return (
-            <li key={idx} className={`notice-item ${data.isRead ? "" : "new"}`}>
-              <div className={`icon ${data.isRead ? "" : "badge"}`}><NotificationsIconBorder /></div>
+            <li key={idx} className={`notice-item ${notice.isRead ? "" : "new"}`}>
+              <div className={`icon ${notice.isRead ? "" : "badge"}`}><NotificationsIconBorder /></div>
               <div className="text-wrap">
-                <p className="message">{data.message}</p>
-                <p className="time">{getTime(data.createdAt)}</p>
+                <p className="message">{notice.noticeText}</p>
+                <p className="time">{getTime(notice.noticeCreatedAt)}</p>
               </div>
             </li>
           );
@@ -62,10 +61,10 @@ const NoticePage = ({ floatRef }) => {
   return (
     <div id="page">
       <main className="content">
-        <NoticeList dataList={dataList} />
+        <NoticeList notices={notices} />
       </main>
 
-      <FloatController floatRef={floatRef} dataList={dataList} />
+      <FloatController floatRef={floatRef} notices={notices} />
     </div>
   );
 };

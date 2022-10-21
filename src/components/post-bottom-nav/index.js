@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { UserModel, NoticeModel } from "../../models";
-
 import "./style.scoped.scss";
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
 import ExploreIconBorder from "../../asset/icons/mui/explore-icon-border";
@@ -15,14 +13,12 @@ import AccountCircleIconBorder from "../../asset/icons/mui/account-circle-icon-b
 import AddIcon from "../../asset/icons/mui/add-icon";
 
 
-const PostBottomNav = () => {
+const PostBottomNav = ({ myUserId }) => {
   const navigate = useNavigate();
 
   const { pathname } = useLocation();
 
-  const userModel = new UserModel();
-  const myUserId = userModel.getMyUserId();
-  const hasUnreadNotices = userModel.hasUnreadNotices(new NoticeModel());
+  const hasUnreadNotices = false;   // ### FUTURE WORKS
 
   const [index, setIndex] = useState(null);
 

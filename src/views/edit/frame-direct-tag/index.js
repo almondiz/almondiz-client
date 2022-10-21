@@ -33,13 +33,11 @@ const FloatController = ({ floatRef, frame }) => {
 
 
 // frame 3
-const FrameDirectTag = ({ frame, floatRef, getShop }) => {
-  const [ shop, setShop ] = useState({});
+const FrameDirectTag = ({
+  frame, floatRef,
+  shop, setShop
+}) => {
   const [ shopTags, setShopTags ] = useState([]);
-  useEffect(() => {
-    const { shopId, shopName, shopThumbUrl, shopAddress } = getShop();
-    setShop({ shopId, shopName, shopThumbUrl, shopAddress });
-  }, []);  
 
   // tag
   const DUMMY_SEARCH_TAG_LIST = [

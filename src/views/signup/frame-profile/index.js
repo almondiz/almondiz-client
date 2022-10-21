@@ -25,26 +25,22 @@ const MenuName = ({ getRandomNut, changeNut }) => {
   };
   useEffect(() => { changeNut(nut.id); }, [nut])
 
+  // tag
+  const onClickTagItem = text => {
+    setTf(text);
+    tfHandler(0, text);
+  };
 
+  // textfield
   const tfPlaceholder = "좋아하는 음식";
   const [tf, setTf] = useState("");
-  useEffect(() => {
-    tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
-  }, [tf]);
-
+  useEffect(() => { tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0); }, [tf]);
   const tfHandler = (tfFrameIndex, text="") => {
     tfFrame.move(tfFrameIndex);
     setTf(text);
   };
 
-  // TAG
-  const onClickTagItem = text => {
-    setTf(text);
-    tfHandler(0, text);
-  };
-  //
-
-  // Motion
+  // motion
   const MOTION_DELAY = 200;
   const motion = new Motion({
     "stop": () => {},
@@ -56,7 +52,6 @@ const MenuName = ({ getRandomNut, changeNut }) => {
       motion.delay(MOTION_DELAY, "stop");
     }
   }, "stop");
-  //
 
   const tagFrame = new Frame([
     (
@@ -116,7 +111,7 @@ const MenuThumb = ({ getRandomThumb, changeThumb }) => {
   };
   useEffect(() => { changeThumb(thumbs[0]); }, [thumbs])
 
-  // Motion
+  // motion
   const MOTION_DELAY = 300;
   const motion = new Motion({
     "stop": () => {},
@@ -125,7 +120,6 @@ const MenuThumb = ({ getRandomThumb, changeThumb }) => {
       return _onChangeThumbEnd;
     },
   }, "stop");
-  //
 
   return (
     <div className="menu-thumb" onClick={onChangeThumb}>

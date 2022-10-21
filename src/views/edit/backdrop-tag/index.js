@@ -16,14 +16,8 @@ const BackdropTag = ({ shop, postTags, setPostTags }) => {
     { tagType: "food", tagId: 6, tagName: "생맥주" },
     { tagType: "food", tagId: 7, tagName: "치맥" },
   ];
-  const [ tags, setTags ] = useState([]);
-  useEffect(() => {
-    setTags([...postTags]);
-    return () => {
-      console.log(tags);
-      setPostTags([...tags])
-    };
-  }, []);
+  const [ tags, setTags ] = useState([...postTags]);
+  useEffect(() => { setPostTags([...tags]); }, [tags]);
   const onClickTagItem = e => {
     pushTag(tags, setTags, e);
     setTf("");

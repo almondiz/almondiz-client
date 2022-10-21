@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { useSelector } from "react-redux";
 
 import { Frame, NoScroll } from "../../util";
-import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
 import TagList, { pushTag } from "../../components/tag-list";
@@ -18,40 +17,18 @@ import CloseIcon from "../../asset/icons/mui/close-icon";
 const Drawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
-  const tfPlaceholder = "메뉴나 지역을 입력해 보세요";
-  const [tf, setTf] = useState("");
-  useEffect(() => {
-    tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
-  }, [tf]);
-
   const PostList = () => {
-    /** POST API */
-    const postViewModel = new PostViewModel(new PostModel());
-    const [dataList, setDataList] = useState([]);
-    const getAllPosts = async () => { setDataList(await postViewModel.getAllPosts()); };
+    /** 4-0. POST API */
+    const postViewModel = new PostViewModel();
+    const [posts, setPosts] = useState([]);
+    const getAllPosts = async () => setPosts(await postViewModel.getAllPosts());
     useEffect(() => { getAllPosts(); }, []);
     /** */
     
-    return <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
-  };
-  const tfHandler = tfFrameIndex => {
-    tfFrame.move(tfFrameIndex);
-    switch (tfFrameIndex) {
-      case 0:
-        setTf("");
-        contentRef.current?.show({});
-        break;
-      case 1:
-        setTf("");
-        break;
-      case 2:
-        setTf("");
-        contentRef.current?.show({ content: <PostList /> });
-        break;
-    }
+    return <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
   };
 
-  // TAG
+  // tag
   const DUMMY_RECORD_TAGS_LIST = [
     [
       { tagType: "food", tagId: 1, tagName: "힌식" },
@@ -83,13 +60,32 @@ const Drawer = ({ contentRef }) => {
       { tagType: "region", tagName: "대구 중구" },
     ],
   };
-
   const [ tags, setTags ] = useState([...DUMMY_INIT_TAG_LIST]);
   const onClickTagItem = e => {
     pushTag(tags, setTags, e);
     setTf("");
   };
-  //
+  
+  // textfield
+  const tfPlaceholder = "메뉴나 지역을 입력해 보세요";
+  const [tf, setTf] = useState("");
+  useEffect(() => { tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0); }, [tf]);
+  const tfHandler = tfFrameIndex => {
+    tfFrame.move(tfFrameIndex);
+    switch (tfFrameIndex) {
+      case 0:
+        setTf("");
+        contentRef.current?.show({});
+        break;
+      case 1:
+        setTf("");
+        break;
+      case 2:
+        setTf("");
+        contentRef.current?.show({ content: <PostList /> });
+        break;
+    }
+  };
 
   const tagFrame = new Frame([
     (
@@ -169,7 +165,7 @@ const Drawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf">
+        <div className="tf light">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <div className="tf-box" onClick={() => tfHandler(1)}>
             <TagList tags={tags} />

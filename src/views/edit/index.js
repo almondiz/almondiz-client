@@ -10,37 +10,17 @@ import FrameWrite from "./frame-write";
 
 
 const EditPage = ({ floatRef, backdropRef }) => {
-  const frame = new Frame();
-  const editViewModel = new EditViewModel();
   const [ shop, setShop ] = useState({});
-  //const [ content, setContent ] = useState("");
-  //const [ tags, setTags ] = useState([]);
+  const [ postTags, setPostTags ] = useState([]);
+  const [ postText, setPostText ] = useState("");
+  const [ postImages, setPostImages ] = useState([]);
 
-  //useEffect(() => {
-    //console.log("[EditPage]", shop);
-    //shop.tags && setTags([...shop.tags]);
-  //}, [shop]);
+  /** 4-0. POST API */
+  const editViewModel = new EditViewModel();
+  const createPost = async () => (await editViewModel.createPost({ shop, postTags, postText, postImages }));
 
-  const createPost = async () => {
-    await editViewModel.createPost({
-      content,
-      images: [
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200512_270%2F1589240248177WIr4l_JPEG%2FKakaoTalk_Photo_2019-11-15-21-09-35.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20160222_124%2F1456108689766cGsT8_JPEG%2F176172516828220_1.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20160222_65%2F1456108689887hMVWw_JPEG%2F176172516828220_2.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyMjA4MDVfMTg1%2FMDAxNjU5NjU1NjY2MDY0.9OVwKR1z4PPRPc261Bm6s7uijG0StPCpIjmpGNTN7gog.k3_zLr9zb9AO4HIUhxSAEAMHwMn-fDUtJWv6ggqm_i4g.JPEG%2Fupload_7a34a53d254c06cf9240f8ac12b01655.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_50%2F1640014951911xYfbU_JPEG%2Fupload_72846c3e27e83636fc5315a45bb4ee53.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_238%2F164001495200947VEL_JPEG%2Fupload_438a1fb5d2e2bdf650c5ccc9ae140291.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_245%2F1640014952265p4T4U_JPEG%2Fupload_74f2d577c28ecb075f4f90f026ffd1f1.jpeg",
-      ],
-      shopId: shop.shopId,
-      // 태그 기능 제대로 구현 필요
-      tags: shop.tags.map(({ tagId }) => tagId),
-      lati: shop.lati,
-      longi: shop.longi,
-    });
-  }
 
+  const frame = new Frame();
   frame.init([
     <FrameFindShop
       searchTags={editViewModel.searchTags}
@@ -50,13 +30,13 @@ const EditPage = ({ floatRef, backdropRef }) => {
     />,
     <FrameDirect frame={frame} floatRef={floatRef} />,
     <FrameDirectTag frame={frame} floatRef={floatRef}
-      getShop={() => shop}
+      shop={shop} setShop={setShop}
     />,
     <FrameWrite frame={frame} floatRef={floatRef} backdropRef={backdropRef}
-      getShop={() => shop}
-      //getTags={() => tags}
-      //setContent={setContent}
-      //setTags={setTags}
+      shop={shop}
+      postTags={postTags} setPostTags={setPostTags}
+      postText={postText} setPostText={setPostText}
+      postImages={postImages} setPostImages={setPostImages}
       createPost={createPost}
     />,
   ]);

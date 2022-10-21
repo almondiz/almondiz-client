@@ -3,6 +3,10 @@ import DefaultModel from "./default-model";
 
 export default class PostModel extends DefaultModel {
   /** 4-0. POST API */
+  // POST /api/post
+  createPost(body) {
+    return this.callApi(() => this.api.createPost(body));
+  }
   // GET /api/post/{postId}
   getPostByPostId(postId) {
     return this.callApi(() => this.api.getPostByPostId(postId));
@@ -12,14 +16,9 @@ export default class PostModel extends DefaultModel {
     return this.callApi(() => this.api.getAllPosts());
   }
   // GET /api/user/posts
-  getAllPostsByUserId(postId) {
-    return this.callApi(() => this.api.getAllPostsByUserId(postId));
+  getAllPostsByUserId(userId) {
+    return this.callApi(() => this.api.getAllPostsByUserId(userId));
   }
-
-  createPost(body) {
-    return this.callApi(() => this.api.createPost(body));
-  }
-
 
   /** 4-1. POST SCRAP API */
   // POST /api/postScrap/post/{postId}/user
@@ -30,8 +29,6 @@ export default class PostModel extends DefaultModel {
   unscrap(postId) {
     return this.callApi(() => this.api.unscrap(postId));
   }
-
-
 
 
 
@@ -107,11 +104,5 @@ export default class PostModel extends DefaultModel {
       bestCommentIndex: 0,
       scrapped: [1, 4],             // 이 글을 스크랩하는 사용자들 (userId)
     },
-  };
-  getData(id) { return this.data[id]; }
-  getCommentCount(id) {
-    let count = 0;
-    this.data[id].comments.map(comment => count += 1 + comment.reply.length);
-    return count;
-  }*/
+  };*/
 };

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Pipe } from "../../util";
 
@@ -9,6 +10,8 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
 const CommentUnit = ({ comment={}, root=false }) => {
+  const navigate = useNavigate();
+
   const commentUnitRef = useRef();
 
   const ButtonLike = ({ comment }) => {
@@ -54,8 +57,9 @@ const CommentUnit = ({ comment={}, root=false }) => {
     const [focus, setFocus] = useState(false);
     const onClick = async () => {
       const success = await comment.delete();
-      if (success)
+      if (success) {
         Pipe.get("reload")?.comments();
+      }
     }
     //const onClick = () => setFocus(!focus);
     return (
@@ -70,7 +74,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
       <div className="background" />
 
       <header className="header">
-        <button className="profile" onClick={comment.goToCommentAuthorPage}
+        <button className="profile" onClick={() => comment.goToCommentAuthorPage(navigate)}
           data-user-relation={comment.commentAuthorRelation}
           data-is-author={comment.isCommentAuthorPostAuthor}
           data-after={comment.isCommentAuthorPostAuthor ? "글쓴이" : undefined}

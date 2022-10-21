@@ -1,89 +1,20 @@
-import { PostModel, NoticeModel } from "../models";
+import { UserModel } from "../models";
 
 
 export default class UserViewModel {
-  constructor(model) { this.model = model; }
+  model;
+  constructor(model=(new UserModel())) { this.model = model; }
 
 
-  getData(id) {
-    const res = this.model.getData(id);
-    return this._makeUserData(res);
+  /** 1. USER API */
+  // POST /api/user
+  signup(body) {
+    return this.model.signup(body);
   }
-  _makeUserData(user) {
-    const userModel = this.model;
-    const myUserId = userModel.getMyUserId();
-    const userId = user.id;
-
-    const postModel = new PostModel();
-    const noticeModel = new NoticeModel();
-    
-  
-    return {
-      userId: userId,
-
-      userEmoji: user.profile.thumb.emoji,
-      userColor: user.profile.thumb.background,
-      userName: (() => {
-        if (userId === myUserId)
-          return user.profile.name;
-        else
-          return userModel.getAlias(userId);
-      })(),
-      userNameDescription: (() => {
-        if (userId === myUserId)
-          return user.profile.email;
-        else if (userModel.isSubscribing(userId))
-          return user.profile.name;
-        else
-          return undefined;
-      })(),
-      userRelation: (() => {
-        if (userId === myUserId)
-          return "me";
-        else if (userModel.isSubscribing(userId))
-          return "following";
-        else
-            return "other";
-      })(),
-
-      scrappedCount: userModel.getSubscribedCount(postModel, userId),
-      followedCount: user.subscribed.length,
-
-      // used only in my page
-      followingCount: userModel.getSubscribingCount(userId),
-      followingEmojis: (() => {
-        return Object.keys(user.subscribing).map(userId => userModel.getData(userId).profile.thumb.emoji);
-      })(),
-
-      // used only in my page
-      hasUnreadNotices: userModel.hasUnreadNotices(noticeModel),
-    };
+  // POST /api/user/login
+  login(providerType, providerUid) {
+    return this.model.login(providerType, providerUid);
   }
-  
-  // used only in subscriptions page
-  getMyFollowingData() {
-    const userModel = this.model;
-    const myUserId = userModel.getMyUserId();
-    const me = userModel.getData(myUserId);
-
-    return Object.keys(me.subscribing).map(userId => {
-      const user = userModel.getData(userId);
-
-      return {
-        userId: userId,
-
-        userEmoji: user.profile.thumb.emoji,
-        userColor: user.profile.thumb.background,
-        userName: userModel.getAlias(userId),
-        userNameDescription: user.profile.name,
-        userRelation: "following",
-      };
-    });
-  }
-
-
-  signup(body) {return this.model.signup(body); }
-  login(providerType, providerUid) { return this.model.login(providerType, providerUid); }
   async checkAccount({ providerType, providerUid }, goSignup, goMain) {
     const { success, ...result } = await this.login(providerType, providerUid);
 
@@ -103,5 +34,97 @@ export default class UserViewModel {
     }
     console.log("[login] : ", result.data);
     goMain(result.data);
+  }
+
+  // GET /api/user
+  async whoami() {
+    const res = await this.model.whoami();
+    console.log("[UserViewModel.whoami]", res);
+    const { data } = res;
+    return this._makeUserData(data);
+  }
+  // GET /api/user/{userId}
+  async get(userId) {
+    const res = await this.model.get(userId);
+    console.log("[UserViewModel.get]", res);
+    const { data } = res;
+    return this._makeUserData(data);
+  }
+  _makeUserData(data) {
+    const userId = data.userId;
+    data.relation = "me"; //
+  
+    return {
+      userId,
+
+      userEmoji: data.thumb.emoji,
+      userColor: data.thumb.color,
+      userName: (() => {
+        switch (data.relation) {
+          case "me":
+            return data.nickName;
+          case "following":
+            return data.alias;
+          case "other":
+          default:
+            return data.nickName;
+        }
+      })(),
+      userNameDescription: (() => {
+        switch (data.relation) {
+          case "me":
+            return data.email;
+          case "following":
+            return data.nickName;
+          case "other":
+          default:
+            return undefined;
+        }
+      })(),
+      userRelation: data.relation,
+
+
+      // ### FUTURE WORKS
+      followedCount: 0,   // 구독자 수
+      scrappedCount: 0,   // 스크랩된 수
+      postCount: 0,       // 작성 글 수
+
+      // 아래 두 개는 마이 페이지에만 보여지면 됨
+      followingCount: 0,
+      followingsHead: (() => {    // 내가 구독하는 유저들 중 상위 10개 정도만 받아오기
+        if (data.followingsHead)
+          return data.followingsHead.map(user => ({
+            userEmoji: user.thumb.emoji,
+            goToUserPage: navigate => navigate(`/profile/${user.userId}`),
+          }))
+        else
+          return [];
+      })(),
+
+
+      hasUnreadNotices: false,    // ### FUTURE WORKS : 논의 대상
+    };
+  }
+
+
+  /** 2. FOLLOW API */
+  // GET /api/api/followings
+  async getMyAllFollowings() {
+    const res = await this.model.getMyAllFollowings();
+    console.log("[UserViewModel.getMyAllFollowings]", res);
+    const { dataList } = res;
+    return dataList.map(data => this._makeFollowData(data));
+  }
+  _makeFollowData(data) {
+    const userId = data.userId;
+
+    return {
+      userId,
+      
+      userEmoji: data.thumb.emoji,
+      userColor: data.thumb.color,
+      userName: data.alias,
+      userNameDescription: data.nickName,
+    };
   }
 };

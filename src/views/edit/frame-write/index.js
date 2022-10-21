@@ -10,26 +10,35 @@ import BackdropTag from "../backdrop-tag";
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
 import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
-import { useSelector } from "react-redux";
-import { createPost } from "../../../models/apis";
 
 
-const FloatController = ({ floatRef, frame, createPost }) => {
+const FloatController = ({
+  floatRef, frame, 
+  createPost,
+  postImages, setPostImages
+}) => {
   const navigate = useNavigate();
 
-  const headerFrame = new Frame(), footerFrame = new Frame();
-  const Header = () => {
-    headerFrame.init([]);
-    return <div className="float-header">{headerFrame.view()}</div>;
+  const imageInputRef = useRef();
+  const onAddImageButtonClick = e => imageInputRef.current?.click();
+  const onImageChange = e => {
+    setPostImages([...postImages, {
+      file: e.target.files[0],
+      url: URL.createObjectURL(e.target.files[0]),
+    }]);
   };
+
+  const footerFrame = new Frame();
   const Footer = () => {
     footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
-          <button className="button button-add-image right" onClick={() => {}}>
+          <button className="button button-add-image right" onClick={onAddImageButtonClick}>
             <div className="icon"><AddAPhotoBorder /></div>
             <p>사진 추가</p>
           </button>
+
+          <input ref={imageInputRef} type="file" accept="image/*" name="file" onChange={onImageChange} className="input-add-image" />
         </section>
       ),
     ]);
@@ -42,16 +51,18 @@ const FloatController = ({ floatRef, frame, createPost }) => {
         <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">리뷰 작성</h3>
-      <button className="button button-next" onClick={() => {
-        createPost();
-        navigate(`/me`);
+      <button className="button button-next" onClick={async () => {
+        const success = await createPost();
+        if (success) {
+          navigate(`/me`);
+        }
       }}>게시</button>
     </nav>
   );
 
   useEffect(() => {
-    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />), floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter(), floatRef.current?.setTop());
+    (floatRef.current?.setFooter(<Footer />), floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setFooter(), floatRef.current?.setTop());
   }, [floatRef.current]);
 
   return <></>;
@@ -59,19 +70,15 @@ const FloatController = ({ floatRef, frame, createPost }) => {
 
 
 // frame 4
-const FrameWrite = ({ frame, floatRef, backdropRef, getShop, createPost }) => {
-  const [ shop, setShop ] = useState({});
-  const [ postTags, setPostTags ] = useState([]);
-  const [ postText, setPostText ] = useState("");
-  const [ postImageUrls, setPostImageUrls ] = useState([]);
-  useEffect(() => {
-    const { shopId, shopName, shopThumbUrl, shopAddress, tags } = getShop();
-    setShop({ shopId, shopName, shopThumbUrl, shopAddress });
-    setPostTags(tags);
-  }, []);
-  useEffect(() => {
-    console.log(postTags);
-  }, [postTags]);
+const FrameWrite = ({
+  frame, floatRef, backdropRef,
+  shop,
+  postTags, setPostTags,
+  postText, setPostText,
+  postImages, setPostImages,
+  createPost
+}) => {
+  useEffect(() => { setPostTags([...shop.tags]); }, []);
 
   // textarea
   const textRef = useRef();
@@ -99,6 +106,7 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShop, createPost }) => {
       content: <BackdropTag shop={shop} postTags={postTags} setPostTags={setPostTags} />,
     });
   };
+
 
   return (
     <>
@@ -131,13 +139,16 @@ const FrameWrite = ({ frame, floatRef, backdropRef, getShop, createPost }) => {
               {/*postText*/}
             </div>
             <div className="row row-images">
-              <ImageGrid images={postImageUrls} trailer={<ImageGridTrailer shop={shop} />} editable />
+              <ImageGrid images={postImages} trailer={<ImageGridTrailer shop={shop} />} editable setImages={setPostImages} />
             </div>
           </main>
         </article>
       </main>
 
-      <FloatController floatRef={floatRef} frame={frame} createPost={createPost} />
+      <FloatController
+        floatRef={floatRef} frame={frame} createPost={createPost}
+        postImages={postImages} setPostImages={setPostImages}
+      />
     </>
   )
 };
