@@ -1,17 +1,13 @@
-import React, { useState, useRef, forwardRef, useImperativeHandle, useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import "./style.scoped.scss";
 
 
-const Slider = forwardRef(({ action=(() => {}), initial=0, min=0, max=100, step=1, ticks=[] }, ref) => {
-  const [value, setValue] = useState(initial);
-  useImperativeHandle(ref, () => ({ value: value, }));
+const Slider = ({ value, setValue, min=0, max=100, step=1, ticks=[] }) => {
   const inputRef = useRef();
 
   const onInput = e => setValue(e.target.value);
   useEffect(() => {
-    action(value);
-
     const obj = inputRef.current;
     obj.style.backgroundSize = `${(value - min) * 100 / (max - min)}% 100%`;
   }, [value]);
@@ -26,6 +22,6 @@ const Slider = forwardRef(({ action=(() => {}), initial=0, min=0, max=100, step=
       </ul>
     </div>
   );
-});
+};
 
 export default Slider;

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { Frame, getRandomThumb, getRandomNut } from "../../util";
-import { UserViewModel } from "../../view-models";
+import { UserViewModel, SearchViewModel } from "../../view-models";
 
 import FrameSocial from "./frame-social";
 import FrameProfile from "./frame-profile";
@@ -22,8 +22,9 @@ const SignupPage = () => {
   const [ profileNut, setProfileNut ] = useState(null);
   const [ errorMessage, setErrorMessage ] = useState(null);
 
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
   const callSignup = async () => {
-    const userViewModel = new UserViewModel();
     const { success, msg, data } = await userViewModel.signup({
       providerType: account.providerType, providerUid: account.providerUid,
       email: account.email,
@@ -43,6 +44,12 @@ const SignupPage = () => {
       setErrorMessage(msg);
     }
   };
+  /** */
+
+  /** 0. SEARCH API */
+  const searchViewModel = new SearchViewModel();
+  const searchFoodTag = async (tagName) => (await searchViewModel.searchFoodTag(tagName));
+  /** */
   
   const frame = new Frame();
   frame.init([
@@ -52,6 +59,7 @@ const SignupPage = () => {
       getRandomThumb={getRandomThumb} getRandomNut={getRandomNut}
       profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
       setProfileThumb={setProfileThumb} setProfileTag={setProfileTag} setProfileNut={setProfileNut}
+      searchFoodTag={searchFoodTag}
     />,
     <FrameConfirm
       frame={frame} callSignup={callSignup} email={account.email}

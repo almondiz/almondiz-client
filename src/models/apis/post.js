@@ -26,7 +26,7 @@ export const readAllPosts = () => {
 // GET /api/user/posts
 export const readAllUserPosts = userId => {
   const body = { userId };
-  return api.post(path.post.byUser, body);
+  return api.post(path.post.byUser(userId));
 };
 
 /** 4-1. POST SCRAP API */
@@ -37,4 +37,8 @@ export const scrap = postId => {
 // DELETE /api/postScrap/post/{postId}
 export const unscrap = postId => {
   return api.delete(path.post.unscrap(postId));
+};
+// GET /api/postScraps/user
+export const readAllScrappedPosts = () => {
+  return api.get(path.post.byScrap);
 };

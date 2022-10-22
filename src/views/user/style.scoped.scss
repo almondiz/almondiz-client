@@ -126,15 +126,21 @@
           flex-shrink: 0;
         }
         .text-wrap {
-          .name {
+          &,
+          &>* {
+            @include text-nowrap;
+          }
+          .name-wrap {
             height: 1.25rem;
             display: flex;
             align-items: center;
-  
-            font-size: 1rem;
-  
-            &[data-after]::after {
-              content: attr(data-after);
+
+            .name {
+              @include text-nowrap;
+              font-size: 1rem;
+            }
+            .badge {
+              flex-shrink: 0;
               font-size: .6825rem;
               color: var(--secondary-text-color);
               border: 1px solid var(--secondary-text-color);
@@ -219,8 +225,8 @@
     &-frame.frame-1 {
       .button-back {      
         background-color: var(--float-background-color);
-        -webkit-backdrop-filter: blur(.5rem);
-        backdrop-filter: blur(.5rem);
+        -webkit-backdrop-filter: blur(1rem);
+        backdrop-filter: blur(1rem);
         box-shadow: var(--float-shadow-color);
         border-radius: 1.5rem;
     

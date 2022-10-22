@@ -10,9 +10,10 @@ import FeedPage from "./views/feed";
 import PostPage from "./views/post";
 import SearchPage from "./views/search";
 import ScrapPage from "./views/scrap";
-import ProfilePage from "./views/profile";
+import UserPage from "./views/user";
 import FollowingPage from "./views/following";
 import EditPage from "./views/edit";
+import DirectPage from "./views/direct";
 import NoticePage from "./views/notice";
 import SettingsPage from "./views/settings";
 import NotFoundPage from "./views/not-found";
@@ -72,7 +73,7 @@ const PostLayout = ({ myUserId, floatRef }) => {
   useEffect(() => {
     floatRef.current?.setBottom(<PostBottomNav myUserId={myUserId} />);
     return () => floatRef.current?.setBottom();
-  });
+  }, []);
   
   return <Outlet />;
 };
@@ -102,23 +103,17 @@ const App = () => {
               <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
               <Route path="/post/:postId" element={<PostPage floatRef={floatRef} />} />
               <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
-              <Route path="/profile/:userId" element={<ProfilePage myUserId={myUserId} floatRef={floatRef} />} />
+              <Route path="/user/:userId" element={<UserPage myUserId={myUserId} floatRef={floatRef} />} />
 
               <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
-              <Route path="/me" element={<Navigate to={`/profile/${myUserId}`} />} />
+              <Route path="/me" element={<Navigate to={`/user/${myUserId}`} />} />
               <Route path="/following" element={<FollowingPage floatRef={floatRef} />} />
             </Route>
             <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
+            <Route path="/direct" element={<DirectPage floatRef={floatRef} backdropRef={backdropRef} />} />
             <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
             <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
           </Route>
-
-          {/*<Route element={<PostLayout floatRef={floatRef} />}>
-            <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
-            <Route path="/post/:postId" element={<PostPage floatRef={floatRef} />} />
-            <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
-            <Route path="/profile/:userId" element={<ProfilePage floatRef={floatRef} />} />
-          </Route>*/}
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

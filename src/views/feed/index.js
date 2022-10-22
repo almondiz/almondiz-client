@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { PostViewModel } from "../../view-models";
+import { PostViewModel, SearchViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
 import BackdropLocation from "../backdrop-location";
@@ -18,12 +18,18 @@ const FeedPage = ({ backdropRef }) => {
   useEffect(() => { readAllPosts(); }, []);
   /** */
 
-
-  const addressTokens = (() => {
-    const location = useSelector(state => state.global.location);
+  /** 0. SEARCH API */
+  const [ addressTokens, setAddressTokens ] = useState([]);
+  const searchViewModel = new SearchViewModel();
+  const getPreferedLocation = async () => {
+    const data = await searchViewModel.getPreferedLocation();
+    const { location, distance } = data;
     const address = location.address.split(" ");
-    return [ address.slice(0, -1).join(" "), address[address.length - 1] ];   // [ "수원 영통구", "원천동" ]
-  })();
+    const _addressTokens = [ address.slice(0, -1).join(" "), address[address.length - 1] ];   // [ "수원 영통구", "원천동" ]
+    setAddressTokens(_addressTokens);
+  };
+  useEffect(() => { getPreferedLocation(); }, []);
+  /** */
 
   const showBackdropLocation = () => backdropRef.current?.show({ title: "위치 설정", content: <BackdropLocation />, });
 

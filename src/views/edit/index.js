@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 
 import { Frame } from "../../util";
-import { EditViewModel } from "../../view-models";
+import { EditViewModel, SearchViewModel } from "../../view-models";
 
 import FrameFindShop from "./frame-find-shop";
-import FrameDirect from "./frame-direct";
-import FrameDirectTag from "./frame-direct-tag";
 import FrameWrite from "./frame-write";
 
 
@@ -18,25 +16,28 @@ const EditPage = ({ floatRef, backdropRef }) => {
   /** 4. POST API */
   const editViewModel = new EditViewModel();
   const createPost = async () => (await editViewModel.createPost({ shop, postTags, postText, postImages }));
+  /** */
+
+  /** 0. SEARCH API */
+  const searchViewModel = new SearchViewModel();
+  const searchShop = async (keyword) => (await searchViewModel.searchShop(keyword));
+  const searchFoodTag = async (keyword) => (await searchViewModel.searchFoodTag(keyword));
+  const createFoodTag = async (tagName) => (await searchViewModel.createFoodTag(tagName));
+  /** */
 
 
   const frame = new Frame();
   frame.init([
-    <FrameFindShop
-      searchTags={editViewModel.searchTags}
+    <FrameFindShop frame={frame} floatRef={floatRef}
       setShop={setShop}
-      frame={frame}
-      floatRef={floatRef}
-    />,
-    <FrameDirect frame={frame} floatRef={floatRef} />,
-    <FrameDirectTag frame={frame} floatRef={floatRef}
-      shop={shop} setShop={setShop}
+      searchShop={searchShop}
     />,
     <FrameWrite frame={frame} floatRef={floatRef} backdropRef={backdropRef}
       shop={shop}
       postTags={postTags} setPostTags={setPostTags}
       postText={postText} setPostText={setPostText}
       postImages={postImages} setPostImages={setPostImages}
+      searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
       createPost={createPost}
     />,
   ]);

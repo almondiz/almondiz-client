@@ -41,6 +41,10 @@
         }
     
         .text-wrap {
+          &,
+          &>* {
+            @include text-nowrap;
+          }
           .name {
             font-size: .9375rem;
           }

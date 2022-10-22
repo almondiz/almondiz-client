@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Frame } from "../../../util";
 
@@ -14,9 +15,11 @@ import ArrowBackIosIcon from "../../../asset/icons/mui/arrow-back-ios-icon";
 
 
 const FloatController = ({ floatRef, frame }) => {
+  const navigate = useNavigate();
+
   const Top = () => (
     <nav className="float-top top-nav">
-      <button className="button button-back" onClick={() => frame.prev()}>
+      <button className="button button-back" onClick={() => navigate(-1)}>
         <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">음식점 등록</h3>
@@ -33,14 +36,40 @@ const FloatController = ({ floatRef, frame }) => {
 };
 
 
-const MapDrawer = ({ mapBottomRef }) => {
+const MapDrawer = ({ mapBottomRef, searchPlace }) => {
+  // search
+  const [ searchResult, setSearchResult ] = useState([]);
+  const onSearchPlace = async (tf) => {
+    const _places = await searchPlace(tf);
+    if (_places) {
+      setSearchResult(_places);
+    } else {
+      setSearchResult([]);
+    }
+  };
+
+  // textfield
   const TF_PLACEHOLDER = "장소 검색";
   const [tf, setTf] = useState("");
   useEffect(() => {
-    tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
+    tagFrame.move(tf ? 1 : 0);
+    onSearchPlace(tf);
   }, [tf]);
+  const moveTf = (tfFrameIndex, place) => {
+    tfFrame.move(tfFrameIndex);
+    switch (tfFrameIndex) {
+      case 0:
+        setTf("");
+        mapBottomRef.current?.show({});
+        break;
+      case 2:
+        setTf(place.placeName);
+        mapBottomRef.current?.show({ content: <BottomContent place={place} /> });
+        break;
+    }
+  };
 
-  const BottomContent = () => (
+  const BottomContent = ({ place }) => (
     <section className="bottom-item">
       <div className="row">
         {/*<h3 className="title">음식점 이름</h3>*/}
@@ -50,54 +79,26 @@ const MapDrawer = ({ mapBottomRef }) => {
       </div>
     </section>
   );
-  const handleTf = tfFrameIndex => {
-    tfFrame.move(tfFrameIndex);
-    switch (tfFrameIndex) {
-      case 0:
-        setTf("");
-        mapBottomRef.current?.show({});
-        break;
-      case 1:
-        setTf("");
-        break;
-      case 2:
-        setTf("아주대학교");
-        mapBottomRef.current?.show({ content: <BottomContent /> });
-        break;
-    }
-  };
-
+  const PlaceSearchItem = ({ place }) => (
+    <li className="item" data-place-id={place.placeId} onClick={() => moveTf(2, place)}>
+      <h3 className="title">{place.placeName}</h3>
+      <p className="description">{place.placeAddress}</p>
+    </li>
+  );
   const tagFrame = new Frame([
     (
       <></>
     ),
     (
       <div className="location-list-group">
-        <ul className="list">
-          <li className="item" onClick={() => handleTf(2)}>
-            <h3 className="title">아주대학교</h3>
-            <p className="description">수원 영통구 원천동</p>
-          </li>
-          <li className="item">
-            <h3 className="title">아주대학교 경영대학원</h3>
-            <p className="description">수원 영통구 원천동</p>
-          </li>
-          <li className="item">
-            <h3 className="title">아주대학교다산관</h3>
-            <p className="description">수원 영통구 원천동</p>
-          </li>
-          <li className="item">
-            <h3 className="title">아주대학교일신관</h3>
-            <p className="description">수원 영통구 원천동</p>
-          </li>
-        </ul>
+        <ul className="list">{searchResult.map((place, idx) => <PlaceSearchItem key={idx} place={place} />)}</ul>
       </div>
     ),
   ]);
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
-        <div className="tf light" onClick={() => handleTf(1)}>
+        <div className="tf light" onClick={() => moveTf(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly />
         </div>
@@ -106,7 +107,7 @@ const MapDrawer = ({ mapBottomRef }) => {
     (
       <section className="tf-frame tf-frame-2">
         <div className="tf">
-          <button className="tf-icon" onClick={() => handleTf("")}><ArrowBackIosIcon /></button>
+          <button className="tf-icon" onClick={() => moveTf("")}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
           <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
         </div>
@@ -116,8 +117,8 @@ const MapDrawer = ({ mapBottomRef }) => {
     (
       <section className="tf-frame tf-frame-3">
         <div className="tf light">
-          <button className="tf-icon" onClick={() => handleTf(0)}><ArrowBackIosIcon /></button>
-          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => handleTf(1)} />
+          <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
+          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => moveTf(1)} />
         </div>
       </section>
     ),
@@ -154,14 +155,14 @@ const MapBottom = forwardRef((_, ref) => {
 });
 
 
-// frame 2
-const FrameDirect = ({ frame, floatRef }) => {
+// frame 1
+const FrameFindPlace = ({ frame, floatRef, searchPlace }) => {
   const mapBottomRef = useRef();
 
   return (
     <>
       <main className="content">
-        <MapDrawer frame={frame} mapBottomRef={mapBottomRef} />
+        <MapDrawer frame={frame} mapBottomRef={mapBottomRef} searchPlace={searchPlace} />
         <div className="map-container">
           <NaverMap />
           <MapBottom ref={mapBottomRef} />
@@ -173,4 +174,4 @@ const FrameDirect = ({ frame, floatRef }) => {
   )
 };
 
-export default FrameDirect;
+export default FrameFindPlace;

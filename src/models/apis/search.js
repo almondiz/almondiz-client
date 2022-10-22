@@ -1,12 +1,12 @@
 import { api, path } from "./config";
 
 
-/** 7. TAG API */
+/** 0. SEARCH API */
 // POST /api/tag
-export const createTag = body => {
+export const createFoodTag = body => {
   return api.post(path.tag.default, body);
 };
 // GET /api/tag/like/{tagName}
-export const searchTag = tagName => {
+export const searchFoodTag = tagName => {
   return api.get(path.tag.search(tagName));
 };

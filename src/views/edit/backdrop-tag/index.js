@@ -10,13 +10,25 @@ import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
 import SellIconBorder from "../../../asset/icons/mui/sell-icon-border";
 
 
-const BackdropTag = ({ shop, postTags, setPostTags }) => {
-  // tag
-  const [ tags, setTags ] = useState([...postTags]);
-  useEffect(() => { setPostTags([...tags]); }, [tags]);
-  const onClickTagItem = e => {
-    pushTag(tags, setTags, e);
-    setTf("");
+const BackdropTag = ({
+  shop, postTags, setPostTags,
+  searchFoodTag, createFoodTag,
+}) => {
+  // search
+  const [ searchResult, setSearchResult ] = useState([]);
+  const onSearchFoodTag = async (tf) => {
+    const _tags = await searchFoodTag(tf);
+    if (_tags) {
+      setSearchResult(_tags);
+    } else {
+      setSearchResult([]);
+    }
+  };
+  const onCreateFoodTag = async (tf) => {
+    const _tag = await createFoodTag(tf);
+    if (_tag) {
+      onSelectTagItem(_tag);
+    }
   };
 
   // textfield
@@ -24,43 +36,35 @@ const BackdropTag = ({ shop, postTags, setPostTags }) => {
   const [tf, setTf] = useState("");
   useEffect(() => {
     tagFrame.move(tf ? 1 : 0);
-    searchTag(tf);
+    onSearchFoodTag(tf);
   }, [tf]);
 
-  /** 7. TAG API */
-  const [ searchResult, setSearchResult ] = useState([]);
-  const searchViewModel = new SearchViewModel();
-  const searchTag = async (tagName) => {
-    const _tags = await searchViewModel.searchTag(tagName);
-    if (_tags) {
-      setSearchResult(_tags);
-    }
+  // tag
+  const [ tags, setTags ] = useState([...postTags]);
+  useEffect(() => { setPostTags([...tags]); }, [tags]);
+  const onSelectTagItem = _tag => {
+    pushTag(tags, setTags, _tag);
+    setTf("");
   };
-  const createTag = async (tagName) => {
-    const _tag = await searchViewModel.createTag(tagName);
-    if (_tag) {
-      onClickTagItem(_tag);
-    }
-  };
-  /** */
 
+  const TagSearchItem = ({ tag }) => (
+    <li className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onSelectTagItem(tag)}>
+      {tag.tagName}
+    </li>
+  );
   const tagFrame = new Frame([
     (
       <TagList tags={tags} editable setTags={setTags} />
     ),
     (
       <div className="tag-list-group">
-        <ul className="list">
-          {searchResult.map((tag, idx) => (
-            <li key={idx} className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onClickTagItem(tag)}>
-              {tag.tagName}
-            </li>
-          ))}
-        </ul>
-        <div className="if-not-found">
-          <h3 className="title">"{tf}" 태그를 찾나요?</h3>
-          <button className="text-button" onClick={() => createTag(tf)}>직접 등록</button>
-        </div>
+        <ul className="list">{searchResult.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
+        {(searchResult.map(tag => tag.tagName).indexOf(tf) === -1) && (
+          <div className="if-not-found">
+            <h3 className="title">"{tf}" 태그를 찾나요?</h3>
+            <button className="text-button" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
+          </div>
+        )}
       </div>
     ),
   ]);

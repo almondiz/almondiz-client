@@ -23,7 +23,7 @@ const PostBottomNav = ({ myUserId }) => {
   const [index, setIndex] = useState(null);
 
   const pathToIndex = { "/feed": 0, "/search": 1, "/scrap": 2, "/me": 3, };
-  pathToIndex[`/profile/${myUserId}`] = 3;
+  pathToIndex[`/user/${myUserId}`] = 3;
   useEffect(() => { setIndex(pathToIndex[pathname]); }, [pathname]);
 
   const paths = [ "/feed", "/search", "/scrap", "/me", ];

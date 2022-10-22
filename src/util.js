@@ -1,6 +1,66 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import store from "./store";
+
+
+/** hooks */
+
+export const useInterval = (callback, delay) => {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => { savedCallback.current = callback; }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    const tick = () => savedCallback.current();
+    if (delay !== null) {
+      let timer = setInterval(tick, delay);
+      return () => clearInterval(timer);
+    }
+  }, [delay]);
+};
+export const useTimeout = (callback, delay) => {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => { savedCallback.current = callback; }, [callback]);
+
+  // Set up the timeout.
+  useEffect(() => {
+    const tick = () => savedCallback.current();
+    if (delay !== null) {
+      let timer = setTimeout(tick, delay);
+      return () => clearTimeout(timer);
+    }
+  }, [delay]);
+};
+
+
+export const useWindowDimensions = () => {
+  const bodyDOM = document.body;
+  const getDimensions = () => {
+    const { scrollHeight: height, scrollWidth: width } = bodyDOM;
+    return { height, width };
+  };
+
+  const [dimensions, setDimensions] = useState({});
+  const poll = () => {
+    const _dimensions = getDimensions();
+    let dirty = false;
+    for (let k in _dimensions) {
+      if (_dimensions[k] !== dimensions[k]) {
+        dirty = true;
+        break;
+      }
+    }
+    if (dirty)  setDimensions(_dimensions);
+  };
+
+  const INTERVAL = 300;
+  useInterval(poll, INTERVAL);
+  return dimensions;
+};
 
 
 /** components */
@@ -104,12 +164,8 @@ export class Motion {
     this.delay(0, key, args);
   }
   delay(delay, key, args=[]) {
-    setTimeout(() => {
-      this.setState({
-        key: key,
-        handler: this._getHandler(key, args),
-      });
-    }, delay);
+    const callback = () => this.setState({ key: key, handler: this._getHandler(key, args) });
+    setTimeout(callback, delay);
   }
   
   get() { return this.state.key; }
@@ -137,7 +193,7 @@ export const filterText = text => {
   return text;
 };
 
-export const getMyLocation = () => {
+export const getMyLocation = () => {  // 내 GPS 위치
   return store.getState().global.location;
 };
 export const getDistance = (location_1, location_2) => {  // generally used geo measurement function

@@ -43,11 +43,11 @@ const FollowingPage = ({ floatRef }) => {
     return (
       <ul className="following-list">
         {users.map((user, idx) => {
-          const goToProfilePage = navigate => navigate(`/profile/${user.userId}`);
+          const goToUserPage = navigate => navigate(`/user/${user.userId}`);
 
           return (
             <li key={idx} className="following-item">
-              <div className="link" onClick={() => goToProfilePage(navigate)} />
+              <div className="link" onClick={() => goToUserPage(navigate)} />
       
               <div className="row row-profile">
                 <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>

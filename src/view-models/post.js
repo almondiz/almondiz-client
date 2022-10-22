@@ -50,6 +50,20 @@ export default class PostViewModel {
       return false;
     }
   }
+  // GET /api/postScraps/user
+  async readAllScrappedPosts() {
+    const { success, ...res } = await this.model.readAllScrappedPosts();
+    if (success) {
+      console.log("[PostViewModel.readAllScrappedPosts]", res);
+      const { dataList } = res;
+
+      const myLocation = getMyLocation();
+      return dataList.map((data) => this._makePostItemData(data, { myLocation }));
+    } else {
+      console.error("[PostViewModel.readAllScrappedPosts]", res);
+      return false;
+    }
+  }
   _makePostItemData(data, { myLocation }) {
     const postId = data.postId;
 
@@ -85,7 +99,7 @@ export default class PostViewModel {
         }
       })(),
       postAuthorRelation: postAuthor.relation,
-      goToPostAuthorPage: navigate => navigate(`/profile/${postAuthorId}`),
+      goToPostAuthorPage: navigate => navigate(`/user/${postAuthorId}`),
 
       postCreatedAt: data.createdAt,
       //postCreatedAt: getTime(data.createdAt),

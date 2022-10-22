@@ -24,14 +24,15 @@ const ImageSlider = ({ images=[] }) => {
   };
 
   const onScroll = ({ target }) => {
-    const setHighLight = (dom, target) => {
-      if (dom.querySelector(".highlight") === target) return;
-      dom.querySelector(".highlight").classList.remove("highlight");
+    const setHighLight = (indicatorDOM, target) => {
+      const highlightDOM = indicatorDOM.querySelector(".highlight");
+      if (highlightDOM === target)  return;
+      highlightDOM.classList.remove("highlight");
       target.classList.add("highlight");
     };
 
     const index = Math.round(target.scrollLeft / target.clientWidth);
-    if (index < 0 || index >= images.length) return;
+    if (index < 0 || index >= images.length)  return;
     const indicatorDOM = target.parentNode.querySelector(".indicator");
     setHighLight(indicatorDOM, indicatorDOM.querySelector(`div[data-index="${index}"]`));
   };

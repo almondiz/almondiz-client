@@ -7,9 +7,8 @@
 #float {
   .float-top {
     background-color: var(--float-background-color);
-    -webkit-backdrop-filter: blur(.5rem);
-    backdrop-filter: blur(.5rem);
-    box-shadow: var(--nav-shadow-color);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
 
     display: flex;
     align-items: center;

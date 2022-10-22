@@ -77,10 +77,10 @@ const CommentUnit = ({ comment={}, root=false }) => {
         <button className="profile" onClick={() => comment.goToCommentAuthorPage(navigate)}
           data-user-relation={comment.commentAuthorRelation}
           data-is-author={comment.isCommentAuthorPostAuthor}
-          data-after={comment.isCommentAuthorPostAuthor ? "글쓴이" : undefined}
         >
           <p className="emoji">{comment.commentAuthorEmoji}</p>
           <p className="name">{comment.commentAuthorName}</p>
+          {comment.isCommentAuthorPostAuthor && <p className="badge">{"글쓴이"}</p>}
         </button>
         <p className="description">{comment.commentCreatedAt}</p>
         <div className="buttons right">

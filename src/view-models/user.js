@@ -75,7 +75,7 @@ export default class UserViewModel {
   }
   _makeUserData(data) {
     const userId = data.userId;
-  
+    data.relation = "me"
     return {
       userId,
 
@@ -103,6 +103,17 @@ export default class UserViewModel {
             return undefined;
         }
       })(),
+      userNameBadge: (() => {
+        switch (data.relation) {
+          case "me":
+            return "나";
+          case "following":
+            return "구독";
+          case "other":
+          default:
+            return undefined;
+        }
+      })(),
       userRelation: data.relation,
 
 
@@ -117,7 +128,7 @@ export default class UserViewModel {
         if (data.followingsHead)
           return data.followingsHead.map(user => ({
             userEmoji: user.thumb.emoji,
-            goToUserPage: navigate => navigate(`/profile/${user.userId}`),
+            goToUserPage: navigate => navigate(`/user/${user.userId}`),
           }))
         else
           return [];

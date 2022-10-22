@@ -47,7 +47,6 @@
     .help {
       margin-bottom: 1.125rem;
 
-      user-select: none;
       color: var(--secondary-text-color);
       font-size: .875rem;
   
@@ -87,7 +86,6 @@
     align-items: center;
   
     .description {
-      user-select: none;
       font-size: .9375rem;
       color: var(--secondary-text-color);
       margin-top: .875rem;
@@ -98,7 +96,7 @@
     .menu-thumb {
       margin-bottom: -.25rem;
       
-      height: 10rem;
+      height: 9rem;
       width: 6rem;
       position: relative;
 
@@ -107,9 +105,9 @@
         flex-direction: column;
         align-items: center;
 
-        &.move {
+        &[data-motion=move] {
           .thumb {
-            transition: all .3s ease;
+            transition: all .5s ease-in-out;
           }
         }
 
@@ -126,6 +124,8 @@
         }
 
         .thumb:nth-child(1) {   // move-in candidate
+          margin-top: -1rem;
+
           z-index: 0;
           height: 2rem;
           width: 2rem;
@@ -141,7 +141,7 @@
           line-height: 3rem;
           font-size: 2.25rem;
           margin-bottom: -1.5rem;
-          opacity: .3;
+          opacity: 1;
         }
         .thumb:nth-child(3) {
           z-index: 2;
@@ -150,7 +150,7 @@
           line-height: 4rem;
           font-size: 3rem;
           margin-bottom: -1.5rem;
-          opacity: .6;
+          opacity: 1;
         }
         .thumb:nth-child(4) {
           z-index: 3;
@@ -224,10 +224,10 @@
           pointer-events: auto;
         }
 
-        transition: background-color .3s ease;
+        transition: background-color .3s ease-in-out;
     
         .tf {
-          transition: background-color .3s ease;
+          transition: background-color .3s ease-in-out;
           
           .name-first.tf-box,
           .name-last {
@@ -245,11 +245,11 @@
             display: flex;
             align-items: center;
 
-            &.move-in {
+            &[data-motion=move-in] {
               background-color: var(--border-color);
             }
-            &.move-out {
-              transition: background-color .3s ease;
+            &[data-motion=move-out] {
+              transition: background-color .3s ease-in-out;
             }
         
             .field {
@@ -259,7 +259,6 @@
         
               font-size: .9375rem;
               text-align: center;
-              user-select: none;
             }
         
             .name-refresh-icon {
