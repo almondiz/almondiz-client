@@ -193,7 +193,7 @@ export const filterText = text => {
   return text;
 };
 
-export const getMyLocation = () => {
+export const getMyLocation = () => {  // 내 GPS 위치
   return store.getState().global.location;
 };
 export const getDistance = (location_1, location_2) => {  // generally used geo measurement function

@@ -6,8 +6,8 @@
 #float {
   .float-top {
     background-color: var(--float-background-color);
-    -webkit-backdrop-filter: blur(.5rem);
-    backdrop-filter: blur(.5rem);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
 
     display: flex;
     align-items: center;
@@ -104,8 +104,8 @@
       margin-left: -.5rem;
       margin-right: -.5rem;
       background-color: var(--float-background-color);
-      -webkit-backdrop-filter: blur(.5rem);
-      backdrop-filter: blur(.5rem);
+      -webkit-backdrop-filter: blur(1rem);
+      backdrop-filter: blur(1rem);
       box-shadow: var(--float-shadow-color);
     }
   }
@@ -198,8 +198,8 @@
 
     border-radius: 100%;
     background-color: var(--float-background-color);
-    -webkit-backdrop-filter: blur(.5rem);
-    backdrop-filter: blur(.5rem);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
     box-shadow: var(--float-shadow-color);
 
     &.set {
@@ -220,8 +220,8 @@
       padding-right: $padding-horiz;
   
       background-color: var(--float-background-color);
-      -webkit-backdrop-filter: blur(.5rem);
-      backdrop-filter: blur(.5rem);
+      -webkit-backdrop-filter: blur(1rem);
+      backdrop-filter: blur(1rem);
       box-shadow: var(--nav-shadow-color);
     }
     .bottom-item {

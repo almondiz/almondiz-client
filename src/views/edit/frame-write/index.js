@@ -13,9 +13,9 @@ import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
 
 
 const FloatController = ({
-  floatRef, frame, 
+  frame, floatRef,
+  postImages, setPostImages,
   createPost,
-  postImages, setPostImages
 }) => {
   const navigate = useNavigate();
 
@@ -53,7 +53,7 @@ const FloatController = ({
 
   const Top = () => (
     <nav className="float-top top-nav">
-      <button className="button button-back" onClick={() => frame.walk(-3)}>
+      <button className="button button-back" onClick={() => frame.prev()}>
         <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">리뷰 작성</h3>
@@ -75,13 +75,14 @@ const FloatController = ({
 };
 
 
-// frame 4
+// frame 2
 const FrameWrite = ({
   frame, floatRef, backdropRef,
   shop,
   postTags, setPostTags,
   postText, setPostText,
   postImages, setPostImages,
+  searchFoodTag, createFoodTag,
   createPost
 }) => {
   useEffect(() => { setPostTags([...shop.tags]); }, []);
@@ -109,7 +110,13 @@ const FrameWrite = ({
   const showBackdropTag = () => {
     backdropRef.current?.show({
       title: "태그 추가",
-      content: <BackdropTag shop={shop} postTags={postTags} setPostTags={setPostTags} />,
+      content: (
+        <BackdropTag
+          shop={shop}
+          postTags={postTags} setPostTags={setPostTags}
+          searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
+        />
+      ),
     });
   };
 

@@ -57,7 +57,7 @@ export default class CommentViewModel {
       })(),
       commentAuthorRelation: commentAuthor.relation,
       isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
-      goToCommentAuthorPage: navigate => navigate(`/profile/${commentAuthorId}`),
+      goToCommentAuthorPage: navigate => navigate(`/user/${commentAuthorId}`),
 
       commentCreatedAt: data.createdAt,
       //commentCreatedAt: getTime(data.createdAt),

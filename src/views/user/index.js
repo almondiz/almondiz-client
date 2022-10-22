@@ -40,7 +40,7 @@ const FloatController = ({ floatRef, user }) => {
 };
 
 
-const ProfilePage = ({ floatRef, myUserId }) => {
+const UserPage = ({ floatRef, myUserId }) => {
   const userId = parseInt(useParams().userId);
 
   /** 1. USER API */
@@ -194,4 +194,4 @@ const ProfilePage = ({ floatRef, myUserId }) => {
   );
 };
 
-export default ProfilePage;
+export default UserPage;

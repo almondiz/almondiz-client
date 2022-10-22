@@ -15,7 +15,7 @@ const FrameSocial = ({ frame, providerType, email }) => {
   return (
     <>
       <nav className="top-nav">
-        <button className="button button-back" onClick={() => navigate(`/login`)}>
+        <button className="button button-back" onClick={() => navigate(-1)}>
           <div className="icon"><ArrowBackIcon /></div>
         </button>
         <h3 className="title">회원 가입</h3>

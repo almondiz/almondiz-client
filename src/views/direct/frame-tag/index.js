@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Frame } from "../../../util";
-import { SearchViewModel } from "../../../view-models";
 
 import TagList, { pushTag } from "../../../components/tag-list";
 
@@ -12,13 +12,15 @@ import SellIconBorder from "../../../asset/icons/mui/sell-icon-border";
 
 
 const FloatController = ({ floatRef, frame }) => {
+  const navigate = useNavigate();
+  
   const Top = () => (
     <nav className="float-top top-nav">
       <button className="button button-back" onClick={() => frame.prev()}>
         <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">음식점 등록</h3>
-      <button className="button button-next" onClick={() => frame.walk(-2)}>등록</button>
+      <button className="button button-next" onClick={() => navigate(-1)}>등록</button>
     </nav>
   );
 
@@ -31,11 +33,37 @@ const FloatController = ({ floatRef, frame }) => {
 };
 
 
-// frame 3
-const FrameDirectTag = ({
+// frame 2
+const FrameTag = ({
   frame, floatRef,
-  shop, setShop
+  shop, setShop,
+  searchFoodTag, createFoodTag,
 }) => {
+  // search
+  const [ searchResult, setSearchResult ] = useState([]);
+  const onSearchFoodTag = async (tf) => {
+    const _tags = await searchFoodTag(tf);
+    if (_tags) {
+      setSearchResult(_tags);
+    } else {
+      setSearchResult([]);
+    }
+  };
+  const onCreateFoodTag = async (tf) => {
+    const _tag = await createFoodTag(tf);
+    if (_tag) {
+      onSelectTagItem(_tag);
+    }
+  };
+
+  // textfield
+  const TF_PLACEHOLDER = "태그를 추가하세요";
+  const [tf, setTf] = useState("");
+  useEffect(() => {
+    tagFrame.move(tf ? 1 : 0);
+    onSearchFoodTag(tf);
+  }, [tf]);
+
   // tag
   const [ tags, setTags ] = useState([]);
   useEffect(() => {
@@ -44,51 +72,26 @@ const FrameDirectTag = ({
     setShop(_shop);
     console.log(_shop);
   }, [tags]);
-  const onClickTagItem = e => {
-    pushTag(tags, setTags, e);
+  const onSelectTagItem = _tag => {
+    pushTag(tags, setTags, _tag);
     setTf("");
   };
 
-  // textfield
-  const TF_PLACEHOLDER = "태그를 추가하세요";
-  const [tf, setTf] = useState("");
-  useEffect(() => {
-    tagFrame.move(tf ? 1 : 0);
-    searchTag(tf);
-  }, [tf]);
-
-  /** 7. TAG API */
-  const [ searchResult, setSearchResult ] = useState([]);
-  const searchViewModel = new SearchViewModel();
-  const searchTag = async (tagName) => {
-    const _tags = await searchViewModel.searchTag(tagName);
-    if (_tags) {
-      setSearchResult(_tags);
-    }
-  };
-  const createTag = async (tagName) => {
-    const _tag = await searchViewModel.createTag(tagName);
-    if (_tag) {
-      onClickTagItem(_tag);
-    }
-  };
-
+  const TagSearchItem = ({ tag }) => (
+    <li className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onSelectTagItem(tag)}>
+      {tag.tagName}
+    </li>
+  );
   const tagFrame = new Frame([
     (
       <TagList tags={tags} editable setTags={setTags} />
     ),
     (
       <div className="tag-list-group">
-        <ul className="list">
-          {searchResult.map((tag, idx) => (
-            <li key={idx} className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onClickTagItem(tag)}>
-              {tag.tagName}
-            </li>
-          ))}
-        </ul>
+        <ul className="list">{searchResult.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
         <div className="if-not-found">
           <h3 className="title">"{tf}" 태그를 찾나요?</h3>
-          <button className="text-button" onClick={() => createTag(tf)}>직접 등록</button>
+          <button className="text-button" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
         </div>
       </div>
     ),
@@ -125,4 +128,4 @@ const FrameDirectTag = ({
   )
 };
 
-export default FrameDirectTag;
+export default FrameTag;

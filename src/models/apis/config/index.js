@@ -42,10 +42,12 @@ const path = {
   post: {
     default: makePath(`post`),
     one: postId => makePath(`post/${postId}`),
-    byShop: shopId => makePath(`store/${shopId}/posts`),
-    byUser: makePath(`user/posts`),
 
     all: makePath(`posts`),
+
+    byScrap: makePath(`postScraps/user`),
+    byUser: userId => makePath(`user/${userId}/posts`),
+    byShop: shopId => makePath(`store/${shopId}/posts`),
 
     scrap: postId => makePath(`postScrap/post/${postId}/user`),
     unscrap: postId => makePath(`postScrap/post/${postId}`),
@@ -63,7 +65,7 @@ const path = {
   },
 
 
-  /** 7. TAG API */
+  /** 0. SEARCH API */
   tag: {
     default: makePath(`tag`),
     search: tagName => makePath(`tag/like/${tagName}`),

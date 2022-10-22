@@ -128,7 +128,7 @@ export default class UserViewModel {
         if (data.followingsHead)
           return data.followingsHead.map(user => ({
             userEmoji: user.thumb.emoji,
-            goToUserPage: navigate => navigate(`/profile/${user.userId}`),
+            goToUserPage: navigate => navigate(`/user/${user.userId}`),
           }))
         else
           return [];

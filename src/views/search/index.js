@@ -17,79 +17,81 @@ import CloseIcon from "../../asset/icons/mui/close-icon";
 const Drawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
-  const PostList = () => {
-    /** 4. POST API */
-    const postViewModel = new PostViewModel();
-    const [posts, setPosts] = useState([]);
-    const readAllPosts = async () => setPosts(await postViewModel.readAllPosts());
-    useEffect(() => { readAllPosts(); }, []);
-    /** */
-    
-    return <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
+  /** 4. POST API */
+  const postViewModel = new PostViewModel();
+  const PostList = ({ tags }) => {
+    const [ posts, setPosts ] = useState([]);
+    const searchPosts = async (tags) => setPosts(await postViewModel.readAllPosts());
+    useEffect(() => { searchPosts(); }, []);
+    return posts && (
+      <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
+    );
+  };
+  /** */
+
+  /** 0. SEARCH API */
+  const [ searchResult, setSearchResult ] = useState({});
+  const searchViewModel = new SearchViewModel();
+  const onSearchFullTag = async (tf) => {
+    const _tags = await searchViewModel.searchFullTag(tf);
+    if (_tags) {
+      setSearchResult(_tags);
+    } else {
+      setSearchResult([]);
+    }
   };
 
-  // tag
-  const [ tags, setTags ] = useState([]);
-  const onClickTagItem = e => {
-    pushTag(tags, setTags, e);
-    setTf("");
+  const [ historyResult, setHistoryResult ] = useState([]);
+  const readSearchHistory = async () => setHistoryResult(await searchViewModel.readSearchHistory());
+  useEffect(() => { readSearchHistory(); }, []);
+  const removeSearchHistory = async (idx) => {
+    const success = await searchViewModel.removeSearchHistory(idx);
+    if (success) {
+      const _historyResult = [...historyResult];
+      _historyResult.splice(idx, 1);
+      setHistoryResult(_historyResult);
+    }
   };
+  /** */
 
   // textfield
   const TF_PLACEHOLDER = "메뉴나 지역을 입력해 보세요";
   const [tf, setTf] = useState("");
-  useEffect(() => { tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0); }, [tf]);
-  const handleTf = tfFrameIndex => {
+  useEffect(() => {
+    tagFrame.move(tf ? 1 : 0);
+    onSearchFullTag(tf);
+  }, [tf]);
+  const moveTf = tfFrameIndex => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
-        setTf("");
+        setTf(""); setTags([]);
         contentRef.current?.show({});
-        break;
-      case 1:
-        setTf("");
         break;
       case 2:
         setTf("");
-        contentRef.current?.show({ content: <PostList /> });
+        contentRef.current?.show({ content: <PostList tags={tags} /> });
         break;
     }
   };
 
-  /** 7. TAG API (DUMMY) */
-  const [ historyResult, setHistoryResult ] = useState([
-    [
-      { tagType: "food", tagId: 1, tagName: "한식" },
-      { tagType: "region", tagId: 6, tagName: "서울" },
-    ],
-    [
-      { tagType: "food", tagId: 2, tagName: "짬뽕" },
-      { tagType: "region", tagId: 7, tagName: "성남 분당구" }, { tagType: "region", tagId: 8, tagName: "수원 팔달구 우만동" },
-    ],
-    [
-      { tagType: "food", tagId: 3, tagName: "스시" }, { tagType: "food", tagId: 4, tagName: "마라탕" },
-      { tagType: "region", tagId: 9, tagName: "천안" },
-    ],
-  ]);
-  const [ searchResult, setSearchResult ] = useState({
-    foods: [
-      { tagType: "food", tagId: 14, tagName: "대구" },
-    ],
-    regions: [
-      { tagType: "region", tagId: 1, tagName: "대구" },
-      { tagType: "region", tagId: 2, tagName: "대구 남구" },
-      { tagType: "region", tagId: 3, tagName: "대구 달서구" },
-      { tagType: "region", tagId: 4, tagName: "대구 북구" },
-      { tagType: "region", tagId: 5, tagName: "대구 중구" },
-    ],
-  });
-  /** */
+  // tag
+  const [ tags, setTags ] = useState([]);
+  const onSelectTagItem = _tag => {
+    pushTag(tags, setTags, _tag);
+    setTf("");
+  };
 
+  const TagSearchItem = ({ tag }) => (
+    <li className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onSelectTagItem(tag)}>
+      {tag.tagName}
+    </li>
+  );
   const tagFrame = new Frame([
     (
       <>
         <TagList tags={tags} editable setTags={setTags} />
-        <button className="button button-search" onClick={() => handleTf(2)}>
+        <button className="button button-search" onClick={(tags.length > 0) ? () => moveTf(2) : () => {}}>
           <div className="icon"><SearchIconBorder /></div>
           <p>검색하기</p>
         </button>
@@ -99,15 +101,11 @@ const Drawer = ({ contentRef }) => {
       <>
         <div className="tag-list-group">
           <h3 className="subheader">음식</h3>
-          <ul className="list">
-            {searchResult.foods.map((tag, idx) => <li key={idx} className="item" onClick={() => onClickTagItem(tag)}>{tag.tagName}</li>)}
-          </ul>
+          <ul className="list">{searchResult.foods?.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
         </div>
         <div className="tag-list-group">
           <h3 className="subheader">지역</h3>
-          <ul className="list">
-            {searchResult.regions.map((tag, idx) => <li key={idx} className="item" onClick={() => onClickTagItem(tag)}>{tag.tagName}</li>)}
-          </ul>
+          <ul className="list">{searchResult.regions?.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
         </div>
       </>
     ),
@@ -120,7 +118,7 @@ const Drawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf" onClick={() => handleTf(1)}>
+        <div className="tf" onClick={() => moveTf(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly />
         </div>
@@ -130,13 +128,11 @@ const Drawer = ({ contentRef }) => {
             {historyResult.map((tags, idx) => {
               const onClick = e => {
                 setTags([...tags]);
-                handleTf(2);
+                moveTf(2);
               };
               const onDeleteClick = e => {
                 e.stopPropagation();
-                const _historyResult = [...historyResult];
-                _historyResult.splice(idx, 1);
-                setHistoryResult(_historyResult);
+                removeSearchHistory(idx)
               };
 
               return (
@@ -161,7 +157,7 @@ const Drawer = ({ contentRef }) => {
           <div className="right" />
         </header>
         <div className="tf">
-          <button className="tf-icon" onClick={() => handleTf(0)}><ArrowBackIosIcon /></button>
+          <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
           <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
         </div>
@@ -177,8 +173,8 @@ const Drawer = ({ contentRef }) => {
           <div className="right" />
         </header>
         <div className="tf light">
-          <button className="tf-icon" onClick={() => handleTf(0)}><ArrowBackIosIcon /></button>
-          <div className="tf-box" onClick={() => handleTf(1)}>
+          <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
+          <div className="tf-box" onClick={() => moveTf(1)}>
             <TagList tags={tags} />
           </div>
         </div>

@@ -38,6 +38,10 @@ export default class PostModel extends DefaultModel {
   unscrap(postId) {
     return this.callApi(() => this.api.unscrap(postId));
   }
+  // GET /api/postScraps/user
+  readAllScrappedPosts() {
+    return this.callApi(() => this.api.readAllScrappedPosts());
+  }
 
 
 

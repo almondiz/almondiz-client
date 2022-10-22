@@ -29,7 +29,7 @@ const HideOnScroll = ({ headerWrapRef, footerWrapRef }) => {
 const AutoShadow = ({ outerRef }) => {
   const windowDimensions = useWindowDimensions();
   useEffect(() => {
-    console.log("[AutoShadow]", windowDimensions);
+    //console.log("[AutoShadow]", windowDimensions);
     const outerObj = outerRef.current;
     if (document.body.scrollHeight > window.innerHeight)
       outerObj?.classList.add("shadow");
