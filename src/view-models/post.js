@@ -49,7 +49,7 @@ export default class PostViewModel {
       shopAddress: data.shop.location.address.split(" ").slice(0, 3).join(" "),     // ### HMM (지번만 필요함. 서버에서 도로명 주지 않도록 해야 할 듯)
       shopAddressDetail: data.shop.location.address,
       shopDistance: `${getDistance(myLocation, data.shop.location)}km`,
-      goToShopPage: navigate => (window.location.href = data.shop.link),          // ### FUTURE WORKS
+      goToShopPage: navigate => (window.location.href = data.shop.link),            // ### FUTURE WORKS
 
       postTags: data.tags,
       postText: data.text,

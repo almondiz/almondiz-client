@@ -88,7 +88,9 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
             </div>
           )}
         </div>
-        <nav className="row row-tags"><TagList tags={post.postTags} small /></nav>
+        <nav className="row row-tags">
+          <TagList tags={post.postTags} onClickItem={idx => navigate(`/search/${post.postTags[idx].tagType}/${post.postTags[idx].tagId}`)} small />
+        </nav>
       </header>
 
       <main className="body">

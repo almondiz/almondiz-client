@@ -56,6 +56,12 @@
   a {
     z-index: 1;
   }
+  ::v-deep {
+    button,
+    a {
+      z-index: 1;
+    }
+  }
 }
 .post:not(.post-item) {
   margin-top: -1rem;
