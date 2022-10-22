@@ -57,10 +57,12 @@ const BackdropTag = ({ shop, postTags, setPostTags }) => {
             </li>
           ))}
         </ul>
-        <div className="if-not-found">
-          <h3 className="title">"{tf}" 태그를 찾나요?</h3>
-          <button className="text-button" onClick={() => createTag(tf)}>직접 등록</button>
-        </div>
+        {(searchResult.map(tag => tag.tagName).indexOf(tf) === -1) && (
+          <div className="if-not-found">
+            <h3 className="title">"{tf}" 태그를 찾나요?</h3>
+            <button className="text-button" onClick={() => createTag(tf)}>직접 등록</button>
+          </div>
+        )}
       </div>
     ),
   ]);
