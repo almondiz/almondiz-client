@@ -24,10 +24,10 @@ export default class UserViewModel {
           goSignup();
           break;
         case "옳지 않은 이메일입니다. 이메일 형식을 확인해주세요":
-          console.error("[login] : ", result.msg);
+          console.error("[login]", result.msg);
           break;
         default:
-          console.error("[login] : ", result.msg);
+          console.error("[login]", result.msg);
           break;
       }
       return;
