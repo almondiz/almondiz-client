@@ -13,18 +13,28 @@ export default class SearchViewModel {
     if ((tagName = filterText(tagName)) === "")   return false;
 
     const body = { tagName, };
-    const res = await this.model.createTag(body);
-    console.log("[SearchViewModel.createTag]", res);
-    const { data } = res;
-    return data;
+    const { success, ...res } = await this.model.createTag(body);
+    if (success) {
+      console.log("[SearchViewModel.createTag]", res);
+      const { data } = res;
+      return data;  
+    } else {
+      console.error("[SearchViewModel.createTag]", res);
+      return false;
+    }
   }
   // GET /api/tag/like/{tagName}
   async searchTag(tagName) {
     if ((tagName = filterText(tagName)) === "")   return false;
 
-    const res = await this.model.searchTag(tagName);
-    console.log("[SearchViewModel.searchTag]", res);
-    const { dataList } = res;
-    return dataList;
+    const { success, ...res } = await this.model.searchTag(tagName);
+    if (success) {
+      console.log("[SearchViewModel.searchTag]", res);
+      const { dataList } = res;
+      return dataList;
+    } else {
+      console.error("[SearchViewModel.searchTag]", res);
+      return false;
+    }
   }
 };

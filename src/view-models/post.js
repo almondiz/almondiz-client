@@ -10,30 +10,45 @@ export default class PostViewModel {
   /** 4-0. POST API */
   // GET /api/post/{postId}
   async readPost(postId) {
-    const res = await this.model.readPost(postId);
-    console.log("[PostViewModel.readPost]", res);
-    const { data } = res;
+    const { success, ...res } = await this.model.readPost(postId);
+    if (success) {
+      console.log("[PostViewModel.readPost]", res);
+      const { data } = res;
 
-    const myLocation = getMyLocation();
-    return this._makePostItemData(data, { myLocation });
+      const myLocation = getMyLocation();
+      return this._makePostItemData(data, { myLocation });
+    } else {
+      console.error("[PostViewModel.readPost]", res);
+      return false;
+    }
   }
   // GET /api/posts
   async readAllPosts() {
-    const res = await this.model.readAllPosts();
-    console.log("[PostViewModel.readAllPosts]", res);
-    const { dataList } = res;
+    const { success, ...res } = await this.model.readAllPosts();
+    if (success) {
+      console.log("[PostViewModel.readAllPosts]", res);
+      const { dataList } = res;
 
-    const myLocation = getMyLocation();
-    return dataList.map((data) => this._makePostItemData(data, { myLocation }));
+      const myLocation = getMyLocation();
+      return dataList.map((data) => this._makePostItemData(data, { myLocation }));
+    } else {
+      console.error("[PostViewModel.readAllPosts]", res);
+      return false;
+    }
   }
   // GET /api/user/posts
   async readAllUserPosts(userId) {
-    const res = await this.model.readAllUserPosts(userId);
-    console.log("[PostViewModel.readAllUserPosts]", res);
-    const { dataList } = res;
+    const { success, ...res } = await this.model.readAllUserPosts(userId);
+    if (success) {
+      console.log("[PostViewModel.readAllUserPosts]", res);
+      const { dataList } = res;
 
-    const myLocation = getMyLocation();
-    return dataList.map((data) => this._makePostItemData((data), { myLocation }));
+      const myLocation = getMyLocation();
+      return dataList.map((data) => this._makePostItemData((data), { myLocation }));
+    } else {
+      console.error("[PostViewModel.readAllUserPosts]", res);
+      return false;
+    }
   }
   _makePostItemData(data, { myLocation }) {
     const postId = data.postId;
@@ -85,16 +100,25 @@ export default class PostViewModel {
 
       scrap: async (b) => {
         const action = this.model[b ? "unscrap" : "scrap"].bind(this.model);
-        const success = await action(postId);
-        console.log("[postViewModel.scrap]", action, success);
-        return success;
+        const { success, ...res } = await action(postId);
+        if (success) {
+          console.log("[postViewModel.scrap]", action, res);
+          return success;
+        } else {
+          console.error("[postViewModel.scrap]", action, res);
+          return false;
+        }
       },
 
       delete: async () => {
-        const res = await this.model.deletePost(postId);
-        console.log("[postViewModel.delete]", res);
-        const { success } = res;
-        return success;
+        const { success, ...res } = await this.model.deletePost(postId);
+        if (success) {
+          console.log("[postViewModel.delete]", res);
+          return success;
+        } else {
+          console.error("[postViewModel.delete]", res);
+          return false;
+        }
       },
     };
   }

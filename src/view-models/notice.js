@@ -9,12 +9,17 @@ export default class NoticeViewModel {
   /** 3. NOTIFICATION API */
   // GET /api/notifications
   async getMyNoticeData() {
-    const res = await this.userModel.getMyNoticeData();
-    console.log("[NoticeViewModel.getMyNoticeData]", res);
-    const { dataList } = res;
-
-    dataList.reverse();
-    return dataList.map(data => this._makeNoticeItemData(data));
+    const { success, ...res } = await this.userModel.getMyNoticeData();
+    if (success) {
+      console.log("[NoticeViewModel.getMyNoticeData]", res);
+      const { dataList } = res;
+      
+      dataList.reverse();
+      return dataList.map(data => this._makeNoticeItemData(data));
+    } else {
+      console.error("[NoticeViewModel.getMyNoticeData]", res);
+      return false;
+    }
   }
   _makeNoticeItemData(data) {
     const noticeId = data.noticeId;

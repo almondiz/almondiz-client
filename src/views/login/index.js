@@ -17,10 +17,10 @@ import { UserViewModel } from "../../view-models";
 import "./style.scoped.scss";
 import SymbolImage from "../../asset/logo/symbol.png";
 import Logotype from "../../asset/logo/logotype";
-//import AppleSocialImage from "../../asset/social/apple.svg";
 import GoogleSocialImage from "../../asset/social/google.svg";
 import NaverSocialImage from "../../asset/social/naver.svg";
 import KakaoSocialImage from "../../asset/social/kakao.svg";
+
 
 const LoginPage = () => {
   const dispatch = useDispatch()
@@ -36,19 +36,20 @@ const LoginPage = () => {
     await userViewModel.checkAccount(
       { providerType, providerUid },
       () => navigate(`/signup`),
-      ({ token, userId }) => {
+      data => {
+        const { token, userId } = data;
         const { accessToken, refreshToken } = token;
         dispatch(setAccessToken(accessToken));
         dispatch(setRefreshToken(refreshToken));
         dispatch(setMyUserId(userId));
-        navigate(`/feed`);  // ####
+        navigate(`/feed`);
       },
     );
   }
 
   const onFailure = async (res) => {
     console.error("[LoginPage.onFailure]", res);
-  }
+  };
 
   const clientId = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID_NETLIFY;
 
@@ -89,8 +90,7 @@ const LoginPage = () => {
                   src={GoogleSocialImage}
                 />
               )}
-              onSuccess={onSuccess}
-              onFailure={onFailure}
+              onSuccess={onSuccess} onFailure={onFailure}
             />
             <img className="social-icon kakao" alt="Kakao" src={KakaoSocialImage} onClick={() => navigate(`/signup`)} />
           </nav>

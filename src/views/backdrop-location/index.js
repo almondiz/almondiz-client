@@ -15,7 +15,7 @@ import LocationOnIconBorder from "../../asset/icons/mui/location-on-icon-border"
 
 
 const MapDrawer = ({ mapBottomRef }) => {
-  const tfPlaceholder = "장소 검색";
+  const TF_PLACEHOLDER = "장소 검색";
   const [tf, setTf] = useState("");
   useEffect(() => {
     tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
@@ -33,7 +33,7 @@ const MapDrawer = ({ mapBottomRef }) => {
       </button>
     </section>
   );
-  const tfHandler = tfFrameIndex => {
+  const handleTf = tfFrameIndex => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
@@ -57,7 +57,7 @@ const MapDrawer = ({ mapBottomRef }) => {
     (
       <div className="location-list-group">
         <ul className="list">
-          <li className="item" onClick={() => tfHandler(2)}>
+          <li className="item" onClick={() => handleTf(2)}>
             <h3 className="title">아주대학교</h3>
             <p className="description">수원 영통구 원천동</p>
           </li>
@@ -80,17 +80,17 @@ const MapDrawer = ({ mapBottomRef }) => {
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
-        <div className="tf light" onClick={() => tfHandler(1)}>
+        <div className="tf light" onClick={() => handleTf(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
-          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
+          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly />
         </div>
       </section>
     ),
     (
       <section className="tf-frame tf-frame-2">
         <div className="tf">
-          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
-          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+          <button className="tf-icon" onClick={() => handleTf(0)}><ArrowBackIosIcon /></button>
+          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
           <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
         </div>
         {tagFrame.view()}        
@@ -99,8 +99,8 @@ const MapDrawer = ({ mapBottomRef }) => {
     (
       <section className="tf-frame tf-frame-3">
         <div className="tf light">
-          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
-          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly onClick={() => tfHandler(1)} />
+          <button className="tf-icon" onClick={() => handleTf(0)}><ArrowBackIosIcon /></button>
+          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => handleTf(1)} />
         </div>
       </section>
     ),

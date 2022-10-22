@@ -11,24 +11,36 @@ export default class EditViewModel {
   // POST /api/post
   async createPost({ shop, postTags, postText, postImages }) {
     if ((postText = filterText(postText)) === "")   return false;
+    if (!postTags.length)   return false;
+
     const postImageUrls = await this._uploadImages({ postImages });
     const body = this._createBody({ shop, postTags, postText, postImageUrls });
 
-    const res = await this.postModel.createPost(body);
-    console.log("[EditViewModel.createPost]", res);
-    const { success } = res;
-    return success;
+    const { success, ...res } = await this.postModel.createPost(body);
+    if (success) {
+      console.log("[EditViewModel.createPost]", res);
+      return success;
+    } else {
+      console.error("[EditViewModel.createPost]", res);
+      return false;
+    }
   }
   // PATCH /api/post/{postId}
   async updatePost(postId, { shop, postTags, postText, postImages }) {
     if ((postText = filterText(postText)) === "")   return false;
+    if (!postTags.length)   return false;
+
     const postImageUrls = await this._uploadImages({ postImages });
     const body = this._createBody({ shop, postTags, postText, postImageUrls });
 
-    const res = await this.postModel.updatePost(postId, body);
-    console.log("[EditViewModel.updatePost]", res);
-    const { success } = res;
-    return success;
+    const { success, ...res } = await this.postModel.updatePost(postId, body);
+    if (success) {
+      console.log("[EditViewModel.updatePost]", res);
+      return success;
+    } else {
+      console.error("[EditViewModel.updatePost]", res);
+      return false;
+    }
   }
   async _uploadImages({ postImages }) {
     const postImageUrls = [];
