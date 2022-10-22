@@ -20,7 +20,13 @@ const FloatController = ({
   const navigate = useNavigate();
 
   const imageInputRef = useRef();
-  const onAddImageButtonClick = e => imageInputRef.current?.click();
+  const MAX_NUM_OF_IMAGES = 10;
+  const onAddImageButtonClick = e => {
+    if (postImages.length < MAX_NUM_OF_IMAGES)
+      imageInputRef.current?.click();
+    else
+      console.error("[FrameWrite]", "한 게시물에서는 최대 10개까지만 이미지를 업로드할 수 있음.");
+  };
   const onImageChange = e => {
     setPostImages([...postImages, {
       file: e.target.files[0],

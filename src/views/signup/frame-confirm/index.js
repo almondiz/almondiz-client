@@ -1,15 +1,14 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
 
 
 // frame 3
-const FrameConfirm = ({ frame, callSignup, profile, email, nutId, tagId, getRandomNutList }) => {
-  const navigate = useNavigate();
-  const nutList = getRandomNutList();
-  const getNutName = (id) => nutList.filter(({ id: _id }) => _id === Number(id))[0]?.name;
+const FrameConfirm = ({
+  frame, callSignup, email,
+  profileThumb, profileTag, profileNut
+}) => {
   return (
     <>
       <nav className="top-nav">
@@ -22,9 +21,9 @@ const FrameConfirm = ({ frame, callSignup, profile, email, nutId, tagId, getRand
       <main className="content">
         <p className="description">이대로 가입하시겠어요?</p>
         <div className="profile">
-          <div className="thumb" style={{ backgroundColor: profile.color }}>{profile.emoji}</div>
+          <div className="thumb" style={{ backgroundColor: profileThumb.color }}>{profileThumb.emoji}</div>
           <div className="text-wrap">
-            <p className="name">마제멘 {getNutName(nutId)}</p>
+            <p className="name">{profileTag.tagName} {profileNut.nutName}</p>
             <p className="email">{email}</p>
           </div>
         </div>

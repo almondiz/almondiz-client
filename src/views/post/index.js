@@ -33,7 +33,7 @@ const FloatController = ({ floatRef, post, createComment }) => {
     return <div className="float-header light">{headerFrame.view()}</div>;
   };
   const Footer = () => {
-    const tfPlaceholder = "댓글 입력";
+    const TF_PLACEHOLDER = "댓글 입력";
     const [tf, setTf] = useState("");
 
     const [replyController, setReplyController] = useState(null);
@@ -105,7 +105,7 @@ const FloatController = ({ floatRef, post, createComment }) => {
               <div className="icon"><ArrowBackIosIcon /></div>
             </button>
             <div className="comment-input-box">
-              <input type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+              <input type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
             </div>
             <button className="button button-comment-send" onClick={() => commentDialogController.send()}>
               <div className="icon"><SendIconBorder /></div>

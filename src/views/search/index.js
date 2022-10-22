@@ -36,10 +36,10 @@ const Drawer = ({ contentRef }) => {
   };
 
   // textfield
-  const tfPlaceholder = "메뉴나 지역을 입력해 보세요";
+  const TF_PLACEHOLDER = "메뉴나 지역을 입력해 보세요";
   const [tf, setTf] = useState("");
   useEffect(() => { tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0); }, [tf]);
-  const tfHandler = tfFrameIndex => {
+  const handleTf = tfFrameIndex => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
@@ -89,7 +89,7 @@ const Drawer = ({ contentRef }) => {
     (
       <>
         <TagList tags={tags} editable setTags={setTags} />
-        <button className="button button-search" onClick={() => tfHandler(2)}>
+        <button className="button button-search" onClick={() => handleTf(2)}>
           <div className="icon"><SearchIconBorder /></div>
           <p>검색하기</p>
         </button>
@@ -120,9 +120,9 @@ const Drawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf" onClick={() => tfHandler(1)}>
+        <div className="tf" onClick={() => handleTf(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
-          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
+          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly />
         </div>
         <div className="history-list-group">
           <h3 className="subheader">검색 기록</h3>
@@ -130,7 +130,7 @@ const Drawer = ({ contentRef }) => {
             {historyResult.map((tags, idx) => {
               const onClick = e => {
                 setTags([...tags]);
-                tfHandler(2);
+                handleTf(2);
               };
               const onDeleteClick = e => {
                 e.stopPropagation();
@@ -161,8 +161,8 @@ const Drawer = ({ contentRef }) => {
           <div className="right" />
         </header>
         <div className="tf">
-          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
-          <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+          <button className="tf-icon" onClick={() => handleTf(0)}><ArrowBackIosIcon /></button>
+          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
           <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
         </div>
         {tagFrame.view()}
@@ -177,8 +177,8 @@ const Drawer = ({ contentRef }) => {
           <div className="right" />
         </header>
         <div className="tf light">
-          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
-          <div className="tf-box" onClick={() => tfHandler(1)}>
+          <button className="tf-icon" onClick={() => handleTf(0)}><ArrowBackIosIcon /></button>
+          <div className="tf-box" onClick={() => handleTf(1)}>
             <TagList tags={tags} />
           </div>
         </div>

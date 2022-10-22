@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-import { Frame, getRandomProfile, getRandomNutList, getRandomNut } from "../../util";
+import { Frame, getRandomThumb, getRandomNut } from "../../util";
 import { UserViewModel } from "../../view-models";
 
 import FrameSocial from "./frame-social";
@@ -17,68 +17,45 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const account = useSelector(getAccountInfo);
 
-  const [ tagId, setTagId ] = useState(1);
-  const [ nutId, setNutId ] = useState(1);
-  const [ profile, setProfile ] = useState({ color: "", emoji: "" });
+  const [ profileThumb, setProfileThumb ] = useState(null);
+  const [ profileTag, setProfileTag ] = useState(null);
+  const [ profileNut, setProfileNut ] = useState(null);
   const [ errorMessage, setErrorMessage ] = useState(null);
-
-  const changeNut = (id) => setNutId(id);
-  const changeProfile = (profile) => setProfile(profile);
-  // 음식 태그는 아직 미구현
-  const changeTag = (id) => setTagId(id || 1);
 
   const callSignup = async () => {
     const userViewModel = new UserViewModel();
     const { success, msg, data } = await userViewModel.signup({
+      providerType: account.providerType, providerUid: account.providerUid,
       email: account.email,
-      providerType: account.providerType,
-      providerUid: account.providerUid,
-      profileId: 1,
-      // 추후 Tag가 생긴다면 변경 필요
-      tagId: 1,
-      nutId,
-      thumb: {
-        color: profile.color,
-        emoji: profile.emoji
-      },
+      profileId: 1,   // ### 이 필드는 뭐임?
+      tagId: profileTag.tagId,
+      nutId: profileNut.nutId,
+      thumb: { emoji: profileThumb.emoji, color: profileThumb.color },
     });
-    if (!success) {
+    if (success) {
+      const { token, userId } = data;
+      const { accessToken, refreshToken } = token;
+      dispatch(setAccessToken(accessToken));
+      dispatch(setRefreshToken(refreshToken));
+      dispatch(setMyUserId(userId));
+      navigate(`/feed`);
+    } else {
       setErrorMessage(msg);
-      return;
     }
-    dispatch(setAccessToken(data.accessToken));
-    dispatch(setRefreshToken(data.refreshToken));
-    navigate("/feed");
   };
   
   const frame = new Frame();
   frame.init([
-    <FrameSocial
-      frame={frame}
-      email={account.email}
-      providerType={account.providerType}
-    />,
+    <FrameSocial frame={frame} providerType={account.providerType} email={account.email} />,
     <FrameProfile
       frame={frame}
-      changeNut={changeNut}
-      changeProfile={changeProfile}
-      changeTag={changeTag}
-      getTagId={() => tagId}
-      getNutId={() => nutId}
-      getProfileId={() => profile}
-      getRandomProfile={getRandomProfile}
-      getRandomNutList={getRandomNutList}
-
-      getRandomNut={getRandomNut}
+      getRandomThumb={getRandomThumb} getRandomNut={getRandomNut}
+      profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
+      setProfileThumb={setProfileThumb} setProfileTag={setProfileTag} setProfileNut={setProfileNut}
     />,
     <FrameConfirm
-      frame={frame}
-      callSignup={callSignup}
-      profile={profile}
-      email={account.email}
-      tagId={tagId}
-      nutId={nutId}
-      getRandomNutList={getRandomNutList}
+      frame={frame} callSignup={callSignup} email={account.email}
+      profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
     />,
   ]);
 

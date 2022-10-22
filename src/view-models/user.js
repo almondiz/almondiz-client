@@ -8,47 +8,70 @@ export default class UserViewModel {
 
   /** 1. USER API */
   // POST /api/user
-  signup(body) {
-    return this.model.signup(body);
+  async signup(body) {
+    const { success, ...res } = await this.model.signup(body);
+    if (success) {
+      console.log("[UserViewModel.signup]", res);
+      return res;
+    } else {
+      console.error("[UserViewModel.signup]", res);
+      return false;
+    }
   }
   // POST /api/user/login
-  login(providerType, providerUid) {
-    return this.model.login(providerType, providerUid);
-  }
   async checkAccount({ providerType, providerUid }, goSignup, goMain) {
-    const { success, ...result } = await this.login(providerType, providerUid);
-
-    if (!success) {
-      switch (result.msg) {
+    const { success, ...res } = await this.model.login(providerType, providerUid);
+    if (success) {
+      console.log("[UserViewModel.checkAccount]", res);
+      const { data } = res;
+      goMain(data);
+      return res;
+    } else {
+      console.error("[UserViewModel.checkAccount]", res);
+      switch (res.msg) {
         case "해당 계정이 존재하지 않거나 잘못된 계정입니다.":
           goSignup();
           break;
         case "옳지 않은 이메일입니다. 이메일 형식을 확인해주세요":
-          console.error("[login] : ", result.msg);
-          break;
         default:
-          console.error("[login] : ", result.msg);
           break;
       }
-      return;
+      return false;
     }
-    console.log("[login] : ", result.data);
-    goMain(result.data);
   }
+  /*async _login(providerType, providerUid) {
+    const { success, ...res } = await this.model.login(providerType, providerUid);
+    if (success) {
+      console.log("[UserViewModel.login]", res);
+      return res;
+    }
+    console.error("[UserViewModel.login]", res);
+    return false;
+  }*/
 
   // GET /api/user
   async whoami() {
-    const res = await this.model.whoami();
-    console.log("[UserViewModel.whoami]", res);
-    const { data } = res;
-    return this._makeUserData(data);
+    const { success, ...res } = await this.model.whoami();
+    if (success) {
+      console.log("[UserViewModel.whoami]", res);
+      const { data } = res;
+      return this._makeUserData(data);
+    } else {
+      console.error("[UserViewModel.whoami]", res);
+      return false;
+    }
   }
   // GET /api/user/{userId}
   async get(userId) {
-    const res = await this.model.get(userId);
-    console.log("[UserViewModel.get]", res);
-    const { data } = res;
-    return this._makeUserData(data);
+    const { success, ...res } = await this.model.get(userId);
+    if (success) {
+      console.log("[UserViewModel.get]", res);
+      const { data } = res;
+      return this._makeUserData(data);
+    } else {
+      console.error("[UserViewModel.get]", res);
+      return false;
+    }
   }
   _makeUserData(data) {
     const userId = data.userId;
@@ -109,10 +132,15 @@ export default class UserViewModel {
   /** 2. FOLLOW API */
   // GET /api/api/followings
   async getMyAllFollowings() {
-    const res = await this.model.getMyAllFollowings();
-    console.log("[UserViewModel.getMyAllFollowings]", res);
-    const { dataList } = res;
-    return dataList.map(data => this._makeFollowData(data));
+    const { success, ...res } = await this.model.getMyAllFollowings();
+    if (success) {
+      console.log("[UserViewModel.getMyAllFollowings]", res);
+      const { dataList } = res;
+      return dataList.map(data => this._makeFollowData(data));
+    } else {
+      console.error("[UserViewModel.getMyAllFollowings]", res);
+      return false;
+    }
   }
   _makeFollowData(data) {
     const userId = data.userId;

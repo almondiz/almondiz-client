@@ -50,7 +50,7 @@ const FrameDirectTag = ({
   };
 
   // textfield
-  const tfPlaceholder = "태그를 추가하세요";
+  const TF_PLACEHOLDER = "태그를 추가하세요";
   const [tf, setTf] = useState("");
   useEffect(() => {
     tagFrame.move(tf ? 1 : 0);
@@ -111,7 +111,7 @@ const FrameDirectTag = ({
             <nav className="row row-tags">
               <div className="tf">
                 <div className="tf-icon"><SellIconBorder /></div>
-                <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+                <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
                 <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
               </div>
               {tagFrame.view()}
