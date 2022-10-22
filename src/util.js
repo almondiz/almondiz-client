@@ -157,6 +157,13 @@ export class Motion {
 
 /** functions */
 
+export const filterText = text => {
+  if (typeof text !== "string")
+    throw new Error(`value is not string : ${text}`);
+  text = text.trim();
+  return text;
+};
+
 export const getMyLocation = () => {
   return store.getState().global.location;
 };

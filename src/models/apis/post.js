@@ -7,15 +7,24 @@ export const createPost = body => {
   return api.post(path.post.default, body);
 };
 // GET /api/post/{postId}
-export const getPostByPostId = postId => {
+export const readPost = postId => {
   return api.get(path.post.one(postId));
 };
+// DELETE /api/post/{postId}
+export const deletePost = postId => {
+  return api.delete(path.post.one(postId));
+};
+// PATCH /api/post/{postId}
+export const updatePost = (postId, body) => {
+  return api.post(path.post.one(postId), body);
+};
+
 // GET /api/posts
-export const getAllPosts = () => {
+export const readAllPosts = () => {
   return api.get(path.post.all);
 };
 // GET /api/user/posts
-export const getAllPostsByUserId = userId => {
+export const readAllUserPosts = userId => {
   const body = { userId };
   return api.post(path.post.byUser, body);
 };

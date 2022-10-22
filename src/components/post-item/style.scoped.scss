@@ -108,7 +108,8 @@
       }
     }
     .row.row-tags {
-      height: 2.5rem;
+      height: fit-content;
+      min-height: 2.5rem;
     }
   }
   &>.body {

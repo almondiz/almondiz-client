@@ -56,7 +56,8 @@
       }
     }
     .row.row-tags {
-      height: 2.5rem;
+      height: fit-content;
+      min-height: 2.5rem;
     }
   }
 }
@@ -83,7 +84,7 @@
   
         &>.list {
           &>.item {
-            height: 2.5rem;
+            height: 3rem;
             border-bottom: 1px solid var(--border-color);
   
             display: flex;
@@ -94,7 +95,7 @@
   
       ::v-deep {
         .tag-list {
-          margin-top: 1.25rem;
+          margin-top: .5rem;
         }
       }
     }

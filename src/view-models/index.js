@@ -3,6 +3,7 @@ import PostViewModel from "./post";
 import CommentViewModel from "./comment";
 import NoticeViewModel from "./notice";
 import EditViewModel from "./edit";
+import SearchViewModel from "./search";
 
 
 export {
@@ -10,5 +11,6 @@ export {
   PostViewModel,
   CommentViewModel,
   NoticeViewModel,
-  EditViewModel
+  EditViewModel,
+  SearchViewModel,
 };

@@ -1,4 +1,5 @@
 import { PostModel } from "../models";
+import { filterText } from "../util";
 
 
 export default class EditViewModel {
@@ -9,10 +10,27 @@ export default class EditViewModel {
   /** 4-0. POST API */
   // POST /api/post
   async createPost({ shop, postTags, postText, postImages }) {
-    if ((postText = postText.trim()) === "")  return false;
+    if ((postText = filterText(postText)) === "")   return false;
+    const postImageUrls = await this._uploadImages({ postImages });
+    const body = this._createBody({ shop, postTags, postText, postImageUrls });
 
+    const res = await this.postModel.createPost(body);
+    console.log("[EditViewModel.createPost]", res);
+    const { success } = res;
+    return success;
+  }
+  // PATCH /api/post/{postId}
+  async updatePost(postId, { shop, postTags, postText, postImages }) {
+    if ((postText = filterText(postText)) === "")   return false;
+    const postImageUrls = await this._uploadImages({ postImages });
+    const body = this._createBody({ shop, postTags, postText, postImageUrls });
 
-    // upload images
+    const res = await this.postModel.updatePost(postId, body);
+    console.log("[EditViewModel.updatePost]", res);
+    const { success } = res;
+    return success;
+  }
+  async _uploadImages({ postImages }) {
     const postImageUrls = [];
     for (let i = 0; i < postImages.length; i++) {
       const imageFormData = new FormData();
@@ -25,9 +43,10 @@ export default class EditViewModel {
         postImageUrls.push(imageUrl);
       }*/
     }
-
-    // upload post
-    const body = {
+    return postImageUrls;
+  }
+  _createBody({ shop, postTags, postText, postImageUrls }) {
+    return {
       // ### 새 태그, 새 음식점 등록은 여기서 일괄 처리하는 것이 좋지 않을까? (뜬금없는데 새 태그나 음식점은 역링크 글이 없으면 일정 기간 이후 자동으로 삭제되는 시스템도 괜찮을 거 같음)
 
       shopId: shop.shopId,
@@ -47,15 +66,11 @@ export default class EditViewModel {
       lati: shop.lati,      // ### 굳이?
       longi: shop.longi,    // ### 굳이?
     };
-    const res = await this.postModel.createPost(body);
-    console.log("[EditViewModel.createPost]", res);
-    const { success } = res;
-    return success;
   }
 
 
+  // ### (DUMMY)
   searchTags(keyWord) {
-    // DUMMY
     // shopId, shopName, shopThumbUrl, shopAddress, tags만 필요
     return [
       {

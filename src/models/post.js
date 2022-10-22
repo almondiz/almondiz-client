@@ -8,16 +8,25 @@ export default class PostModel extends DefaultModel {
     return this.callApi(() => this.api.createPost(body));
   }
   // GET /api/post/{postId}
-  getPostByPostId(postId) {
-    return this.callApi(() => this.api.getPostByPostId(postId));
+  readPost(postId) {
+    return this.callApi(() => this.api.readPost(postId));
   }
+  // DELETE /api/post/{postId}
+  deletePost(postId) {
+    return this.callApi(() => this.api.deletePost(postId));
+  }
+  // PATCH /api/post/{postId}
+  updatePost(postId, body) {
+    return this.callApi(() => this.api.updatePost(postId, body));
+  }
+
   // GET /api/posts
-  getAllPosts() {
-    return this.callApi(() => this.api.getAllPosts());
+  readAllPosts() {
+    return this.callApi(() => this.api.readAllPosts());
   }
   // GET /api/user/posts
-  getAllPostsByUserId(userId) {
-    return this.callApi(() => this.api.getAllPostsByUserId(userId));
+  readAllUserPosts(userId) {
+    return this.callApi(() => this.api.readAllUserPosts(userId));
   }
 
   /** 4-1. POST SCRAP API */

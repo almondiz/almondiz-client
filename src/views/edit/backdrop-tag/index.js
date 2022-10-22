@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Frame } from "../../../util";
+import { SearchViewModel } from "../../../view-models";
 
 import TagList, { pushTag } from "../../../components/tag-list";
 
@@ -11,11 +12,6 @@ import SellIconBorder from "../../../asset/icons/mui/sell-icon-border";
 
 const BackdropTag = ({ shop, postTags, setPostTags }) => {
   // tag
-  const DUMMY_SEARCH_TAG_LIST = [
-    { tagType: "food", tagId: 3, tagName: "맥주" },
-    { tagType: "food", tagId: 6, tagName: "생맥주" },
-    { tagType: "food", tagId: 7, tagName: "치맥" },
-  ];
   const [ tags, setTags ] = useState([...postTags]);
   useEffect(() => { setPostTags([...tags]); }, [tags]);
   const onClickTagItem = e => {
@@ -26,7 +22,27 @@ const BackdropTag = ({ shop, postTags, setPostTags }) => {
   // textfield
   const tfPlaceholder = "태그를 추가하세요";
   const [tf, setTf] = useState("");
-  useEffect(() => { tagFrame.move(tf ? 1 : 0); }, [tf]);
+  useEffect(() => {
+    tagFrame.move(tf ? 1 : 0);
+    searchTag(tf);
+  }, [tf]);
+
+  /** 7. TAG API */
+  const [ searchResult, setSearchResult ] = useState([]);
+  const searchViewModel = new SearchViewModel();
+  const searchTag = async (tagName) => {
+    const _tags = await searchViewModel.searchTag(tagName);
+    if (_tags) {
+      setSearchResult(_tags);
+    }
+  };
+  const createTag = async (tagName) => {
+    const _tag = await searchViewModel.createTag(tagName);
+    if (_tag) {
+      onClickTagItem(_tag);
+    }
+  };
+  /** */
 
   const tagFrame = new Frame([
     (
@@ -35,11 +51,15 @@ const BackdropTag = ({ shop, postTags, setPostTags }) => {
     (
       <div className="tag-list-group">
         <ul className="list">
-          {DUMMY_SEARCH_TAG_LIST.map((tag, idx) => <li key={idx} className="item" onClick={() => onClickTagItem(tag)}>{tag.tagName}</li>)}
+          {searchResult.map((tag, idx) => (
+            <li key={idx} className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onClickTagItem(tag)}>
+              {tag.tagName}
+            </li>
+          ))}
         </ul>
         <div className="if-not-found">
           <h3 className="title">"{tf}" 태그를 찾나요?</h3>
-          <button className="text-button" onClick={() => setTf("")}>직접 등록</button>
+          <button className="text-button" onClick={() => createTag(tf)}>직접 등록</button>
         </div>
       </div>
     ),

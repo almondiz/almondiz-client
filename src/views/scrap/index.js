@@ -8,11 +8,11 @@ import "./style.scoped.scss";
 
 
 const ScrapPage = ({}) => {
-  /** 4-0. POST API */
+  /** 4. POST API */
   const postViewModel = new PostViewModel();
   const [posts, setPosts] = useState([]);
-  const getAllPosts = async () => setPosts(await postViewModel.getAllPosts());
-  useEffect(() => { getAllPosts(); }, []);
+  const readAllPosts = async () => setPosts(await postViewModel.readAllPosts());
+  useEffect(() => { readAllPosts(); }, []);
   /** */
 
 

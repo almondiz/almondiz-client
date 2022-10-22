@@ -15,7 +15,7 @@ const EditPage = ({ floatRef, backdropRef }) => {
   const [ postText, setPostText ] = useState("");
   const [ postImages, setPostImages ] = useState([]);
 
-  /** 4-0. POST API */
+  /** 4. POST API */
   const editViewModel = new EditViewModel();
   const createPost = async () => (await editViewModel.createPost({ shop, postTags, postText, postImages }));
 

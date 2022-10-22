@@ -1,5 +1,5 @@
 import { CommentModel } from "../models";
-import { getTime } from "../util";
+import { filterText, getTime } from "../util";
 
 
 export default class CommentViewModel {
@@ -10,7 +10,7 @@ export default class CommentViewModel {
   /** 5-0. COMMENT API */
   // POST /api/post/{postId}/comment
   async createComment(postId, text) {
-    if ((text = text.trim()) === "")  return false;
+    if ((text = filterText(text)) === "")   return false;
 
     const body = { text, };
     const res = await this.model.createComment(postId, body);
@@ -66,13 +66,6 @@ export default class CommentViewModel {
       })(),
 
 
-      delete: async () => {
-        const res = await this.model.delete(commentId);
-        console.log("[CommentViewModel.delete]", res);
-        const { success } = res;
-        return success;
-      },
-
       like: async (b) => {
         const action = this.model[b ? "unlike" : "like"].bind(this.model);
         const res = await action(commentId);
@@ -81,11 +74,18 @@ export default class CommentViewModel {
         return success;
       },
       reply: async (text) => {
-        if ((text = text.trim()) === "")  return false;
+        if ((text = filterText(text)) === "")   return false;
         
         const body = { text, };
         const res = await this.model.reply(commentId, body);
         console.log("[CommentViewModel.reply]", res);
+        const { success } = res;
+        return success;
+      },
+
+      delete: async () => {
+        const res = await this.model.deleteComment(commentId);
+        console.log("[CommentViewModel.delete]", res);
         const { success } = res;
         return success;
       },

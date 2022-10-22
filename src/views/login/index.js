@@ -41,7 +41,7 @@ const LoginPage = () => {
         dispatch(setAccessToken(accessToken));
         dispatch(setRefreshToken(refreshToken));
         dispatch(setMyUserId(userId));
-        navigate(`/feed`);
+        navigate(`/feed`);  // ####
       },
     );
   }

@@ -116,7 +116,7 @@
 
     ::v-deep {
       .tag-list {
-        margin-top: 1.5rem;
+        margin-top: .5rem;
       }
     }
   }
@@ -150,6 +150,10 @@
         .tag-list {
           flex-wrap: nowrap;
           overflow: visible;
+          
+          .tag-item-wrap:last-child {
+            padding-right: .625rem;
+          }
         }
       }
     }
@@ -159,7 +163,7 @@
 
 .tag-list-group,
 .history-list-group {
-  margin-top: 2.5rem;
+  margin-top: 2rem;
 
   &>.subheader {
     font-size: .75rem;
@@ -173,7 +177,7 @@
     margin-top: -.5rem;
     
     &>.item {
-      height: 2.5rem;
+      height: 3rem;
       border-bottom: 1px solid var(--border-color);
 
       display: flex;

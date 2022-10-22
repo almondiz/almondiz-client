@@ -50,11 +50,11 @@ const ProfilePage = ({ floatRef, myUserId }) => {
   useEffect(() => { getUser(); }, []);
   /** */
   
-  /** 4-0. POST API */
+  /** 4. POST API */
   const postViewModel = new PostViewModel();
   const [posts, setPosts] = useState([]);
-  //const getAllPostsByUserId = async () => setPosts(await postViewModel.getAllPostsByUserId(userId));
-  //useEffect(() => { getAllPostsByUserId(); }, []);
+  //const readAllUserPosts = async () => setPosts(await postViewModel.readAllUserPosts(userId));
+  //useEffect(() => { readAllUserPosts(); }, []);
   /** */
 
 

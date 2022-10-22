@@ -129,10 +129,10 @@ const FloatController = ({ floatRef, post, createComment }) => {
 const PostPage = ({ floatRef }) => {
   const postId = parseInt(useParams().postId);
 
-  /** 4-0. POST API */
+  /** 4. POST API */
   const postViewModel = new PostViewModel();
   const [post, setPost] = useState([]);
-  const readPost = async () => setPost(await postViewModel.getPostByPostId(postId));
+  const readPost = async () => setPost(await postViewModel.readPost(postId));
   useEffect(() => { readPost(); }, []);
   /** */
 
@@ -156,9 +156,17 @@ const PostPage = ({ floatRef }) => {
   });
 
 
+  const navigate = useNavigate();
+
   const ButtonMore = ({ post }) => {
     const [focus, setFocus] = useState(false);
-    const onClick = () => setFocus(!focus);
+    const onClick = async () => {
+      const success = await post.delete();
+      if (success) {
+        navigate(-1);
+      }
+    }
+    //const onClick = () => setFocus(!focus);
     return (
       <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
@@ -171,7 +179,7 @@ const PostPage = ({ floatRef }) => {
     <div id="page">
       <header className="header">
         <div className="right">
-          <ButtonMore />
+          <ButtonMore post={post} />
         </div>
       </header>
 

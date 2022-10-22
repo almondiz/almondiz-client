@@ -9,27 +9,27 @@ export default class PostViewModel {
 
   /** 4-0. POST API */
   // GET /api/post/{postId}
-  async getPostByPostId(postId) {
-    const res = await this.model.getPostByPostId(postId);
-    console.log("[PostViewModel.getPostByPostId]", res);
+  async readPost(postId) {
+    const res = await this.model.readPost(postId);
+    console.log("[PostViewModel.readPost]", res);
     const { data } = res;
 
     const myLocation = getMyLocation();
     return this._makePostItemData(data, { myLocation });
   }
   // GET /api/posts
-  async getAllPosts() {
-    const res = await this.model.getAllPosts();
-    console.log("[PostViewModel.getAllPosts]", res);
+  async readAllPosts() {
+    const res = await this.model.readAllPosts();
+    console.log("[PostViewModel.readAllPosts]", res);
     const { dataList } = res;
 
     const myLocation = getMyLocation();
     return dataList.map((data) => this._makePostItemData(data, { myLocation }));
   }
   // GET /api/user/posts
-  async getAllPostsByUserId(userId) {
-    const res = await this.model.getAllPostsByUserId(userId);
-    console.log("[PostViewModel.getAllPostsByUserId]", res);
+  async readAllUserPosts(userId) {
+    const res = await this.model.readAllUserPosts(userId);
+    console.log("[PostViewModel.readAllUserPosts]", res);
     const { dataList } = res;
 
     const myLocation = getMyLocation();
@@ -87,6 +87,13 @@ export default class PostViewModel {
         const action = this.model[b ? "unscrap" : "scrap"].bind(this.model);
         const success = await action(postId);
         console.log("[postViewModel.scrap]", action, success);
+        return success;
+      },
+
+      delete: async () => {
+        const res = await this.model.deletePost(postId);
+        console.log("[postViewModel.delete]", res);
+        const { success } = res;
         return success;
       },
     };

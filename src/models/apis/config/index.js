@@ -28,7 +28,7 @@ const path = {
   user: {
     /** 1. USER API */
     default: makePath(`user`),
-    one: (userId) => makePath(`user/${userId}`),
+    one: userId => makePath(`user/${userId}`),
     login: makePath(`user/login`),
 
     /** 2. FOLLOW API */
@@ -41,28 +41,33 @@ const path = {
   /** 4. POST API */
   post: {
     default: makePath(`post`),
-    one: (postId) => makePath(`post/${postId}`),
-    byShop: (shopId) => makePath(`store/${shopId}/posts`),
+    one: postId => makePath(`post/${postId}`),
+    byShop: shopId => makePath(`store/${shopId}/posts`),
     byUser: makePath(`user/posts`),
 
     all: makePath(`posts`),
 
-    scrap: (postId) => makePath(`postScrap/post/${postId}/user`),
-    unscrap: (postId) => makePath(`postScrap/post/${postId}`),
+    scrap: postId => makePath(`postScrap/post/${postId}/user`),
+    unscrap: postId => makePath(`postScrap/post/${postId}`),
   },
 
   /** 5. COMMENT API */
   comment: {
-    delete: (commentId) => makePath(`comment/${commentId}`),
-    //update: (commentId) => makePath(`comment/${commentId}`),    // unused
-    create: (postId) => makePath(`post/${postId}/comment`),
-    read: (postId) => makePath(`post/${postId}/comments`),
+    one: commentId => makePath(`comment/${commentId}`),
+    create: postId => makePath(`post/${postId}/comment`),
+    byPost: postId => makePath(`post/${postId}/comments`),
 
-    like: (commentId) => makePath(`comment/${commentId}/like`),
-    unlike: (commentId) => makePath(`comment/${commentId}/like`),
+    like: commentId => makePath(`comment/${commentId}/like`),
 
-    reply: (commentId) => makePath(`comment/${commentId}/reply`),
+    reply: commentId => makePath(`comment/${commentId}/reply`),
   },
+
+
+  /** 7. TAG API */
+  tag: {
+    default: makePath(`tag`),
+    search: tagName => makePath(`tag/like/${tagName}`),
+  }
 };
 
 export { api, path };

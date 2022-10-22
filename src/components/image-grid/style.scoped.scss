@@ -4,6 +4,8 @@
   display: grid;
   gap: .125rem;
 
+  transition: all .3s ease;
+
   &>.grid {
     background-size: cover;
     background-position: center;
