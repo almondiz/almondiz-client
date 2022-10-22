@@ -33,14 +33,14 @@ const Float = forwardRef((_, ref) => {
   const [bottom, setBottom] = useState(<></>);
   useImperativeHandle(ref, () => ({setTop: setTop, setHeader: setHeader, setFooter: setFooter, setBottom: setBottom, }));
 
-  const { pathname } = useLocation();
+  /*const { pathname } = useLocation();
   useEffect(() => {
     const floatDOM = document.querySelector("#float");
     if (document.body.scrollHeight <= window.innerHeight)
       floatDOM.classList.add("noshadow");
     else
       floatDOM.classList.remove("noshadow");
-  }, [pathname, top, bottom]);
+  }, [pathname, top, bottom]);*/
 
   const FloatHeader = () => (
     <div className={`float-header-wrap ${!isEmptyElement(top) ? "has-top" : ""}`}>
