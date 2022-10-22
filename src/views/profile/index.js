@@ -134,17 +134,10 @@ const ProfilePage = ({ floatRef, myUserId }) => {
           <div className="row row-profile" data-user-relation={user.userRelation}>
             <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
             <div className="text-wrap">
-              <p className="name"
-                data-after={(() => {
-                  switch (user.userRelation) {
-                    case "me":        return "나";
-                    case "following": return "구독";
-                  }
-                  return undefined;
-                })()}
-              >
-                {user.userName}
-              </p>
+              <div className="name-wrap">
+                <p className="name">{user.userName}</p>
+                {user.userNameBadge && <p className="badge">{user.userNameBadge}</p>}
+              </div>
               {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
             </div>
           </div>

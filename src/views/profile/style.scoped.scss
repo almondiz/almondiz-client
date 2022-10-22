@@ -126,15 +126,21 @@
           flex-shrink: 0;
         }
         .text-wrap {
-          .name {
+          &,
+          &>* {
+            @include text-nowrap;
+          }
+          .name-wrap {
             height: 1.25rem;
             display: flex;
             align-items: center;
-  
-            font-size: 1rem;
-  
-            &[data-after]::after {
-              content: attr(data-after);
+
+            .name {
+              @include text-nowrap;
+              font-size: 1rem;
+            }
+            .badge {
+              flex-shrink: 0;
               font-size: .6825rem;
               color: var(--secondary-text-color);
               border: 1px solid var(--secondary-text-color);

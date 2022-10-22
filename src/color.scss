@@ -18,7 +18,7 @@ html {
   --shadow-to-border-color: 0px 0px 1px rgba(0, 0, 0, .5);
   --nav-shadow-color: 0 0 2rem rgba(0, 0, 0, .125);
   --float-background-color: rgba(255, 255, 255, .875);
-  --float-shadow-color: 0 1px 3px rgba(0, 0, 0, .375);
+  --float-shadow-color: 0 1px .375rem rgba(0, 0, 0, .25);
 }
 
 @mixin dark-color-scheme {
@@ -31,7 +31,7 @@ html {
   --shadow-to-border-color: 0px 0px 1px rgba(255, 255, 255, .5);
   --nav-shadow-color: 0 0 2rem rgba(255, 255, 255, .0625);
   --float-background-color: rgba(30, 32, 34, .875);
-  --float-shadow-color: inset 0px 0px 1px rgba(255, 255, 255, 1), 0px 0px 1px rgba(255, 255, 255, 1);
+  --float-shadow-color: inset 0px 0px 1px rgba(255, 255, 255, 1), inset 0px 0px 1px rgba(255, 255, 255, 1);
 }
 
 

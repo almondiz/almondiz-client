@@ -8,7 +8,6 @@
     background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(.5rem);
     backdrop-filter: blur(.5rem);
-    box-shadow: var(--nav-shadow-color);
 
     display: flex;
     align-items: center;
@@ -78,10 +77,10 @@
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
-    transition: all .3s ease;
+    transition: all .3s ease-in-out;
 
     .tf {
-      transition: all .3s ease;
+      transition: all .3s ease-in-out;
     }
 
     position: absolute;
@@ -223,14 +222,10 @@
       align-items: center;
   
       .text-wrap {
-        min-width: 0;   // prevent breaking flexbox layout by white-space: nowrap
+        &,
         &>* {
-          white-space: nowrap;
-          display: inherit;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          @include text-nowrap;
         }
-
         .title {}
         .description {
           color: var(--secondary-text-color);
@@ -238,9 +233,8 @@
           margin-top: .375rem;
         }
       }
-
       .button-select-shop {
-        flex-shrink: 0;     // prevent breaking flexbox layout by white-space: nowrap
+        flex-shrink: 0;
         
         display: flex;
         align-items: center;

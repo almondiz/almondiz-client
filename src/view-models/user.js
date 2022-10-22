@@ -75,7 +75,7 @@ export default class UserViewModel {
   }
   _makeUserData(data) {
     const userId = data.userId;
-  
+    data.relation = "me"
     return {
       userId,
 
@@ -98,6 +98,17 @@ export default class UserViewModel {
             return data.email;
           case "following":
             return data.nickName;
+          case "other":
+          default:
+            return undefined;
+        }
+      })(),
+      userNameBadge: (() => {
+        switch (data.relation) {
+          case "me":
+            return "나";
+          case "following":
+            return "구독";
           case "other":
           default:
             return undefined;

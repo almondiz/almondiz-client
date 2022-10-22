@@ -38,11 +38,11 @@ h4,
 h5,
 h6,
 li,
-textarea,
-input,
 button,
 ::after,
-::before {
+::before,
+textarea,
+input {
   margin: 0;
   padding: 0;
 
@@ -50,8 +50,9 @@ button,
   font-weight: 400;
   line-height: 1;
   
+  word-break: break-all;
   white-space: pre-wrap;
-  word-wrap: break-word;
+  word-wrap: break-all;
 }
 
 a {
@@ -95,8 +96,13 @@ ul {
   --webkit-overflow-scrolling: none;
 }
 
-.noselect {
-  user-select: none !important;
+body {
+  -webkit-user-select: none;
+  user-select: none;
+}
+.select {
+  -webkit-user-select: unset !important;
+  user-select: unset !important;
 }
 
 .right {

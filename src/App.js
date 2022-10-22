@@ -72,7 +72,7 @@ const PostLayout = ({ myUserId, floatRef }) => {
   useEffect(() => {
     floatRef.current?.setBottom(<PostBottomNav myUserId={myUserId} />);
     return () => floatRef.current?.setBottom();
-  });
+  }, []);
   
   return <Outlet />;
 };

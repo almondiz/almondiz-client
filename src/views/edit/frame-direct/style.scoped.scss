@@ -8,7 +8,6 @@
     background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(.5rem);
     backdrop-filter: blur(.5rem);
-    box-shadow: var(--nav-shadow-color);
 
     display: flex;
     align-items: center;
@@ -81,10 +80,10 @@
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
-    transition: all .3s ease;
+    transition: all .3s ease-in-out;
 
     .tf {
-      transition: all .3s ease;
+      transition: all .3s ease-in-out;
     }
 
     position: absolute;

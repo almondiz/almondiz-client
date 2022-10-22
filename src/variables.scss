@@ -8,3 +8,10 @@ $float-bottom-height: 3rem;
 $padding-horiz: 1.5rem;
 
 $sparse-letter: .125rem;
+
+
+@mixin text-nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

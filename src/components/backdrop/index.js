@@ -33,7 +33,7 @@ const Backdrop = forwardRef((_, ref) => {
   useImperativeHandle(ref, () => ({ show: show, hide: hide, }));
 
   return visible && (
-    <div id="backdrop" className={motion.get("hide")}>
+    <div id="backdrop" data-motion={motion.get("hide")}>
       <header className="header" onClick={() => hide()}>
         <h3 className="title">{title}</h3>
         <div className="button button-close">

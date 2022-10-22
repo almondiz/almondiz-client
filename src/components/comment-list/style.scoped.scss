@@ -44,7 +44,7 @@
     top: -1px;
     bottom: -1px;
 
-    transition: all .3s ease;
+    transition: all .3s ease-in-out;
   }
 
   &.focus {
@@ -83,16 +83,13 @@
             font-size: 1.125rem;
           }
           .name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            @include text-nowrap;
 
             font-size: .875rem;
             display: flex;
             align-items: center;
           }
-          &[data-after]::after {
-            content: attr(data-after);
+          .badge {
             font-size: .625rem;
             color: var(--secondary-text-color);
             border: 1px solid var(--secondary-text-color);
@@ -109,9 +106,7 @@
           }
         }
         .description {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          @include text-nowrap;
 
           margin-left: .75rem;
           font-size: .8125rem;

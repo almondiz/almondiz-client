@@ -22,7 +22,7 @@ const MenuThumb = ({ getRandomThumb, setProfileThumb }) => {
   useEffect(() => { setProfileThumb(thumbs[0]); }, [thumbs]);
 
   // motion
-  const MOTION_DELAY = 300;
+  const MOTION_DELAY = 500;
   const motion = new Motion({
     "stop": () => {},
     "move": () => {
@@ -33,7 +33,7 @@ const MenuThumb = ({ getRandomThumb, setProfileThumb }) => {
 
   return (
     <div className="menu-thumb" onClick={onChangeThumb}>
-      <div className={`thumbs ${motion.get()}`}>
+      <div className="thumbs" data-motion={motion.get()}>
         {motion.is("move") && <div className="thumb" style={{ backgroundColor: thumbs[4].color }}>{thumbs[4].emoji}</div>}
         <div className="thumb" style={{ backgroundColor: thumbs[3].color }}>{thumbs[3].emoji}</div>
         <div className="thumb" style={{ backgroundColor: thumbs[2].color }}>{thumbs[2].emoji}</div>
@@ -95,7 +95,7 @@ const MenuName = ({ getRandomNut, setProfileTag, setProfileNut }) => {
   };
 
   // motion
-  const MOTION_DELAY = 200;
+  const MOTION_DELAY = 300;
   const motion = new Motion({
     "stop": () => {},
     "move-in": () => {
@@ -128,7 +128,7 @@ const MenuName = ({ getRandomNut, setProfileTag, setProfileNut }) => {
       <section className="tf-frame tf-frame-1" >
         <div className="tf">
           <input className="name-first tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => handleTf(1)}/>
-          <div className={`name-last ${motion.get()}`} onClick={onChangeNut}>
+          <div className="name-last" data-motion={motion.get()} onClick={onChangeNut}>
             <p className="field">{nut.nutName}</p>
             <button className="name-refresh-icon">
               <div className="icon"><RefreshIcon /></div>

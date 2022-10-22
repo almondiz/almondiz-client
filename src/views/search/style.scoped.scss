@@ -13,9 +13,11 @@
     align-items: center;
   
     &>.title {
+      @include text-nowrap;
       font-size: 1.75rem;
     }
     &>.right {
+      flex-shrink: 0;
       display: flex;
       align-items: center;
     }
@@ -46,7 +48,7 @@
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
-    transition: all .3s ease;
+    transition: all .3s ease-in-out;
 
     &>.header {
       height: $page-header-height;
@@ -56,16 +58,18 @@
       align-items: center;
     
       &>.title {
+        @include text-nowrap;
         font-size: 1.75rem;
       }
       &>.right {
+        flex-shrink: 0;
         display: flex;
         align-items: center;
       }
     }
 
     .tf {
-      transition: all .3s ease;
+      transition: all .3s ease-in-out;
     }
 
     position: fixed;
@@ -145,12 +149,19 @@
       &::-webkit-scrollbar {
         display: none;
       }
-
       ::v-deep {
         .tag-list {
           flex-wrap: nowrap;
           overflow: visible;
-          
+
+          padding: unset;
+          .tag-item-wrap {
+            height: unset;
+          }
+
+          .tag-item-wrap:first-child {
+            padding-left: .625rem;
+          }
           .tag-item-wrap:last-child {
             padding-right: .625rem;
           }
@@ -183,6 +194,24 @@
       display: flex;
       align-items: center;
 
+      &>.tag-list-wrap {
+        flex: 1;
+        overflow-x: scroll;
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        ::v-deep {
+          .tag-list {
+            flex-wrap: nowrap;
+            overflow: visible;
+
+            padding: unset;
+            .tag-item-wrap {
+              height: unset;
+            }
+          }
+        }
+      }
       &>.button-delete-item {
         margin-left: auto;
 

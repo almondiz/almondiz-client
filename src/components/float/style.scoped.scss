@@ -23,7 +23,7 @@
   &.hide.has-top {
     top: -$float-bottom-height;
   }
-  transition: top .3s ease;
+  transition: top .3s ease-in-out;
 }
 .float-footer-wrap {
   bottom: 0;
@@ -33,7 +33,7 @@
   &.hide.has-bottom {
     bottom: -$float-bottom-height;
   }
-  transition: bottom .3s ease;
+  transition: bottom .3s ease-in-out;
 }
 
 ::v-deep {
@@ -70,18 +70,22 @@
   ::v-deep {
     .float-top,
     .float-bottom {
-      transition: box-shadow .5s ease;
+      transition: box-shadow 1s ease-in-out;
+      //background-color: transparent;
+    }
+    .float-top {
+      border-bottom: transparent;
+    }
+    .float-bottom {
+      border-top: 1px solid var(--border-color);
     }
   }
 }
-#float.noshadow {
+#float.shadow {
   ::v-deep {
-    .float-top {
-      background-color: transparent;
-      box-shadow: none !important;
+    .float-top,
+    .float-bottom {
+      box-shadow: var(--nav-shadow-color);
     }
-    /*.float-bottom {
-      border-top: 1px solid var(--border-color);
-    }*/
   }
 }

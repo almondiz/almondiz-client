@@ -141,7 +141,7 @@ const Drawer = ({ contentRef }) => {
 
               return (
                 <li key={idx} className="item" onClick={onClick}>
-                  <TagList tags={tags} />
+                  <div className="tag-list-wrap"><TagList tags={tags} /></div>
                   <button className="button button-delete-item" onClick={onDeleteClick}>
                     <div className="icon"><CloseIcon /></div>
                   </button>

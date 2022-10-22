@@ -1,26 +1,41 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useSelector } from "react-redux";
 
-import { isEmptyElement } from "../../util";
+import { isEmptyElement, useWindowDimensions } from "../../util";
 
 import "./style.scoped.scss";
 
 
-const HideOnScroll = () => {
+const HideOnScroll = ({ headerWrapRef, footerWrapRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
   useEffect(() => {
+    const headerWrapObj = headerWrapRef.current;
+    const footerWrapObj = footerWrapRef.current;
+
     if (scrollDirection === 1)
-      document.querySelector(".float-header-wrap").classList.add("hide");
+      headerWrapObj?.classList.add("hide");
     else
-      document.querySelector(".float-header-wrap").classList.remove("hide");
+      headerWrapObj?.classList.remove("hide");
 
     if (scrollDirection === -1)
-      document.querySelector(".float-footer-wrap").classList.add("hide");
+      footerWrapObj?.classList.add("hide");
     else
-      document.querySelector(".float-footer-wrap").classList.remove("hide");
+      footerWrapObj?.classList.remove("hide");
   }, [scrollDirection]);
+
+  return <></>;
+};
+const AutoShadow = ({ outerRef }) => {
+  const windowDimensions = useWindowDimensions();
+  useEffect(() => {
+    console.log("[AutoShadow]", windowDimensions);
+    const outerObj = outerRef.current;
+    if (document.body.scrollHeight > window.innerHeight)
+      outerObj?.classList.add("shadow");
+    else
+      outerObj?.classList.remove("shadow");
+  }, [windowDimensions]);
 
   return <></>;
 };
@@ -31,36 +46,32 @@ const Float = forwardRef((_, ref) => {
   const [header, setHeader] = useState(<></>);
   const [footer, setFooter] = useState(<></>);
   const [bottom, setBottom] = useState(<></>);
-  useImperativeHandle(ref, () => ({setTop: setTop, setHeader: setHeader, setFooter: setFooter, setBottom: setBottom, }));
+  useImperativeHandle(ref, () => ({ setTop, setHeader, setFooter, setBottom }));
 
-  /*const { pathname } = useLocation();
-  useEffect(() => {
-    const floatDOM = document.querySelector("#float");
-    if (document.body.scrollHeight <= window.innerHeight)
-      floatDOM.classList.add("noshadow");
-    else
-      floatDOM.classList.remove("noshadow");
-  }, [pathname, top, bottom]);*/
+  const outerRef = useRef();
+  const headerWrapRef = useRef();
+  const footerWrapRef = useRef();
 
   const FloatHeader = () => (
-    <div className={`float-header-wrap ${!isEmptyElement(top) ? "has-top" : ""}`}>
+    <div className={`float-header-wrap ${!isEmptyElement(top) ? "has-top" : ""}`} ref={headerWrapRef}>
       {top}
       {header}
     </div>
   );
   const FloatFooter = () => (
-    <div className={`float-footer-wrap ${!isEmptyElement(bottom) ? "has-bottom" : ""}`}>
+    <div className={`float-footer-wrap ${!isEmptyElement(bottom) ? "has-bottom" : ""}`} ref={footerWrapRef}>
       {footer}
       {bottom}
     </div>
   );
 
   return (
-    <aside id="float">
+    <aside id="float" ref={outerRef}>
       <FloatHeader />
       <FloatFooter />
 
-      <HideOnScroll />
+      <HideOnScroll headerWrapRef={headerWrapRef} footerWrapRef={footerWrapRef} />
+      <AutoShadow outerRef={outerRef} />
     </aside>
   );
 });

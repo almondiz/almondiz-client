@@ -33,6 +33,10 @@
     justify-content: space-between;
 
     .text-wrap {
+      &,
+      &>* {
+        @include text-nowrap;
+      }
       .title {
         font-weight: 700;
       }
@@ -44,6 +48,9 @@
   
       padding-top: .5rem;
       padding-bottom: .5rem;
+    }
+    .text-button {
+      flex-shrink: 0;
     }
   }
 }
@@ -66,10 +73,10 @@
     padding-left: $padding-horiz;
     padding-right: $padding-horiz;
 
-    transition: all .3s ease;
+    transition: all .3s ease-in-out;
 
     .tf {
-      transition: all .3s ease;
+      transition: all .3s ease-in-out;
     }
 
     position: absolute;
@@ -184,14 +191,10 @@
       align-items: center;
   
       .text-wrap {
-        min-width: 0;   // prevent breaking flexbox layout by white-space: nowrap
+        &,
         &>* {
-          white-space: nowrap;
-          display: inherit;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          @include text-nowrap;
         }
-        
         .title {}
         .description {
           margin-top: .375rem;
@@ -199,9 +202,8 @@
           color: var(--secondary-text-color);
         }
       }
-
       .button-select-location {
-        flex-shrink: 0;     // prevent breaking flexbox layout by white-space: nowrap
+        flex-shrink: 0;
             
         display: flex;
         align-items: center;

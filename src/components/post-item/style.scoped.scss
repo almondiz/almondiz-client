@@ -87,6 +87,8 @@
       .shop {
         display: flex;
         align-items: center;
+
+        min-width: 0;
     
         .thumb {
           width: 2.5rem;
@@ -99,6 +101,10 @@
         }
     
         .text-wrap {
+          &,
+          &>* {
+            @include text-nowrap;
+          }
           .name {
             font-size: .9375rem;
           }
@@ -154,12 +160,11 @@
           font-size: 1.125rem;
         }
         .name {
+          @include text-nowrap;
+
           font-size: .875rem;
-          display: flex;
-          align-items: center;
         }
-        &[data-after]::after {
-          content: attr(data-after);
+        .badge {
           font-size: .625rem;
           color: var(--secondary-text-color);
           border: 1px solid var(--secondary-text-color);
@@ -176,6 +181,8 @@
         }
       }
       .description {
+        @include text-nowrap;
+        
         margin-left: .75rem;
         font-size: .8125rem;
         color: var(--secondary-text-color);
@@ -216,9 +223,7 @@
           font-size: 1.125rem;
         }
         .text {
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
+          @include text-nowrap;
 
           font-size: .8125rem;
         }

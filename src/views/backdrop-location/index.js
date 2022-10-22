@@ -186,7 +186,7 @@ const BackdropLocation = () => {
           <button className="text-button">적용</button>
         </div>
         
-        <Slider action={setDistance} initial={distance} min={5} max={30} step={5} ticks={[ "5", "10", "15", "20", "25", "30" ]} />
+        <Slider value={distance} setValue={setDistance} min={5} max={30} step={5} ticks={[ "5", "10", "15", "20", "25", "30" ]} />
       </div>
     </>
   );
