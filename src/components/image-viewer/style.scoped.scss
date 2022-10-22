@@ -52,6 +52,7 @@
       width: 3rem;
       ::v-deep {
         svg {
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 1));
           height: 2rem;
           width: 2rem;
           fill: #fff;
@@ -74,6 +75,7 @@
       width: 3rem;
       ::v-deep {
         svg {
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 1));
           height: 3rem;
           width: 3rem;
           fill: #fff;
@@ -96,6 +98,7 @@
       width: 3rem;
       ::v-deep {
         svg {
+          filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 1));
           height: 3rem;
           width: 3rem;
           fill: #fff;
@@ -115,6 +118,7 @@
     background-color: rgba(0, 0, 0, .25);
     -webkit-backdrop-filter: blur(5rem);
     backdrop-filter: blur(5rem);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, .75);
 
     padding: 0 .875rem;
     height: 1.75rem;

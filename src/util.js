@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
 
+import store from "./store";
+
+
+const NUTS = [
+  { id: 1, name: "호두" }, 
+  { id: 2, name: "피스타치오" }, 
+  { id: 3, name: "캐슈넛" }, 
+  { id: 4, name: "땅콩" }, 
+  { id: 5, name: "마카다미아" }, 
+  { id: 6, name: "아몬드" },
+  { id: 7, name: "밤" },
+];
 
 export class Pipe {
   static data = {};
@@ -7,10 +19,10 @@ export class Pipe {
   static set(key, val) {
     useEffect(() => {
       Pipe.data[key] = val;
-      console.log(`key '${key}' added`);
+      //console.log("[Pipe]", `key '${key}' added`);
       return () => {
         delete Pipe.data[key];
-        console.log(`key '${key}' deleted`);
+        //console.log("[Pipe]", `key '${key}' deleted`);
       };
     }, []);
   }
@@ -98,10 +110,6 @@ export class Motion {
   state;
   setState;
   handlers;
-  setTimer;
-
-  _timer;
-  _setTimer;
 
   constructor(...params) { this.init(...params); }
   init(handlers={}, initKey="init", ...initArgs) {
@@ -117,28 +125,18 @@ export class Motion {
       const destroy = state.handler();
       return (typeof destroy === "function") ? destroy : () => {};
     }, [state]);
-
-
-    const [_timer, _setTimer] = useState(null);
-    this._timer = _timer, this._setTimer = _setTimer;
   }
   
   go(key, args=[]) {
     this.delay(0, key, args);
   }
   delay(delay, key, args=[]) {
-    // ### 희한하게 useState 이용 안하고 단순히 변수(this._timer)에 저장하면 안됨. 왜 그러지? 근데 또 정적 변수(Motion._timer)로 하면 된다
-    // 리액트 버그인가? 그냥 js에선 문제 없을 거 같은데. this 바인딩 문제도 아닌 듯 함.
-    if (this._timer !== null)
-      return;
-    const _timer = setTimeout(() => {
+    setTimeout(() => {
       this.setState({
         key: key,
         handler: this._getHandler(key, args),
       });
-      this._setTimer(null);
     }, delay);
-    this._setTimer(_timer);
   }
   
   get() { return this.state.key; }
@@ -159,6 +157,16 @@ export class Motion {
 
 /** functions */
 
+export const filterText = text => {
+  if (typeof text !== "string")
+    throw new Error(`value is not string : ${text}`);
+  text = text.trim();
+  return text;
+};
+
+export const getMyLocation = () => {
+  return store.getState().global.location;
+};
 export const getDistance = (location_1, location_2) => {  // generally used geo measurement function
   let R = 6378.137; // radius of earth in KM
   let dLati = (location_2.lati - location_1.lati) * Math.PI / 180;
@@ -210,13 +218,7 @@ export const getRandomProfile = () => {
 // deprecated
 export const getRandomNutList = () => {
   let li = [
-    { id: 1, name: "호두" }, 
-    { id: 2, name: "피스타치오" }, 
-    { id: 3, name: "캐슈넛" }, 
-    { id: 4, name: "땅콩" }, 
-    { id: 5, name: "마카다미아" }, 
-    { id: 6, name: "아몬드" },
-    { id: 7, name: "밤" },
+    ...NUTS
   ];
 
   let i, j, tmp;
@@ -228,16 +230,6 @@ export const getRandomNutList = () => {
 };
 
 export const getRandomNut = () => {
-  const NUTS = [
-    { id: 1, name: "호두" }, 
-    { id: 2, name: "피스타치오" }, 
-    { id: 3, name: "캐슈넛" }, 
-    { id: 4, name: "땅콩" }, 
-    { id: 5, name: "마카다미아" }, 
-    { id: 6, name: "아몬드" },
-    { id: 7, name: "밤" },
-  ];
-
   const idx = Math.floor(Math.random() * NUTS.length);
   return NUTS[idx];
 };

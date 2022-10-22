@@ -41,7 +41,7 @@
     position: absolute;
     left: -$padding-horiz;
     right: -$padding-horiz;
-    top: 0;
+    top: -1px;
     bottom: -1px;
 
     transition: all .3s ease;
@@ -72,6 +72,8 @@
       }
       &>.header {
         .profile {
+          flex-shrink: 0;
+
           height: 2.5rem;
           display: flex;
           align-items: center;
@@ -81,6 +83,10 @@
             font-size: 1.125rem;
           }
           .name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
             font-size: .875rem;
             display: flex;
             align-items: center;
@@ -95,14 +101,18 @@
             margin-left: .3125rem;
           }
 
-          &[data-user-type=me],
-          &[data-user-type=following] {
+          &[data-user-relation=me],
+          &[data-user-relation=following] {
             .name {
               font-weight: 700;
             }
           }
         }
         .description {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
           margin-left: .75rem;
           font-size: .8125rem;
           color: var(--secondary-text-color);

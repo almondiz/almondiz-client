@@ -8,7 +8,7 @@ import NavigateBeforeIcon from "../../asset/icons/mui/navigate-before-icon";
 import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
-const ImageViewer = forwardRef(({ images }, ref) => {
+const ImageViewer = forwardRef(({ images=[] }, ref) => {
   const [index, setIndex] = useState(-1);
   useImperativeHandle(ref, () => ({ index: index, setIndex: setIndex, }));
 
@@ -17,7 +17,7 @@ const ImageViewer = forwardRef(({ images }, ref) => {
   return (index !== -1) && (
     <div className="image-viewer">
       <div className="background" />
-      <img className="image" src={image} />
+      <img className="image" src={image.url} />
       <button className="button button-close" onClick={() => setIndex(-1)}>
         <div className="icon"><CloseIcon /></div>
       </button>

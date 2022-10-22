@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -9,12 +8,12 @@ import "./style.scoped.scss";
 
 
 const ScrapPage = ({}) => {
-  // POST API
-  const dataList = (() => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getDummyData();
-  })();
-  //
+  /** 4. POST API */
+  const postViewModel = new PostViewModel();
+  const [posts, setPosts] = useState([]);
+  const readAllPosts = async () => setPosts(await postViewModel.readAllPosts());
+  useEffect(() => { readAllPosts(); }, []);
+  /** */
 
 
   return (
@@ -24,7 +23,7 @@ const ScrapPage = ({}) => {
         <div className="right" />
       </header>
       <main className="content">
-        <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
+        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
       </main>
     </div>
   );

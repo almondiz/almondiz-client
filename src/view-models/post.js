@@ -1,142 +1,101 @@
-import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
-
-import { getDistance, getTime } from "../util";
-import { UserModel } from "../models";
+import { PostModel } from "../models";
+import { getMyLocation, getDistance, getTime } from "../util";
 
 
 export default class PostViewModel {
-  constructor(model) { this.model = model; }
+  model;
+  constructor(model=(new PostModel())) { this.model = model; }
 
-  getData(id) {
-    const res = this.model.getData(id);
-    return this._makePostItemData(res);
+
+  /** 4-0. POST API */
+  // GET /api/post/{postId}
+  async readPost(postId) {
+    const res = await this.model.readPost(postId);
+    console.log("[PostViewModel.readPost]", res);
+    const { data } = res;
+
+    const myLocation = getMyLocation();
+    return this._makePostItemData(data, { myLocation });
   }
-  getDummyData(...params) {
-    const resList = this.model.getDummyData(...params);
-    return resList.map(res => this._makePostItemData(res));
+  // GET /api/posts
+  async readAllPosts() {
+    const res = await this.model.readAllPosts();
+    console.log("[PostViewModel.readAllPosts]", res);
+    const { dataList } = res;
+
+    const myLocation = getMyLocation();
+    return dataList.map((data) => this._makePostItemData(data, { myLocation }));
   }
+  // GET /api/user/posts
+  async readAllUserPosts(userId) {
+    const res = await this.model.readAllUserPosts(userId);
+    console.log("[PostViewModel.readAllUserPosts]", res);
+    const { dataList } = res;
 
-
-  getAllDataByUser(userId) {
-    const userModel = new UserModel();
-    const user = userModel.getData(userId);
-    return user.posts.map(postId => this.getData(postId));
+    const myLocation = getMyLocation();
+    return dataList.map((data) => this._makePostItemData((data), { myLocation }));
   }
+  _makePostItemData(data, { myLocation }) {
+    const postId = data.postId;
 
-
-  _makePostItemData(post) {
-    const navigate = useNavigate();
-    const location = useSelector(state => state.global.location);
-  
-    const postModel = this.model;
-    const postId = post.id;
-  
-    const userModel = new UserModel();
-    const myUserId = userModel.getMyUserId();
-    const postAuthorId = post.userId;
-    const postAuthor = userModel.getData(postAuthorId);
-  
-    const bestComment = post.comments[post.bestCommentIndex];
-    const bestCommentAuthorId = bestComment.userId;
-    const bestCommentAuthor = userModel.getData(bestCommentAuthorId);
-    
+    const postAuthor = data.user;
+    const postAuthorId = postAuthor.userId;
   
     return {
-      postId: postId,
+      postId,
 
-      shopThumbUrl: post.shop.thumb,
-      shopName: post.shop.name,
-      shopAddress: post.shop.location.address,
-      shopDistance: `${getDistance(location, post.shop.location)}km`,
-      goToShopPage: () => (window.location.href = post.shop.link),
+      shopThumbUrl: data.shop.thumb,
+      shopName: data.shop.shopName,
+      shopAddress: data.shop.location.address.split(" ").slice(0, 3).join(" "),     // ### HMM (지번만 필요함. 서버에서 도로명 주지 않도록 해야 할 듯)
+      shopAddressDetail: data.shop.location.address,
+      shopDistance: `${getDistance(myLocation, data.shop.location)}km`,
+      goToShopPage: navigate => (window.location.href = data.shop.link),          // ### FUTURE WORKS
 
-      postTags: post.tags,
-      postText: post.content.text,
-      postImageUrls: post.content.images,
-      goToPostPage: () => navigate(`/post`),
+      postTags: data.tags,
+      postText: data.text,
+      postImages: data.postFileImgUrls.map((url) => ({ url })),
+      goToPostPage: navigate => navigate(`/post/${postId}`),
   
-      postAuthorEmoji: postAuthor.profile.thumb.emoji,
+      postAuthorId: postAuthorId,
+      postAuthorEmoji: postAuthor.thumb.emoji,
       postAuthorName: (() => {
-        if (postAuthorId === myUserId)
-          return "나";
-        else
-          return userModel.getAlias(postAuthorId);
+        switch (postAuthor.relation) {
+          case "me":
+            return "나";
+          case "following":
+            return postAuthor.alias;
+          case "other":
+          default:
+            return postAuthor.nickName;
+        }
       })(),
-      postAuthorType: (() => {
-        if (postAuthorId === myUserId)
-          return "me";
-        else if (userModel.isSubscribing(postAuthorId))
-          return "following";
-        else
-          return "other";
-      })(),
-      goToPostAuthorPage: () => navigate(`/profile/${postAuthorId}`),
+      postAuthorRelation: postAuthor.relation,
+      goToPostAuthorPage: navigate => navigate(`/profile/${postAuthorId}`),
 
-      postCreatedAt: getTime(post.createdAt),
+      postCreatedAt: data.createdAt,
+      //postCreatedAt: getTime(data.createdAt),
       
-      scrap: (() => {
-        return (post.scrapped.indexOf(myUserId) >= 0) ? true : false;
-      }),
-      scrappedCount: post.scrapped.length,
+      isScrapped: data.scrap,
+      scrappedCount: data.scrappedCount,
   
-      commentCount: postModel.getCommentCount(postId),
-      bestCommentText: bestComment.content,
-      bestCommentAuthorEmoji: bestCommentAuthor.profile.thumb.emoji,
+      commentCount: data.commentCount,
+      bestCommentText: data.bestComment?.text,
+      bestCommentAuthorEmoji: data.bestComment?.user.thumb.emoji,
 
 
-      // used only in post detail page
-      comments: post.comments.map(comment => this._makeCommentItemData(comment, { postAuthorId })),
-      //
+      scrap: async (b) => {
+        const action = this.model[b ? "unscrap" : "scrap"].bind(this.model);
+        const success = await action(postId);
+        console.log("[postViewModel.scrap]", action, success);
+        return success;
+      },
+
+      delete: async () => {
+        const res = await this.model.deletePost(postId);
+        console.log("[postViewModel.delete]", res);
+        const { success } = res;
+        return success;
+      },
     };
-  }
-  _makeCommentItemData(comment, { postAuthorId }) {
-    const navigate = useNavigate();
-
-    const commentId = comment.id;
-  
-    const userModel = new UserModel();
-    const myUserId = userModel.getMyUserId();
-    const commentAuthorId = comment.userId;
-    const commentAuthor = userModel.getData(commentAuthorId);
-  
-  
-    return {
-      commentId: commentId,
-
-      commentAuthorEmoji: commentAuthor.profile.thumb.emoji,
-      commentAuthorName: (() => {
-        if (commentAuthorId === myUserId)
-          return "나";
-        else
-          return userModel.getAlias(commentAuthorId);
-      })(),
-      commentAuthorType: (() => {
-        if (commentAuthorId === myUserId)
-          return "me";
-        else if (userModel.isSubscribing(commentAuthorId))
-          return "following";
-        else
-          return "other";
-      })(),
-      isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
-      goToCommentAuthorPage: () => navigate(`/profile/${commentAuthorId}`),
-
-      commentCreatedAt: getTime(comment.createdAt),
-  
-      commentText: comment.content,
-      
-      like: (() => {
-        return (comment.liked.indexOf(myUserId) >= 0) ? true : false;
-      }),
-      commentLikedCount: comment.liked.length,
-  
-      replyComments: (() => {
-        if (comment.reply)
-          return comment.reply.map(replyComment => this._makeCommentItemData(replyComment, { postAuthorId }));
-        else
-          return null;
-      })(),
-    }
   }
 };

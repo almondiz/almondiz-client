@@ -96,7 +96,8 @@
       }
     }
     .row.row-tags {
-      height: 2.5rem;
+      height: fit-content;
+      min-height: 2.5rem;
     }
   }
   &>.body {
@@ -132,7 +133,8 @@
       padding-top: .5rem;
       padding-bottom: .5rem;
       border-bottom: 1px solid var(--border-color);
-      height: 3.5rem;
+      height: fit-content;
+      min-height: 3.5rem;
 
       .buttons {
         flex-shrink: 0;
@@ -183,6 +185,10 @@
           margin-left: .5rem;
           font-size: .875rem;
         }
+      }
+
+      .input-add-image {
+        display: none;
       }
     }
   }

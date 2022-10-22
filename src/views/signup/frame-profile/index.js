@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Frame, Motion } from "../../../util";
+import { SearchViewModel } from "../../../view-models";
 
 import "./style.scoped.scss";
 import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
@@ -25,26 +26,37 @@ const MenuName = ({ getRandomNut, changeNut }) => {
   };
   useEffect(() => { changeNut(nut.id); }, [nut])
 
+  // tag
+  const [ tag, setTag ] = useState(null);
+  const onClickTagItem = e => {
+    const { tagName } = e;
+    tfHandler(0, tagName);
+    setTf(tagName);
+  };
 
+  // textfield
   const tfPlaceholder = "좋아하는 음식";
   const [tf, setTf] = useState("");
   useEffect(() => {
     tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
+    searchTag(tf);
   }, [tf]);
-
   const tfHandler = (tfFrameIndex, text="") => {
     tfFrame.move(tfFrameIndex);
     setTf(text);
   };
 
-  // TAG
-  const onClickTagItem = text => {
-    setTf(text);
-    tfHandler(0, text);
+  /** 7. TAG API */
+  const [ searchResult, setSearchResult ] = useState([]);
+  const searchViewModel = new SearchViewModel();
+  const searchTag = async (tagName) => {
+    const _tags = await searchViewModel.searchTag(tagName);
+    if (_tags) {
+      setSearchResult(_tags);
+    }
   };
-  //
 
-  // Motion
+  // motion
   const MOTION_DELAY = 200;
   const motion = new Motion({
     "stop": () => {},
@@ -56,7 +68,6 @@ const MenuName = ({ getRandomNut, changeNut }) => {
       motion.delay(MOTION_DELAY, "stop");
     }
   }, "stop");
-  //
 
   const tagFrame = new Frame([
     (
@@ -65,11 +76,11 @@ const MenuName = ({ getRandomNut, changeNut }) => {
     (
       <div className="tag-list-group">
         <ul className="list">
-          <li className="item" onClick={() => onClickTagItem("떡볶이")}>떡볶이</li>
-          <li className="item" onClick={() => onClickTagItem("마라탕")}>마라탕</li>
-          <li className="item" onClick={() => onClickTagItem("제육볶음")}>제육볶음</li>
-          <li className="item" onClick={() => onClickTagItem("돈까스")}>돈까스</li>
-          <li className="item" onClick={() => onClickTagItem("김치찌개")}>김치찌개</li>
+          {searchResult.map((tag, idx) => (
+            <li key={idx} className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onClickTagItem(tag)}>
+              {tag.tagName}
+            </li>
+          ))}
         </ul>
       </div>
     ),
@@ -116,7 +127,7 @@ const MenuThumb = ({ getRandomThumb, changeThumb }) => {
   };
   useEffect(() => { changeThumb(thumbs[0]); }, [thumbs])
 
-  // Motion
+  // motion
   const MOTION_DELAY = 300;
   const motion = new Motion({
     "stop": () => {},
@@ -125,7 +136,6 @@ const MenuThumb = ({ getRandomThumb, changeThumb }) => {
       return _onChangeThumbEnd;
     },
   }, "stop");
-  //
 
   return (
     <div className="menu-thumb" onClick={onChangeThumb}>

@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import TagList from "../../components/tag-list";
 import CommentList from "../../components/comment-list";
@@ -13,23 +14,25 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
-const PostItem = ({ data, detail=false }) => {
+const PostItem = ({ post={}, detail=false, comments=[] }) => {
+  const navigate = useNavigate();
+
   const imageViewerRef = useRef();
   const imageGridAction = index => imageViewerRef.current?.setIndex(index);
-  const ImageGridTrailer = ({ data }) => (
-    <div className="image-grid-trailer" onClick={data.goToShopPage}>
+  const ImageGridTrailer = ({ post }) => (
+    <div className="image-grid-trailer" onClick={() => post.goToShopPage(navigate)}>
       <div className="content">
         <div className="text-wrap">
-          <p className="name">{data.shopName}</p>
-          <p className="address">{data.shopAddress}</p>
+          <p className="name">{post.shopName}</p>
+          <p className="address">{post.shopAddress}</p>
         </div>
         <div className="icon"><NavigateNextIcon /></div>
       </div>
-      <div className="image" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+      <div className="image" style={{ backgroundImage: `url(${post.shopThumbUrl})` }} />
     </div>
   );
 
-  const ButtonMore = ({ data }) => {
+  const ButtonMore = ({ post }) => {
     const [focus, setFocus] = useState(false);
     const onClick = () => setFocus(!focus);
     return (
@@ -38,54 +41,70 @@ const PostItem = ({ data, detail=false }) => {
       </button>
     );
   };
-  const ButtonScrap = ({ data }) => {
-    const [focus, setFocus] = useState(data.scrap);
-    const onClick = () => setFocus(!focus);
+  const ButtonScrap = ({ post }) => {
+    const [focus, setFocus] = useState(post.isScrapped);
+    const onClick = async () => {
+      const success = await post.scrap(focus);
+      if (success) {
+        setFocus(!focus);
+      }
+    };
     return (
       <button className={`button button-scrap ${focus ? "focus" : ""}`} onClick={onClick}>
         <div className="icon">{focus ? <BookmarkIconFill /> : <BookmarkIconBorder />}</div>
-        <p>{data.scrappedCount}</p>
+        <p>{post.scrappedCount}</p>
       </button>
     );
   };
 
+  const getRelationText = () => {
+    if (post.postAuthorRelation === "following")
+      return ` · 구독`;
+    else
+      return "";
+  };
+
   return (
-    <article className={`post ${!detail ? "post-item" : ""}`} data-id={data.postId}>
-      {!detail && <div className="background" onClick={data.goToPostPage} />}
-      {detail && <ImageViewer images={data.postImageUrls} ref={imageViewerRef} />}
+    <article className={`post ${!detail ? "post-item" : ""}`} data-post-id={post.postId}>
+      {!detail && <div className="background" onClick={() => post.goToPostPage(navigate)} />}
+      {detail && <ImageViewer images={post.postImages} ref={imageViewerRef} />}
 
       <header className="header">
         <div className="row row-shop">
-          <button className="shop" onClick={data.goToShopPage}>
-            <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+          <button className="shop" onClick={() => post.goToShopPage(navigate)}>
+            <div className="thumb" style={{ backgroundImage: `url(${post.shopThumbUrl})` }} />
             <div className="text-wrap">
-              <p className="name">{data.shopName}</p>
-              <p className="description">{data.shopAddress} · {data.shopDistance}</p>
+              <p className="name">{post.shopName}</p>
+              {!detail ? (
+                <p className="description">{post.shopAddress} · {post.shopDistance}</p>
+              ) : (
+                <p className="description">{post.shopAddress}</p>
+              )}
             </div>
           </button>
           {!detail && (
             <div className="buttons right">
-              <ButtonMore data={data} />
+              <ButtonMore post={post} />
             </div>
           )}
         </div>
-        <nav className="row row-tags"><TagList dataList={data.postTags} small /></nav>
+        <nav className="row row-tags"><TagList tags={post.postTags} small /></nav>
       </header>
 
       <main className="body">
         <div className="row row-text">
-          <p className="text">{data.postText}</p>
+          <p className="text">{post.postText}</p>
         </div>
         { 
           !detail ?
           (
-            <div className="row row-images" onClick={data.goToPostPage}>
-              <ImageSlider imageUrls={data.postImageUrls} />
+            <div className="row row-images" onClick={() => post.goToPostPage(navigate)}>
+              <ImageSlider images={post.postImages} />
             </div>
           ) :
           (
             <div className="row row-images">
-              <ImageGrid imageUrls={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} action={imageGridAction} />
+              <ImageGrid images={post.postImages} trailer={<ImageGridTrailer post={post} />} action={imageGridAction} />
             </div>
           )
         }
@@ -94,41 +113,41 @@ const PostItem = ({ data, detail=false }) => {
       {
         !detail ?
         (
-          data.commentCount && (
-            <footer className="footer">
-              <div className="row row-profile">
-                <button className="profile" onClick={data.goToPostAuthorPage} data-user-type={data.postAuthorType}>
-                  <p className="emoji">{data.postAuthorEmoji}</p>
-                  <p className="name">{data.postAuthorName}</p>
-                </button>
-                <p className="description">{data.postCreatedAt}</p>
-                <div className="buttons right">
-                  <ButtonScrap data={data} />
-                </div>
+          <footer className="footer">
+            <div className="row row-profile">
+              <button className="profile" onClick={() => post.goToPostAuthorPage(navigate)} data-user-relation={post.postAuthorRelation}>
+                <p className="emoji">{post.postAuthorEmoji}</p>
+                <p className="name">{post.postAuthorName}</p>
+              </button>
+              <p className="description">{post.postCreatedAt}{getRelationText()}</p>
+              <div className="buttons right">
+                <ButtonScrap post={post} />
               </div>
+            </div>
+            { (post.commentCount > 0) && (
               <div className="row row-counts">
-                <p className="description">댓글 <span className="count">{data.commentCount}</span></p>
+                <p className="description">댓글 <span className="count">{post.commentCount}</span></p>
                 <div className="best-comment">
-                  <p className="emoji">{data.bestCommentAuthorEmoji}</p>
-                  <p className="text">{data.bestCommentText}</p>
+                  <p className="emoji">{post.bestCommentAuthorEmoji}</p>
+                  <p className="text">{post.bestCommentText}</p>
                 </div>
               </div>
-            </footer>
-          )
+            )}
+          </footer>
         ) :
         (
           <footer className="footer">
             <div className="row row-profile">
-              <button className="profile" onClick={data.goToPostAuthorPage}>
-                <p className="emoji">{data.postAuthorEmoji}</p>
-                <p className="name">{data.postAuthorName}</p>
+              <button className="profile" onClick={() => post.goToPostAuthorPage(navigate)}>
+                <p className="emoji">{post.postAuthorEmoji}</p>
+                <p className="name">{post.postAuthorName}</p>
               </button>
-              <p className="description right">{data.postCreatedAt}</p>
+              <p className="description right">{post.postCreatedAt}{getRelationText()}</p>
             </div>
             <div className="row row-counts">
-              <p className="description">댓글 <span className="count">{data.commentCount}</span> · 스크랩 <span className="count">{data.scrappedCount}</span></p>
+              <p className="description">댓글 <span className="count">{post.commentCount}</span> · 스크랩 <span className="count">{post.scrappedCount}</span></p>
             </div>
-            <div className="row row-comments"><CommentList dataList={data.comments} root={true} /></div>
+            <div className="row row-comments"><CommentList comments={comments} root={true} /></div>
           </footer>
         )
       }

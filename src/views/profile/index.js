@@ -1,8 +1,7 @@
-import React, { useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import { Frame } from "../../util";
-import { UserModel, PostModel, NoticeModel } from "../../models";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -15,7 +14,7 @@ import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
-const FloatController = ({ floatRef, userData }) => {
+const FloatController = ({ floatRef, user }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame();
@@ -29,7 +28,7 @@ const FloatController = ({ floatRef, userData }) => {
         </section>
       ),
     ]);
-    return (userData.userType !== "me") && <div className="float-header">{headerFrame.view()}</div>;
+    return (user.userRelation !== "me") && <div className="float-header light">{headerFrame.view()}</div>;
   };
 
   useEffect(() => {
@@ -41,45 +40,49 @@ const FloatController = ({ floatRef, userData }) => {
 };
 
 
-const ProfilePage = ({ floatRef }) => {
-  const navigate = useNavigate();
-  const { userId } = useParams();
+const ProfilePage = ({ floatRef, myUserId }) => {
+  const userId = parseInt(useParams().userId);
 
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  const [user, setUser] = useState([]);
+  const getUser = async () => setUser((userId === myUserId) ? (await userViewModel.whoami()) : (await userViewModel.get(userId)));
+  useEffect(() => { getUser(); }, []);
+  /** */
   
-  // POST API
-  const postDataList = (() => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getAllDataByUser(userId);
-  })(userId);
-  //
-
-  // USER API
-  const userData = (() => {
-    const userViewModel = new UserViewModel(new UserModel());
-    return userViewModel.getData(userId);
-  })(userId);
+  /** 4. POST API */
+  const postViewModel = new PostViewModel();
+  const [posts, setPosts] = useState([]);
+  //const readAllUserPosts = async () => setPosts(await postViewModel.readAllUserPosts(userId));
+  //useEffect(() => { readAllUserPosts(); }, []);
+  /** */
 
 
-  const FollowingEmojiList = ({ userData }) => {
+  const navigate = useNavigate();
+  const FollowingsHead = ({ followingsHead }) => {
     return (
       <div className="emojis">
-        {userData.followingEmojis.map((emoji, idx) => <div key={idx} className="emoji">{emoji}</div>)}
+        {followingsHead.map((following, idx) => (
+          <button key={idx} className="emoji" onClick={() => following.goToUserPage(navigate)}>
+            {following.userEmoji}
+          </button>
+        ))}
       </div>
     );
   };
-  const PostList = ({ postDataList }) => {
+  const PostList = ({ posts }) => {
     return (
       <section className="post-list">
-        {postDataList.map((data, idx) => <PostItem key={idx} data={data} />)}
+        {posts.map((post, idx) => <PostItem key={idx} post={post} />)}
       </section>
     );
   };
 
-  const ButtonNotice = ({ userData }) => {
+  const ButtonNotice = ({ user }) => {
     const onClick =() => navigate(`/notice`);
     return (
-      <button className={`button button-notice ${userData.hasUnreadNotices ? "badge" : ""}`} onClick={onClick}>
-        <div className={`icon ${userData.hasUnreadNotices ? "badge" : ""}`}><NotificationsIconBorder /></div>
+      <button className={`button button-notice ${user.hasUnreadNotices ? "badge" : ""}`} onClick={onClick}>
+        <div className={`icon ${user.hasUnreadNotices ? "badge" : ""}`}><NotificationsIconBorder /></div>
       </button>
     );
   };
@@ -99,19 +102,19 @@ const ProfilePage = ({ floatRef }) => {
       </button>
     );
   };
-  const goToFollowingsPage = () => navigate(`/subscriptions`);
+  const goToFollowingsPage = navigate => navigate(`/following`);
 
 
   return (
     <div id="page">
       {(() => {
-        switch (userData.userType) {
+        switch (user.userRelation) {
           case "me":
             return (
               <header className="header">
                 <div className="brand"><Logotype /></div>
                 <div className="buttons right">
-                  <ButtonNotice userData={userData} />
+                  <ButtonNotice user={user} />
                   <ButtonSettings />
                 </div>
               </header>
@@ -128,26 +131,26 @@ const ProfilePage = ({ floatRef }) => {
       })()}
       <main className="body">
         <div className="rows">
-          <div className="row row-profile" data-user-type={userData.userType}>
-            <div className="thumb" style={{ backgroundColor: userData.userColor }}>{userData.userEmoji}</div>
+          <div className="row row-profile" data-user-relation={user.userRelation}>
+            <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
             <div className="text-wrap">
               <p className="name"
                 data-after={(() => {
-                  switch (userData.userType) {
+                  switch (user.userRelation) {
                     case "me":        return "나";
                     case "following": return "구독";
                   }
                   return undefined;
                 })()}
               >
-                {userData.userName}
+                {user.userName}
               </p>
-              {(userData.userType !== "other") && <p className="description">{userData.userNameDescription}</p>}
+              {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
             </div>
           </div>
 
           {(() => {
-            switch (userData.userType) {
+            switch (user.userRelation) {
               case "following":
                 return (
                   <div className="row row-follow">
@@ -166,34 +169,34 @@ const ProfilePage = ({ floatRef }) => {
 
           <div className="row row-counts">
             <div className="count half">
-              <h5>구독자 수</h5><p>{userData.followedCount}</p>
+              <h5>구독자 수</h5><p>{user.followedCount}</p>
             </div>
             <div className="count half">
-              <h5>스크랩된 수</h5><p>{userData.scrappedCount}</p>
+              <h5>스크랩된 수</h5><p>{user.scrappedCount}</p>
             </div>
           </div>
           
-          {(userData.userType === "me") && (
+          {(user.userRelation === "me") && (
             <div className="row row-following">
               <div className="count">
                 <h5>구독</h5>
-                <p>{userData.followingCount}</p>
+                <p>{user.followingCount}</p>
               </div>
-              <FollowingEmojiList userData={userData} />
-              <button className="button button-following-list" onClick={goToFollowingsPage}>보기</button>
+              <FollowingsHead followingsHead={user.followingsHead} />
+              <button className="button button-following-list" onClick={() => goToFollowingsPage(navigate)}>보기</button>
             </div>
           )}
           
           <div className="row row-post-counts">
             <div className="count">
-              <h5>글</h5><p>{postDataList.length}</p>
+              <h5>글</h5><p>{posts.length}</p>
             </div>
           </div>
         </div>
-        <PostList postDataList={postDataList} />
+        <PostList posts={posts} />
       </main>
 
-      <FloatController floatRef={floatRef} userData={userData} />
+      <FloatController floatRef={floatRef} user={user} />
     </div>
   );
 };

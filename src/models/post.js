@@ -2,7 +2,48 @@ import DefaultModel from "./default-model";
 
 
 export default class PostModel extends DefaultModel {
-  data = {
+  /** 4-0. POST API */
+  // POST /api/post
+  createPost(body) {
+    return this.callApi(() => this.api.createPost(body));
+  }
+  // GET /api/post/{postId}
+  readPost(postId) {
+    return this.callApi(() => this.api.readPost(postId));
+  }
+  // DELETE /api/post/{postId}
+  deletePost(postId) {
+    return this.callApi(() => this.api.deletePost(postId));
+  }
+  // PATCH /api/post/{postId}
+  updatePost(postId, body) {
+    return this.callApi(() => this.api.updatePost(postId, body));
+  }
+
+  // GET /api/posts
+  readAllPosts() {
+    return this.callApi(() => this.api.readAllPosts());
+  }
+  // GET /api/user/posts
+  readAllUserPosts(userId) {
+    return this.callApi(() => this.api.readAllUserPosts(userId));
+  }
+
+  /** 4-1. POST SCRAP API */
+  // POST /api/postScrap/post/{postId}/user
+  scrap(postId) {
+    return this.callApi(() => this.api.scrap(postId));
+  }
+  // DELETE /api/postScrap/post/{postId}
+  unscrap(postId) {
+    return this.callApi(() => this.api.unscrap(postId));
+  }
+
+
+
+  
+  // [DEPRECATED]
+  /*data = {
     1: {
       id: 1,
       createdAt: 1660993200000,
@@ -72,15 +113,5 @@ export default class PostModel extends DefaultModel {
       bestCommentIndex: 0,
       scrapped: [1, 4],             // 이 글을 스크랩하는 사용자들 (userId)
     },
-  };
-
-  getData(id) { return this.data[id]; }
-  
-  getDummyData() { return [ this.data[1], this.data[1], ]; }
-
-  getCommentCount(id) {
-    let count = 0;
-    this.data[id].comments.map(comment => count += 1 + comment.reply.length);
-    return count;
-  }
+  };*/
 };

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 
 import { Frame } from "../../../util";
-import { PostModel } from "../../../models";
-import { PostViewModel } from "../../../view-models";
+import { SearchViewModel } from "../../../view-models";
 
-import TagList, { TagController } from "../../../components/tag-list";
+import TagList, { pushTag } from "../../../components/tag-list";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
@@ -33,43 +32,63 @@ const FloatController = ({ floatRef, frame }) => {
 
 
 // frame 3
-const FrameDirectTag = ({ frame, floatRef }) => {
-  // POST API
-  const data = (postId => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getData(postId);
-  })(1);
-  //
-  
+const FrameDirectTag = ({
+  frame, floatRef,
+  shop, setShop
+}) => {
+  // tag
+  const [ tags, setTags ] = useState([]);
+  useEffect(() => {
+    const _shop = Object.assign({}, shop);
+    _shop.tags = [...tags];
+    setShop(_shop);
+    console.log(_shop);
+  }, [tags]);
+  const onClickTagItem = e => {
+    pushTag(tags, setTags, e);
+    setTf("");
+  };
 
+  // textfield
   const tfPlaceholder = "태그를 추가하세요";
   const [tf, setTf] = useState("");
   useEffect(() => {
     tagFrame.move(tf ? 1 : 0);
+    searchTag(tf);
   }, [tf]);
 
-  // TAG
-  const tagController = new TagController(["오뎅", ]);
-  const onClickTagItem = data => {
-    tagController.push(data);
-    setTf("");
+  /** 7. TAG API */
+  const [ searchResult, setSearchResult ] = useState([]);
+  const searchViewModel = new SearchViewModel();
+  const searchTag = async (tagName) => {
+    const _tags = await searchViewModel.searchTag(tagName);
+    if (_tags) {
+      setSearchResult(_tags);
+    }
   };
-  //
+  const createTag = async (tagName) => {
+    const _tag = await searchViewModel.createTag(tagName);
+    if (_tag) {
+      onClickTagItem(_tag);
+    }
+  };
 
   const tagFrame = new Frame([
     (
-      <TagList controller={tagController} />
+      <TagList tags={tags} editable setTags={setTags} />
     ),
     (
       <div className="tag-list-group">
         <ul className="list">
-          <li className="item" onClick={() => onClickTagItem("떡볶이")}>떡볶이</li>
-          <li className="item" onClick={() => onClickTagItem("순대")}>순대</li>
-          <li className="item" onClick={() => onClickTagItem("튀김")}>튀김</li>
+          {searchResult.map((tag, idx) => (
+            <li key={idx} className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onClickTagItem(tag)}>
+              {tag.tagName}
+            </li>
+          ))}
         </ul>
         <div className="if-not-found">
           <h3 className="title">"{tf}" 태그를 찾나요?</h3>
-          <button className="text-button" onClick={() => setTf("")}>직접 등록</button>
+          <button className="text-button" onClick={() => createTag(tf)}>직접 등록</button>
         </div>
       </div>
     ),
@@ -82,10 +101,10 @@ const FrameDirectTag = ({ frame, floatRef }) => {
           <header className="header">
             <div className="row row-shop">
               <button className="shop">
-                <div className="thumb" />
+                <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
                 <div className="text-wrap">
-                  <p className="name">아주대 앞 포장마차</p>
-                  <p className="description">{data.shopAddress} · {data.shopDistance}</p>
+                  <p className="name">{shop.shopName}</p>
+                  <p className="description">{shop.shopAddress}</p>
                 </div>
               </button>
             </div>

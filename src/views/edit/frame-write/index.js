@@ -2,10 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { Frame } from "../../../util";
-import { PostModel } from "../../../models";
-import { PostViewModel } from "../../../view-models";
 
-import TagList, { TagController } from "../../../components/tag-list";
+import TagList from "../../../components/tag-list";
 import ImageGrid from "../../../components/image-grid";
 import BackdropTag from "../backdrop-tag";
 
@@ -14,26 +12,37 @@ import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
 import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
 
 
-const FloatController = ({ floatRef, frame }) => {
+const FloatController = ({
+  floatRef, frame, 
+  createPost,
+  postImages, setPostImages
+}) => {
   const navigate = useNavigate();
 
-  const headerFrame = new Frame(), footerFrame = new Frame();
-  const Header = () => {
-    headerFrame.init([]);
-    return <div className="float-header">{headerFrame.view()}</div>;
+  const imageInputRef = useRef();
+  const onAddImageButtonClick = e => imageInputRef.current?.click();
+  const onImageChange = e => {
+    setPostImages([...postImages, {
+      file: e.target.files[0],
+      url: URL.createObjectURL(e.target.files[0]),
+    }]);
   };
+
+  const footerFrame = new Frame();
   const Footer = () => {
     footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
-          <button className="button button-add-image right" onClick={() => {}}>
+          <button className="button button-add-image right" onClick={onAddImageButtonClick}>
             <div className="icon"><AddAPhotoBorder /></div>
             <p>사진 추가</p>
           </button>
+
+          <input ref={imageInputRef} type="file" accept="image/*" name="file" onChange={onImageChange} className="input-add-image" />
         </section>
       ),
     ]);
-    return <div className="float-footer">{footerFrame.view()}</div>;
+    return <div className="float-footer light">{footerFrame.view()}</div>;
   }
 
   const Top = () => (
@@ -42,13 +51,18 @@ const FloatController = ({ floatRef, frame }) => {
         <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">리뷰 작성</h3>
-      <button className="button button-next" onClick={() => navigate(`/me`)}>게시</button>
+      <button className="button button-next" onClick={async () => {
+        const success = await createPost();
+        if (success) {
+          navigate(`/me`);
+        }
+      }}>게시</button>
     </nav>
   );
 
   useEffect(() => {
-    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />), floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter(), floatRef.current?.setTop());
+    (floatRef.current?.setFooter(<Footer />), floatRef.current?.setTop(<Top />));
+    return () => (floatRef.current?.setFooter(), floatRef.current?.setTop());
   }, [floatRef.current]);
 
   return <></>;
@@ -56,42 +70,43 @@ const FloatController = ({ floatRef, frame }) => {
 
 
 // frame 4
-const FrameWrite = ({ frame, floatRef, backdropRef }) => {
-  // POST API
-  const data = (postId => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getData(postId);
-  })(1);
-  //
+const FrameWrite = ({
+  frame, floatRef, backdropRef,
+  shop,
+  postTags, setPostTags,
+  postText, setPostText,
+  postImages, setPostImages,
+  createPost
+}) => {
+  useEffect(() => { setPostTags([...shop.tags]); }, []);
 
-  const ImageGridTrailer = ({ data }) => (
-    <div className="image-grid-trailer" onClick={data.goToShopPage}>
-      <div className="content">
-        <div className="text-wrap">
-          <p className="name">{data.shopName}</p>
-          <p className="address">{data.shopAddress}</p>
-        </div>
-      </div>
-      <div className="image" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
-    </div>
-  );
-
+  // textarea
   const textRef = useRef();
   const handleResizeHeight = () => {
     const obj = textRef.current;
     obj.style.height = '1px';
     obj.style.height = obj.scrollHeight + 'px';
   };
-  useEffect(() => handleResizeHeight(), []);
+  useEffect(() => { handleResizeHeight(); }, []);
 
-  // TAG
-  const tagController = new TagController(data.postTags);
-  useEffect(() => {
-    console.log(tagController.tags);
-  }, [tagController.tags]);
-  //
+  const ImageGridTrailer = ({ shop }) => (
+    <div className="image-grid-trailer">
+      <div className="content">
+        <div className="text-wrap">
+          <p className="name">{shop.shopName}</p>
+          <p className="address">{shop.shopAddress}</p>
+        </div>
+      </div>
+      <div className="image" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+    </div>
+  );
+  const showBackdropTag = () => {
+    backdropRef.current?.show({
+      title: "태그 추가",
+      content: <BackdropTag shop={shop} postTags={postTags} setPostTags={setPostTags} />,
+    });
+  };
 
-  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag tagController={tagController} /> });
 
   return (
     <>
@@ -100,15 +115,15 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
           <header className="header">
             <div className="row row-shop">
               <button className="shop">
-                <div className="thumb" style={{ backgroundImage: `url(${data.shopThumbUrl})` }} />
+                <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
                 <div className="text-wrap">
-                  <p className="name">{data.shopName}</p>
-                  <p className="description">{data.shopAddress} · {data.shopDistance}</p>
+                  <p className="name">{shop.shopName}</p>
+                  <p className="description">{shop.shopAddress}</p>
                 </div>
               </button>
             </div>
             <nav className="row row-tags">
-              <TagList dataList={tagController.tags} small />
+              <TagList tags={postTags} small />
               <div className="buttons right">
                 <button className="button text-button" onClick={() => showBackdropTag()}>태그 추가</button>
               </div>
@@ -117,17 +132,23 @@ const FrameWrite = ({ frame, floatRef, backdropRef }) => {
 
           <main className="body">
             <div className="row row-text">
-              <textarea className="text" ref={textRef} onChange={handleResizeHeight} name="text" placeholder="내용을 입력하세요" autoFocus />
-              {/*data.postText*/}
+              <textarea className="text" ref={textRef} onChange={({ target }) => {
+                setPostText(target.value);
+                handleResizeHeight();
+              }} name="text" placeholder="내용을 입력하세요" autoFocus />
+              {/*postText*/}
             </div>
             <div className="row row-images">
-              <ImageGrid images={data.postImageUrls} trailer={<ImageGridTrailer data={data} />} editable />
+              <ImageGrid images={postImages} trailer={<ImageGridTrailer shop={shop} />} editable setImages={setPostImages} />
             </div>
           </main>
         </article>
       </main>
 
-      <FloatController floatRef={floatRef} frame={frame} />
+      <FloatController
+        floatRef={floatRef} frame={frame} createPost={createPost}
+        postImages={postImages} setPostImages={setPostImages}
+      />
     </>
   )
 };

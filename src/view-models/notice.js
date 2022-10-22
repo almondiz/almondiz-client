@@ -2,27 +2,29 @@ import { UserModel } from "../models";
 
 
 export default class NoticeViewModel {
-  constructor(model) { this.model = model; }
+  userModel;
+  constructor(userModel=(new UserModel())) { this.userModel = userModel; }
 
-  getMyNoticeData() {
-    const noticeModel = this.model;
 
-    const userModel = new UserModel();
-    const myUserId = userModel.getMyUserId();
-    const me = userModel.getMyData();
+  /** 3. NOTIFICATION API */
+  // GET /api/notifications
+  async getMyNoticeData() {
+    const res = await this.userModel.getMyNoticeData();
+    console.log("[NoticeViewModel.getMyNoticeData]", res);
+    const { dataList } = res;
 
-    const notices = [];
-    me.notices.map(noticeId => notices.push(noticeModel.getData(noticeId)));
-    notices.reverse();
+    dataList.reverse();
+    return dataList.map(data => this._makeNoticeItemData(data));
+  }
+  _makeNoticeItemData(data) {
+    const noticeId = data.noticeId;
 
-    return notices.map(notice => {
-      return {
-        noticeId: notice.id,
+    return {
+      noticeId,
 
-        isRead: notice.isRead[myUserId],
-        message: notice.message,
-        createdAt: notice.createdAt,
-      };
-    });
+      isRead: data.read,    // boolean
+      noticeText: data.text,
+      noticeCreatedAt: data.createdAt,
+    }
   }
 };

@@ -1,7 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 
-import { PostModel } from "../../models";
 import { PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -12,12 +11,12 @@ import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon
 
 
 const FeedPage = ({ backdropRef }) => {
-  // POST API
-  const dataList = (() => {
-    const postViewModel = new PostViewModel(new PostModel());
-    return postViewModel.getDummyData();
-  })();
-  //
+  /** 4. POST API */
+  const postViewModel = new PostViewModel();
+  const [posts, setPosts] = useState([]);
+  const readAllPosts = async () => setPosts(await postViewModel.readAllPosts());
+  useEffect(() => { readAllPosts(); }, []);
+  /** */
 
 
   const addressTokens = (() => {
@@ -44,7 +43,7 @@ const FeedPage = ({ backdropRef }) => {
         </div>
       </header>
       <main className="content">
-        <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
+        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
       </main>
     </div>
   );

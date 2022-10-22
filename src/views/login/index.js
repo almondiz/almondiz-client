@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from 'react-google-login';
+import { GoogleLogin } from "react-google-login";
 import { gapi } from "gapi-script";
 import { useDispatch } from "react-redux";
 import {
   setAccessToken,
   setRefreshToken,
+  setMyUserId,
   setProviderUid,
   setEmail,
   setProviderType
 } from "../../store/slices/account";
 
-import { UserModel } from "../../models";
 import { UserViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
@@ -25,7 +25,7 @@ import KakaoSocialImage from "../../asset/social/kakao.svg";
 const LoginPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate();
-  const userViewModel = new UserViewModel(new UserModel());
+  const userViewModel = new UserViewModel();
 
   const onSuccess = async (res) => {
     const { cu: email, NT: providerUid } = res.getBasicProfile();
@@ -36,16 +36,18 @@ const LoginPage = () => {
     await userViewModel.checkAccount(
       { providerType, providerUid },
       () => navigate(`/signup`),
-      ({ accessToken, refreshToken }) => {
+      ({ token, userId }) => {
+        const { accessToken, refreshToken } = token;
         dispatch(setAccessToken(accessToken));
         dispatch(setRefreshToken(refreshToken));
-        navigate(`/feed`)
+        dispatch(setMyUserId(userId));
+        navigate(`/feed`);  // ####
       },
     );
   }
 
   const onFailure = async (res) => {
-    console.log(res);
+    console.error(["LoginPage.onFailure"], res);
   }
 
   const clientId = process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID_NETLIFY;

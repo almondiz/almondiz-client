@@ -3,18 +3,18 @@ import React from "react";
 import "./style.scoped.scss";
 
 
-const ImageSlider = ({ imageUrls=[] }) => {
-  const makeSlide = (src, idx) => (
+const ImageSlider = ({ images=[] }) => {
+  const makeSlide = (image, idx) => (
     <div key={`image-${idx}`}>
-      <div className="image" style={{backgroundImage: `url(${src})` }} />
+      <div className="image" style={{backgroundImage: `url(${image.url})` }} />
     </div>
   );
-  const makeIndicator = imageUrls => {
+  const makeIndicator = images => {
     const indicator = [];
-    imageUrls.forEach((_, idx) => {
+    images.forEach((_, idx) => {
       indicator.push(
         <div
-          data-id={idx}
+          data-index={idx}
           className={idx === 0 ? "highlight" : ""}
           key={`indicator-${idx}`}
         ></div>
@@ -31,15 +31,15 @@ const ImageSlider = ({ imageUrls=[] }) => {
     };
 
     const index = Math.round(target.scrollLeft / target.clientWidth);
-    if (index < 0 || index >= imageUrls.length) return;
+    if (index < 0 || index >= images.length) return;
     const indicatorDOM = target.parentNode.querySelector(".indicator");
-    setHighLight(indicatorDOM, indicatorDOM.querySelector(`div[data-id="${index}"]`));
+    setHighLight(indicatorDOM, indicatorDOM.querySelector(`div[data-index="${index}"]`));
   };
   
   return (
     <div className="image-slider">
-      <div className="slides" onScroll={onScroll}>{imageUrls.map(makeSlide)}</div>
-      <div className="indicator">{makeIndicator(imageUrls)}</div>
+      <div className="slides" onScroll={onScroll}>{images.map(makeSlide)}</div>
+      <div className="indicator">{makeIndicator(images)}</div>
     </div>
   );
 };

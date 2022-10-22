@@ -36,29 +36,36 @@ const FloatController = ({ floatRef }) => {
   return <></>;
 };
 
-const MapDrawer = ({ frame, mapBottomRef }) => {
+const MapDrawer = ({ frame, searchTags, setShop, mapBottomRef }) => {
   const tfPlaceholder = "음식점 검색";
   const [tf, setTf] = useState("");
+  const [foundTags, setFoundTags] = useState([]);
+
   useEffect(() => {
     tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
+    setFoundTags(searchTags(tf));
   }, [tf]);
 
-  const BottomContent = () => (
+  const BottomContent = ({ shop }) => (
     <section className="bottom-item">
       <div className="text-wrap">
-        <h3 className="title">팔달수제맥주</h3>
-        <p className="description">경기 수원시 영통구 동수원로537번길 57 (원...</p>
-        <TagList dataList={["맥주", "호프"]} small />
+        <h3 className="title">{shop.shopName}</h3>
+        <p className="description">{shop.shopAddress}</p>
+        <TagList tags={shop.tags} small />
       </div>
       <div className="buttons right">
-        <button className="button button-select-shop" onClick={() => frame.walk(3)}>
+        <button className="button button-select-shop" onClick={() => {
+          setShop(shop);
+          console.log("[FrameFindShop]", shop)
+          frame.walk(3);
+        }}>
           <div className="icon"><LocationOnIconBorder /></div>
           <p>선택</p>
         </button>
       </div>
     </section>
   );
-  const tfHandler = tfFrameIndex => {
+  const tfHandler = (tfFrameIndex, shop) => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
       case 0:
@@ -69,12 +76,22 @@ const MapDrawer = ({ frame, mapBottomRef }) => {
         setTf("");
         break;
       case 2:
-        setTf("팔달수제맥주");
-        mapBottomRef.current?.show({ content: <BottomContent /> });
+        mapBottomRef.current?.show({ content: <BottomContent shop={shop} /> });
+        break;
+      default:
         break;
     }
   };
 
+  const shopContent = (shop, idx) => {
+    return (
+      <li className="item" key={idx} onClick={() => tfHandler(2, shop)}>
+        <h3 className="title">{shop.shopName}</h3>
+        <p className="description">{shop.shopAddress}</p>
+        <TagList tags={shop.tags} small />
+      </li>
+    )
+  }
   const tagFrame = new Frame([
     (
       <></>
@@ -82,16 +99,7 @@ const MapDrawer = ({ frame, mapBottomRef }) => {
     (
       <div className="shop-list-group">
         <ul className="list">
-          <li className="item" onClick={() => tfHandler(2)}>
-            <h3 className="title">팔달수제맥주</h3>
-            <p className="description">경기 수원시 영통구 동수원로537번길 57 (원천동)</p>
-            <TagList dataList={["맥주", "호프"]} small />
-          </li>
-          <li className="item">
-            <h3 className="title">팔달김수산</h3>
-            <p className="description">대구 북구 팔달로 139 (노원동3가)</p>
-            <TagList dataList={["수산물"]} small />
-          </li>
+          {foundTags.map(shopContent)}
         </ul>
         <div className="if-not-found">
           <h3 className="title">원하는 음식점 결과가 없으신가요?</h3>
@@ -103,7 +111,7 @@ const MapDrawer = ({ frame, mapBottomRef }) => {
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
-        <div className="tf" onClick={() => tfHandler(1)}>
+        <div className="tf light" onClick={() => tfHandler(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly />
         </div>
@@ -121,7 +129,7 @@ const MapDrawer = ({ frame, mapBottomRef }) => {
     ),
     (
       <section className="tf-frame tf-frame-3">
-        <div className="tf">
+        <div className="tf light">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly onClick={() => tfHandler(1)} />
         </div>
@@ -150,7 +158,7 @@ const MapBottom = forwardRef((_, ref) => {
   };
 
   return (
-    <footer className="map-bottom">
+    <footer className="map-bottom light">
       <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
         <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>
@@ -161,13 +169,18 @@ const MapBottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindShop = ({ frame, floatRef }) => {
+const FrameFindShop = ({ frame, searchTags, setShop, floatRef }) => {
   const mapBottomRef = useRef();
 
   return (
     <>
       <main className="content">
-        <MapDrawer frame={frame} mapBottomRef={mapBottomRef} />
+        <MapDrawer
+          frame={frame}
+          searchTags={searchTags}
+          setShop={setShop}
+          mapBottomRef={mapBottomRef}
+        />
         <div className="map-container">
           <NaverMap />
           <MapBottom ref={mapBottomRef} />

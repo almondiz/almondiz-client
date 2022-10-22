@@ -2,10 +2,9 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { useSelector } from "react-redux";
 
 import { Frame, NoScroll } from "../../util";
-import { PostModel } from "../../models";
-import { PostViewModel } from "../../view-models";
+import { PostViewModel, SearchViewModel } from "../../view-models";
 
-import TagList, { TagController } from "../../components/tag-list";
+import TagList, { pushTag } from "../../components/tag-list";
 import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
@@ -18,22 +17,28 @@ import CloseIcon from "../../asset/icons/mui/close-icon";
 const Drawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
 
+  const PostList = () => {
+    /** 4. POST API */
+    const postViewModel = new PostViewModel();
+    const [posts, setPosts] = useState([]);
+    const readAllPosts = async () => setPosts(await postViewModel.readAllPosts());
+    useEffect(() => { readAllPosts(); }, []);
+    /** */
+    
+    return <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
+  };
+
+  // tag
+  const [ tags, setTags ] = useState([]);
+  const onClickTagItem = e => {
+    pushTag(tags, setTags, e);
+    setTf("");
+  };
+
+  // textfield
   const tfPlaceholder = "메뉴나 지역을 입력해 보세요";
   const [tf, setTf] = useState("");
-  useEffect(() => {
-    tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
-  }, [tf]);
-
-  const PostList = () => {
-    // POST API
-    const dataList = (() => {
-      const postViewModel = new PostViewModel(new PostModel());
-      return postViewModel.getDummyData();
-    })();
-    //
-    
-    return <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
-  };
+  useEffect(() => { tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0); }, [tf]);
   const tfHandler = tfFrameIndex => {
     tfFrame.move(tfFrameIndex);
     switch (tfFrameIndex) {
@@ -51,18 +56,39 @@ const Drawer = ({ contentRef }) => {
     }
   };
 
-  // TAG
-  const tagController = new TagController([ "맥주", "호프", ["대구", true] ]);
-  const onClickTagItem = data => {
-    tagController.push(data);
-    setTf("");
-  };
-  //
+  /** 7. TAG API (DUMMY) */
+  const [ historyResult, setHistoryResult ] = useState([
+    [
+      { tagType: "food", tagId: 1, tagName: "한식" },
+      { tagType: "region", tagId: 6, tagName: "서울" },
+    ],
+    [
+      { tagType: "food", tagId: 2, tagName: "짬뽕" },
+      { tagType: "region", tagId: 7, tagName: "성남 분당구" }, { tagType: "region", tagId: 8, tagName: "수원 팔달구 우만동" },
+    ],
+    [
+      { tagType: "food", tagId: 3, tagName: "스시" }, { tagType: "food", tagId: 4, tagName: "마라탕" },
+      { tagType: "region", tagId: 9, tagName: "천안" },
+    ],
+  ]);
+  const [ searchResult, setSearchResult ] = useState({
+    foods: [
+      { tagType: "food", tagId: 14, tagName: "대구" },
+    ],
+    regions: [
+      { tagType: "region", tagId: 1, tagName: "대구" },
+      { tagType: "region", tagId: 2, tagName: "대구 남구" },
+      { tagType: "region", tagId: 3, tagName: "대구 달서구" },
+      { tagType: "region", tagId: 4, tagName: "대구 북구" },
+      { tagType: "region", tagId: 5, tagName: "대구 중구" },
+    ],
+  });
+  /** */
 
   const tagFrame = new Frame([
     (
       <>
-        <TagList controller={tagController} />
+        <TagList tags={tags} editable setTags={setTags} />
         <button className="button button-search" onClick={() => tfHandler(2)}>
           <div className="icon"><SearchIconBorder /></div>
           <p>검색하기</p>
@@ -74,22 +100,19 @@ const Drawer = ({ contentRef }) => {
         <div className="tag-list-group">
           <h3 className="subheader">음식</h3>
           <ul className="list">
-            <li className="item" onClick={() => onClickTagItem("대구탕")}>대구탕</li>
+            {searchResult.foods.map((tag, idx) => <li key={idx} className="item" onClick={() => onClickTagItem(tag)}>{tag.tagName}</li>)}
           </ul>
         </div>
         <div className="tag-list-group">
           <h3 className="subheader">지역</h3>
           <ul className="list">
-            <li className="item" onClick={() => onClickTagItem(["대구", true])}>대구</li>
-            <li className="item" onClick={() => onClickTagItem(["대구 남구", true])}>대구 남구</li>
-            <li className="item" onClick={() => onClickTagItem(["대구 달서구", true])}>대구 달서구</li>
-            <li className="item" onClick={() => onClickTagItem(["대구 북구", true])}>대구 북구</li>
-            <li className="item" onClick={() => onClickTagItem(["대구 중구", true])}>대구 중구</li>
+            {searchResult.regions.map((tag, idx) => <li key={idx} className="item" onClick={() => onClickTagItem(tag)}>{tag.tagName}</li>)}
           </ul>
         </div>
       </>
     ),
   ]);
+
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
@@ -104,24 +127,27 @@ const Drawer = ({ contentRef }) => {
         <div className="history-list-group">
           <h3 className="subheader">검색 기록</h3>
           <ul className="list">
-            <li className="item">
-              <TagList dataList={[ "한식", ["서울", true] ]} />
-              <button className="button button-delete-item">
-                <div className="icon"><CloseIcon /></div>
-              </button>
-            </li>
-            <li className="item">
-              <TagList dataList={[ "짬뽕", ["성남 분당구", true], ["수원 팔달구 우만동", true] ]} />
-              <button className="button button-delete-item">
-                <div className="icon"><CloseIcon /></div>
-              </button>
-            </li>
-            <li className="item">
-              <TagList dataList={[ "스시", "마라탕", ["천안", true] ]} />
-              <button className="button button-delete-item">
-                <div className="icon"><CloseIcon /></div>
-              </button>
-            </li>
+            {historyResult.map((tags, idx) => {
+              const onClick = e => {
+                setTags([...tags]);
+                tfHandler(2);
+              };
+              const onDeleteClick = e => {
+                e.stopPropagation();
+                const _historyResult = [...historyResult];
+                _historyResult.splice(idx, 1);
+                setHistoryResult(_historyResult);
+              };
+
+              return (
+                <li key={idx} className="item" onClick={onClick}>
+                  <TagList tags={tags} />
+                  <button className="button button-delete-item" onClick={onDeleteClick}>
+                    <div className="icon"><CloseIcon /></div>
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -150,10 +176,10 @@ const Drawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf">
+        <div className="tf light">
           <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
           <div className="tf-box" onClick={() => tfHandler(1)}>
-            <TagList dataList={tagController.tags} />
+            <TagList tags={tags} />
           </div>
         </div>
       </section>

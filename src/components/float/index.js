@@ -43,13 +43,13 @@ const Float = forwardRef((_, ref) => {
   }, [pathname, top, bottom]);
 
   const FloatHeader = () => (
-    <div className={`float-header-wrap${!isEmptyElement(top) ? " has-top" : ""}`}>
+    <div className={`float-header-wrap ${!isEmptyElement(top) ? "has-top" : ""}`}>
       {top}
       {header}
     </div>
   );
   const FloatFooter = () => (
-    <div className={`float-footer-wrap${!isEmptyElement(bottom) ? " has-bottom" : ""}`}>
+    <div className={`float-footer-wrap ${!isEmptyElement(bottom) ? "has-bottom" : ""}`}>
       {footer}
       {bottom}
     </div>
