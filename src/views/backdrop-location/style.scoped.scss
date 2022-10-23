@@ -184,7 +184,10 @@
     }
     .bottom-item-init {}
     .bottom-item {
-      height: 4.5rem;
+      height: fit-content;
+      min-height: 4.75rem;
+      padding-top: 1.25rem;
+      padding-bottom: 1.25rem;
   
       display: flex;
       justify-content: space-between;
@@ -203,6 +206,7 @@
         }
       }
       .button-select-location {
+        margin-left: .75rem;
         flex-shrink: 0;
             
         display: flex;

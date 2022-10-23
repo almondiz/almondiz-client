@@ -70,7 +70,6 @@ const FrameTag = ({
     const _shop = Object.assign({}, shop);
     _shop.tags = [...tags];
     setShop(_shop);
-    console.log(_shop);
   }, [tags]);
   const onSelectTagItem = _tag => {
     pushTag(tags, setTags, _tag);

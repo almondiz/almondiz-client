@@ -30,5 +30,5 @@ export const getMyAllFollowings = () => {
 /** 3. NOTIFICATION API */
 // GET /api/notifications
 export const getMyNoticeData = () => {
-  return this.get(path.user.notices);
+  return api.get(path.user.notices);
 }

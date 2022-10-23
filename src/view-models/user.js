@@ -75,7 +75,6 @@ export default class UserViewModel {
   }
   _makeUserData(data) {
     const userId = data.userId;
-    data.relation = "me"
     return {
       userId,
 

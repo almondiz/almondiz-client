@@ -219,21 +219,45 @@
     }
     .bottom-item {  
       display: flex;
+      justify-content: space-between;
       align-items: center;
-  
-      .text-wrap {
-        &,
-        &>* {
-          @include text-nowrap;
-        }
-        .title {}
-        .description {
-          color: var(--secondary-text-color);
-          font-size: .8125rem;
-          margin-top: .375rem;
+
+      .shop-wrap {
+        @include text-nowrap;
+
+        flex: 1;
+        .shop {
+          display: flex;
+          align-items: center;
+
+          min-width: 0;
+      
+          .thumb {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-right: .625rem;
+            border-radius: 100%;
+            background-size: cover;
+            background-color: var(--border-color);
+            flex-shrink: 0;
+          }
+      
+          .text-wrap {
+            &,
+            &>* {
+              @include text-nowrap;
+            }
+            .title {}
+            .description {
+              color: var(--secondary-text-color);
+              font-size: .8125rem;
+              margin-top: .375rem;
+            }
+          }
         }
       }
       .button-select-shop {
+        margin-left: .75rem;
         flex-shrink: 0;
         
         display: flex;
@@ -282,7 +306,9 @@
 .shop-list-group>.list>.item,
 .bottom-item {
   height: fit-content;
-  min-height: 6.75rem;
+  min-height: 7rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 
   ::v-deep {
     .tag-list {

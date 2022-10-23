@@ -58,7 +58,7 @@ const MapDrawer = forwardRef(({ mapBottomRef, setPreferedLocation, searchPlace }
           <h3 className="title">{address}</h3>
           <p className="description">{place.placeName}</p>
         </div>
-        <button className="button button-select-location right" onClick={() => setPreferedLocation({ location })}>
+        <button className="button button-select-location" onClick={() => setPreferedLocation({ location })}>
           <div className="icon"><LocationOnIconBorder /></div>
           <p>설정</p>
         </button>
@@ -159,14 +159,11 @@ const MapBottom = forwardRef(({ mapDrawerRef, preferedLocation={}, setPreferedLo
 
   const [myContent, setMyContent] = useState(<></>);
   const showMyLocation = async () => {
-    console.log(2);
     const myLocation = await getMyLocation();
     setMyContent(<BottomMyContent location={myLocation} />);
     mapDrawerRef.current?.unfocus();
   };
   useEffect(() => { isMyLocation && showMyLocation(); }, [isMyLocation]);
-
-  
 
   return (
     <footer className={`map-bottom ${isMyLocation ? "dark" : "light"}`}>

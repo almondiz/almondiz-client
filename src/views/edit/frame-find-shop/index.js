@@ -76,25 +76,33 @@ const MapDrawer = ({
     }
   };
 
-  const BottomContent = ({ shop }) => (
-    <section className="bottom-item">
-      <div className="text-wrap">
-        <h3 className="title">{shop.shopName}</h3>
-        <p className="description">{shop.shopAddress}</p>
-        <TagList tags={shop.tags} small />
-      </div>
-      <div className="buttons right">
-        <button className="button button-select-shop" onClick={() => {
-          setShop(shop);
-          console.log("[FrameFindShop]", shop)
-          frame.next();
-        }}>
-          <div className="icon"><LocationOnIconBorder /></div>
-          <p>선택</p>
-        </button>
-      </div>
-    </section>
-  );
+  const BottomContent = ({ shop }) => {
+    const onSelectShop = () => {
+      setShop(shop);
+      console.log("[FrameFindShop]", shop)
+      frame.next();
+    };
+    return (
+      <section className="bottom-item">
+        <div className="shop-wrap">
+          <div className="shop">
+            <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+            <div className="text-wrap">
+              <h3 className="title">{shop.shopName}</h3>
+              <p className="description">{shop.shopAddress}</p>
+            </div>
+          </div>
+          <TagList tags={shop.tags} small />
+        </div>
+        <div className="buttons">
+          <button className="button button-select-shop" onClick={onSelectShop}>
+            <div className="icon"><LocationOnIconBorder /></div>
+            <p>선택</p>
+          </button>
+        </div>
+      </section>
+    );
+  };
   const ShopSearchItem = ({ shop }) => (
     <li className="item" data-shop-id={shop.shopId} onClick={() => moveTf(2, shop)}>
       <h3 className="title">{shop.shopName}</h3>
@@ -155,21 +163,21 @@ const MapBottom = forwardRef((_, ref) => {
       <p className="msg">리뷰할 음식점를 검색해주세요.</p>
     </section>
   );
+  const bottomInitContent = <BottomInitContent />;
 
-  const [content, setContent] = useState(<BottomInitContent />);
-  const show = ({ content=<BottomInitContent /> }) => setContent(content);
-  useImperativeHandle(ref, () => ({ show: show, }));
+  const [content, setContent] = useState(<></>);
+  const show = ({ content=bottomInitContent }) => setContent(content);
+  useEffect(() => { show({}); }, []);
+  useImperativeHandle(ref, () => ({ show }));
 
-  const [myLocation, setMyLocation] = useState(false);
-  const toggleMyLocation = () => {
-    setMyLocation(!myLocation);
-  };
+  const [isMyLocation, setIsMyLocation] = useState(false);
+  const toggleMyLocation = () => setIsMyLocation(!isMyLocation);
 
   return (
     <footer className="map-bottom light">
-      <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
-        <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
-      </button>
+      {/*<button className={`button button-set-my-location ${isMyLocation ? "set" : ""}`} onClick={toggleMyLocation}>
+        <div className="icon">{isMyLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
+      </button>*/}
       <div className="bottom-item-container">{content}</div>
     </footer>
   );

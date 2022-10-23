@@ -134,21 +134,21 @@ const MapBottom = forwardRef((_, ref) => {
       <p className="msg">새로 등록할 음식점의 위치를 찾아주세요.</p>
     </section>
   );
+  const bottomInitContent = <BottomInitContent />;
 
-  const [content, setContent] = useState(<BottomInitContent />);
-  const show = ({ content=<BottomInitContent /> }) => setContent(content);
-  useImperativeHandle(ref, () => ({ show: show, }));
+  const [content, setContent] = useState(<></>);
+  const show = ({ content=bottomInitContent }) => setContent(content);
+  useEffect(() => { show({}); }, []);
+  useImperativeHandle(ref, () => ({ show }));
 
-  const [myLocation, setMyLocation] = useState(false);
-  const toggleMyLocation = () => {
-    setMyLocation(!myLocation);
-  };
+  const [isMyLocation, setIsMyLocation] = useState(false);
+  const toggleMyLocation = () => setIsMyLocation(!isMyLocation);
 
   return (
     <footer className="map-bottom light">
-      <button className={`button button-set-my-location ${myLocation ? "set" : ""}`} onClick={toggleMyLocation}>
-        <div className="icon">{myLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
-      </button>
+      {/*<button className={`button button-set-my-location ${isMyLocation ? "set" : ""}`} onClick={toggleMyLocation}>
+        <div className="icon">{isMyLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
+      </button>*/}
       <div className="bottom-item-container">{content}</div>
     </footer>
   );

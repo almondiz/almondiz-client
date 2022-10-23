@@ -82,6 +82,16 @@ export default class PostViewModel {
 
       postTags: data.tags,
       postText: data.text,
+      postTextHead: (() => {
+        const MAX_NUM_OF_LINES = 5;
+        const lines = data.text.split("\n").splice(0, MAX_NUM_OF_LINES);
+        if (lines.length === MAX_NUM_OF_LINES) {
+          lines.push("...");
+        }
+        const text = lines.join("\n");
+        return text;
+      })(),
+
       postImages: data.postFileImgUrls.map((url) => ({ url })),
       goToPostPage: navigate => navigate(`/post/${postId}`),
   
