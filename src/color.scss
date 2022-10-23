@@ -11,8 +11,8 @@ html {
 @mixin light-color-scheme {
   --background-color: #fff;
   --primary-text-color: #000;
-  --secondary-text-color: rgba(0, 0, 0, .625);        // #666
-  --tertiary-text-color: rgba(0, 0, 0, .375);         // #999
+  --secondary-text-color: rgba(0, 0, 0, .625);        // #666;
+  --tertiary-text-color: rgba(0, 0, 0, .375);         // #999;
 
   --border-color: rgba(0, 0, 0, .075);                // #eee;
   --shadow-to-border-color: 0px 0px 1px rgba(0, 0, 0, .5);
