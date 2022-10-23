@@ -70,11 +70,8 @@
   ::v-deep {
     .float-top,
     .float-bottom {
+      box-shadow: transparent;
       transition: box-shadow 1s ease-in-out;
-      //background-color: transparent;
-    }
-    .float-top {
-      border-bottom: transparent;
     }
     .float-bottom {
       border-top: 1px solid var(--border-color);

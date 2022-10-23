@@ -43,7 +43,7 @@
             }
             p {
               color: #fff;
-              text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+              text-shadow: 0 1px .125rem rgba(0, 0, 0, 1);
             }
             .name {
               font-size: 1.25rem;
@@ -57,7 +57,7 @@
             margin-right: -1rem;
             
             svg {
-              filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 1));
+              filter: drop-shadow(0 1px .125rem rgba(0, 0, 0, 1));
               height: 2.5rem;
               width: 2.5rem;
               fill: #fff;
@@ -92,7 +92,7 @@
   &.editable {
     &>.grid {
       &>.button-delete {
-        box-shadow: 0 1px 4px rgba(0, 0, 0, .5);
+        box-shadow: 0 1px .375rem rgba(0, 0, 0, .5);
         background-color: rgba(255, 255, 255, .5);
         -webkit-backdrop-filter: blur(1rem);
         backdrop-filter: blur(1rem);
