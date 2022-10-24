@@ -65,8 +65,8 @@ const UserPage = () => {
   /** 4. POST API */
   const postViewModel = new PostViewModel();
   const [posts, setPosts] = useState([]);
-  //const readAllUserPosts = async () => setPosts(await postViewModel.readAllUserPosts(userId));
-  //useEffect(() => { readAllUserPosts(); }, []);
+  const readAllUserPosts = async () => setPosts(await postViewModel.readAllPosts(userId));
+  useEffect(() => { readAllUserPosts(); }, []);
   /** */
 
 
