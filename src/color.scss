@@ -15,10 +15,12 @@ html {
   --tertiary-text-color: rgba(0, 0, 0, .375);         // #999;
 
   --border-color: rgba(0, 0, 0, .075);                // #eee;
-  --shadow-to-border-color: 0px 0px 1px rgba(0, 0, 0, .5);
-  --nav-shadow-color: 0 0 2rem rgba(0, 0, 0, .125);
+  --shadow-to-border: 0px 0px 1px rgba(0, 0, 0, .5);
+  --nav-shadow-border: 0 0 2rem rgba(0, 0, 0, .125);
   --float-background-color: rgba(255, 255, 255, .875);
-  --float-shadow-color: 0 1px .375rem rgba(0, 0, 0, .25);
+  --float-shadow-border: 0 1px .375rem rgba(0, 0, 0, .25);
+
+  --danger-color: #e53935;  // rgb(237, 92, 94);
 }
 
 @mixin dark-color-scheme {
@@ -28,21 +30,19 @@ html {
   --tertiary-text-color: rgba(255, 255, 255, .375);   // #777;
 
   --border-color: rgba(255, 255, 255, .075);          // rgb(47, 49, 50);
-  --shadow-to-border-color: 0px 0px 1px rgba(255, 255, 255, .5);
-  --nav-shadow-color: 0 0 2rem rgba(255, 255, 255, .0625);
+  --shadow-to-border: 0px 0px 1px rgba(255, 255, 255, .5);
+  --nav-shadow-border: 0 0 2rem rgba(255, 255, 255, .0625);
   --float-background-color: rgba(30, 32, 34, .875);
-  --float-shadow-color: inset 0px 0px 1px rgba(255, 255, 255, 1), inset 0px 0px 1px rgba(255, 255, 255, 1);
+  --float-shadow-border: inset 0px 0px 1px rgba(255, 255, 255, 1), inset 0px 0px 1px rgba(255, 255, 255, 1);
+
+  --danger-color: #e57373;
 }
 
 
 html {
   --content-text-color: rgba(255, 134, 94);
-  --danger-color: rgb(237, 92, 94);
   
-  // light
   @include light-color-scheme;
-
-  // dark
   @media (prefers-color-scheme: dark) {
     @include dark-color-scheme;
   }
@@ -53,4 +53,10 @@ html {
 }
 .color-dark {
   @include dark-color-scheme;
+}
+.color-reflect {
+  @include dark-color-scheme;
+  @media (prefers-color-scheme: dark) {
+    @include light-color-scheme;
+  }
 }

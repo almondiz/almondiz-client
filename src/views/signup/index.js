@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+import { StaticComponentRefs } from "../../util";
+
 import { Frame, getRandomThumb, getRandomNut } from "../../util";
 import { UserViewModel, SearchViewModel } from "../../view-models";
 
@@ -19,7 +21,6 @@ const SignupPage = () => {
   const [ profileThumb, setProfileThumb ] = useState(null);
   const [ profileTag, setProfileTag ] = useState(null);
   const [ profileNut, setProfileNut ] = useState(null);
-  const [ errorMessage, setErrorMessage ] = useState(null);
 
   /** 1. USER API */
   const userViewModel = new UserViewModel();
@@ -39,8 +40,6 @@ const SignupPage = () => {
       dispatch(setRefreshToken(refreshToken));
       dispatch(setMyUserId(userId));
       navigate(`/feed`);
-    } else {
-      setErrorMessage(msg);
     }
   };
   /** */

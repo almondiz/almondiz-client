@@ -1,4 +1,5 @@
 import { UserModel } from "../models";
+import { StaticComponentRefs } from "../util";
 
 
 export default class NoticeViewModel {
@@ -18,6 +19,7 @@ export default class NoticeViewModel {
       return dataList.map(data => this._makeNoticeItemData(data));
     } else {
       console.error("[NoticeViewModel.getMyNoticeData]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }

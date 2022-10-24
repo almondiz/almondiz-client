@@ -1,5 +1,5 @@
 import { CommentModel } from "../models";
-import { filterText, getTime } from "../util";
+import { StaticComponentRefs, filterText, getTime } from "../util";
 
 
 export default class CommentViewModel {
@@ -19,6 +19,7 @@ export default class CommentViewModel {
       return success;
     } else {
       console.error("[CommentViewModel.createComment]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -31,6 +32,7 @@ export default class CommentViewModel {
       return dataList.map(data => this._makeCommentItemData(data, { postAuthorId }));
     } else {
       console.error("[CommentViewModel.readAllComments]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -84,6 +86,7 @@ export default class CommentViewModel {
           return success;
         } else {
           console.error("[CommentViewModel.like]", action, res);
+          StaticComponentRefs.toastRef?.current?.error(res.msg);
           return false;
         }
       },
@@ -97,6 +100,7 @@ export default class CommentViewModel {
           return success;
         } else {
           console.error("[CommentViewModel.reply]", res);
+          StaticComponentRefs.toastRef?.current?.error(res.msg);
           return false;
         }
       },
@@ -108,6 +112,7 @@ export default class CommentViewModel {
           return success;
         } else {
           console.error("[CommentViewModel.delete]", res);
+          StaticComponentRefs.toastRef?.current?.error(res.msg);
           return false;
         }
       },

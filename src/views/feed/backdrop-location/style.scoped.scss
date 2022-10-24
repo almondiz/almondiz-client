@@ -103,7 +103,7 @@
       background-color: var(--float-background-color);
       -webkit-backdrop-filter: blur(1rem);
       backdrop-filter: blur(1rem);
-      box-shadow: var(--float-shadow-color);
+      box-shadow: var(--float-shadow-border);
     }
   }
   .tf-frame.tf-frame-2 {
@@ -162,7 +162,7 @@
     background-color: var(--float-background-color);
     -webkit-backdrop-filter: blur(1rem);
     backdrop-filter: blur(1rem);
-    box-shadow: var(--float-shadow-color);
+    box-shadow: var(--float-shadow-border);
 
     &.set {
       .icon {
@@ -184,7 +184,7 @@
       background-color: var(--float-background-color);
       -webkit-backdrop-filter: blur(1rem);
       backdrop-filter: blur(1rem);
-      box-shadow: var(--nav-shadow-color);
+      box-shadow: var(--nav-shadow-border);
     }
     .bottom-item-init {}
     .bottom-item {

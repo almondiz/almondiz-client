@@ -145,9 +145,10 @@ export class Motion {
   state;
   setState;
   handlers;
+  _setTimer;
 
   constructor(...params) { this.init(...params); }
-  init(handlers={}, initKey="init", ...initArgs) {
+  init(handlers={}, initKey="init", initArgs=[]) {
     this.handlers = handlers;
     
     const [state, setState] = useState({
@@ -160,6 +161,13 @@ export class Motion {
       const destroy = state.handler();
       return (typeof destroy === "function") ? destroy : () => {};
     }, [state]);
+
+
+    const [_timer, _setTimer] = useState(-1);
+    this._setTimer = _setTimer;
+    useEffect(() => {
+      return () => clearInterval(_timer);
+    }, [_timer]);
   }
   
   go(key, args=[]) {
@@ -167,7 +175,9 @@ export class Motion {
   }
   delay(delay, key, args=[]) {
     const callback = () => this.setState({ key: key, handler: this._getHandler(key, args) });
-    setTimeout(callback, delay);
+
+    const _timer = setTimeout(callback, delay);
+    this._setTimer(_timer);
   }
   
   get() { return this.state.key; }

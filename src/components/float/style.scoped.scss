@@ -84,7 +84,7 @@
   ::v-deep {
     .float-top,
     .float-bottom {
-      box-shadow: var(--nav-shadow-color);
+      box-shadow: var(--nav-shadow-border);
     }
   }
 }

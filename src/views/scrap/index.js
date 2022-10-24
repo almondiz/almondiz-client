@@ -11,8 +11,8 @@ const ScrapPage = () => {
   /** 4. POST API */
   const postViewModel = new PostViewModel();
   const [posts, setPosts] = useState([]);
-  //const readAllScrappedPosts = async () => setPosts(await postViewModel.readAllScrappedPosts());
-  //useEffect(() => { readAllScrappedPosts(); }, []);
+  const readAllScrappedPosts = async () => setPosts(await postViewModel.readAllScrappedPosts());
+  useEffect(() => { readAllScrappedPosts(); }, []);
   /** */
 
 
