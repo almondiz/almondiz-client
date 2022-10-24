@@ -1,5 +1,5 @@
 import { PostModel } from "../models";
-import { getMyLocation, getDistance, getTime } from "../util";
+import { StaticComponentRefs, getMyLocation, getDistance, getTime } from "../util";
 
 
 export default class PostViewModel {
@@ -19,6 +19,7 @@ export default class PostViewModel {
       return this._makePostItemData(data, { myLocation });
     } else {
       console.error("[PostViewModel.readPost]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -33,6 +34,7 @@ export default class PostViewModel {
       return dataList.map((data) => this._makePostItemData(data, { myLocation }));
     } else {
       console.error("[PostViewModel.readAllPosts]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -47,6 +49,7 @@ export default class PostViewModel {
       return dataList.map((data) => this._makePostItemData((data), { myLocation }));
     } else {
       console.error("[PostViewModel.readAllUserPosts]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -61,6 +64,7 @@ export default class PostViewModel {
       return dataList.map((data) => this._makePostItemData(data, { myLocation }));
     } else {
       console.error("[PostViewModel.readAllScrappedPosts]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }

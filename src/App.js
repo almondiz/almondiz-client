@@ -24,6 +24,7 @@ import NotFoundPage from "./views/not-found";
 import Float from "./components/float";
 import Backdrop from "./components/backdrop";
 import Modal from "./components/modal";
+import Toast from "./components/toast";
 import PostBottomNav from "./components/post-bottom-nav";
 
 
@@ -75,10 +76,12 @@ const StaticComponents = ({ setLoaded }) => {
   const floatRef = useRef();
   const backdropRef = useRef();
   const modalRef = useRef();
+  const toastRef = useRef();
   useEffect(() => {
     StaticComponentRefs.floatRef = floatRef;
     StaticComponentRefs.backdropRef = backdropRef;
     StaticComponentRefs.modalRef = modalRef;
+    StaticComponentRefs.toastRef = toastRef;
     setLoaded(true);
   }, []);
 
@@ -87,6 +90,7 @@ const StaticComponents = ({ setLoaded }) => {
       <Float ref={floatRef} />
       <Backdrop ref={backdropRef} />
       <Modal ref={modalRef} />
+      <Toast ref={toastRef} />
     </>
   );
 };

@@ -25,8 +25,8 @@ const FloatController = ({
       if (postImages.length < MAX_NUM_OF_IMAGES) {
         imageInputRef.current?.click();
       } else {
-        // #### Snackbar 컴포넌트
-        console.error("[FrameWrite]", "한 게시물에서는 최대 10개까지만 이미지를 업로드할 수 있음.");
+        const toastRef = StaticComponentRefs.toastRef;
+        toastRef.current?.show("이미지는 최대 10개까지 업로드할 수 있습니다.");
       }
     };
     const onImageChange = e => {

@@ -1,5 +1,5 @@
 import { PostModel } from "../models";
-import { filterText } from "../util";
+import { StaticComponentRefs, filterText } from "../util";
 
 
 export default class EditViewModel {
@@ -22,6 +22,7 @@ export default class EditViewModel {
       return success;
     } else {
       console.error("[EditViewModel.createPost]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -39,6 +40,7 @@ export default class EditViewModel {
       return success;
     } else {
       console.error("[EditViewModel.updatePost]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }

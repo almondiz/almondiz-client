@@ -1,4 +1,5 @@
 import { UserModel } from "../models";
+import { StaticComponentRefs } from "../util";
 
 
 export default class UserViewModel {
@@ -15,6 +16,7 @@ export default class UserViewModel {
       return res;
     } else {
       console.error("[UserViewModel.signup]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -28,6 +30,7 @@ export default class UserViewModel {
       return res;
     } else {
       console.error("[UserViewModel.checkAccount]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       switch (res.msg) {
         case "해당 계정이 존재하지 않거나 잘못된 계정입니다.":
           goSignup();
@@ -44,9 +47,11 @@ export default class UserViewModel {
     if (success) {
       console.log("[UserViewModel.login]", res);
       return res;
+    } else {
+      console.error("[UserViewModel.login]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
+      return false;
     }
-    console.error("[UserViewModel.login]", res);
-    return false;
   }*/
 
   // GET /api/user
@@ -58,6 +63,7 @@ export default class UserViewModel {
       return this._makeUserData(data);
     } else {
       console.error("[UserViewModel.whoami]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -70,6 +76,7 @@ export default class UserViewModel {
       return this._makeUserData(data);
     } else {
       console.error("[UserViewModel.get]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -151,6 +158,7 @@ export default class UserViewModel {
       return dataList.map(data => this._makeFollowData(data));
     } else {
       console.error("[UserViewModel.getMyAllFollowings]", res);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }

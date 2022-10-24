@@ -51,7 +51,7 @@
       border-top-left-radius: 1.5rem;
       border-top-right-radius: 1.5rem;
       background-color: var(--background-color);
-      box-shadow: var(--nav-shadow-color);
+      box-shadow: var(--nav-shadow-border);
 
       ::v-deep {
         .backdrop-header {  
