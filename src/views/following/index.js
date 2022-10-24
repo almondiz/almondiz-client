@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 import { UserViewModel } from "../../view-models";
 
+import { StaticComponentRefs } from "../../util";
+
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
-const FloatController = ({ floatRef, users }) => {
+const FloatController = ({ users }) => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -20,20 +22,21 @@ const FloatController = ({ floatRef, users }) => {
   );
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setTop(<Top />));
     return () => (floatRef.current?.setTop());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
 
 
-const FollowingPage = ({ floatRef }) => {
+const FollowingPage = () => {
   const navigate = useNavigate();
 
   /** 2. FOLLOW API */
   const userViewModel = new UserViewModel();
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(null);
   const getMyAllFollowings = async () => setUsers(await userViewModel.getMyAllFollowings());
   useEffect(() => { getMyAllFollowings(); }, []);
   /** */
@@ -64,13 +67,13 @@ const FollowingPage = ({ floatRef }) => {
     );
   };
 
-  return (
+  return (users) && (
     <div id="page">
       <main className="content">
         <FollowingList users={users} />
       </main>
 
-      <FloatController floatRef={floatRef} users={users} />
+      <FloatController users={users} />
     </div>
   );
 };

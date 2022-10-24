@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../../util";
+import { StaticComponentRefs, Frame } from "../../../util";
 
 import TagList, { pushTag } from "../../../components/tag-list";
 
@@ -11,7 +11,7 @@ import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
 import SellIconBorder from "../../../asset/icons/mui/sell-icon-border";
 
 
-const FloatController = ({ floatRef, frame }) => {
+const FloatController = ({ frame }) => {
   const navigate = useNavigate();
   
   const Top = () => (
@@ -25,9 +25,10 @@ const FloatController = ({ floatRef, frame }) => {
   );
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setTop(<Top />));
     return () => (floatRef.current?.setTop());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
@@ -35,7 +36,7 @@ const FloatController = ({ floatRef, frame }) => {
 
 // frame 2
 const FrameTag = ({
-  frame, floatRef,
+  frame,
   shop, setShop,
   searchFoodTag, createFoodTag,
 }) => {
@@ -70,7 +71,6 @@ const FrameTag = ({
     const _shop = Object.assign({}, shop);
     _shop.tags = [...tags];
     setShop(_shop);
-    console.log(_shop);
   }, [tags]);
   const onSelectTagItem = _tag => {
     pushTag(tags, setTags, _tag);
@@ -91,7 +91,7 @@ const FrameTag = ({
         <ul className="list">{searchResult.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
         <div className="if-not-found">
           <h3 className="title">"{tf}" 태그를 찾나요?</h3>
-          <button className="text-button" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
+          <button className="button button-if-not-found" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
         </div>
       </div>
     ),
@@ -123,7 +123,7 @@ const FrameTag = ({
         </article>
       </main>
 
-      <FloatController floatRef={floatRef} frame={frame} />
+      <FloatController frame={frame} />
     </>
   )
 };

@@ -32,20 +32,20 @@ const CommentUnit = ({ comment={}, root=false }) => {
   const ButtonReply = ({ comment, commentUnitRef }) => {
     const [focus, setFocus] = useState(false);
     const onClick = () => {
-      const onShow = () => {
+      const onShowCallback = () => {
         setFocus(true);
         commentUnitRef.current?.classList.add("focus");
       };
-      const onHide = () => {
+      const onHideCallback = () => {
         setFocus(false);
         commentUnitRef.current?.classList.remove("focus");
       };
 
-      const commentDialogController = Pipe.get("commentDialogController");
+      const commentInputController = Pipe.get("commentInputController");
       if (focus)
-        commentDialogController?.hide();
+        commentInputController?.hide();
       else
-        commentDialogController?.show({ onShow, onHide, reply: comment.reply });
+        commentInputController?.show({ onShowCallback, onHideCallback, reply: comment.reply });
     };
     return (
       <button className={`button button-comment-reply ${focus ? "focus" : ""}`} onClick={onClick}>

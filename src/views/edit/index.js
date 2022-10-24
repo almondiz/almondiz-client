@@ -7,7 +7,7 @@ import FrameFindShop from "./frame-find-shop";
 import FrameWrite from "./frame-write";
 
 
-const EditPage = ({ floatRef, backdropRef }) => {
+const EditPage = () => {
   const [ shop, setShop ] = useState({});
   const [ postTags, setPostTags ] = useState([]);
   const [ postText, setPostText ] = useState("");
@@ -25,20 +25,18 @@ const EditPage = ({ floatRef, backdropRef }) => {
   const createFoodTag = async (tagName) => (await searchViewModel.createFoodTag(tagName));
   /** */
 
-
   const frame = new Frame();
   frame.init([
-    <FrameFindShop frame={frame} floatRef={floatRef}
+    <FrameFindShop frame={frame}
       setShop={setShop}
       searchShop={searchShop}
     />,
-    <FrameWrite frame={frame} floatRef={floatRef} backdropRef={backdropRef}
+    <FrameWrite frame={frame} createPost={createPost}
       shop={shop}
       postTags={postTags} setPostTags={setPostTags}
       postText={postText} setPostText={setPostText}
       postImages={postImages} setPostImages={setPostImages}
       searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
-      createPost={createPost}
     />,
   ]);
 

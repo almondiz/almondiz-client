@@ -1,8 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
+import store from "./store";
 import { setScrollDirection } from "./store/slices/global";
+
+import { StaticComponentRefs } from "./util";
 
 import LoginPage from "./views/login";
 import SignupPage from "./views/signup";
@@ -10,7 +13,7 @@ import FeedPage from "./views/feed";
 import PostPage from "./views/post";
 import SearchPage from "./views/search";
 import ScrapPage from "./views/scrap";
-import UserPage from "./views/user";
+import UserPage, { RedirectToMyPage } from "./views/user";
 import FollowingPage from "./views/following";
 import EditPage from "./views/edit";
 import DirectPage from "./views/direct";
@@ -20,9 +23,8 @@ import NotFoundPage from "./views/not-found";
 
 import Float from "./components/float";
 import Backdrop from "./components/backdrop";
+import Modal from "./components/modal";
 import PostBottomNav from "./components/post-bottom-nav";
-
-import store from "./store";
 
 
 const Monitor = () => {
@@ -69,25 +71,47 @@ const ScrollToTop = () => {
 };
 
 
-const PostLayout = ({ myUserId, floatRef }) => {
+const StaticComponents = ({ setLoaded }) => {
+  const floatRef = useRef();
+  const backdropRef = useRef();
+  const modalRef = useRef();
   useEffect(() => {
-    floatRef.current?.setBottom(<PostBottomNav myUserId={myUserId} />);
-    return () => floatRef.current?.setBottom();
+    StaticComponentRefs.floatRef = floatRef;
+    StaticComponentRefs.backdropRef = backdropRef;
+    StaticComponentRefs.modalRef = modalRef;
+    setLoaded(true);
   }, []);
-  
+
+  return (
+    <>
+      <Float ref={floatRef} />
+      <Backdrop ref={backdropRef} />
+      <Modal ref={modalRef} />
+    </>
+  );
+};
+const PostLayout = ({ staticComponentsLoaded }) => {
+  useEffect(() => {
+    if (staticComponentsLoaded) {
+      const floatRef = StaticComponentRefs.floatRef;
+      (floatRef.current?.setBottom(<PostBottomNav />));
+      return () => (floatRef.current?.setBottom());
+    }
+  }, [staticComponentsLoaded]);
+
   return <Outlet />;
 };
 
+
 const RequireAuth = () => {
-  if (store.getState().account.accessToken) return <Outlet />;
-  else return (<Navigate to="/login" />);
+  if (store.getState().account.accessToken)
+    return <Outlet />;
+  else
+    return <Navigate to="/login" />;
 };
 
 const App = () => {
-  const myUserId = useSelector(state => state.account.myUserId);
-
-  const floatRef = useRef();
-  const backdropRef = useRef();
+  const [staticComponentsLoaded, setStaticComponentsLoaded] = useState(false);
 
   return (
     <>
@@ -98,31 +122,30 @@ const App = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           
-          <Route element={<RequireAuth/>}>
-            <Route element={<PostLayout myUserId={myUserId} floatRef={floatRef} />}>
-              <Route path="/feed" element={<FeedPage backdropRef={backdropRef} />} />
-              <Route path="/post/:postId" element={<PostPage floatRef={floatRef} />} />
-              <Route path="/search" element={<SearchPage floatRef={floatRef} />} />
-              <Route path="/user/:userId" element={<UserPage myUserId={myUserId} floatRef={floatRef} />} />
+          <Route element={<RequireAuth />}>
+            <Route element={<PostLayout staticComponentsLoaded={staticComponentsLoaded} />}>
+              <Route path="/feed" element={<FeedPage />} />
+              <Route path="/post/:postId" element={<PostPage />} />
+              <Route path="/search" element={<SearchPage />} />
+              <Route path="/user/:userId" element={<UserPage />} />
 
-              <Route path="/scrap" element={<ScrapPage floatRef={floatRef} />} />
-              <Route path="/me" element={<Navigate to={`/user/${myUserId}`} />} />
-              <Route path="/following" element={<FollowingPage floatRef={floatRef} />} />
+              <Route path="/scrap" element={<ScrapPage />} />
+              <Route path="/me" element={<RedirectToMyPage />} />
+              <Route path="/following" element={<FollowingPage />} />
             </Route>
-            <Route path="/edit" element={<EditPage floatRef={floatRef} backdropRef={backdropRef} />} />
-            <Route path="/direct" element={<DirectPage floatRef={floatRef} backdropRef={backdropRef} />} />
-            <Route path="/notice" element={<NoticePage floatRef={floatRef} />} />
-            <Route path="/settings" element={<SettingsPage floatRef={floatRef} />} />
+
+            <Route path="/edit" element={<EditPage />} />
+            <Route path="/direct" element={<DirectPage />} />
+            <Route path="/notice" element={<NoticePage />} />
+            <Route path="/settings" element={<SettingsPage />} />
           </Route>
 
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
 
-        <Float ref={floatRef} />
-        <Backdrop ref={backdropRef} />
+        <StaticComponents setLoaded={setStaticComponentsLoaded} />
 
         <ScrollToTop />
-
         <Monitor />
       </BrowserRouter>
     </>

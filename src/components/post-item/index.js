@@ -95,7 +95,7 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
 
       <main className="body">
         <div className="row row-text">
-          <p className="text">{post.postText}</p>
+          <p className="text">{!detail ? post.postTextHead : post.postText}</p>
         </div>
         { 
           !detail ?

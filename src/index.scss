@@ -82,6 +82,8 @@ ul {
 }
 #page {
   width: 100%;
+
+  @include content-max-width;
   min-height: 100%;
 
   display: flex;
@@ -121,23 +123,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-
-.text-button {
-  display: flex;
-  align-items: center;
-  color: var(--background-color);
-  background-color: var(--content-text-color);
-
-  flex-shrink: 0;
-  
-  font-size: .75rem;
-  font-weight: 700;
-
-  height: 1.5rem;
-  border-radius: .75rem;
-  padding: 0 .75rem;
 }
 
 

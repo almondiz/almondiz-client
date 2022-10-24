@@ -11,10 +11,10 @@ html {
 @mixin light-color-scheme {
   --background-color: #fff;
   --primary-text-color: #000;
-  --secondary-text-color: #666;
-  --tertiary-text-color: #999;
+  --secondary-text-color: rgba(0, 0, 0, .625);        // #666;
+  --tertiary-text-color: rgba(0, 0, 0, .375);         // #999;
 
-  --border-color: #eee;
+  --border-color: rgba(0, 0, 0, .075);                // #eee;
   --shadow-to-border-color: 0px 0px 1px rgba(0, 0, 0, .5);
   --nav-shadow-color: 0 0 2rem rgba(0, 0, 0, .125);
   --float-background-color: rgba(255, 255, 255, .875);
@@ -22,12 +22,12 @@ html {
 }
 
 @mixin dark-color-scheme {
-  --background-color: rgb(30, 32, 34); //#232326;
+  --background-color: rgb(30, 32, 34);                // #232326;
   --primary-text-color: #fff;
-  --secondary-text-color: #999;
-  --tertiary-text-color: #777;
+  --secondary-text-color: rgba(255, 255, 255, .625);  // #999;
+  --tertiary-text-color: rgba(255, 255, 255, .375);   // #777;
 
-  --border-color: rgb(47, 49, 50); //rgba(255, 255, 255, .075);
+  --border-color: rgba(255, 255, 255, .075);          // rgb(47, 49, 50);
   --shadow-to-border-color: 0px 0px 1px rgba(255, 255, 255, .5);
   --nav-shadow-color: 0 0 2rem rgba(255, 255, 255, .0625);
   --float-background-color: rgba(30, 32, 34, .875);
@@ -48,9 +48,9 @@ html {
   }
 }
 
-.light {
+.color-light {
   @include light-color-scheme;
 }
-.dark {
+.color-dark {
   @include dark-color-scheme;
 }

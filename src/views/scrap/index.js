@@ -7,7 +7,7 @@ import PostItem from "../../components/post-item";
 import "./style.scoped.scss";
 
 
-const ScrapPage = ({}) => {
+const ScrapPage = () => {
   /** 4. POST API */
   const postViewModel = new PostViewModel();
   const [posts, setPosts] = useState([]);
@@ -16,7 +16,7 @@ const ScrapPage = ({}) => {
   /** */
 
 
-  return (
+  return (posts) && (
     <div id="page">
       <header className="header">
         <h1 className="title">Scrapped</h1>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { Frame, Pipe } from "../../util";
+import { StaticComponentRefs, Frame, Pipe } from "../../util";
 import { PostViewModel, CommentViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -16,7 +16,7 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import SendIconBorder from "../../asset/icons/mui/send-icon-border";
 
 
-const FloatController = ({ floatRef, post, createComment }) => {
+const FloatController = ({ post, createComment }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame(), footerFrame = new Frame();
@@ -30,7 +30,7 @@ const FloatController = ({ floatRef, post, createComment }) => {
         </section>
       ),
     ]);
-    return <div className="float-header light">{headerFrame.view()}</div>;
+    return <div className="float-header color-light">{headerFrame.view()}</div>;
   };
   const Footer = () => {
     const TF_PLACEHOLDER = "댓글 입력";
@@ -38,11 +38,11 @@ const FloatController = ({ floatRef, post, createComment }) => {
 
     const [replyController, setReplyController] = useState(null);
     useEffect(() => {
-      replyController && replyController.onShow();
-      return () => (replyController && replyController.onHide());
+      replyController && replyController.onShowCallback();
+      return () => (replyController && replyController.onHideCallback());
     }, [replyController]);
 
-    const commentDialogController = {
+    const commentInputController = {
       send: async () => {
         if (!post)  return;
         const text = tf;
@@ -52,10 +52,10 @@ const FloatController = ({ floatRef, post, createComment }) => {
           Pipe.get("reload")?.comments();
         }
         
-        commentDialogController.hide();
+        commentInputController.hide();
       },
 
-      show: (_replyController) => {  // reply, onShow, onHide
+      show: (_replyController) => {  // reply, onShowCallback, onHideCallback
         setReplyController(_replyController);
         footerFrame.move(1);
       },
@@ -65,7 +65,7 @@ const FloatController = ({ floatRef, post, createComment }) => {
         footerFrame.move(0);
       },
     };
-    Pipe.set("commentDialogController", commentDialogController);
+    Pipe.set("commentInputController", commentInputController);
 
 
     const ButtonScrap = ({ post }) => {
@@ -88,7 +88,7 @@ const FloatController = ({ floatRef, post, createComment }) => {
       ( // main
         <section className="float-footer-frame frame-1">
           <div className="buttons">
-            <button className="button button-comment" onClick={() => commentDialogController.show()}>
+            <button className="button button-comment" onClick={() => commentInputController.show()}>
               <div className="icon"><ChatBubbleIconBorder /></div>
               <p>댓글 쓰기</p>
             </button>
@@ -101,44 +101,45 @@ const FloatController = ({ floatRef, post, createComment }) => {
       ( // comment
         <section className="float-footer-frame frame-2">
           <div className="comment-dialog">
-            <button className="button button-back" onClick={() => commentDialogController.hide()}>
+            <button className="button button-back" onClick={() => commentInputController.hide()}>
               <div className="icon"><ArrowBackIosIcon /></div>
             </button>
             <div className="comment-input-box">
               <input type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
             </div>
-            <button className="button button-comment-send" onClick={() => commentDialogController.send()}>
+            <button className="button button-comment-send" onClick={() => commentInputController.send()}>
               <div className="icon"><SendIconBorder /></div>
             </button>
           </div>
         </section>
       ),
     ]);
-    return <div className="float-footer light">{footerFrame.view()}</div>;
+    return <div className="float-footer color-light">{footerFrame.view()}</div>;
   }
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
     return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
 
 
-const PostPage = ({ floatRef }) => {
+const PostPage = () => {
   const postId = parseInt(useParams().postId);
 
   /** 4. POST API */
   const postViewModel = new PostViewModel();
-  const [post, setPost] = useState([]);
+  const [post, setPost] = useState(null);
   const readPost = async () => setPost(await postViewModel.readPost(postId));
   useEffect(() => { readPost(); }, []);
   /** */
 
   /** 5-0. COMMENT API */
   const commentViewModel = new CommentViewModel();
-  const [comments, setComments] = useState([]);
+  const [comments, setComments] = useState(null);
   const readAllComments = async () => {
     if (!post)  return;
     const postAuthorId = post.postAuthorId;
@@ -175,7 +176,7 @@ const PostPage = ({ floatRef }) => {
   };
 
 
-  return (
+  return (post && comments) && (
     <div id="page">
       <header className="header">
         <div className="right">
@@ -185,7 +186,7 @@ const PostPage = ({ floatRef }) => {
 
       <main className="content"><PostItem post={post} comments={comments} detail={true} /></main>
 
-      <FloatController floatRef={floatRef} post={post} createComment={createComment} />
+      <FloatController post={post} createComment={createComment} />
     </div>
   );
 };

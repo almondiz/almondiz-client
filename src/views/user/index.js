@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 
-import { Frame } from "../../util";
+import { useSelector } from "react-redux";
+import store from "../../store";
+
+import { StaticComponentRefs, Frame } from "../../util";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
 import PostItem from "../../components/post-item";
@@ -14,7 +17,7 @@ import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
-const FloatController = ({ floatRef, user }) => {
+const FloatController = ({ user }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame();
@@ -28,25 +31,34 @@ const FloatController = ({ floatRef, user }) => {
         </section>
       ),
     ]);
-    return (user.userRelation !== "me") && <div className="float-header light">{headerFrame.view()}</div>;
+    return (user.userRelation !== "me") && <div className="float-header color-light">{headerFrame.view()}</div>;
   };
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setHeader(<Header />));
     return () => (floatRef.current?.setHeader());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
 
 
-const UserPage = ({ floatRef, myUserId }) => {
+export const RedirectToMyPage = () => {
+  const myUserId = useSelector(state => state.account.myUserId);
+
+  return <Navigate to={`/user/${myUserId}`} />;
+};
+const UserPage = () => {
   const userId = parseInt(useParams().userId);
 
   /** 1. USER API */
   const userViewModel = new UserViewModel();
-  const [user, setUser] = useState([]);
-  const getUser = async () => setUser((userId === myUserId) ? (await userViewModel.whoami()) : (await userViewModel.get(userId)));
+  const [user, setUser] = useState(null);
+  const getUser = async () => {
+    const myUserId = store.getState().account.myUserId;
+    setUser((userId === myUserId) ? (await userViewModel.whoami()) : (await userViewModel.get(userId)));
+  };
   useEffect(() => { getUser(); }, []);
   /** */
   
@@ -105,7 +117,7 @@ const UserPage = ({ floatRef, myUserId }) => {
   const goToFollowingsPage = navigate => navigate(`/following`);
 
 
-  return (
+  return (user && posts) && (
     <div id="page">
       {(() => {
         switch (user.userRelation) {
@@ -189,7 +201,7 @@ const UserPage = ({ floatRef, myUserId }) => {
         <PostList posts={posts} />
       </main>
 
-      <FloatController floatRef={floatRef} user={user} />
+      <FloatController user={user} />
     </div>
   );
 };

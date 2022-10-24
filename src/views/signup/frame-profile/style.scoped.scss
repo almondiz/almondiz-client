@@ -5,6 +5,8 @@
     right: 0;
     top: 0;
     height: $float-bottom-height;
+
+    @include content-max-width;
   
     display: flex;
     align-items: center;
@@ -58,16 +60,19 @@
     .button-next {
       width: calc(100% - 6rem);
 
-      height: 3rem;
-      border-radius: 1.5rem;
+      height: 2.5rem;
+      border-radius: 1.25rem;
       background-color: var(--content-text-color);
+      &[disabled] {
+        background-color: var(--tertiary-text-color);
+      }
 
       display: flex;
       justify-content: center;
       align-items: center;
 
       p {
-        font-size: 1rem;
+        font-size: .9375rem;
         font-weight: 700;
         color: var(--background-color);
         letter-spacing: $sparse-letter;
@@ -245,11 +250,8 @@
             display: flex;
             align-items: center;
 
-            &[data-motion=move-in] {
+            &:active {
               background-color: var(--border-color);
-            }
-            &[data-motion=move-out] {
-              transition: background-color .3s ease-in-out;
             }
         
             .field {
@@ -306,6 +308,8 @@
         right: 0;
         top: $float-bottom-height;
         bottom: 0;
+
+        @include content-max-width;
 
         .tf {
           margin-top: 1rem;

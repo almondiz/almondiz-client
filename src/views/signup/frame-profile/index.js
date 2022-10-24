@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 
-import { Frame, Motion } from "../../../util";
+import { Frame, Motion, StaticComponentRefs } from "../../../util";
+import ModalConfirm from "../modal-confirm";
 
 import "./style.scoped.scss";
 import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
@@ -84,8 +85,7 @@ const MenuName = ({
 
   // nut
   const [nut, setNut] = useState(getRandomNut());
-  const onChangeNut = () => (motion.is("stop") && motion.go("move-in"));
-  const onChangeNutStart = () => {
+  const onChangeNut = () => {
     let _nut;
     while (true) {
       _nut = getRandomNut();
@@ -96,19 +96,6 @@ const MenuName = ({
     setNut(_nut);
   };
   useEffect(() => { setProfileNut(nut); }, [nut]);
-
-  // motion
-  const MOTION_DELAY = 300;
-  const motion = new Motion({
-    "stop": () => {},
-    "move-in": () => {
-      onChangeNutStart();
-      motion.delay(MOTION_DELAY / 4, "move-out");
-    },
-    "move-out": () => {
-      motion.delay(MOTION_DELAY, "stop");
-    }
-  }, "stop");
 
   const TagSearchItem = ({ tag }) => (
     <li className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onSelectTagItem(tag)}>
@@ -130,7 +117,7 @@ const MenuName = ({
       <section className="tf-frame tf-frame-1" >
         <div className="tf">
           <input className="name-first tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => moveTf(1)}/>
-          <div className="name-last" data-motion={motion.get()} onClick={onChangeNut}>
+          <div className="name-last" onClick={onChangeNut}>
             <p className="field">{nut.nutName}</p>
             <button className="name-refresh-icon">
               <div className="icon"><RefreshIcon /></div>
@@ -162,41 +149,61 @@ const FrameProfile = ({
   profileThumb, profileTag, profileNut,
   setProfileThumb, setProfileTag, setProfileNut,
   searchFoodTag,
+  email, callSignup
 }) => {
-  const onNextClick = () => {
-    if (profileThumb && profileTag && profileNut)
-      frame.next();
-    else
-      console.error("[FrameProfile]", "빈 필드가 존재합니다.");
+  const modalConfirmRef = useRef();
+  const showModalConfirm = () => {
+    const modalRef = StaticComponentRefs.modalRef;
+    modalRef.current?.show(
+      <ModalConfirm modalRef={modalRef} ref={modalConfirmRef}
+        email={email} profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
+      />,
+      async () => {
+        const { choice } = modalConfirmRef.current?.destruct();
+        if (choice)   callSignup();
+      }
+    );
+  };
+
+  const ButtonConfirm = ({ profileThumb, profileTag, profileNut }) => {
+    const [ disabled, setDisabled ] = useState(true);
+    useEffect(() => { setDisabled(!(profileThumb && profileTag && profileNut)); }, [profileThumb, profileTag, profileNut]);
+    const onClick = () => (!disabled && showModalConfirm());
+    return (
+      <button className="button button-next" disabled={disabled} onClick={onClick}>
+        <p>다음</p>
+      </button>
+    );
   };
 
   return (
     <>
-      <nav className="top-nav">
-        <button className="button button-back" onClick={() => frame.prev()}>
-          <div className="icon"><ArrowBackIcon /></div>
-        </button>
-        <h3 className="title">프로필 생성</h3>
-      </nav>
-      
-      <main className="content">
-        <div className="menu-thumb-group">
-          <MenuThumb getRandomThumb={getRandomThumb} setProfileThumb={setProfileThumb} />
-          <h5 className="description">이모지</h5>
-        </div>
-        <div className="menu-name-group">
-          <MenuName getRandomNut={getRandomNut} setProfileTag={setProfileTag} setProfileNut={setProfileNut} searchFoodTag={searchFoodTag} />
-          <h5 className="description">닉네임</h5>
-        </div>
-      </main>
+      {useMemo(() => (
+        <nav className="top-nav">
+          <button className="button button-back" onClick={() => frame.prev()}>
+            <div className="icon"><ArrowBackIcon /></div>
+          </button>
+          <h3 className="title">프로필 생성</h3>
+        </nav>
+      ), [])}
+      {useMemo(() => (
+        <main className="content">
+          <div className="menu-thumb-group">
+            <MenuThumb getRandomThumb={getRandomThumb} setProfileThumb={setProfileThumb} />
+            <h5 className="description">이모지</h5>
+          </div>
+          <div className="menu-name-group">
+            <MenuName getRandomNut={getRandomNut} setProfileTag={setProfileTag} setProfileNut={setProfileNut} searchFoodTag={searchFoodTag} />
+            <h5 className="description">닉네임</h5>
+          </div>
+        </main>
+      ), [])}
       <footer className="footer">
         <p className="help">한번 선택한 프로필은 이후 변경할 수 없습니다.</p>
-        <button className="button button-next" onClick={onNextClick}>
-          <p>다음</p>
-        </button>
+        <ButtonConfirm profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut} />
       </footer>
     </>
   );
 };
 
-export default FrameProfile;
+export default React.memo(FrameProfile);

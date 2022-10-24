@@ -81,6 +81,8 @@
     &>* {
       pointer-events: auto;
     }
+
+    @include content-max-width;
   }
   .tf-frame.tf-frame-2 {
     pointer-events: auto;
@@ -92,16 +94,19 @@
       left: $padding-horiz;
       right: $padding-horiz;
     
-      height: 3rem;
+      height: 2.5rem;
       border-radius: 1.5rem;
       background-color: var(--content-text-color);
+      &[disabled] {
+        background-color: var(--tertiary-text-color);
+      }
     
       display: flex;
       justify-content: center;
       align-items: center;
     
       p {
-        font-size: 1rem;
+        font-size: .9375rem;
         font-weight: 700;
         color: var(--background-color);
         letter-spacing: $sparse-letter;
@@ -112,6 +117,8 @@
     
         ::v-deep {
           svg {
+            height: 1.25rem;
+            width: 1.25rem;
             fill: var(--background-color);
           }
         }

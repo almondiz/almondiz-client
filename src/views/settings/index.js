@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { StaticComponentRefs } from "../../util";
+
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 
 
-const FloatController = ({ floatRef }) => {
+const FloatController = () => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -18,15 +20,16 @@ const FloatController = ({ floatRef }) => {
   );
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setTop(<Top />));
     return () => (floatRef.current?.setTop());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
 
 
-const SettingsPage = ({ floatRef }) => {
+const SettingsPage = () => {
   return (
     <div id="page">
       <main className="content">
@@ -95,7 +98,7 @@ const SettingsPage = ({ floatRef }) => {
         </ul>
       </main>
 
-      <FloatController floatRef={floatRef} />
+      <FloatController />
     </div>
   );
 };

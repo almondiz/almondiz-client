@@ -1,19 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 
 import { Frame } from "../../../util";
-import { SearchViewModel } from "../../../view-models";
 
 import TagList, { pushTag } from "../../../components/tag-list";
 
 import "./style.scoped.scss";
+import ExpandMoreIcon from "../../../asset/icons/mui/expand-more-icon";
 import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
 import SellIconBorder from "../../../asset/icons/mui/sell-icon-border";
 
 
-const BackdropTag = ({
-  shop, postTags, setPostTags,
+const BackdropTag = forwardRef(({
+  backdropRef,
+  shop, postTags,
   searchFoodTag, createFoodTag,
-}) => {
+}, ref) => {
+  const hideBackdrop = () => backdropRef.current?.hide();
+  const destruct = () => ({ tags });
+  useImperativeHandle(ref, () => ({ destruct }));
+
+
   // search
   const [ searchResult, setSearchResult ] = useState([]);
   const onSearchFoodTag = async (tf) => {
@@ -41,7 +47,6 @@ const BackdropTag = ({
 
   // tag
   const [ tags, setTags ] = useState([...postTags]);
-  useEffect(() => { setPostTags([...tags]); }, [tags]);
   const onSelectTagItem = _tag => {
     pushTag(tags, setTags, _tag);
     setTf("");
@@ -62,7 +67,7 @@ const BackdropTag = ({
         {(searchResult.map(tag => tag.tagName).indexOf(tf) === -1) && (
           <div className="if-not-found">
             <h3 className="title">"{tf}" 태그를 찾나요?</h3>
-            <button className="text-button" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
+            <button className="button button-if-not-found" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
           </div>
         )}
       </div>
@@ -71,31 +76,39 @@ const BackdropTag = ({
 
   return (
     <>
-      <article className="post">
-        <article className="post editable">
-          <header className="header">
-            <div className="row row-shop">
-              <button className="shop">
-                <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
-                <div className="text-wrap">
-                  <p className="name">{shop.shopName}</p>
-                  <p className="description">{shop.shopAddress}</p>
-                </div>
-              </button>
-            </div>
-            <nav className="row row-tags">
-              <div className="tf">
-                <div className="tf-icon"><SellIconBorder /></div>
-                <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
-                <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
+      <header className="backdrop-header" onClick={hideBackdrop}>
+        <h3 className="title">태그 추가</h3>
+        <div className="button button-close">
+          <div className="icon"><ExpandMoreIcon /></div>
+        </div>
+      </header>
+      <main className="backdrop-body">
+        <article className="post">
+          <article className="post editable">
+            <header className="header">
+              <div className="row row-shop">
+                <button className="shop">
+                  <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+                  <div className="text-wrap">
+                    <p className="name">{shop.shopName}</p>
+                    <p className="description">{shop.shopAddress}</p>
+                  </div>
+                </button>
               </div>
-              {tagFrame.view()}
-            </nav>
-          </header>
+              <nav className="row row-tags">
+                <div className="tf">
+                  <div className="tf-icon"><SellIconBorder /></div>
+                  <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+                  <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
+                </div>
+                {tagFrame.view()}
+              </nav>
+            </header>
+          </article>
         </article>
-      </article>
+      </main>
     </>
   )
-};
+});
 
 export default BackdropTag;

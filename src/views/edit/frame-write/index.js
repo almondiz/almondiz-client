@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../../util";
+import { StaticComponentRefs, Frame, filterText } from "../../../util";
 
 import TagList from "../../../components/tag-list";
 import ImageGrid from "../../../components/image-grid";
@@ -13,29 +13,30 @@ import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
 
 
 const FloatController = ({
-  frame, floatRef,
-  postImages, setPostImages,
-  createPost,
+  frame, createPost,
+  postText, postImages, setPostImages,
 }) => {
   const navigate = useNavigate();
 
-  const imageInputRef = useRef();
-  const MAX_NUM_OF_IMAGES = 10;
-  const onAddImageButtonClick = e => {
-    if (postImages.length < MAX_NUM_OF_IMAGES)
-      imageInputRef.current?.click();
-    else
-      console.error("[FrameWrite]", "한 게시물에서는 최대 10개까지만 이미지를 업로드할 수 있음.");
-  };
-  const onImageChange = e => {
-    setPostImages([...postImages, {
-      file: e.target.files[0],
-      url: URL.createObjectURL(e.target.files[0]),
-    }]);
-  };
+  const Footer = ({ postImages }) => {
+    const imageInputRef = useRef();
+    const MAX_NUM_OF_IMAGES = 10;
+    const onAddImageButtonClick = e => {
+      if (postImages.length < MAX_NUM_OF_IMAGES) {
+        imageInputRef.current?.click();
+      } else {
+        // #### Snackbar 컴포넌트
+        console.error("[FrameWrite]", "한 게시물에서는 최대 10개까지만 이미지를 업로드할 수 있음.");
+      }
+    };
+    const onImageChange = e => {
+      setPostImages([...postImages, {
+        file: e.target.files[0],
+        url: URL.createObjectURL(e.target.files[0]),
+      }]);
+    };
 
-  const footerFrame = new Frame();
-  const Footer = () => {
+    const footerFrame = new Frame();
     footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
@@ -48,28 +49,43 @@ const FloatController = ({
         </section>
       ),
     ]);
-    return <div className="float-footer light">{footerFrame.view()}</div>;
-  }
+    return <div className="float-footer color-light">{footerFrame.view()}</div>;
+  };
 
-  const Top = () => (
-    <nav className="float-top top-nav">
-      <button className="button button-back" onClick={() => frame.prev()}>
-        <div className="icon"><ArrowBackIcon /></div>
-      </button>
-      <h3 className="title">리뷰 작성</h3>
-      <button className="button button-next" onClick={async () => {
-        const success = await createPost();
-        if (success) {
-          navigate(`/me`);
+  const Top = ({ postText }) => {
+    const ButtonPublish = ({ postText }) => {
+      const [ disabled, setDisabled ] = useState(true);
+      useEffect(() => { setDisabled(filterText(postText) === ""); }, [postText]);
+      const onClick = async () => {
+        if (!disabled) {
+          const success = await createPost();
+          if (success) {
+            navigate(`/me`);
+          }
         }
-      }}>게시</button>
-    </nav>
-  );
+      };
+      return <button className="button button-next" disabled={disabled} onClick={onClick}>게시</button>;
+    };
+    return (
+      <nav className="float-top top-nav">
+        <button className="button button-back" onClick={() => frame.prev()}>
+          <div className="icon"><ArrowBackIcon /></div>
+        </button>
+        <h3 className="title">리뷰 작성</h3>
+        <ButtonPublish postText={postText} />
+      </nav>
+    );
+  };
 
+  const floatRef = StaticComponentRefs.floatRef;
   useEffect(() => {
-    (floatRef.current?.setFooter(<Footer />), floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setFooter(), floatRef.current?.setTop());
-  }, [floatRef.current]);
+    floatRef.current?.setFooter(<Footer postImages={postImages} />);
+    return () => floatRef.current?.setFooter();
+  }, [postImages]);
+  useEffect(() => {
+    floatRef.current?.setTop(<Top postText={postText} />);
+    return () => floatRef.current?.setTop();
+  }, [postText]);
 
   return <></>;
 };
@@ -77,26 +93,29 @@ const FloatController = ({
 
 // frame 2
 const FrameWrite = ({
-  frame, floatRef, backdropRef,
+  frame, createPost,
   shop,
   postTags, setPostTags,
   postText, setPostText,
   postImages, setPostImages,
   searchFoodTag, createFoodTag,
-  createPost
 }) => {
   useEffect(() => { setPostTags([...shop.tags]); }, []);
 
   // textarea
   const textRef = useRef();
-  const handleResizeHeight = () => {
+  const handleResizeHeight = useCallback(() => {
     const obj = textRef.current;
     obj.style.height = '1px';
     obj.style.height = obj.scrollHeight + 'px';
-  };
+  }, []);
   useEffect(() => { handleResizeHeight(); }, []);
+  const onPostTextChange = useCallback(e => {
+    setPostText(e.target.value);
+    handleResizeHeight();
+  }, []);
 
-  const ImageGridTrailer = ({ shop }) => (
+  const ImageGridTrailer = useCallback(({ shop }) => (
     <div className="image-grid-trailer">
       <div className="content">
         <div className="text-wrap">
@@ -106,64 +125,72 @@ const FrameWrite = ({
       </div>
       <div className="image" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
     </div>
-  );
-  const showBackdropTag = () => {
-    backdropRef.current?.show({
-      title: "태그 추가",
-      content: (
-        <BackdropTag
-          shop={shop}
-          postTags={postTags} setPostTags={setPostTags}
-          searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
-        />
-      ),
-    });
-  };
+  ), [shop]);
 
+  const backdropTagRef = useRef();
+  const showBackdropTag = useCallback(() => {
+    const backdropRef = StaticComponentRefs.backdropRef;
+    backdropRef.current?.show(
+      <BackdropTag backdropRef={backdropRef} ref={backdropTagRef}
+        shop={shop} postTags={postTags}
+        searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
+      />,
+      async () => {
+        const { tags } = backdropTagRef.current?.destruct();
+        setPostTags([...tags]);
+      }
+    );
+  }, [postTags]);
 
   return (
     <>
       <main className="content">
         <article className="post editable">
           <header className="header">
-            <div className="row row-shop">
-              <button className="shop">
-                <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
-                <div className="text-wrap">
-                  <p className="name">{shop.shopName}</p>
-                  <p className="description">{shop.shopAddress}</p>
-                </div>
-              </button>
-            </div>
-            <nav className="row row-tags">
-              <TagList tags={postTags} small />
-              <div className="buttons right">
-                <button className="button text-button" onClick={() => showBackdropTag()}>태그 추가</button>
+            {useMemo(() => (
+              <div className="row row-shop">
+                <button className="shop">
+                  <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+                  <div className="text-wrap">
+                    <p className="name">{shop.shopName}</p>
+                    <p className="description">{shop.shopAddress}</p>
+                  </div>
+                </button>
               </div>
-            </nav>
+            ), [shop])}
+            {useMemo(() => (
+              <nav className="row row-tags">
+                <TagList tags={postTags} small />
+                <div className="buttons right">
+                  <button className="button button-add-tag" onClick={() => showBackdropTag()}>태그 추가</button>
+                </div>
+              </nav>
+            ), [postTags])}
           </header>
 
           <main className="body">
-            <div className="row row-text">
-              <textarea className="text" ref={textRef} onChange={({ target }) => {
-                setPostText(target.value);
-                handleResizeHeight();
-              }} name="text" placeholder="내용을 입력하세요" autoFocus />
-              {/*postText*/}
-            </div>
-            <div className="row row-images">
-              <ImageGrid images={postImages} trailer={<ImageGridTrailer shop={shop} />} editable setImages={setPostImages} />
-            </div>
+            {useMemo(() => (
+              <div className="row row-text">
+                <textarea className="text" ref={textRef} value={postText} onChange={onPostTextChange} name="text" placeholder="내용을 입력하세요" autoFocus />
+              </div>
+            ), [postText])}
+            {useMemo(() => (
+              <div className="row row-images">
+                <ImageGrid images={postImages} trailer={<ImageGridTrailer shop={shop} />} editable setImages={setPostImages} />
+              </div>
+            ), [postImages])}
           </main>
         </article>
       </main>
 
-      <FloatController
-        floatRef={floatRef} frame={frame} createPost={createPost}
-        postImages={postImages} setPostImages={setPostImages}
-      />
+      {useMemo(() => (
+        <FloatController
+          frame={frame} createPost={createPost}
+          postText={postText} postImages={postImages} setPostImages={setPostImages}
+        />
+      ), [postText, postImages])}
     </>
   )
 };
 
-export default FrameWrite;
+export default React.memo(FrameWrite);

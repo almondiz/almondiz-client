@@ -60,6 +60,8 @@
   bottom: 0;
   overflow: hidden;
 
+  @include content-max-width;
+
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
@@ -72,6 +74,8 @@
   right: 0;
   top: 0;
   bottom: 0;
+
+  @include content-max-width;
 
   .tf-frame {
     padding-left: $padding-horiz;
@@ -151,22 +155,11 @@
       font-size: .875rem;
     }
   
-    .text-button {
+    .button-if-not-found {
+      @include button-default;
+
       z-index: 1;
-  
-      font-size: .75rem;
-      font-weight: 700;
-      color: var(--background-color);
-      background-color: var(--content-text-color);
-  
-      height: 1.5rem;
-      border-radius: .75rem;
-      padding: 0 .75rem;
-  
       margin-left: auto;
-  
-      display: flex;
-      align-items: center;
     }
   }
 }
@@ -181,6 +174,8 @@
   left: 0;
   right: 0;
   bottom: 0;
+
+  @include content-max-width;
 
   .button-set-my-location {
     margin-left: 1rem;
@@ -219,21 +214,45 @@
     }
     .bottom-item {  
       display: flex;
+      justify-content: space-between;
       align-items: center;
-  
-      .text-wrap {
-        &,
-        &>* {
-          @include text-nowrap;
-        }
-        .title {}
-        .description {
-          color: var(--secondary-text-color);
-          font-size: .8125rem;
-          margin-top: .375rem;
+
+      .shop-wrap {
+        @include text-nowrap;
+
+        flex: 1;
+        .shop {
+          display: flex;
+          align-items: center;
+
+          min-width: 0;
+      
+          .thumb {
+            width: 2.5rem;
+            height: 2.5rem;
+            margin-right: .625rem;
+            border-radius: 100%;
+            background-size: cover;
+            background-color: var(--border-color);
+            flex-shrink: 0;
+          }
+      
+          .text-wrap {
+            &,
+            &>* {
+              @include text-nowrap;
+            }
+            .title {}
+            .description {
+              color: var(--secondary-text-color);
+              font-size: .8125rem;
+              margin-top: .375rem;
+            }
+          }
         }
       }
       .button-select-shop {
+        margin-left: .75rem;
         flex-shrink: 0;
         
         display: flex;
@@ -282,7 +301,9 @@
 .shop-list-group>.list>.item,
 .bottom-item {
   height: fit-content;
-  min-height: 6.75rem;
+  min-height: 7rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 
   ::v-deep {
     .tag-list {

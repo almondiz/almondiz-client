@@ -7,7 +7,6 @@ import { UserViewModel, SearchViewModel } from "../../view-models";
 
 import FrameSocial from "./frame-social";
 import FrameProfile from "./frame-profile";
-import FrameConfirm from "./frame-confirm";
 
 import { getAccountInfo, setAccessToken, setRefreshToken } from "../../store/slices/account";
 
@@ -60,10 +59,7 @@ const SignupPage = () => {
       profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
       setProfileThumb={setProfileThumb} setProfileTag={setProfileTag} setProfileNut={setProfileNut}
       searchFoodTag={searchFoodTag}
-    />,
-    <FrameConfirm
-      frame={frame} callSignup={callSignup} email={account.email}
-      profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
+      email={account.email} callSignup={callSignup}
     />,
   ]);
 
