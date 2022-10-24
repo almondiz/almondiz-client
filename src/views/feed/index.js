@@ -40,7 +40,6 @@ const FeedPage = () => {
       <BackdropLocation backdropRef={backdropRef} ref={backdropLocationRef} />,
       async () => {
         const { dirty } = backdropLocationRef.current?.destruct();
-        console.log("dirty", dirty);
         if (dirty) {    // refresh page if dirty is true
           readFeedPosts(), readAddress();
         }

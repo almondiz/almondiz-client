@@ -186,7 +186,6 @@ const MapBottom = forwardRef(({ mapDrawerRef,
       setContent(content);
       setIsMyLocation(false);
     } else {
-      console.log(tracking, location);
       unfocus();
       setIsMyLocation(tracking);
     }
