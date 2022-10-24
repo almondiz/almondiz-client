@@ -163,17 +163,20 @@ export default class SearchViewModel {
   }
 
   // #### API 만들어야 함. (기존에 설정했던 위치)
-  async getPreferedLocation() {
-    const data = {
-      location: { lati: 37.275004, longi: 127.045749, address: "성남 분당구 백현동", },
-      distance: 15,  // km
-    };
-    console.log("[SearchViewModel.getPreferedLocation]", data);
+  static _dummyPreferedLocationSet = {
+    tracking: false,
+    location: { lati: 37.275004, longi: 127.045749, address: "성남 분당구 백현동", },
+    distance: 15,  // km
+  };
+  async getPreferedLocationSet() {
+    const data = SearchViewModel._dummyPreferedLocationSet;
+    console.log("[SearchViewModel.getPreferedLocationSet]", data);
     return data;
   }
-  async setPreferedLocation(data) {
-    console.log("[SearchViewModel.setPreferedLocation]", data);
-    const { location, distance } = data;
+  async setPreferedLocationSet(data) {
+    console.log("[SearchViewModel.setPreferedLocationSet]", data);
+    //const { tracking, location, distance } = data;
+    SearchViewModel._dummyPreferedLocationSet = data;
     return true;
   }
 

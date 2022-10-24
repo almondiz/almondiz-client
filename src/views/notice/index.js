@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getTime } from "../../util";
+import { StaticComponentRefs, getTime } from "../../util";
 import { NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
@@ -9,7 +9,7 @@ import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
 
 
-const FloatController = ({ floatRef, notices }) => {
+const FloatController = ({ notices }) => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -22,18 +22,19 @@ const FloatController = ({ floatRef, notices }) => {
   );
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setTop(<Top />));
     return () => (floatRef.current?.setTop());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
 
 
-const NoticePage = ({ floatRef }) => {
+const NoticePage = () => {
   /** 3. NOTIFICATION API */
   const noticeViewModel = new NoticeViewModel();
-  const [notices, setNotices] = useState([]);
+  const [notices, setNotices] = useState(null);
   const getMyNoticeData = async () => setNotices(await noticeViewModel.getMyNoticeData());
   useEffect(() => { getMyNoticeData(); }, []);
   /** */
@@ -58,13 +59,13 @@ const NoticePage = ({ floatRef }) => {
   };
 
 
-  return (
+  return (notices) && (
     <div id="page">
       <main className="content">
         <NoticeList notices={notices} />
       </main>
 
-      <FloatController floatRef={floatRef} notices={notices} />
+      <FloatController notices={notices} />
     </div>
   );
 };

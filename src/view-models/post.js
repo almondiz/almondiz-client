@@ -69,6 +69,7 @@ export default class PostViewModel {
 
     const postAuthor = data.user;
     const postAuthorId = postAuthor.userId;
+    const postAuthorRelation = postAuthor.relation;
   
     return {
       postId,
@@ -84,12 +85,13 @@ export default class PostViewModel {
       postText: data.text,
       postTextHead: (() => {
         const MAX_NUM_OF_LINES = 5;
-        const lines = data.text.split("\n").splice(0, MAX_NUM_OF_LINES);
-        if (lines.length === MAX_NUM_OF_LINES) {
-          lines.push("...");
+        const lines = data.text.split("\n");
+        const linesHead = lines.splice(0, MAX_NUM_OF_LINES);
+        if (lines.length > MAX_NUM_OF_LINES) {
+          linesHead.push("...");
         }
-        const text = lines.join("\n");
-        return text;
+        const textHead = linesHead.join("\n");
+        return textHead;
       })(),
 
       postImages: data.postFileImgUrls.map((url) => ({ url })),
@@ -98,7 +100,7 @@ export default class PostViewModel {
       postAuthorId: postAuthorId,
       postAuthorEmoji: postAuthor.thumb.emoji,
       postAuthorName: (() => {
-        switch (postAuthor.relation) {
+        switch (postAuthorRelation) {
           case "me":
             return "나";
           case "following":
@@ -108,7 +110,7 @@ export default class PostViewModel {
             return postAuthor.nickName;
         }
       })(),
-      postAuthorRelation: postAuthor.relation,
+      postAuthorRelation,
       goToPostAuthorPage: navigate => navigate(`/user/${postAuthorId}`),
 
       postCreatedAt: data.createdAt,

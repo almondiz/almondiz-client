@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../../util";
+import { StaticComponentRefs, Frame } from "../../../util";
 
 import NaverMap from "../../../components/naver-map";
 import TagList from "../../../components/tag-list";
@@ -16,7 +16,7 @@ import ArrowBackIosIcon from "../../../asset/icons/mui/arrow-back-ios-icon";
 import LocationOnIconBorder from "../../../asset/icons/mui/location-on-icon-border";
 
 
-const FloatController = ({ floatRef }) => {
+const FloatController = () => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -29,9 +29,10 @@ const FloatController = ({ floatRef }) => {
   );
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setTop(<Top />));
     return () => (floatRef.current?.setTop());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
@@ -67,11 +68,11 @@ const MapDrawer = ({
     switch (tfFrameIndex) {
       case 0:
         setTf("");
-        mapBottomRef.current?.show({});
+        mapBottomRef.current?.show();
         break;
       case 2:
         setTf(shop.shopName);
-        mapBottomRef.current?.show({ content: <BottomContent shop={shop} /> });
+        mapBottomRef.current?.show(<BottomContent shop={shop} />);
         break;
     }
   };
@@ -119,7 +120,7 @@ const MapDrawer = ({
         <ul className="list">{searchResult.map((shop, idx) => <ShopSearchItem key={idx} shop={shop} />)}</ul>
         <div className="if-not-found">
           <h3 className="title">원하는 음식점 결과가 없으신가요?</h3>
-          <button className="text-button" onClick={() => navigate(`/direct`)}>직접 등록</button>
+          <button className="button button-if-not-found" onClick={() => navigate(`/direct`)}>직접 등록</button>
         </div>
       </div>
     ),
@@ -127,7 +128,7 @@ const MapDrawer = ({
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
-        <div className="tf light" onClick={() => moveTf(1)}>
+        <div className="tf color-light" onClick={() => moveTf(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly />
         </div>
@@ -145,7 +146,7 @@ const MapDrawer = ({
     ),
     (
       <section className="tf-frame tf-frame-3">
-        <div className="tf light">
+        <div className="tf color-light">
           <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => moveTf(1)} />
         </div>
@@ -158,23 +159,21 @@ const MapDrawer = ({
 
 
 const MapBottom = forwardRef((_, ref) => {
-  const BottomInitContent = () => (
+  const BottomDefaultContent = () => (
     <section className="bottom-item-init">
       <p className="msg">리뷰할 음식점를 검색해주세요.</p>
     </section>
   );
-  const bottomInitContent = <BottomInitContent />;
-
-  const [content, setContent] = useState(<></>);
-  const show = ({ content=bottomInitContent }) => setContent(content);
-  useEffect(() => { show({}); }, []);
+  const bottomDefaultContent = <BottomDefaultContent />;
+  const [content, setContent] = useState(bottomDefaultContent);
+  const show = (content=bottomDefaultContent) => setContent(content);
   useImperativeHandle(ref, () => ({ show }));
 
   const [isMyLocation, setIsMyLocation] = useState(false);
   const toggleMyLocation = () => setIsMyLocation(!isMyLocation);
 
   return (
-    <footer className="map-bottom light">
+    <footer className="map-bottom color-light">
       {/*<button className={`button button-set-my-location ${isMyLocation ? "set" : ""}`} onClick={toggleMyLocation}>
         <div className="icon">{isMyLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>*/}
@@ -186,7 +185,7 @@ const MapBottom = forwardRef((_, ref) => {
 
 // frame 1
 const FrameFindShop = ({
-  frame, floatRef,
+  frame,
   setShop,
   searchShop,
 }) => {
@@ -206,7 +205,7 @@ const FrameFindShop = ({
         </div>
       </main>
 
-      <FloatController floatRef={floatRef} />
+      <FloatController />
     </>
   )
 };

@@ -7,7 +7,7 @@ import FrameFindPlace from "./frame-find-place";
 import FrameTag from "./frame-tag";
 
 
-const DirectPage = ({ floatRef, backdropRef }) => {
+const DirectPage = () => {
   const [ shop, setShop ] = useState({});
 
   /** 0. SEARCH API */
@@ -20,8 +20,8 @@ const DirectPage = ({ floatRef, backdropRef }) => {
 
   const frame = new Frame();
   frame.init([
-    <FrameFindPlace frame={frame} floatRef={floatRef} searchPlace={searchPlace} />,
-    <FrameTag frame={frame} floatRef={floatRef}
+    <FrameFindPlace frame={frame} searchPlace={searchPlace} />,
+    <FrameTag frame={frame}
       shop={shop} setShop={setShop}
       searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
     />,

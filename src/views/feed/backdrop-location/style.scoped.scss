@@ -49,8 +49,12 @@
       padding-top: .5rem;
       padding-bottom: .5rem;
     }
-    .text-button {
-      flex-shrink: 0;
+    .button-update-distance {
+      @include button-default;
+
+      &[disabled] {
+        background-color: var(--tertiary-text-color);
+      }
     }
   }
 }

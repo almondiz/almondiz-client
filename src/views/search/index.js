@@ -66,11 +66,11 @@ const Drawer = ({ contentRef }) => {
     switch (tfFrameIndex) {
       case 0:
         setTf(""); setTags([]);
-        contentRef.current?.show({});
+        contentRef.current?.show();
         break;
       case 2:
         setTf("");
-        contentRef.current?.show({ content: <PostList tags={tags} /> });
+        contentRef.current?.show(<PostList tags={tags} />);
         break;
     }
   };
@@ -87,14 +87,23 @@ const Drawer = ({ contentRef }) => {
       {tag.tagName}
     </li>
   );
+  const ButtonSearch = ({ tags }) => {
+    const [ disabled, setDisabled ] = useState(true);
+    useEffect(() => { setDisabled(!(tags && tags.length > 0)); }, [tags]);
+    const onClick = () => (!disabled && moveTf(2));
+
+    return (
+      <button className="button button-search" disabled={disabled} onClick={onClick}>
+        <div className="icon"><SearchIconBorder /></div>
+        <p>검색하기</p>
+      </button>
+    );
+  };
   const tagFrame = new Frame([
     (
       <>
         <TagList tags={tags} editable setTags={setTags} />
-        <button className="button button-search" onClick={(tags.length > 0) ? () => moveTf(2) : () => {}}>
-          <div className="icon"><SearchIconBorder /></div>
-          <p>검색하기</p>
-        </button>
+        <ButtonSearch tags={tags} />
       </>
     ),
     (
@@ -130,7 +139,7 @@ const Drawer = ({ contentRef }) => {
                 setTags([...tags]);
                 moveTf(2);
               };
-              const onDeleteClick = e => {
+              const onClickDelete = e => {
                 e.stopPropagation();
                 removeSearchHistory(idx)
               };
@@ -138,7 +147,7 @@ const Drawer = ({ contentRef }) => {
               return (
                 <li key={idx} className="item" onClick={onClick}>
                   <div className="tag-list-wrap"><TagList tags={tags} /></div>
-                  <button className="button button-delete-item" onClick={onDeleteClick}>
+                  <button className="button button-delete-item" onClick={onClickDelete}>
                     <div className="icon"><CloseIcon /></div>
                   </button>
                 </li>
@@ -172,7 +181,7 @@ const Drawer = ({ contentRef }) => {
           <h1 className="title">Search</h1>
           <div className="right" />
         </header>
-        <div className="tf light">
+        <div className="tf color-light">
           <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
           <div className="tf-box" onClick={() => moveTf(1)}>
             <TagList tags={tags} />
@@ -186,18 +195,17 @@ const Drawer = ({ contentRef }) => {
 };
 
 
-
 const SearchContent = forwardRef((_, ref) => {
-  const InitContent = () => <></>;
-  
-  const [content, setContent] = useState(<InitContent />);
-  const show = ({ content=<InitContent /> }) => setContent(content);
-  useImperativeHandle(ref, () => ({ show: show, }));
+  const SearchDefaultContent = () => <></>;
+  const searchDefaultContent = <SearchDefaultContent />;
+  const [content, setContent] = useState(searchDefaultContent);
+  const show = (content=searchDefaultContent) => setContent(content);
+  useImperativeHandle(ref, () => ({ show }));
 
   return <main className="content">{content}</main>;
 });
 
-const SearchPage = ({}) => {
+const SearchPage = () => {
   const contentRef = useRef();
 
   return (

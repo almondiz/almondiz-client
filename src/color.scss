@@ -48,9 +48,9 @@ html {
   }
 }
 
-.light {
+.color-light {
   @include light-color-scheme;
 }
-.dark {
+.color-dark {
   @include dark-color-scheme;
 }

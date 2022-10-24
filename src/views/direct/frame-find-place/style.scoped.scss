@@ -60,6 +60,8 @@
   bottom: 0;
   overflow: hidden;
 
+  @include content-max-width;
+
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
@@ -75,6 +77,8 @@
   right: 0;
   top: 0;
   bottom: 0;
+
+  @include content-max-width;
 
   .tf-frame {
     padding-left: $padding-horiz;
@@ -145,37 +149,6 @@
       min-height: 5rem;
     }
   }
-
-  .if-not-found {
-    margin-top: .5rem;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  
-    .title {
-      color: var(--secondary-text-color);
-      font-size: .875rem;
-    }
-  
-    .text-button {
-      z-index: 1;
-  
-      font-size: .75rem;
-      font-weight: 700;
-      color: var(--background-color);
-      background-color: var(--content-text-color);
-  
-      height: 1.5rem;
-      border-radius: .75rem;
-      padding: 0 .75rem;
-  
-      margin-left: auto;
-  
-      display: flex;
-      align-items: center;
-    }
-  }
 }
 .map-bottom {
   pointer-events: none;
@@ -188,6 +161,8 @@
   left: 0;
   right: 0;
   bottom: 0;
+
+  @include content-max-width;
 
   .button-set-my-location {
     margin-left: 1rem;

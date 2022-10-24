@@ -10,7 +10,7 @@ import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 const ImageViewer = forwardRef(({ images=[] }, ref) => {
   const [index, setIndex] = useState(-1);
-  useImperativeHandle(ref, () => ({ index: index, setIndex: setIndex, }));
+  useImperativeHandle(ref, () => ({ index, setIndex }));
 
   const image = images[index];
 

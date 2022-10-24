@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame } from "../../../util";
+import { StaticComponentRefs, Frame } from "../../../util";
 
 import NaverMap from "../../../components/naver-map";
 
@@ -14,7 +14,7 @@ import MyLocationIconFill from "../../../asset/icons/mui/my-location-icon-fill";
 import ArrowBackIosIcon from "../../../asset/icons/mui/arrow-back-ios-icon";
 
 
-const FloatController = ({ floatRef, frame }) => {
+const FloatController = ({ frame }) => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -28,9 +28,10 @@ const FloatController = ({ floatRef, frame }) => {
   );
 
   useEffect(() => {
+    const floatRef = StaticComponentRefs.floatRef;
     (floatRef.current?.setTop(<Top />));
     return () => (floatRef.current?.setTop());
-  }, [floatRef.current]);
+  }, []);
 
   return <></>;
 };
@@ -60,11 +61,11 @@ const MapDrawer = ({ mapBottomRef, searchPlace }) => {
     switch (tfFrameIndex) {
       case 0:
         setTf("");
-        mapBottomRef.current?.show({});
+        mapBottomRef.current?.show();
         break;
       case 2:
         setTf(place.placeName);
-        mapBottomRef.current?.show({ content: <BottomContent place={place} /> });
+        mapBottomRef.current?.show(<BottomContent place={place} />);
         break;
     }
   };
@@ -98,7 +99,7 @@ const MapDrawer = ({ mapBottomRef, searchPlace }) => {
   const tfFrame = new Frame([
     (
       <section className="tf-frame tf-frame-1">
-        <div className="tf light" onClick={() => moveTf(1)}>
+        <div className="tf color-light" onClick={() => moveTf(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly />
         </div>
@@ -116,7 +117,7 @@ const MapDrawer = ({ mapBottomRef, searchPlace }) => {
     ),
     (
       <section className="tf-frame tf-frame-3">
-        <div className="tf light">
+        <div className="tf color-light">
           <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => moveTf(1)} />
         </div>
@@ -129,23 +130,21 @@ const MapDrawer = ({ mapBottomRef, searchPlace }) => {
 
 
 const MapBottom = forwardRef((_, ref) => {
-  const BottomInitContent = () => (
+  const BottomDefaultContent = () => (
     <section className="bottom-item-init">
       <p className="msg">새로 등록할 음식점의 위치를 찾아주세요.</p>
     </section>
   );
-  const bottomInitContent = <BottomInitContent />;
-
-  const [content, setContent] = useState(<></>);
-  const show = ({ content=bottomInitContent }) => setContent(content);
-  useEffect(() => { show({}); }, []);
+  const bottomDefaultContent = <BottomDefaultContent />;
+  const [content, setContent] = useState(bottomDefaultContent);
+  const show = (content=bottomDefaultContent) => setContent(content);
   useImperativeHandle(ref, () => ({ show }));
 
   const [isMyLocation, setIsMyLocation] = useState(false);
   const toggleMyLocation = () => setIsMyLocation(!isMyLocation);
 
   return (
-    <footer className="map-bottom light">
+    <footer className="map-bottom color-light">
       {/*<button className={`button button-set-my-location ${isMyLocation ? "set" : ""}`} onClick={toggleMyLocation}>
         <div className="icon">{isMyLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
       </button>*/}
@@ -156,7 +155,7 @@ const MapBottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindPlace = ({ frame, floatRef, searchPlace }) => {
+const FrameFindPlace = ({ frame, searchPlace }) => {
   const mapBottomRef = useRef();
 
   return (
@@ -169,7 +168,7 @@ const FrameFindPlace = ({ frame, floatRef, searchPlace }) => {
         </div>
       </main>
 
-      <FloatController floatRef={floatRef} frame={frame} />
+      <FloatController frame={frame} />
     </>
   )
 };

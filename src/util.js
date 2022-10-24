@@ -94,6 +94,8 @@ export const isEmptyElement = element => {
 
 /** controllers */
 
+export class StaticComponentRefs {};
+
 export class Pipe {
   static data = {};
 

@@ -6,7 +6,7 @@ import { Motion, NoScroll } from "../../util";
 import "./style.scoped.scss";
 
 
-const Backdrop = forwardRef((_, ref) => {
+const Modal = forwardRef((_, ref) => {
   const { pathname } = useLocation();
   useEffect(() => { motion.go("hide-in"); }, [pathname]);
 
@@ -33,15 +33,15 @@ const Backdrop = forwardRef((_, ref) => {
   useImperativeHandle(ref, () => ({ show, hide }));
 
   return visible && (
-    <div id="backdrop" data-motion={motion.get()}>
-      <div className="backdrop-content-wrap">
-        <div className="backdrop-content">{content}</div>
+    <div id="modal" data-motion={motion.get()}>
+      <div className="modal-content-wrap">
+        <div className="modal-content">{content}</div>
       </div>
 
-      <div className="backdrop-background" onClick={hide} />
+      <div className="modal-background" onClick={hide} />
       <NoScroll />
     </div>
   );
 });
 
-export default Backdrop;
+export default Modal;

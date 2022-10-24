@@ -39,6 +39,9 @@
 
       font-size: 1rem;
       color: var(--content-text-color);
+      &[disabled] {
+        color: var(--tertiary-text-color);
+      }
     }
   }
 }
@@ -142,6 +145,10 @@
 
       .buttons {
         flex-shrink: 0;
+
+        .button-add-tag {
+          @include button-default;
+        }
       }
     }
   }
