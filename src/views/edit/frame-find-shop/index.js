@@ -72,12 +72,12 @@ const MapDrawer = ({
         break;
       case 2:
         setTf(shop.shopName);
-        mapBottomRef.current?.show(<BottomContent shop={shop} />);
+        mapBottomRef.current?.show(<BottomSearchContent shop={shop} />);
         break;
     }
   };
 
-  const BottomContent = ({ shop }) => {
+  const BottomSearchContent = ({ shop }) => {
     const onSelectShop = () => {
       setShop(shop);
       console.log("[FrameFindShop]", shop)

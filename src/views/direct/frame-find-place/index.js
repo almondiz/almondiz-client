@@ -65,12 +65,12 @@ const MapDrawer = ({ mapBottomRef, searchPlace }) => {
         break;
       case 2:
         setTf(place.placeName);
-        mapBottomRef.current?.show(<BottomContent place={place} />);
+        mapBottomRef.current?.show(<BottomSearchContent place={place} />);
         break;
     }
   };
 
-  const BottomContent = ({ place }) => (
+  const BottomSearchContent = ({ place }) => (
     <section className="bottom-item">
       <div className="row">
         {/*<h3 className="title">음식점 이름</h3>*/}
