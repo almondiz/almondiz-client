@@ -83,7 +83,6 @@ ul {
 #page {
   width: 100%;
 
-  @include content-max-width;
   min-height: 100%;
 
   display: flex;

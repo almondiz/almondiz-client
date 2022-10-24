@@ -5,8 +5,6 @@
     right: 0;
     top: 0;
     height: $float-bottom-height;
-
-    @include content-max-width;
   
     display: flex;
     align-items: center;
