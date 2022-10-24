@@ -12,7 +12,6 @@
       right: 0;
       height: 1.5px;
     }
-
     &>.buttons {
       display: flex;
 
@@ -56,6 +55,37 @@
             }
           }
         }
+      }
+    }
+  }
+}
+
+@include md {
+  .float-bottom {
+    background-color: unset !important;
+    -webkit-backdrop-filter: unset !important;
+    backdrop-filter: unset !important;
+    border: unset !important;
+
+    &>.border {
+      display: none !important;
+    }
+    &>.buttons {
+      flex-direction: column;
+      gap: 1.25rem;
+      height: unset !important;
+
+      &>.button {
+        .icon:not(.focus) {
+          ::v-deep {
+            svg {
+              fill: var(--secondary-text-color);
+            }
+          }
+        }
+      }
+      &>.button.button-write {
+        display: none !important;
       }
     }
   }

@@ -26,7 +26,7 @@ const FloatController = ({
         imageInputRef.current?.click();
       } else {
         const toastRef = StaticComponentRefs.toastRef;
-        toastRef.current?.show("이미지는 최대 10개까지 업로드할 수 있습니다.");
+        toastRef.current?.show("사진은 최대 10개까지 업로드할 수 있습니다.");
       }
     };
     const onImageChange = e => {

@@ -82,11 +82,9 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
               )}
             </div>
           </button>
-          {!detail && (
-            <div className="buttons right">
-              <ButtonMore post={post} />
-            </div>
-          )}
+          <div className="buttons right">
+            <ButtonMore post={post} />
+          </div>
         </div>
         <nav className="row row-tags">
           <TagList tags={post.postTags} onClickItem={idx => navigate(`/search/${post.postTags[idx].tagType}/${post.postTags[idx].tagId}`)} small />
@@ -126,15 +124,15 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
                 <ButtonScrap post={post} />
               </div>
             </div>
-            { (post.commentCount > 0) && (
-              <div className="row row-counts">
-                <p className="description">댓글 <span className="count">{post.commentCount}</span></p>
+            <div className="row row-counts">
+              <p className="description">댓글 <span className="count">{post.commentCount}</span></p>
+              { (post.commentCount > 0) && (
                 <div className="best-comment">
                   <p className="emoji">{post.bestCommentAuthorEmoji}</p>
                   <p className="text">{post.bestCommentText}</p>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </footer>
         ) :
         (

@@ -52,7 +52,7 @@ const FeedPage = () => {
     <div id="page">
       <header className="header">
         <h1 className="title">Feed</h1>
-        <div className="buttons right">
+        <div className="buttons">
           <button className="button button-location" onClick={showBackdropLocation}>
             <div className="text-wrap">
               <p className="description">{addressTokens[0]}</p>

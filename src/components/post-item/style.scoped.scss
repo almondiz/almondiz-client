@@ -31,7 +31,6 @@
   }
 }
 
-
 .post.post-item {
   &:first-child {
     margin-top: -1rem;
@@ -242,6 +241,30 @@
 
       padding-left: $padding-horiz;
       padding-right: $padding-horiz;
+    }
+  }
+}
+
+
+@include md {
+  .post {
+    overflow: hidden;
+    border-radius: 1.5rem;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: var(--nav-shadow-border);
+
+    &:not(.post-item) {
+      margin-top: 2rem !important;
+      margin-bottom: 2rem !important;
+    }
+    &.post-item {
+      margin-top: 1.5rem !important;
+      &:first-child {
+        margin-top: 2rem !important;
+      }
+      &:last-child {
+        margin-bottom: 2rem !important;
+      }
     }
   }
 }

@@ -178,11 +178,7 @@ const PostPage = () => {
 
   return (post && comments) && (
     <div id="page">
-      <header className="header">
-        <div className="right">
-          <ButtonMore post={post} />
-        </div>
-      </header>
+      <header className="header"></header>
 
       <main className="content"><PostItem post={post} comments={comments} detail={true} /></main>
 

@@ -9,10 +9,6 @@
   &>.toast-content-wrap {
     transform: translateY(0);
     transition: transform .5s ease-in-out;
-    pointer-events: none;
-    &>.toast-content {
-      pointer-events: auto;
-    }
   }
   &[data-motion|=hide] {
     &>.toast-content-wrap {

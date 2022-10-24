@@ -1,5 +1,8 @@
 #page {
   padding-bottom: $float-bottom-height;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
   &>.header {
     width: 100%;
@@ -16,18 +19,7 @@
       @include text-nowrap;
       font-size: 1.75rem;
     }
-    &>.right {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-
-      &.buttons {
-        .button:last-child {
-          margin-right: -.5rem;
-        }
-      }
-    }
-    .buttons {
+    &>.buttons {
       .button:not(:first-of-type) {
         margin-left: .5rem;
       }
@@ -64,6 +56,56 @@
   &>.content {
     .post-list {
       padding-bottom: 1rem;
+    }
+  }
+}
+
+
+@include md {
+  #page {
+    @include content-max-width;
+    padding-bottom: unset !important;
+
+    &>.header {
+      position: fixed;
+      left: 0;
+      right: 0;
+      @include content-max-width;
+      display: block;
+
+      transform: translate(100%, 0) !important;
+      padding: 2rem !important;
+
+      &>.title {
+        padding-left: .5rem;
+      }
+      &>.buttons {
+        margin-top: 1.5rem;
+
+        .button.button-location {
+          margin-left: unset !important;
+          margin-right: unset !important;
+  
+          display: flex;
+          align-items: center;
+          flex-direction: row-reverse;
+  
+          .text-wrap {
+            text-align: unset !important;
+  
+            .description {
+              font-size: .75rem;
+              margin-bottom: .3125rem;
+            }
+          }
+        }
+      }
+    }
+
+    &>.content {
+      .post-list {
+        padding: unset !important;
+      }
     }
   }
 }

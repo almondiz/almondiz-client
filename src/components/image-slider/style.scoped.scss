@@ -9,6 +9,9 @@
     display: grid;
     grid-auto-flow: column;
     width: 100vw;
+    @include md {
+      width: $content-max-width;
+    }
     overflow-y: hidden;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
@@ -19,6 +22,9 @@
   
       .image {
         width: 100vw;
+        @include md {
+          width: $content-max-width;
+        }
         height: 17.5rem;
         background-size: cover;
         background-position: center;

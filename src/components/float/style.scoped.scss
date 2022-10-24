@@ -7,8 +7,6 @@
   top: 0;
   bottom: 0;
   pointer-events: none;
-
-  @include content-max-width;
 }
 
 .float-header-wrap,
@@ -85,6 +83,67 @@
     .float-top,
     .float-bottom {
       box-shadow: var(--nav-shadow-border);
+    }
+  }
+}
+
+@include md {
+  #float {
+    @include content-max-width;
+
+    .float-header-wrap {
+      transform: translate(-100%, 0) !important;
+      &.hide {
+        top: 0 !important;
+      }
+      &.hide.has-bottom {
+        top: 0 !important;
+      }
+      transition: unset !important;
+    }
+    .float-footer-wrap {
+      transform: translate(100%, 0) !important;
+      
+      &.hide {
+        bottom: 0 !important;
+      }
+      &.hide.has-bottom {
+        bottom: 0 !important;
+      }
+      transition: unset !important;
+    }
+    
+    ::v-deep {
+      .float-header {
+        &-frame {
+          display: flex;
+          flex-direction: row-reverse;
+        }
+      }
+    }
+  }
+  #float {
+    ::v-deep {
+      .float-top,
+      .float-bottom {
+        width: fit-content !important;
+        height: unset !important;
+        margin: 2rem !important;
+        padding: 0 !important;
+
+        transition: unset !important;
+      }
+      .float-bottom {
+        border-top: unset !important;
+      }
+    }
+  }
+  #float.shadow {
+    ::v-deep {
+      .float-top,
+      .float-bottom {
+        box-shadow: unset !important;
+      }
     }
   }
 }

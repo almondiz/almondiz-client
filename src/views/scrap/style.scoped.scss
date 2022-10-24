@@ -29,3 +29,46 @@
     }
   }
 }
+
+
+@include md {
+  #page {
+    @include content-max-width;
+
+    &>.header {
+      position: fixed;
+      left: 0;
+      right: 0;
+      @include content-max-width;
+      display: block;
+
+      transform: translate(100%, 0) !important;
+      padding: 2rem !important;
+
+      &>.title {
+        padding-left: .5rem;
+      }
+      &>.buttons {
+        margin-top: 1.5rem;
+
+        .button.button-location {
+          margin-left: unset !important;
+          margin-right: unset !important;
+  
+          display: flex;
+          align-items: center;
+          flex-direction: row-reverse;
+  
+          .text-wrap {
+            text-align: unset !important;
+  
+            .description {
+              font-size: .75rem;
+              margin-bottom: .3125rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
