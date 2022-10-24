@@ -135,19 +135,13 @@ const MapBottom = forwardRef((_, ref) => {
       <p className="msg">새로 등록할 음식점의 위치를 찾아주세요.</p>
     </section>
   );
-  const bottomDefaultContent = <BottomDefaultContent />;
-  const [content, setContent] = useState(bottomDefaultContent);
-  const show = (content=bottomDefaultContent) => setContent(content);
+  const [content, setContent] = useState(null);
+  const show = (content=<BottomDefaultContent />) => setContent(content);
   useImperativeHandle(ref, () => ({ show }));
-
-  const [isMyLocation, setIsMyLocation] = useState(false);
-  const toggleMyLocation = () => setIsMyLocation(!isMyLocation);
+  useEffect(() => { show(); }, []);
 
   return (
     <footer className="map-bottom color-light">
-      {/*<button className={`button button-set-my-location ${isMyLocation ? "set" : ""}`} onClick={toggleMyLocation}>
-        <div className="icon">{isMyLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
-      </button>*/}
       <div className="bottom-item-container">{content}</div>
     </footer>
   );

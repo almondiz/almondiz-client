@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StaticComponentRefs, Frame } from "../../../util";
@@ -164,19 +164,13 @@ const MapBottom = forwardRef((_, ref) => {
       <p className="msg">리뷰할 음식점를 검색해주세요.</p>
     </section>
   );
-  const bottomDefaultContent = <BottomDefaultContent />;
-  const [content, setContent] = useState(bottomDefaultContent);
-  const show = (content=bottomDefaultContent) => setContent(content);
+  const [content, setContent] = useState(null);
+  const show = (content=<BottomDefaultContent />) => setContent(content);
   useImperativeHandle(ref, () => ({ show }));
-
-  const [isMyLocation, setIsMyLocation] = useState(false);
-  const toggleMyLocation = () => setIsMyLocation(!isMyLocation);
+  useEffect(() => { show(); }, []);
 
   return (
     <footer className="map-bottom color-light">
-      {/*<button className={`button button-set-my-location ${isMyLocation ? "set" : ""}`} onClick={toggleMyLocation}>
-        <div className="icon">{isMyLocation ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
-      </button>*/}
       <div className="bottom-item-container">{content}</div>
     </footer>
   );
@@ -193,19 +187,21 @@ const FrameFindShop = ({
 
   return (
     <>
-      <main className="content">
-        <MapDrawer
-          frame={frame} mapBottomRef={mapBottomRef}
-          setShop={setShop}
-          searchShop={searchShop}
-        />
-        <div className="map-container">
-          <NaverMap />
-          <MapBottom ref={mapBottomRef} />
-        </div>
-      </main>
+      {useMemo(() => (
+        <main className="content">
+          <MapDrawer
+            frame={frame} mapBottomRef={mapBottomRef}
+            setShop={setShop}
+            searchShop={searchShop}
+          />
+          <div className="map-container">
+            <NaverMap />
+            <MapBottom ref={mapBottomRef} />
+          </div>
+        </main>
+      ), [])}
 
-      <FloatController />
+      {useMemo(() => <FloatController />, [])}
     </>
   )
 };

@@ -59,8 +59,7 @@ const SignupPage = () => {
       profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
       setProfileThumb={setProfileThumb} setProfileTag={setProfileTag} setProfileNut={setProfileNut}
       searchFoodTag={searchFoodTag}
-
-      callSignup={callSignup} email={account.email}
+      email={account.email} callSignup={callSignup}
     />,
   ]);
 

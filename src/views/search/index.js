@@ -197,10 +197,10 @@ const Drawer = ({ contentRef }) => {
 
 const SearchContent = forwardRef((_, ref) => {
   const SearchDefaultContent = () => <></>;
-  const searchDefaultContent = <SearchDefaultContent />;
-  const [content, setContent] = useState(searchDefaultContent);
-  const show = (content=searchDefaultContent) => setContent(content);
+  const [content, setContent] = useState(null);
+  const show = (content=<SearchDefaultContent />) => setContent(content);
   useImperativeHandle(ref, () => ({ show }));
+  useEffect(() => { show(); }, []);
 
   return <main className="content">{content}</main>;
 });

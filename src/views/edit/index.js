@@ -25,7 +25,6 @@ const EditPage = () => {
   const createFoodTag = async (tagName) => (await searchViewModel.createFoodTag(tagName));
   /** */
 
-
   const frame = new Frame();
   frame.init([
     <FrameFindShop frame={frame}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 
 import { Frame, Motion, StaticComponentRefs } from "../../../util";
 import ModalConfirm from "../modal-confirm";
@@ -149,8 +149,7 @@ const FrameProfile = ({
   profileThumb, profileTag, profileNut,
   setProfileThumb, setProfileTag, setProfileNut,
   searchFoodTag,
-
-  callSignup, email,
+  email, callSignup
 }) => {
   const modalConfirmRef = useRef();
   const showModalConfirm = () => {
@@ -170,32 +169,35 @@ const FrameProfile = ({
     const [ disabled, setDisabled ] = useState(true);
     useEffect(() => { setDisabled(!(profileThumb && profileTag && profileNut)); }, [profileThumb, profileTag, profileNut]);
     const onClick = () => (!disabled && showModalConfirm());
-
     return (
       <button className="button button-next" disabled={disabled} onClick={onClick}>
         <p>다음</p>
       </button>
     );
   };
+
   return (
     <>
-      <nav className="top-nav">
-        <button className="button button-back" onClick={() => frame.prev()}>
-          <div className="icon"><ArrowBackIcon /></div>
-        </button>
-        <h3 className="title">프로필 생성</h3>
-      </nav>
-      
-      <main className="content">
-        <div className="menu-thumb-group">
-          <MenuThumb getRandomThumb={getRandomThumb} setProfileThumb={setProfileThumb} />
-          <h5 className="description">이모지</h5>
-        </div>
-        <div className="menu-name-group">
-          <MenuName getRandomNut={getRandomNut} setProfileTag={setProfileTag} setProfileNut={setProfileNut} searchFoodTag={searchFoodTag} />
-          <h5 className="description">닉네임</h5>
-        </div>
-      </main>
+      {useMemo(() => (
+        <nav className="top-nav">
+          <button className="button button-back" onClick={() => frame.prev()}>
+            <div className="icon"><ArrowBackIcon /></div>
+          </button>
+          <h3 className="title">프로필 생성</h3>
+        </nav>
+      ), [])}
+      {useMemo(() => (
+        <main className="content">
+          <div className="menu-thumb-group">
+            <MenuThumb getRandomThumb={getRandomThumb} setProfileThumb={setProfileThumb} />
+            <h5 className="description">이모지</h5>
+          </div>
+          <div className="menu-name-group">
+            <MenuName getRandomNut={getRandomNut} setProfileTag={setProfileTag} setProfileNut={setProfileNut} searchFoodTag={searchFoodTag} />
+            <h5 className="description">닉네임</h5>
+          </div>
+        </main>
+      ), [])}
       <footer className="footer">
         <p className="help">한번 선택한 프로필은 이후 변경할 수 없습니다.</p>
         <ButtonConfirm profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut} />
@@ -204,4 +206,4 @@ const FrameProfile = ({
   );
 };
 
-export default FrameProfile;
+export default React.memo(FrameProfile);

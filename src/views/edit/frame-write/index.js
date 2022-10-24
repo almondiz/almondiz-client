@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StaticComponentRefs, Frame, filterText } from "../../../util";
@@ -104,14 +104,18 @@ const FrameWrite = ({
 
   // textarea
   const textRef = useRef();
-  const handleResizeHeight = () => {
+  const handleResizeHeight = useCallback(() => {
     const obj = textRef.current;
     obj.style.height = '1px';
     obj.style.height = obj.scrollHeight + 'px';
-  };
+  }, []);
   useEffect(() => { handleResizeHeight(); }, []);
+  const onPostTextChange = useCallback(e => {
+    setPostText(e.target.value);
+    handleResizeHeight();
+  }, []);
 
-  const ImageGridTrailer = ({ shop }) => (
+  const ImageGridTrailer = useCallback(({ shop }) => (
     <div className="image-grid-trailer">
       <div className="content">
         <div className="text-wrap">
@@ -121,10 +125,10 @@ const FrameWrite = ({
       </div>
       <div className="image" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
     </div>
-  );
+  ), [shop]);
 
   const backdropTagRef = useRef();
-  const showBackdropTag = () => {
+  const showBackdropTag = useCallback(() => {
     const backdropRef = StaticComponentRefs.backdropRef;
     backdropRef.current?.show(
       <BackdropTag backdropRef={backdropRef} ref={backdropTagRef}
@@ -136,49 +140,55 @@ const FrameWrite = ({
         setPostTags([...tags]);
       }
     );
-  };
+  }, [postTags]);
 
   return (
     <>
       <main className="content">
         <article className="post editable">
           <header className="header">
-            <div className="row row-shop">
-              <button className="shop">
-                <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
-                <div className="text-wrap">
-                  <p className="name">{shop.shopName}</p>
-                  <p className="description">{shop.shopAddress}</p>
-                </div>
-              </button>
-            </div>
-            <nav className="row row-tags">
-              <TagList tags={postTags} small />
-              <div className="buttons right">
-                <button className="button button-add-tag" onClick={() => showBackdropTag()}>태그 추가</button>
+            {useMemo(() => (
+              <div className="row row-shop">
+                <button className="shop">
+                  <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+                  <div className="text-wrap">
+                    <p className="name">{shop.shopName}</p>
+                    <p className="description">{shop.shopAddress}</p>
+                  </div>
+                </button>
               </div>
-            </nav>
+            ), [shop])}
+            {useMemo(() => (
+              <nav className="row row-tags">
+                <TagList tags={postTags} small />
+                <div className="buttons right">
+                  <button className="button button-add-tag" onClick={() => showBackdropTag()}>태그 추가</button>
+                </div>
+              </nav>
+            ), [postTags])}
           </header>
 
           <main className="body">
-            <div className="row row-text">
-              <textarea className="text" ref={textRef} onChange={({ target }) => {
-                setPostText(target.value);
-                handleResizeHeight();
-              }} name="text" placeholder="내용을 입력하세요" autoFocus />
-              {/*postText*/}
-            </div>
-            <div className="row row-images">
-              <ImageGrid images={postImages} trailer={<ImageGridTrailer shop={shop} />} editable setImages={setPostImages} />
-            </div>
+            {useMemo(() => (
+              <div className="row row-text">
+                <textarea className="text" ref={textRef} value={postText} onChange={onPostTextChange} name="text" placeholder="내용을 입력하세요" autoFocus />
+              </div>
+            ), [postText])}
+            {useMemo(() => (
+              <div className="row row-images">
+                <ImageGrid images={postImages} trailer={<ImageGridTrailer shop={shop} />} editable setImages={setPostImages} />
+              </div>
+            ), [postImages])}
           </main>
         </article>
       </main>
 
-      <FloatController
-        frame={frame} createPost={createPost}
-        postText={postText} postImages={postImages} setPostImages={setPostImages}
-      />
+      {useMemo(() => (
+        <FloatController
+          frame={frame} createPost={createPost}
+          postText={postText} postImages={postImages} setPostImages={setPostImages}
+        />
+      ), [postText, postImages])}
     </>
   )
 };
