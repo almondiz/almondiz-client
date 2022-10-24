@@ -46,17 +46,17 @@ const MapDrawer = forwardRef(({ mapBottomRef, updateLocation, searchPlace }, ref
         break;
       case 2:
         setTf(place.placeName);
-        mapBottomRef.current?.show(<BottomContent place={place} />);
+        mapBottomRef.current?.show(<BottomSearchContent place={place} />);
         break;
     }
   };
   useImperativeHandle(ref, () => ({ unfocus: () => (tfFrame.move(0), setTf("")) }));
 
-  const BottomContent = ({ place }) => {
+  const BottomSearchContent = ({ place }) => {
     const { lati, longi, placeAddress: address } = place;
     const location = { lati, longi, address };
     return (
-      <section className="bottom-item">
+      <section className="bottom-item color-light">
         <div className="text-wrap">
           <h3 className="title">{address}</h3>
           <p className="description">{place.placeName}</p>
