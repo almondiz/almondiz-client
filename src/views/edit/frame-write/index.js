@@ -25,7 +25,7 @@ const FloatController = ({
       if (postImages.length < MAX_NUM_OF_IMAGES) {
         imageInputRef.current?.click();
       } else {
-        const toastRef = StaticComponentRefs.toastRef;
+        const { toastRef } = StaticComponentRefs;
         toastRef.current?.show("이미지는 최대 10개까지 업로드할 수 있습니다.");
       }
     };
@@ -77,7 +77,7 @@ const FloatController = ({
     );
   };
 
-  const floatRef = StaticComponentRefs.floatRef;
+  const { floatRef } = StaticComponentRefs;
   useEffect(() => {
     floatRef.current?.setFooter(<Footer postImages={postImages} />);
     return () => floatRef.current?.setFooter();
@@ -129,7 +129,7 @@ const FrameWrite = ({
 
   const backdropTagRef = useRef();
   const showBackdropTag = useCallback(() => {
-    const backdropRef = StaticComponentRefs.backdropRef;
+    const { backdropRef } = StaticComponentRefs;
     backdropRef.current?.show(
       <BackdropTag backdropRef={backdropRef} ref={backdropTagRef}
         shop={shop} postTags={postTags}

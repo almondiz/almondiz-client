@@ -171,30 +171,6 @@
   right: 0;
   bottom: 0;
 
-  .button-set-my-location {
-    margin-left: 1rem;
-    margin-bottom: 1rem;
-
-    height: 3rem;
-    width: 3rem;
-
-    border-radius: 100%;
-    background-color: var(--float-background-color);
-    -webkit-backdrop-filter: blur(1rem);
-    backdrop-filter: blur(1rem);
-    box-shadow: var(--float-shadow-border);
-
-    &.set {
-      .icon {
-        ::v-deep {
-          svg {
-            fill: var(--content-text-color);
-          }
-        }
-      }
-    }
-  }
-
   .bottom-item-container {
     .bottom-item,
     .bottom-item-init {

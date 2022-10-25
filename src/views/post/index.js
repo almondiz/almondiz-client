@@ -39,7 +39,7 @@ const FloatController = ({ post, createComment }) => {
     const [replyController, setReplyController] = useState(null);
     useEffect(() => {
       replyController && replyController.onShowCallback();
-      return () => (replyController && replyController.onHideCallback());
+      return () => (replyController && replyController.response());
     }, [replyController]);
 
     const commentInputController = {
@@ -55,7 +55,7 @@ const FloatController = ({ post, createComment }) => {
         commentInputController.hide();
       },
 
-      show: (_replyController) => {  // reply, onShowCallback, onHideCallback
+      show: (_replyController) => {  // reply, onShowCallback, response
         setReplyController(_replyController);
         footerFrame.move(1);
       },
@@ -118,7 +118,7 @@ const FloatController = ({ post, createComment }) => {
   }
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
+    const { floatRef } = StaticComponentRefs;
     (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
     return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
   }, []);
@@ -151,7 +151,7 @@ const PostPage = () => {
   /** */
 
   Pipe.set("reload", {
-    //all: () => { readPost(); readComments(); },
+    //all: () => (readPost(), readComments()),
     //post: readPost,
     comments: readAllComments,
   });
@@ -159,29 +159,10 @@ const PostPage = () => {
 
   const navigate = useNavigate();
 
-  const ButtonMore = ({ post }) => {
-    const [focus, setFocus] = useState(false);
-    const onClick = async () => {
-      const success = await post.delete();
-      if (success) {
-        navigate(-1);
-      }
-    }
-    //const onClick = () => setFocus(!focus);
-    return (
-      <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
-        <div className="icon"><MoreHorizIcon /></div>
-      </button>
-    );
-  };
-
-
   return (post && comments) && (
     <div id="page">
       <header className="header">
-        <div className="right">
-          <ButtonMore post={post} />
-        </div>
+        <div className="right" />
       </header>
 
       <main className="content"><PostItem post={post} comments={comments} detail={true} /></main>

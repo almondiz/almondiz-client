@@ -153,7 +153,7 @@ const FrameProfile = ({
 }) => {
   const modalConfirmRef = useRef();
   const showModalConfirm = () => {
-    const modalRef = StaticComponentRefs.modalRef;
+    const { modalRef } = StaticComponentRefs;
     modalRef.current?.show(
       <ModalConfirm modalRef={modalRef} ref={modalConfirmRef}
         email={email} profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}

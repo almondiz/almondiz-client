@@ -35,7 +35,7 @@ const FloatController = ({ user }) => {
   };
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
+    const { floatRef } = StaticComponentRefs;
     (floatRef.current?.setHeader(<Header />));
     return () => (floatRef.current?.setHeader());
   }, []);
@@ -142,7 +142,7 @@ const UserPage = () => {
         }
       })()}
       <main className="body">
-        <div className="rows">
+        <div className="area-profile">
           <div className="row row-profile" data-user-relation={user.userRelation}>
             <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
             <div className="text-wrap">

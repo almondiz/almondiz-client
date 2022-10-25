@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
+import { StaticComponentRefs } from "../../util";
 import TagList from "../../components/tag-list";
 import CommentList from "../../components/comment-list";
 import ImageSlider from "../image-slider";
@@ -32,21 +33,29 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
     </div>
   );
 
+  
   const ButtonMore = ({ post }) => {
-    const [focus, setFocus] = useState(false);
-    const onClick = () => setFocus(!focus);
+    const onClick = async () => {
+      const success = await post.delete();
+      if (success) {
+        navigate(-1);
+      }
+    }
     return (
-      <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
+      <button className="button button-more" onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );
   };
   const ButtonScrap = ({ post }) => {
-    const [focus, setFocus] = useState(post.isScrapped);
+    const [focus, setFocus] = useState(false);
     const onClick = async () => {
-      const success = await post.scrap(focus);
+      const b = !focus;
+      const success = await post.scrap(b);
       if (success) {
-        setFocus(!focus);
+        const { toastRef } = StaticComponentRefs;
+        toastRef.current?.show(b ? "스크랩되었습니다." : "스크랩이 취소되었습니다.");
+        setFocus(b);
       }
     };
     return (
@@ -82,11 +91,9 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
               )}
             </div>
           </button>
-          {!detail && (
-            <div className="buttons right">
-              <ButtonMore post={post} />
-            </div>
-          )}
+          <div className="buttons right">
+            <ButtonMore post={post} />
+          </div>
         </div>
         <nav className="row row-tags">
           <TagList tags={post.postTags} onClickItem={idx => navigate(`/search/${post.postTags[idx].tagType}/${post.postTags[idx].tagId}`)} small />

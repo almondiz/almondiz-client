@@ -22,7 +22,7 @@ const FloatController = ({ users }) => {
   );
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
+    const { floatRef } = StaticComponentRefs;
     (floatRef.current?.setTop(<Top />));
     return () => (floatRef.current?.setTop());
   }, []);

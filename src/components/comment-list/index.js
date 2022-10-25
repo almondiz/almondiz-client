@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Pipe } from "../../util";
+import { StaticComponentRefs, Pipe } from "../../util";
 
 import "./style.scoped.scss";
 import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
@@ -17,9 +17,12 @@ const CommentUnit = ({ comment={}, root=false }) => {
   const ButtonLike = ({ comment }) => {
     const [focus, setFocus] = useState(comment.isLiked);
     const onClick = async () => {
-      const success = await comment.like(focus);
+      const b = !focus;
+      const success = await comment.like(b);
       if (success) {
-        setFocus(!focus);
+        const { toastRef } = StaticComponentRefs;
+        toastRef.current?.show(b ? "좋아요했습니다." : "좋아요가 취소되었습니다.");
+        setFocus(b);
       }
     };
     return (
@@ -54,16 +57,14 @@ const CommentUnit = ({ comment={}, root=false }) => {
     );
   };
   const ButtonMore = ({ comment }) => {
-    const [focus, setFocus] = useState(false);
     const onClick = async () => {
       const success = await comment.delete();
       if (success) {
         Pipe.get("reload")?.comments();
       }
     }
-    //const onClick = () => setFocus(!focus);
     return (
-      <button className={`button button-comment-more ${focus ? "focus" : ""}`} onClick={onClick}>
+      <button className="button button-comment-more" onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );

@@ -220,7 +220,7 @@ const MapBottom = forwardRef(({ mapDrawerRef,
       {
         isMyLocation ?
         (
-          <button className="button button-set-my-location color-dark set" onClick={offMyLocation}>
+          <button className="button button-set-my-location set color-dark" onClick={offMyLocation}>
             <div className="icon"><MyLocationIconFill /></div>
           </button>
         ) :
@@ -286,7 +286,7 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
   };
   const modalMyLocationRef = useRef();
   const showModalMyLocation = (data, set) => {
-    const modalRef = StaticComponentRefs.modalRef;
+    const { modalRef } = StaticComponentRefs;
     modalRef.current?.show(
       <ModalMyLocation modalRef={modalRef} ref={modalMyLocationRef} set={set} />,
       async () => {

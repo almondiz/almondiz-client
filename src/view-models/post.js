@@ -129,13 +129,15 @@ export default class PostViewModel {
 
 
       scrap: async (b) => {
-        const action = this.model[b ? "unscrap" : "scrap"].bind(this.model);
+        const action = b ? this.model.scrap() : this.model.unscrap();
+        action.bind(this.model);
+
         const { success, ...res } = await action(postId);
         if (success) {
-          console.log("[postViewModel.scrap]", action, res);
+          console.log(`[postViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
           return success;
         } else {
-          console.error("[postViewModel.scrap]", action, res);
+          console.error(`[postViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
           return false;
         }
       },

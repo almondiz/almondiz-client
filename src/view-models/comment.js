@@ -79,13 +79,15 @@ export default class CommentViewModel {
 
 
       like: async (b) => {
-        const action = this.model[b ? "unlike" : "like"].bind(this.model);
+        const action = b ? this.model.like() : this.model.unlike();
+        action.bind(this.model);
+
         const { success, ...res } = await action(commentId);
         if (success) {
-          console.log("[CommentViewModel.like]", action, res);
+          console.log(`[CommentViewModel.like - ${b ? "like" : "unlike"}]`, res);
           return success;
         } else {
-          console.error("[CommentViewModel.like]", action, res);
+          console.error(`[CommentViewModel.like - ${b ? "like" : "unlike"}]`, res);
           StaticComponentRefs.toastRef?.current?.error(res.msg);
           return false;
         }

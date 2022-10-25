@@ -35,7 +35,7 @@ const FeedPage = () => {
 
   const backdropLocationRef = useRef();
   const showBackdropLocation = () => {
-    const backdropRef = StaticComponentRefs.backdropRef;
+    const { backdropRef } = StaticComponentRefs;
     backdropRef.current?.show(
       <BackdropLocation backdropRef={backdropRef} ref={backdropLocationRef} />,
       async () => {
