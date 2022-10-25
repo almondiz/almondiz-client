@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { StaticComponentRefs } from "../../util";
@@ -14,6 +14,8 @@ import { getAccountInfo, setAccessToken, setRefreshToken } from "../../store/sli
 
 
 const SignupPage = () => {
+  const { toastRef } = StaticComponentRefs;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const account = useSelector(getAccountInfo);
@@ -34,6 +36,8 @@ const SignupPage = () => {
       thumb: { emoji: profileThumb.emoji, color: profileThumb.color },
     });
     if (success) {
+      toastRef.current?.show("회원가입되었습니다.");
+
       const { token, userId } = data;
       const { accessToken, refreshToken } = token;
       dispatch(setAccessToken(accessToken));

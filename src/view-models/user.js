@@ -10,15 +10,15 @@ export default class UserViewModel {
   /** 1. USER API */
   // POST /api/user
   async signup(body) {
-    const { success, ...res } = await this.model.signup(body);
-    if (success) {
-      console.log("[UserViewModel.signup]", res);
-      return res;
-    } else {
-      console.error("[UserViewModel.signup]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
-      return false;
+    const res = await this.model.signup(body);
+    switch (res?.success) {
+      case true:
+        console.log("[UserViewModel.signup]", res);
+        return res;
+      case false:
+        break;
     }
+    return {};
   }
   // POST /api/user/login
   async checkAccount({ providerType, providerUid }, goSignup, goMain) {
@@ -30,7 +30,7 @@ export default class UserViewModel {
       return res;
     } else {
       console.error("[UserViewModel.checkAccount]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
+      StaticComponentRefs.toastRef.current?.error(res.msg);
       switch (res.msg) {
         case "해당 계정이 존재하지 않거나 잘못된 계정입니다.":
           goSignup();
@@ -39,7 +39,7 @@ export default class UserViewModel {
         default:
           break;
       }
-      return false;
+      return {};
     }
   }
   /*async _login(providerType, providerUid) {
@@ -49,7 +49,7 @@ export default class UserViewModel {
       return res;
     } else {
       console.error("[UserViewModel.login]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
+      StaticComponentRefs.toastRef.current?.error(res.msg);
       return false;
     }
   }*/
@@ -63,8 +63,8 @@ export default class UserViewModel {
       return this._makeUserData(data);
     } else {
       console.error("[UserViewModel.whoami]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
-      return false;
+      StaticComponentRefs.toastRef.current?.error(res.msg);
+      return {};
     }
   }
   // GET /api/user/{userId}
@@ -76,75 +76,81 @@ export default class UserViewModel {
       return this._makeUserData(data);
     } else {
       console.error("[UserViewModel.get]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
-      return false;
+      StaticComponentRefs.toastRef.current?.error(res.msg);
+      return {};
     }
   }
   _makeUserData(data) {
-    const userId = data.userId;
-    const userRelation = data.relation;   // "me" | "following" | "other"
+    try {
+      const userId = data.userId;
+      const userRelation = data.relation;   // "me" | "following" | "other"
 
-    return {
-      userId,
+      return {
+        userId,
 
-      userEmoji: data.thumb.emoji,
-      userColor: data.thumb.color,
-      userName: (() => {
-        switch (userRelation) {
-          case "me":
-            return data.nickName;
-          case "following":
-            return data.alias;
-          case "other":
-          default:
-            return data.nickName;
-        }
-      })(),
-      userNameDescription: (() => {
-        switch (userRelation) {
-          case "me":
-            return data.email;
-          case "following":
-            return data.nickName;
-          case "other":
-          default:
-            return undefined;
-        }
-      })(),
-      userNameBadge: (() => {
-        switch (userRelation) {
-          case "me":
-            return "나";
-          case "following":
-            return "구독";
-          case "other":
-          default:
-            return undefined;
-        }
-      })(),
-      userRelation,
-
-
-      // ### FUTURE WORKS
-      followedCount: 0,   // 구독자 수
-      scrappedCount: 0,   // 스크랩된 수
-      postCount: 0,       // 작성 글 수
-
-      // 아래 두 개는 마이 페이지에만 보여지면 됨
-      followingCount: 0,
-      followingsHead: (() => {    // 내가 구독하는 유저들 중 상위 10개 정도만 받아오기
-        if (data.followingsHead)
-          return data.followingsHead.map(user => ({
-            userEmoji: user.thumb.emoji,
-            goToUserPage: navigate => navigate(`/user/${user.userId}`),
-          }))
-        else
-          return [];
-      })(),
+        userEmoji: data.thumb.emoji,
+        userColor: data.thumb.color,
+        userName: (() => {
+          switch (userRelation) {
+            case "me":
+              return data.nickName;
+            case "following":
+              return data.alias;
+            case "other":
+            default:
+              return data.nickName;
+          }
+        })(),
+        userNameDescription: (() => {
+          switch (userRelation) {
+            case "me":
+              return data.email;
+            case "following":
+              return data.nickName;
+            case "other":
+            default:
+              return undefined;
+          }
+        })(),
+        userNameBadge: (() => {
+          switch (userRelation) {
+            case "me":
+              return "나";
+            case "following":
+              return "구독";
+            case "other":
+            default:
+              return undefined;
+          }
+        })(),
+        userRelation,
 
 
-      hasUnreadNotices: false,    // ### FUTURE WORKS : 논의 대상
-    };
+        // ### FUTURE WORKS
+        followedCount: 0,   // 구독자 수
+        scrappedCount: 0,   // 스크랩된 수
+        postCount: 0,       // 작성 글 수
+
+        // 아래 두 개는 마이 페이지에만 보여지면 됨
+        followingCount: 0,
+        followingsHead: (() => {    // 내가 구독하는 유저들 중 상위 10개 정도만 받아오기
+          if (data.followingsHead)
+            return data.followingsHead.map(user => ({
+              userEmoji: user.thumb.emoji,
+              goToUserPage: navigate => navigate(`/user/${user.userId}`),
+            }))
+          else
+            return [];
+        })(),
+
+
+        hasUnreadNotices: false,    // ### FUTURE WORKS : 논의 대상
+      };
+    } catch (err) {
+      console.error("[UserViewModel._makeUserData]", err, data);
+      StaticComponentRefs.toastRef.current?.error("데이터 형식이 잘못되었습니다.");
+      return {};
+    }
   }
 
 
@@ -158,20 +164,26 @@ export default class UserViewModel {
       return dataList.map(data => this._makeFollowData(data));
     } else {
       console.error("[UserViewModel.getMyAllFollowings]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
-      return false;
+      StaticComponentRefs.toastRef.current?.error(res.msg);
+      return [];
     }
   }
   _makeFollowData(data) {
-    const userId = data.userId;
+    try {
+      const userId = data.userId;
 
-    return {
-      userId,
-      
-      userEmoji: data.thumb.emoji,
-      userColor: data.thumb.color,
-      userName: data.alias,
-      userNameDescription: data.nickName,
-    };
+      return {
+        userId,
+        
+        userEmoji: data.thumb.emoji,
+        userColor: data.thumb.color,
+        userName: data.alias,
+        userNameDescription: data.nickName,
+      };
+    } catch (err) {
+      console.error("[UserViewModel._makeFollowData]", err, data);
+      StaticComponentRefs.toastRef.current?.error("데이터 형식이 잘못되었습니다.");
+      return {};
+    }
   }
 };

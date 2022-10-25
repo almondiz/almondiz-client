@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import store from "../../store";
 
 import "./style.scoped.scss";
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
@@ -21,7 +21,7 @@ const PostBottomNav = () => {
   const hasUnreadNotices = false;   // ### FUTURE WORKS
 
   const pathToIndex = { "/feed": 0, "/search": 1, "/scrap": 2, "/me": 3, };
-  const myUserId = useSelector(state => state.account.myUserId);
+  const myUserId = store.getState().account.myUserId;
   pathToIndex[`/user/${myUserId}`] = 3;
 
   const [index, setIndex] = useState(null);

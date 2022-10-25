@@ -44,11 +44,6 @@ const FloatController = ({ user }) => {
 };
 
 
-export const RedirectToMyPage = () => {
-  const myUserId = useSelector(state => state.account.myUserId);
-
-  return <Navigate to={`/user/${myUserId}`} />;
-};
 const UserPage = () => {
   const userId = parseInt(useParams().userId);
 
@@ -133,25 +128,29 @@ const UserPage = () => {
             );
           default:
             return (
-              <header className="header">
-                <div className="buttons right">
-                  <ButtonMore />
-                </div>
-              </header>
+              <header className="header" />
             );
         }
       })()}
       <main className="body">
         <div className="area-profile">
           <div className="row row-profile" data-user-relation={user.userRelation}>
-            <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
-            <div className="text-wrap">
-              <div className="name-wrap">
-                <p className="name">{user.userName}</p>
-                {user.userNameBadge && <p className="badge">{user.userNameBadge}</p>}
+            <div className="profile">
+              <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
+              <div className="text-wrap">
+                <div className="name-wrap">
+                  <p className="name">{user.userName}</p>
+                  {user.userNameBadge && <p className="badge">{user.userNameBadge}</p>}
+                </div>
+                {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
               </div>
-              {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
             </div>
+
+            {user.userRelation !== "me" && (
+              <div className="buttons right">
+                <ButtonMore />
+              </div>
+            )}
           </div>
 
           {(() => {

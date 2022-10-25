@@ -10,12 +10,12 @@ import "./style.scoped.scss";
 const ScrapPage = () => {
   /** 4. POST API */
   const postViewModel = new PostViewModel();
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null);
   const readAllScrappedPosts = async () => setPosts(await postViewModel.readAllScrappedPosts());
   useEffect(() => { readAllScrappedPosts(); }, []);
   /** */
 
-
+  
   return (posts) && (
     <div id="page">
       <header className="header">

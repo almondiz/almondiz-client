@@ -14,6 +14,8 @@ import {
 
 import { UserViewModel } from "../../view-models";
 
+import { StaticComponentRefs, useTimeout } from "../../util";
+
 import "./style.scoped.scss";
 import SymbolImage from "../../asset/logo/symbol.png";
 import Logotype from "../../asset/logo/logotype";
@@ -23,6 +25,8 @@ import KakaoSocialImage from "../../asset/social/kakao.svg";
 
 
 const LoginPage = () => {
+  const { toastRef } = StaticComponentRefs;
+
   const dispatch = useDispatch()
   const navigate = useNavigate();
   const userViewModel = new UserViewModel();
@@ -37,6 +41,8 @@ const LoginPage = () => {
       { providerType, providerUid },
       () => navigate(`/signup`),
       data => {
+        toastRef.current?.show("로그인되었습니다.");
+        
         const { token, userId } = data;
         const { accessToken, refreshToken } = token;
         dispatch(setAccessToken(accessToken));
@@ -48,6 +54,7 @@ const LoginPage = () => {
   }
 
   const onFailure = async (res) => {
+    toastRef.current?.show("로그인에 실패했습니다.");
     console.error("[LoginPage.onFailure]", res);
   };
 

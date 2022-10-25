@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
-import { useSelector, useDispatch } from "react-redux";
 import store from "./store";
+import { useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
 
 import { StaticComponentRefs } from "./util";
@@ -13,7 +13,7 @@ import FeedPage from "./views/feed";
 import PostPage from "./views/post";
 import SearchPage from "./views/search";
 import ScrapPage from "./views/scrap";
-import UserPage, { RedirectToMyPage } from "./views/user";
+import UserPage from "./views/user";
 import FollowingPage from "./views/following";
 import EditPage from "./views/edit";
 import DirectPage from "./views/direct";
@@ -35,7 +35,7 @@ const Monitor = () => {
   const initScrollHandler = () => {
     const THRESHOLD = 5;
     let lastScrollY = window.pageYOffset;
-    const scrollDirection = useSelector(state => state.global.scrollDirection);
+    const scrollDirection = store.getState().global.scrollDirection;
     const updateScrollDirection = () => {
       const scrollY = window.pageYOffset;   // same as window.scrollY
       const windowHeight = window.innerHeight;
@@ -53,7 +53,7 @@ const Monitor = () => {
     useEffect(() => {
       window.addEventListener("scroll", updateScrollDirection);                   // componentDidMount  
       return () => window.removeEventListener("scroll", updateScrollDirection);   // componentWillUnmount
-    });
+    }, []);
   };
   initScrollHandler();
 
@@ -72,7 +72,7 @@ const ScrollToTop = () => {
 };
 
 
-const StaticComponents = ({ setLoaded }) => {
+const StaticLayout = ({ setLoaded }) => {
   const floatRef = useRef();
   const backdropRef = useRef();
   const modalRef = useRef();
@@ -94,60 +94,72 @@ const StaticComponents = ({ setLoaded }) => {
     </>
   );
 };
-const PostLayout = ({ staticComponentsLoaded }) => {
+const PostLayout = () => {
   useEffect(() => {
-    if (staticComponentsLoaded) {
-      const floatRef = StaticComponentRefs.floatRef;
-      (floatRef.current?.setBottom(<PostBottomNav />));
-      return () => (floatRef.current?.setBottom());
-    }
-  }, [staticComponentsLoaded]);
+    const floatRef = StaticComponentRefs.floatRef;
+    (floatRef.current?.setBottom(<PostBottomNav />));
+    return () => (floatRef.current?.setBottom());
+  }, []);
 
   return <Outlet />;
 };
 
 
 const RequireAuth = () => {
+  const { pathname } = useLocation();
+  const { toastRef } = StaticComponentRefs;
+
   if (store.getState().account.accessToken)
     return <Outlet />;
-  else
-    return <Navigate to="/login" />;
+  else {
+    if (pathname !== `/login`) {
+      toastRef.current?.show("권한이 없어 로그인 페이지로 이동합니다.");
+      return <Navigate to="/login" />;
+    }
+  }
+};
+const RedirectToMyPage = () => {
+  const myUserId = store.getState().account.myUserId;
+
+  return <Navigate to={`/user/${myUserId}`} />;
 };
 
 const App = () => {
-  const [staticComponentsLoaded, setStaticComponentsLoaded] = useState(false);
+  const [staticLayoutLoaded, setStaticLayoutLoaded] = useState(false);
 
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<Navigate to="/login" />} />
+        {staticLayoutLoaded && (
+          <Routes>
+            <Route exact path="/" element={<Navigate to="/login" />} />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          
-          <Route element={<RequireAuth />}>
-            <Route element={<PostLayout staticComponentsLoaded={staticComponentsLoaded} />}>
-              <Route path="/feed" element={<FeedPage />} />
-              <Route path="/post/:postId" element={<PostPage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/user/:userId" element={<UserPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            
+            <Route element={<RequireAuth />}>
+              <Route element={<PostLayout />}>
+                <Route path="/feed" element={<FeedPage />} />
+                <Route path="/post/:postId" element={<PostPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/user/:userId" element={<UserPage />} />
 
-              <Route path="/scrap" element={<ScrapPage />} />
-              <Route path="/me" element={<RedirectToMyPage />} />
-              <Route path="/following" element={<FollowingPage />} />
+                <Route path="/scrap" element={<ScrapPage />} />
+                <Route path="/me" element={<RedirectToMyPage />} />
+                <Route path="/following" element={<FollowingPage />} />
+              </Route>
+
+              <Route path="/edit" element={<EditPage />} />
+              <Route path="/direct" element={<DirectPage />} />
+              <Route path="/notice" element={<NoticePage />} />
+              <Route path="/settings" element={<SettingsPage />} />
             </Route>
 
-            <Route path="/edit" element={<EditPage />} />
-            <Route path="/direct" element={<DirectPage />} />
-            <Route path="/notice" element={<NoticePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Route>
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        )}
 
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-
-        <StaticComponents setLoaded={setStaticComponentsLoaded} />
+        <StaticLayout setLoaded={setStaticLayoutLoaded} />
 
         <ScrollToTop />
         <Monitor />

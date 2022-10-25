@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 
-import { Frame, Motion, StaticComponentRefs } from "../../../util";
+import { StaticComponentRefs, Frame, Motion } from "../../../util";
 import ModalConfirm from "../modal-confirm";
 
 import "./style.scoped.scss";

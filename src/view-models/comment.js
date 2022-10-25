@@ -19,7 +19,7 @@ export default class CommentViewModel {
       return success;
     } else {
       console.error("[CommentViewModel.createComment]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
+      StaticComponentRefs.toastRef.current?.error(res.msg);
       return false;
     }
   }
@@ -32,7 +32,7 @@ export default class CommentViewModel {
       return dataList.map(data => this._makeCommentItemData(data, { postAuthorId }));
     } else {
       console.error("[CommentViewModel.readAllComments]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
+      StaticComponentRefs.toastRef.current?.error(res.msg);
       return false;
     }
   }
@@ -88,7 +88,7 @@ export default class CommentViewModel {
           return success;
         } else {
           console.error(`[CommentViewModel.like - ${b ? "like" : "unlike"}]`, res);
-          StaticComponentRefs.toastRef?.current?.error(res.msg);
+          StaticComponentRefs.toastRef.current?.error(res.msg);
           return false;
         }
       },
@@ -102,7 +102,7 @@ export default class CommentViewModel {
           return success;
         } else {
           console.error("[CommentViewModel.reply]", res);
-          StaticComponentRefs.toastRef?.current?.error(res.msg);
+          StaticComponentRefs.toastRef.current?.error(res.msg);
           return false;
         }
       },
@@ -114,7 +114,7 @@ export default class CommentViewModel {
           return success;
         } else {
           console.error("[CommentViewModel.delete]", res);
-          StaticComponentRefs.toastRef?.current?.error(res.msg);
+          StaticComponentRefs.toastRef.current?.error(res.msg);
           return false;
         }
       },

@@ -22,7 +22,7 @@ export default class EditViewModel {
       return success;
     } else {
       console.error("[EditViewModel.createPost]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
+      StaticComponentRefs.toastRef.current?.error(res.msg);
       return false;
     }
   }
@@ -40,7 +40,7 @@ export default class EditViewModel {
       return success;
     } else {
       console.error("[EditViewModel.updatePost]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
+      StaticComponentRefs.toastRef.current?.error(res.msg);
       return false;
     }
   }

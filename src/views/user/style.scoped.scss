@@ -1,3 +1,37 @@
+.buttons {
+  display: flex;
+  align-items: center;
+
+  .button + .button {
+    margin-left: .5rem;
+  }
+}
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 2.5rem;
+  min-width: 2.5rem;
+
+  p {
+    font-size: .8125rem;
+    color: var(--secondary-text-color);
+  }
+  .icon {
+    height: 1.25rem;
+    width: 1.25rem;
+    ::v-deep {
+      svg {
+        height: 1.25rem;
+        width: 1.25rem;
+        fill: var(--secondary-text-color);
+      }
+    }
+  }
+}
+
+
 #page {
   padding-bottom: $float-bottom-height + 1rem;
 
@@ -104,63 +138,72 @@
 
       &>.row.row-profile {
         height: 4rem;
-    
-        .thumb {
-          width: 3rem;
-          height: 3rem;
-          margin-right: .625rem;
-          border-radius: 100%;
 
-          user-select: none;
-          overflow: hidden;
-          background-color: var(--border-color);
-          background-size: 75%;
-          background-position: center;
-          background-repeat: no-repeat;
+        .profile {
           display: flex;
-          justify-content: center;
           align-items: center;
-          font-size: 2.25rem;
-          line-height: 3rem;
 
-          flex-shrink: 0;
-        }
-        .text-wrap {
-          &,
-          &>* {
-            @include text-nowrap;
-          }
-          .name-wrap {
-            height: 1.25rem;
+          .thumb {
+            width: 3rem;
+            height: 3rem;
+            margin-right: .625rem;
+            border-radius: 100%;
+
+            user-select: none;
+            overflow: hidden;
+            background-color: var(--border-color);
+            background-size: 75%;
+            background-position: center;
+            background-repeat: no-repeat;
             display: flex;
+            justify-content: center;
             align-items: center;
+            font-size: 2.25rem;
+            line-height: 3rem;
 
-            .name {
+            flex-shrink: 0;
+          }
+          .text-wrap {
+            &,
+            &>* {
               @include text-nowrap;
-              font-size: 1rem;
             }
-            .badge {
-              flex-shrink: 0;
-              font-size: .6825rem;
+            .name-wrap {
+              height: 1.25rem;
+              display: flex;
+              align-items: center;
+
+              .name {
+                @include text-nowrap;
+                font-size: 1rem;
+              }
+              .badge {
+                flex-shrink: 0;
+                font-size: .6825rem;
+                color: var(--secondary-text-color);
+                border: 1px solid var(--secondary-text-color);
+                border-radius: 1rem;
+                padding: .1875rem .375rem;
+                margin-left: .375rem;
+              }
+            }
+            .description {
+              margin-top: .1825rem;
+              font-size: .8125rem;
               color: var(--secondary-text-color);
-              border: 1px solid var(--secondary-text-color);
-              border-radius: 1rem;
-              padding: .1875rem .375rem;
-              margin-left: .375rem;
             }
           }
-          .description {
-            margin-top: .1825rem;
-            font-size: .8125rem;
-            color: var(--secondary-text-color);
+          &[data-user-relation=following] {
+            .text-wrap {
+              .name {
+                font-weight: 700;
+              }
+            }
           }
         }
-        &[data-user-relation=following] {
-          .text-wrap {
-            .name {
-              font-weight: 700;
-            }
-          }
+
+        .button-more {
+          margin-right: -.625rem;
         }
       }
       &>.row.row-follow {

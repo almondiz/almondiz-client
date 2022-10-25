@@ -9,10 +9,7 @@ import "./style.scoped.scss";
 const Toast = forwardRef((_, ref) => {
   const NORMAL = "normal";
   const ERROR = "error";
-
-
-  const { pathname } = useLocation();
-  useEffect(() => { motion.go("hide-in"); }, [pathname]);
+  
 
   const [visible, setVisible] = useState(false);
   const [message, setMessage] = useState("");
