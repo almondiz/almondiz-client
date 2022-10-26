@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 
 import { StaticComponentRefs, Frame, Motion } from "../../../util";
-import ModalConfirm from "../modal-confirm";
+import ModalSignup from "../modal-signup";
 
 import "./style.scoped.scss";
 import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
@@ -151,15 +151,15 @@ const FrameProfile = ({
   searchFoodTag,
   email, callSignup
 }) => {
-  const modalConfirmRef = useRef();
-  const showModalConfirm = () => {
+  const modalSignupRef = useRef();
+  const showModalSignup = () => {
     const { modalRef } = StaticComponentRefs;
-    modalRef.current?.show(
-      <ModalConfirm modalRef={modalRef} ref={modalConfirmRef}
+    modalRef?.current?.show(
+      <ModalSignup modalRef={modalRef} ref={modalSignupRef}
         email={email} profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
       />,
       async () => {
-        const { choice } = modalConfirmRef.current?.destruct();
+        const { choice } = modalSignupRef.current?.destruct();
         if (choice)   callSignup();
       }
     );
@@ -168,7 +168,7 @@ const FrameProfile = ({
   const ButtonConfirm = ({ profileThumb, profileTag, profileNut }) => {
     const [ disabled, setDisabled ] = useState(true);
     useEffect(() => { setDisabled(!(profileThumb && profileTag && profileNut)); }, [profileThumb, profileTag, profileNut]);
-    const onClick = () => (!disabled && showModalConfirm());
+    const onClick = () => (!disabled && showModalSignup());
     return (
       <button className="button button-next" disabled={disabled} onClick={onClick}>
         <p>다음</p>

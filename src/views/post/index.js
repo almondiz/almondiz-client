@@ -8,7 +8,6 @@ import PostItem from "../../components/post-item";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
-import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
@@ -39,7 +38,7 @@ const FloatController = ({ post, createComment }) => {
     const [replyController, setReplyController] = useState(null);
     useEffect(() => {
       replyController && replyController.onShowCallback();
-      return () => (replyController && replyController.response());
+      return () => (replyController && replyController.onHideCallback());
     }, [replyController]);
 
     const commentInputController = {
@@ -49,13 +48,13 @@ const FloatController = ({ post, createComment }) => {
         const action = replyController ? replyController.reply : createComment;
         const success = await action(text);
         if (success) {
-          Pipe.get("reload")?.comments();
+          Pipe.get("page")?.refreshAllComments();
         }
         
         commentInputController.hide();
       },
 
-      show: (_replyController) => {  // reply, onShowCallback, response
+      show: (_replyController) => {  // reply, onShowCallback, onHideCallback
         setReplyController(_replyController);
         footerFrame.move(1);
       },
@@ -65,15 +64,18 @@ const FloatController = ({ post, createComment }) => {
         footerFrame.move(0);
       },
     };
-    Pipe.set("commentInputController", commentInputController);
+    Pipe.set("commentInputController", commentInputController, []);
 
 
     const ButtonScrap = ({ post }) => {
       const [focus, setFocus] = useState(post.isScrapped);
       const onClick = async () => {
-        const success = await post.scrap(focus);
+        const b = !focus;
+        const success = await post.scrap(b);
         if (success) {
-          setFocus(!focus);
+          const { toastRef } = StaticComponentRefs;
+          toastRef?.current?.log(b ? "스크랩되었습니다." : "스크랩이 취소되었습니다.");
+          setFocus(b);
         }
       };
       return (
@@ -100,7 +102,7 @@ const FloatController = ({ post, createComment }) => {
       ),
       ( // comment
         <section className="float-footer-frame frame-2">
-          <div className="comment-dialog">
+          <div className="comment-input">
             <button className="button button-back" onClick={() => commentInputController.hide()}>
               <div className="icon"><ArrowBackIosIcon /></div>
             </button>
@@ -119,8 +121,8 @@ const FloatController = ({ post, createComment }) => {
 
   useEffect(() => {
     const { floatRef } = StaticComponentRefs;
-    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
-    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
+    (floatRef?.current?.setHeader(<Header />), floatRef?.current?.setFooter(<Footer />));
+    return () => (floatRef?.current?.setHeader(), floatRef?.current?.setFooter());
   }, []);
 
   return <></>;
@@ -142,6 +144,7 @@ const PostPage = () => {
   const [comments, setComments] = useState(null);
   const readAllComments = async () => {
     if (!post)  return;
+    console.log(6);
     const postAuthorId = post.postAuthorId;
     setComments(await commentViewModel.readAllComments(postId, { postAuthorId }));
   };
@@ -150,14 +153,12 @@ const PostPage = () => {
   const createComment = async (text) => (await commentViewModel.createComment(postId, text));
   /** */
 
-  Pipe.set("reload", {
-    //all: () => (readPost(), readComments()),
-    //post: readPost,
-    comments: readAllComments,
-  });
+  Pipe.set("page", {
+    refreshAll: () => (readPost(), readAllComments()),
+    refreshPost: readPost,
+    refreshAllComments: readAllComments,
+  }, [post]);
 
-
-  const navigate = useNavigate();
 
   return (post && comments) && (
     <div id="page">

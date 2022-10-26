@@ -36,7 +36,7 @@ const SignupPage = () => {
       thumb: { emoji: profileThumb.emoji, color: profileThumb.color },
     });
     if (success) {
-      toastRef.current?.show("회원가입되었습니다.");
+      toastRef?.current?.log("회원가입되었습니다.");
 
       const { token, userId } = data;
       const { accessToken, refreshToken } = token;

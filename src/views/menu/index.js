@@ -15,14 +15,14 @@ const FloatController = () => {
       <button className="button button-back" onClick={() => navigate(-1)}>
         <div className="icon"><ArrowBackIcon /></div>
       </button>
-      <h3 className="title">개인 설정</h3>
+      <h3 className="title">더 보기</h3>
     </nav>
   );
 
   useEffect(() => {
     const { floatRef } = StaticComponentRefs;
-    (floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setTop());
+    (floatRef?.current?.setTop(<Top />));
+    return () => (floatRef?.current?.setTop());
   }, []);
 
   return <></>;
@@ -34,11 +34,11 @@ const SettingsPage = () => {
     <div id="page">
       <main className="content">
         <ul className="settings-list">
-          <li className="settings-item">
+          {/*<li className="settings-item">
             <div className="text-wrap">
-              <p className="title">최근 본 리뷰</p>
+              <p className="title">최근 본 글</p>
             </div>
-          </li>
+          </li>*/}
           <li className="settings-item">
             <div className="text-wrap">
               <p className="title">좋아한 글</p>
@@ -49,8 +49,9 @@ const SettingsPage = () => {
               <p className="title">댓글 단 글</p>
             </div>
           </li>
-          <br />
+        </ul>
 
+        {/*<ul className="settings-list">
           <li className="settings-item">
             <div className="text-wrap">
               <p className="title">공지사항</p>
@@ -71,13 +72,23 @@ const SettingsPage = () => {
               <p className="title">나의 신고</p>
             </div>
           </li>
+        </ul>*/}
+
+        <ul className="settings-list">
+          <li className="settings-item">
+            <div className="text-wrap">
+              <p className="title">공식 홈페이지</p>
+            </div>
+          </li>
           <li className="settings-item">
             <div className="text-wrap">
               <p className="title">만든 사람들</p>
             </div>
           </li>
           <br />
-          
+        </ul>
+
+        <ul className="settings-list">
           {/*<li className="settings-item">
             <div className="text-wrap">
               <p className="title">소셜 로그인 연동</p>
@@ -88,8 +99,9 @@ const SettingsPage = () => {
               <p className="title">로그아웃</p>
             </div>
           </li>
-          <br />
+        </ul>
 
+        <ul className="settings-list">
           <li className="settings-item danger">
             <div className="text-wrap">
               <p className="title">회원 탈퇴</p>

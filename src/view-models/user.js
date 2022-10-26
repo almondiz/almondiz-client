@@ -30,7 +30,7 @@ export default class UserViewModel {
       return res;
     } else {
       console.error("[UserViewModel.checkAccount]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       switch (res.msg) {
         case "해당 계정이 존재하지 않거나 잘못된 계정입니다.":
           goSignup();
@@ -49,7 +49,7 @@ export default class UserViewModel {
       return res;
     } else {
       console.error("[UserViewModel.login]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }*/
@@ -63,7 +63,7 @@ export default class UserViewModel {
       return this._makeUserData(data);
     } else {
       console.error("[UserViewModel.whoami]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return {};
     }
   }
@@ -76,13 +76,16 @@ export default class UserViewModel {
       return this._makeUserData(data);
     } else {
       console.error("[UserViewModel.get]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return {};
     }
   }
   _makeUserData(data) {
     try {
       const userId = data.userId;
+
+      data.relation = "me";   // ###
+      data.alias = "곰돌이 푸";   // ###
       const userRelation = data.relation;   // "me" | "following" | "other"
 
       return {
@@ -148,7 +151,7 @@ export default class UserViewModel {
       };
     } catch (err) {
       console.error("[UserViewModel._makeUserData]", err, data);
-      StaticComponentRefs.toastRef.current?.error("데이터 형식이 잘못되었습니다.");
+      StaticComponentRefs.toastRef?.current?.error("데이터 형식이 잘못되었습니다.");
       return {};
     }
   }
@@ -161,14 +164,17 @@ export default class UserViewModel {
     if (success) {
       console.log("[UserViewModel.getMyAllFollowings]", res);
       const { dataList } = res;
-      return dataList.map(data => this._makeFollowData(data));
+
+      return UserViewModel._dummyAllFollowingsData; // ###
+
+      return dataList.map(data => this._makeFollowingData(data));
     } else {
       console.error("[UserViewModel.getMyAllFollowings]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return [];
     }
   }
-  _makeFollowData(data) {
+  _makeFollowingData(data) {
     try {
       const userId = data.userId;
 
@@ -182,8 +188,24 @@ export default class UserViewModel {
       };
     } catch (err) {
       console.error("[UserViewModel._makeFollowData]", err, data);
-      StaticComponentRefs.toastRef.current?.error("데이터 형식이 잘못되었습니다.");
+      StaticComponentRefs.toastRef?.current?.error("데이터 형식이 잘못되었습니다.");
       return {};
     }
   }
+  static _dummyAllFollowingsData = [
+    {
+      userId: 142,
+      userEmoji: "🤔",
+      userColor: "#ef9a9a",
+      userName: "곰돌이푸",
+      userNameDescription: "닭발 피스타치오",
+    },
+    {
+      userId: 240,
+      userEmoji: "1️⃣",
+      userColor: "#9fa8da",
+      userName: "아이조아죽겠어",
+      userNameDescription: "마제멘 호두",
+    },
+  ];
 };

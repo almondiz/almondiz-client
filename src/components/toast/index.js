@@ -20,15 +20,15 @@ const Toast = forwardRef((_, ref) => {
     "hide": () => (setVisible(false), setMessage(""), setMessageType("")),
     "hide-out": (_message, _messageType) => {
       setVisible(true), setMessage(_message), setMessageType(_messageType);
-      motion.delay(MOTION_DELAY / 6, "show");
+      motion.delay(100, "show");
     },
     "show": () => motion.delay(MOTION_DELAY * 6, "hide-in"),
     "hide-in": () => motion.delay(MOTION_DELAY, "hide"),
   }, "hide");
 
-  const show = (message="") => motion.go("hide-out", [message, NORMAL]);
+  const log = (message="") => motion.go("hide-out", [message, NORMAL]);
   const error = (message="") => motion.go("hide-out", [message, ERROR]);
-  useImperativeHandle(ref, () => ({ show, error }));
+  useImperativeHandle(ref, () => ({ log, error }));
 
   return visible && (
     <div id="toast" data-motion={motion.get()} data-message-type={messageType}>

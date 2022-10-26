@@ -16,7 +16,7 @@ export default class defaultModel {
       } else {
         console.error("[defaultModel.callApi]", api, res);
         const errorMessage = "서버에서 오류가 발생했습니다.";
-        StaticComponentRefs.toastRef.current?.error(errorMessage);
+        StaticComponentRefs.toastRef?.current?.error(errorMessage);
         return {};
       }
     } catch (err) {
@@ -29,7 +29,7 @@ export default class defaultModel {
         errorMessage = "서버에서 오류가 발생했습니다.";
       else
         errorMessage = err.message;
-      StaticComponentRefs.toastRef.current?.error(errorMessage);
+      StaticComponentRefs.toastRef?.current?.error(errorMessage);
       return {};
       //return err.response.data;
     }

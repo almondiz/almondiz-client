@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { PostViewModel, SearchViewModel } from "../../view-models";
 
 import { StaticComponentRefs } from "../../util";
-import PostItem from "../../components/post-item";
+import PostItem, { popPost } from "../../components/post-item";
 import BackdropLocation from "./backdrop-location";
 
 import "./style.scoped.scss";
@@ -36,7 +36,7 @@ const FeedPage = () => {
   const backdropLocationRef = useRef();
   const showBackdropLocation = () => {
     const { backdropRef } = StaticComponentRefs;
-    backdropRef.current?.show(
+    backdropRef?.current?.show(
       <BackdropLocation backdropRef={backdropRef} ref={backdropLocationRef} />,
       async () => {
         const { dirty } = backdropLocationRef.current?.destruct();
@@ -63,7 +63,7 @@ const FeedPage = () => {
         </div>
       </header>
       <main className="content">
-        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
+        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} popPost={idx => popPost(posts, setPosts, idx)} />)}</section>
       </main>
     </div>
   );

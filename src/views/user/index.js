@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, Navigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
 import store from "../../store";
 
 import { StaticComponentRefs, Frame } from "../../util";
@@ -13,7 +12,7 @@ import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import Logotype from "../../asset/logo/logotype";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
-import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
+import MenuIcon from "../../asset/icons/mui/menu-icon";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
@@ -36,8 +35,8 @@ const FloatController = ({ user }) => {
 
   useEffect(() => {
     const { floatRef } = StaticComponentRefs;
-    (floatRef.current?.setHeader(<Header />));
-    return () => (floatRef.current?.setHeader());
+    (floatRef?.current?.setHeader(<Header />));
+    return () => (floatRef?.current?.setHeader());
   }, []);
 
   return <></>;
@@ -94,10 +93,10 @@ const UserPage = () => {
     );
   };
   const ButtonSettings = ({}) => {
-    const onClick =() => navigate(`/settings`);
+    const onClick =() => navigate(`/menu`);
     return (
-      <button className="button button-settings" onClick={onClick}>
-        <div className="icon"><SettingsIconBorder /></div>
+      <button className="button button-menu" onClick={onClick}>
+        <div className="icon"><MenuIcon /></div>
       </button>
     );
   };
@@ -134,13 +133,13 @@ const UserPage = () => {
       })()}
       <main className="body">
         <div className="area-profile">
-          <div className="row row-profile" data-user-relation={user.userRelation}>
-            <div className="profile">
+          <div className="row row-profile">
+            <div className="profile" data-user-relation={user.userRelation}>
               <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
               <div className="text-wrap">
                 <div className="name-wrap">
                   <p className="name">{user.userName}</p>
-                  {user.userNameBadge && <p className="badge">{user.userNameBadge}</p>}
+                  {user.userNameBadge && <p className="name-tag">{user.userNameBadge}</p>}
                 </div>
                 {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
               </div>

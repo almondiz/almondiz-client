@@ -41,7 +41,7 @@ const LoginPage = () => {
       { providerType, providerUid },
       () => navigate(`/signup`),
       data => {
-        toastRef.current?.show("로그인되었습니다.");
+        toastRef?.current?.log("로그인되었습니다.");
         
         const { token, userId } = data;
         const { accessToken, refreshToken } = token;
@@ -54,7 +54,7 @@ const LoginPage = () => {
   }
 
   const onFailure = async (res) => {
-    toastRef.current?.show("로그인에 실패했습니다.");
+    toastRef?.current?.log("로그인에 실패했습니다.");
     console.error("[LoginPage.onFailure]", res);
   };
 

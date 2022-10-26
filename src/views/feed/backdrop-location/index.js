@@ -3,8 +3,7 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { SearchViewModel } from "../../../view-models";
 
 import { StaticComponentRefs, Frame } from "../../../util";
-import ModalMyLocation from "../modal-my-location";
-
+import { ModalDefaultConfirm } from "../../../components/modal-default-forms";
 import Slider from "../../../components/slider";
 import NaverMap from "../../../components/naver-map";
 
@@ -237,7 +236,7 @@ const MapBottom = forwardRef(({ mapDrawerRef,
 
 
 const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
-  const hideBackdrop = () => backdropRef.current?.hide();
+  const hideBackdrop = () => backdropRef?.current?.hide();
   const destruct = () => ({ dirty });
   useImperativeHandle(ref, () => ({ destruct }));
 
@@ -287,19 +286,25 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
   const modalMyLocationRef = useRef();
   const showModalMyLocation = (data, set) => {
     const { modalRef } = StaticComponentRefs;
-    modalRef.current?.show(
-      <ModalMyLocation modalRef={modalRef} ref={modalMyLocationRef} set={set} />,
-      async () => {
-        const { choice } = modalMyLocationRef.current?.destruct();
-        if (set) {
+    if (set) {
+      modalRef?.current?.show(
+        <ModalDefaultConfirm modalRef={modalRef} ref={modalMyLocationRef} title={"계속 내 위치로 설정해 둘까요?"} />,
+        async () => {
+          const { choice } = modalMyLocationRef.current?.destruct();
           updateLocationComplete(data, choice);
-        } else {
+        }
+      );
+    } else {
+      modalRef?.current?.show(
+        <ModalDefaultConfirm modalRef={modalRef} ref={modalMyLocationRef} title={"위치 추적을 해제하시겠어요?"} />,
+        async () => {
+          const { choice } = modalMyLocationRef.current?.destruct();
           if (choice) {
             updateLocationComplete(data, false);
           }
         }
-      }
-    );
+      );
+    }
   };
 
   // distance
@@ -342,7 +347,7 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
           <div className="row">
             <div className="text-wrap">
               <h3 className="title">위치로부터 <u>{newDistance}km</u> 이내</h3>
-              <p className="description">선택한 범위의 리뷰를 피드에 표시합니다.</p>
+              <p className="description">선택한 범위의 글들을 피드에 표시합니다.</p>
             </div>
             <ButtonUpdateDistance newDistance={newDistance} distance={distance} />
           </div>

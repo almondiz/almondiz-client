@@ -99,7 +99,7 @@ export class StaticComponentRefs {};
 export class Pipe {
   static data = {};
 
-  static set(key, val) {
+  static set(key, val, depList=[]) {
     useEffect(() => {
       Pipe.data[key] = val;
       //console.log("[Pipe]", `key '${key}' added`);
@@ -107,7 +107,7 @@ export class Pipe {
         delete Pipe.data[key];
         //console.log("[Pipe]", `key '${key}' deleted`);
       };
-    }, []);
+    }, depList);
   }
 
   static get(key) {
@@ -236,12 +236,13 @@ export const getTime = epoch => {
     return `${Math.floor(dt / HOUR)}시간 전`;
   else if (dt < WEEK)   // 1 ~ 7 days
     return `${Math.floor(dt / DAY)}일 전`;
-  
-  return getFullTime(epoch);
+
+  const date = new Date(epoch);
+  return (date.getFullYear() !== now.getFullYear() ? `${date.getFullYear()}년 ` : ``) + `${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 export const getFullTime = epoch => {
   const date = new Date(epoch);
-  return (date.getFullYear() !== now.getFullYear() ? `${date.getFullYear()}년 ` : ``) + `${date.getMonth() + 1}월 ${date.getDate()}일`;
+  return `${date.getFullYear()}년 + ${date.getMonth() + 1}월 ${date.getDate()}일`;
 };
 
 

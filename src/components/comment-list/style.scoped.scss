@@ -89,13 +89,17 @@
             display: flex;
             align-items: center;
           }
-          .badge {
+          .name-tag {
+            height: 1.25rem;
             font-size: .625rem;
             color: var(--secondary-text-color);
             border: 1px solid var(--secondary-text-color);
             border-radius: 1rem;
             padding: .1875rem .3125rem;
             margin-left: .3125rem;
+
+            display: flex;
+            align-items: center;
           }
 
           &[data-user-relation=me],

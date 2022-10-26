@@ -23,8 +23,8 @@ const FloatController = ({ users }) => {
 
   useEffect(() => {
     const { floatRef } = StaticComponentRefs;
-    (floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setTop());
+    (floatRef?.current?.setTop(<Top />));
+    return () => (floatRef?.current?.setTop());
   }, []);
 
   return <></>;
@@ -53,10 +53,12 @@ const FollowingPage = () => {
               <div className="link" onClick={() => goToUserPage(navigate)} />
       
               <div className="row row-profile">
-                <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
-                <div className="text-wrap">
-                  <p className="name">{user.userName}</p>
-                  <p className="description">{user.userNameDescription}</p>
+                <div className="profile">
+                  <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
+                  <div className="text-wrap">
+                    <p className="name">{user.userName}</p>
+                    <p className="description">{user.userNameDescription}</p>
+                  </div>
                 </div>
                 <button className="button button-unfollow">구독 취소</button>
               </div>

@@ -3,8 +3,11 @@ import React, { useState, useEffect, forwardRef, useImperativeHandle } from "rea
 import "./style.scoped.scss";
 
 
-const ModalMyLocation = forwardRef(({ modalRef, set }, ref) => {
-  const hideModal = () => modalRef.current?.hide();
+const ModalSignup = forwardRef(({
+  modalRef,
+  email, profileThumb, profileTag, profileNut
+}, ref) => {
+  const hideModal = () => modalRef?.current?.hide();
   const destruct = () => ({ choice });
   useImperativeHandle(ref, () => ({ destruct }));
 
@@ -13,14 +16,21 @@ const ModalMyLocation = forwardRef(({ modalRef, set }, ref) => {
   const onClickDecline = () => setChoice(false);
   useEffect(() => { hideModal(); }, [choice]);
 
-  const SET_TEXT = "계속 내 위치로 설정해 둘까요?";
-  const UNSET_TEXT = "위치 추적을 해제하시겠어요?";
-
   return (
     <>
       <header className="modal-header">
-        <p className="title">{set ? SET_TEXT : UNSET_TEXT}</p>
+        <p className="title">이대로 가입하시겠어요?</p>
       </header>
+      <main className="modal-body">
+        <div className="profile">
+          <div className="thumb" style={{ backgroundColor: profileThumb.color }}>{profileThumb.emoji}</div>
+          <div className="text-wrap">
+            <p className="name">{profileTag.tagName} {profileNut.nutName}</p>
+            <p className="email">{email}</p>
+          </div>
+        </div>
+        <p className="help">연동한 소셜 계정은 타인에게 드러나지 않습니다.</p>
+      </main>
       <footer className="modal-footer">
         <button className="button button-accept" onClick={onClickAccept}>
           <p>네</p>
@@ -33,4 +43,4 @@ const ModalMyLocation = forwardRef(({ modalRef, set }, ref) => {
   );
 });
 
-export default ModalMyLocation;
+export default ModalSignup;

@@ -18,7 +18,7 @@ import FollowingPage from "./views/following";
 import EditPage from "./views/edit";
 import DirectPage from "./views/direct";
 import NoticePage from "./views/notice";
-import SettingsPage from "./views/settings";
+import MenuPage from "./views/menu";
 import NotFoundPage from "./views/not-found";
 
 import Float from "./components/float";
@@ -97,8 +97,8 @@ const StaticLayout = ({ setLoaded }) => {
 const PostLayout = () => {
   useEffect(() => {
     const floatRef = StaticComponentRefs.floatRef;
-    (floatRef.current?.setBottom(<PostBottomNav />));
-    return () => (floatRef.current?.setBottom());
+    (floatRef?.current?.setBottom(<PostBottomNav />));
+    return () => (floatRef?.current?.setBottom());
   }, []);
 
   return <Outlet />;
@@ -109,11 +109,16 @@ const RequireAuth = () => {
   const { pathname } = useLocation();
   const { toastRef } = StaticComponentRefs;
 
-  if (store.getState().account.accessToken)
-    return <Outlet />;
-  else {
-    if (pathname !== `/login`) {
-      toastRef.current?.show("권한이 없어 로그인 페이지로 이동합니다.");
+  if (store.getState().account.accessToken) {
+    if (pathname === `/`)
+      return <Navigate to="/feed" />;
+    else
+      return <Outlet />;
+  } else {
+    if (pathname === `/`)
+      return <Navigate to="/login" />;
+    else if (pathname !== `/login`) {
+      toastRef?.current?.log("권한이 없어 로그인 페이지로 이동합니다.");
       return <Navigate to="/login" />;
     }
   }
@@ -132,7 +137,7 @@ const App = () => {
       <BrowserRouter>
         {staticLayoutLoaded && (
           <Routes>
-            <Route exact path="/" element={<Navigate to="/login" />} />
+            <Route exact path="/" element={<RequireAuth />} />
 
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
@@ -146,21 +151,21 @@ const App = () => {
 
                 <Route path="/scrap" element={<ScrapPage />} />
                 <Route path="/me" element={<RedirectToMyPage />} />
-                <Route path="/following" element={<FollowingPage />} />
               </Route>
 
               <Route path="/edit" element={<EditPage />} />
               <Route path="/direct" element={<DirectPage />} />
-              <Route path="/notice" element={<NoticePage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-            </Route>
 
-            <Route path="*" element={<NotFoundPage />} />
+              <Route path="/following" element={<FollowingPage />} />
+              <Route path="/notice" element={<NoticePage />} />
+              <Route path="/menu" element={<MenuPage />} />
+
+              <Route path="*" element={<NotFoundPage />} />
+            </Route>
           </Routes>
         )}
 
         <StaticLayout setLoaded={setStaticLayoutLoaded} />
-
         <ScrollToTop />
         <Monitor />
       </BrowserRouter>

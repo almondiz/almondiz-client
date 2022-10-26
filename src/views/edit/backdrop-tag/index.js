@@ -15,7 +15,7 @@ const BackdropTag = forwardRef(({
   shop, postTags,
   searchFoodTag, createFoodTag,
 }, ref) => {
-  const hideBackdrop = () => backdropRef.current?.hide();
+  const hideBackdrop = () => backdropRef?.current?.hide();
   const destruct = () => ({ tags });
   useImperativeHandle(ref, () => ({ destruct }));
 

@@ -1,5 +1,5 @@
 import { UserModel } from "../models";
-import { StaticComponentRefs } from "../util";
+import { StaticComponentRefs, getTime } from "../util";
 
 
 export default class NoticeViewModel {
@@ -14,12 +14,14 @@ export default class NoticeViewModel {
     if (success) {
       console.log("[NoticeViewModel.getMyNoticeData]", res);
       const { dataList } = res;
+
+      return NoticeViewModel._dummyNoticeData; // ###
       
       dataList.reverse();
       return dataList.map(data => this._makeNoticeItemData(data));
     } else {
       console.error("[NoticeViewModel.getMyNoticeData]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -34,4 +36,18 @@ export default class NoticeViewModel {
       noticeCreatedAt: data.createdAt,
     }
   }
+  static _dummyNoticeData = [
+    {
+      noticeId: 1,
+      isRead: true,
+      noticeText: `회원님이 "소고" 음식점을 리뷰한 글의 스크랩 수가 100개를 달성했습니다.`,
+      noticeCreatedAt: getTime(1638802800000),
+    },
+    {
+      noticeId: 2,
+      isRead: false,
+      noticeText: `닭발 피스타치오님이 대댓글을 달았습니다.\n"고마워요 :)"`,
+      noticeCreatedAt: getTime(1663155700000),
+    },
+  ];
 };

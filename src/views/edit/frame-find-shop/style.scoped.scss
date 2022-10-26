@@ -132,7 +132,7 @@
           .description {
             color: var(--secondary-text-color);
             font-size: .8125rem;
-            margin-top: .5rem;
+            margin-top: .25rem;
           }
         }
       }
@@ -198,8 +198,8 @@
           min-width: 0;
       
           .thumb {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 2.75rem;
+            height: 2.75rem;
             margin-right: .625rem;
             border-radius: 100%;
             background-size: cover;
@@ -216,7 +216,7 @@
             .description {
               color: var(--secondary-text-color);
               font-size: .8125rem;
-              margin-top: .375rem;
+              margin-top: .25rem;
             }
           }
         }

@@ -1,36 +1,35 @@
-.buttons {
+.area-profile .buttons {
   display: flex;
   align-items: center;
 
   .button + .button {
     margin-left: .5rem;
   }
-}
-.button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 2.5rem;
-  min-width: 2.5rem;
-
-  p {
-    font-size: .8125rem;
-    color: var(--secondary-text-color);
-  }
-  .icon {
-    height: 1.25rem;
-    width: 1.25rem;
-    ::v-deep {
-      svg {
-        height: 1.25rem;
-        width: 1.25rem;
-        fill: var(--secondary-text-color);
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    height: 2.5rem;
+    min-width: 2.5rem;
+  
+    p {
+      font-size: .8125rem;
+      color: var(--secondary-text-color);
+    }
+    .icon {
+      height: 1.25rem;
+      width: 1.25rem;
+      ::v-deep {
+        svg {
+          height: 1.25rem;
+          width: 1.25rem;
+          fill: var(--secondary-text-color);
+        }
       }
     }
   }
 }
-
 
 #page {
   padding-bottom: $float-bottom-height + 1rem;
@@ -177,7 +176,8 @@
                 @include text-nowrap;
                 font-size: 1rem;
               }
-              .badge {
+              .name-tag {
+                height: 1.25rem;
                 flex-shrink: 0;
                 font-size: .6825rem;
                 color: var(--secondary-text-color);
@@ -185,6 +185,9 @@
                 border-radius: 1rem;
                 padding: .1875rem .375rem;
                 margin-left: .375rem;
+
+                display: flex;
+                align-items: center;
               }
             }
             .description {

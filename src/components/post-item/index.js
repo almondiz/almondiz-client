@@ -7,6 +7,7 @@ import CommentList from "../../components/comment-list";
 import ImageSlider from "../image-slider";
 import ImageGrid from "../../components/image-grid";
 import ImageViewer from "../../components/image-viewer";
+import { ModalDefaultMenuList, ModalDefaultConfirm } from "../modal-default-forms";
 
 import "./style.scoped.scss";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
@@ -15,8 +16,35 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
-const PostItem = ({ post={}, detail=false, comments=[] }) => {
+export const popPost = (posts, setPosts, idx) => {
+  const _posts = [...posts];
+  _posts.splice(idx, 1);
+  setPosts(_posts);
+};
+
+const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
   const navigate = useNavigate();
+
+  const { toastRef } = StaticComponentRefs;
+
+
+  const modifyPost = post => {
+    const { postId } = post;
+    toastRef?.current?.log("수정 화면으로 이동합니다.");
+    navigate(`/edit`, { state: { postId } });
+  };
+  const deletePost = async (post) => {
+    const success = await post.delete();
+    if (success) {
+      toastRef?.current?.log("글를 삭제했습니다.");
+      if (detail)
+        navigate(-1);
+      else
+        popPost();
+    }
+  };
+  //const reportPost = async (post) => {};
+
 
   const imageViewerRef = useRef();
   const imageGridAction = index => imageViewerRef.current?.setIndex(index);
@@ -32,29 +60,63 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
       <div className="image" style={{ backgroundImage: `url(${post.shopThumbUrl})` }} />
     </div>
   );
-
-  
   const ButtonMore = ({ post }) => {
-    const onClick = async () => {
-      const success = await post.delete();
-      if (success) {
-        navigate(-1);
-      }
+    const { modalRef } = StaticComponentRefs;
+    const modalDefaultMenuListRef = useRef();
+    const modalDefaultConfirmRef = useRef();
+
+    const onClickModalModify = () => modifyPost(post);
+    const onClickModalDelete = () => {
+      modalRef?.current?.show(
+        <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultConfirmRef} title={"정말로 삭제하시겠어요?"} />,
+        async () => {
+          const { choice } = modalDefaultConfirmRef.current?.destruct();
+          if (choice)   deletePost(post);
+        }
+      );
     }
+    //const onClickModalReport = async (post) => {};
+
+    const showModal = () => {
+      const myPostMenus = [
+        { title: "수정하기", choice: "MODIFY", },
+        { title: "삭제하기", choice: "DELETE", danger: true },
+      ];
+      const otherPostMenus = [
+        { title: "신고하기", choice: "REPORT", },
+      ];
+
+      modalRef?.current?.show(
+        <ModalDefaultMenuList modalRef={modalRef} ref={modalDefaultMenuListRef}
+          menus={(post.postAuthorRelation !== "me") ? myPostMenus : otherPostMenus}
+        />,
+        async () => {
+          console.log(1);
+          const { choice } = modalDefaultMenuListRef.current?.destruct();
+          switch (choice) {
+            case "MODIFY":
+              return onClickModalModify();
+            case "DELETE":
+              return onClickModalDelete();
+            case "REPORT":
+              return;//onClickModalReport();
+          }
+        }
+      );
+    };
     return (
-      <button className="button button-more" onClick={onClick}>
+      <button className="button button-more" onClick={showModal}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );
   };
   const ButtonScrap = ({ post }) => {
-    const [focus, setFocus] = useState(false);
+    const [focus, setFocus] = useState(post.isScrapped);
     const onClick = async () => {
       const b = !focus;
       const success = await post.scrap(b);
       if (success) {
-        const { toastRef } = StaticComponentRefs;
-        toastRef.current?.show(b ? "스크랩되었습니다." : "스크랩이 취소되었습니다.");
+        toastRef?.current?.log(b ? "스크랩되었습니다." : "스크랩이 취소되었습니다.");
         setFocus(b);
       }
     };
@@ -65,13 +127,8 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
       </button>
     );
   };
+  const getRelationText = () => ((post.postAuthorRelation === "following") ? ` · 구독` : "");
 
-  const getRelationText = () => {
-    if (post.postAuthorRelation === "following")
-      return ` · 구독`;
-    else
-      return "";
-  };
 
   return (
     <article className={`post ${!detail ? "post-item" : ""}`} data-post-id={post.postId}>
@@ -133,15 +190,15 @@ const PostItem = ({ post={}, detail=false, comments=[] }) => {
                 <ButtonScrap post={post} />
               </div>
             </div>
-            { (post.commentCount > 0) && (
-              <div className="row row-counts">
-                <p className="description">댓글 <span className="count">{post.commentCount}</span></p>
+            <div className="row row-counts">
+              <p className="description">댓글 <span className="count">{post.commentCount}</span></p>
+              { (post.commentCount > 0) && (
                 <div className="best-comment">
                   <p className="emoji">{post.bestCommentAuthorEmoji}</p>
                   <p className="text">{post.bestCommentText}</p>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </footer>
         ) :
         (

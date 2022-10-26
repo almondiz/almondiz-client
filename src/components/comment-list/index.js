@@ -21,7 +21,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
       const success = await comment.like(b);
       if (success) {
         const { toastRef } = StaticComponentRefs;
-        toastRef.current?.show(b ? "좋아요했습니다." : "좋아요가 취소되었습니다.");
+        toastRef?.current?.log(b ? "좋아요했습니다." : "좋아요가 취소되었습니다.");
         setFocus(b);
       }
     };
@@ -44,7 +44,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
         commentUnitRef.current?.classList.remove("focus");
       };
 
-      const commentInputController = Pipe.get("commentInputController");
+      const { commentInputController } = Pipe;
       if (focus)
         commentInputController?.hide();
       else
@@ -60,7 +60,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
     const onClick = async () => {
       const success = await comment.delete();
       if (success) {
-        Pipe.get("reload")?.comments();
+        Pipe.get("page")?.refreshAllComments();
       }
     }
     return (
@@ -81,7 +81,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
         >
           <p className="emoji">{comment.commentAuthorEmoji}</p>
           <p className="name">{comment.commentAuthorName}</p>
-          {comment.isCommentAuthorPostAuthor && <p className="badge">{"글쓴이"}</p>}
+          {comment.isCommentAuthorPostAuthor && <p className="name-tag">{"글쓴이"}</p>}
         </button>
         <p className="description">{comment.commentCreatedAt}</p>
         <div className="buttons right">

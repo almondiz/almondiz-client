@@ -35,14 +35,20 @@
 }
 
 
+.settings-list + .settings-list {
+  margin-top: 1rem;
+}
+.settings-list {
+  padding-left: $padding-horiz;
+  padding-right: $padding-horiz;
+}
 .settings-list {
   .settings-item + .settings-item {
-    margin-top: .5rem;
+    //margin-top: .5rem;
   }
   .settings-item {
-    height: 3rem;
-    padding-left: $padding-horiz;
-    padding-right: $padding-horiz;
+    height: 3.5rem;
+    border-bottom: 1px solid var(--border-color);
 
     display: flex;
     align-items: center;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, getTime } from "../../util";
+import { StaticComponentRefs } from "../../util";
 import { NoticeViewModel } from "../../view-models";
 
 import "./style.scoped.scss";
@@ -23,8 +23,8 @@ const FloatController = ({ notices }) => {
 
   useEffect(() => {
     const { floatRef } = StaticComponentRefs;
-    (floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setTop());
+    (floatRef?.current?.setTop(<Top />));
+    return () => (floatRef?.current?.setTop());
   }, []);
 
   return <></>;
@@ -49,7 +49,7 @@ const NoticePage = () => {
               <div className={`icon ${notice.isRead ? "" : "badge"}`}><NotificationsIconBorder /></div>
               <div className="text-wrap">
                 <p className="message">{notice.noticeText}</p>
-                <p className="time">{getTime(notice.noticeCreatedAt)}</p>
+                <p className="time">{notice.noticeCreatedAt}</p>
               </div>
             </li>
           );

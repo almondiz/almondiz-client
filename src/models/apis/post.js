@@ -15,7 +15,7 @@ export const deletePost = postId => {
   return api.delete(path.post.one(postId));
 };
 // PATCH /api/post/{postId}
-export const updatePost = (postId, body) => {
+export const modifyPost = (postId, body) => {
   return api.post(path.post.one(postId), body);
 };
 

@@ -20,7 +20,7 @@ export default class SearchViewModel {
       return data;  
     } else {
       console.error("[SearchViewModel.createFoodTag]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }
   }
@@ -35,14 +35,14 @@ export default class SearchViewModel {
       return dataList;
     } else {
       console.error("[SearchViewModel.searchFoodTag]", res);
-      StaticComponentRefs.toastRef.current?.error(res.msg);
+      StaticComponentRefs.toastRef?.current?.error(res.msg);
       return [];
     }
   }
 
   // #### API 만들어야 함. (food 태그, region 태그 둘 다 주는 것)
   async searchFullTag(keyword) {
-    StaticComponentRefs.toastRef.current?.error("searchFullTag API 없음");
+    StaticComponentRefs.toastRef?.current?.error("searchFullTag API 없음");
     if ((keyword = filterText(keyword)) === "")   return [];
 
     console.log("[SearchViewModel.searchFullTag]", "DUMMY");
@@ -63,13 +63,13 @@ export default class SearchViewModel {
 
   // #### API 만들어야 함. (검색 기록 가져오기)
   async readSearchHistory() {
-    StaticComponentRefs.toastRef.current?.error("readSearchHistory API 없음");
+    StaticComponentRefs.toastRef?.current?.error("readSearchHistory API 없음");
     console.log("[SearchViewModel.getSearchHistory]", "DUMMY");
     return SearchViewModel._dummySearchHistory;
   }
   // #### API 만들어야 함. (검색 기록 지우기)
   async removeSearchHistory(idx) {
-    StaticComponentRefs.toastRef.current?.error("removeSearchHistory API 없음");
+    StaticComponentRefs.toastRef?.current?.error("removeSearchHistory API 없음");
     console.log(`[SearchViewModel.removeSearchHistory(${idx})]`, "DUMMY");
     return true;
   }
@@ -90,7 +90,7 @@ export default class SearchViewModel {
 
   // #### API 만들어야 함. (shop 검색)
   async searchShop(keyword) {
-    StaticComponentRefs.toastRef.current?.error("searchShop API 없음");
+    StaticComponentRefs.toastRef?.current?.error("searchShop API 없음");
     if ((keyword = filterText(keyword)) === "")   return [];
 
     console.log("[SearchViewModel.searchShop]", "DUMMY");
@@ -161,14 +161,14 @@ export default class SearchViewModel {
 
   // #### API 만들어야 함. (기존에 설정했던 위치)
   async getPreferedLocationSet() {
-    //StaticComponentRefs.toastRef.current?.error("getPreferedLocationSet API 없음");
+    //StaticComponentRefs.toastRef?.current?.error("getPreferedLocationSet API 없음");
     const data = SearchViewModel._dummyPreferedLocationSet;
     console.log("[SearchViewModel.getPreferedLocationSet]", data);
     //const { tracking, location, distance } = data;
     return data;
   }
   async setPreferedLocationSet(data) {
-    StaticComponentRefs.toastRef.current?.error("setPreferedLocationSet API 없음");
+    StaticComponentRefs.toastRef?.current?.error("setPreferedLocationSet API 없음");
     console.log("[SearchViewModel.setPreferedLocationSet]", data);
     //const { tracking, location, distance } = data;
     SearchViewModel._dummyPreferedLocationSet = data;
@@ -182,7 +182,7 @@ export default class SearchViewModel {
 
   // #### API 만들어야 함. (현재 내가 있는 위치 (GPS))
   async getMyLocation() {
-    StaticComponentRefs.toastRef.current?.error("getMyLocation API 없음");
+    StaticComponentRefs.toastRef?.current?.error("getMyLocation API 없음");
     const location = { lati: 37.275004, longi: 127.045749, address: "서울 서초구 잠원동", };
     console.log("[SearchViewModel.getMyLocation]", location);
     return location;

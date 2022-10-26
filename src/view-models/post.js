@@ -57,10 +57,13 @@ export default class PostViewModel {
       const postAuthor = data.user;
       const postAuthorId = postAuthor.userId;
       const postAuthorRelation = postAuthor.relation;
+
+      data.shop.link = "https://m.naver.com";   // ###
     
       return {
         postId,
 
+        shopId: data.shop.shopId,
         shopThumbUrl: data.shop.thumb,
         shopName: data.shop.shopName,
         shopAddress: data.shop.location.address.split(" ").slice(0, 3).join(" "),     // ### HMM (지번만 필요함. 서버에서 도로명 주지 않도록 해야 할 듯)
@@ -112,10 +115,7 @@ export default class PostViewModel {
 
 
         scrap: async (b) => {
-          const action = b ? this.model.scrap() : this.model.unscrap();
-          action.bind(this.model);
-
-          const { success, ...res } = await action(postId);
+          const { success, ...res } = await (b ? this.model.scrap(postId) : this.model.unscrap(postId));
           if (success) {
             console.log(`[postViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
             return success;
@@ -138,7 +138,7 @@ export default class PostViewModel {
       };
     } catch (err) {
       console.error("[PostViewModel._makePostItemData]", err, data);
-      StaticComponentRefs.toastRef.current?.error("데이터 형식이 잘못되었습니다.");
+      StaticComponentRefs.toastRef?.current?.error("데이터 형식이 잘못되었습니다.");
       return {};
     }
   }    
