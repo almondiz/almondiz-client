@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { NoticeViewModel } from "../../view-models";
 
 import { StaticComponentRefs } from "../../util";
-import { ModalDefaultConfirm } from "../../components/modal-default-forms";
+import { showModalFormConfirm } from "../../components/modal";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -50,28 +50,22 @@ const NoticePage = () => {
       setNotices(_notices);
     }
   };
-
-
+  
   const { modalRef } = StaticComponentRefs;
-  const modalDefaultMenuListRef = useRef();
-
-  const showModalPop = (notice, idx) => {
-    modalRef?.current?.show(
-      <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultMenuListRef} title={"알림을 지우시겠어요?"} />,
-      async () => {
-        const { choice } = modalDefaultMenuListRef.current?.destruct();
-        if (choice)   popNotice(notice, idx);
-      }
-    );
+  const modalFormConfirmRef = useRef();
+  const onClickPop = (notice, idx) => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "알림을 지우시겠어요?",
+      callback: async (choice) => (choice && popNotice(notice, idx)),
+    });
   };
-
 
   const NoticeList = ({ notices }) => {
     return (
       <ul className="notice-list">
         {notices.map((notice, idx) => {
           return (
-            <li key={idx} className={`notice-item ${notice.isRead ? "" : "new"}`} onClick={() => showModalPop(notice, idx)}>
+            <li key={idx} className={`notice-item ${notice.isRead ? "" : "new"}`} onClick={() => onClickPop(notice, idx)}>
               <div className={`icon ${notice.isRead ? "" : "badge"}`}><NotificationsIconBorder /></div>
               <div className="text-wrap">
                 <p className="message">{notice.noticeText}</p>

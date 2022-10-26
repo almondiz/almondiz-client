@@ -7,7 +7,7 @@ import { UserViewModel, PostViewModel } from "../../view-models";
 
 import { StaticComponentRefs, Frame } from "../../util";
 import PostItem from "../../components/post-item";
-import { ModalDefaultMenuList } from "../../components/modal-default-forms";
+import { showModalFormMenuList } from "../../components/modal";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -103,33 +103,29 @@ const UserPage = () => {
   };
   const ButtonMore = ({ user }) => {
     const { modalRef } = StaticComponentRefs;
-    const modalDefaultMenuListRef = useRef();
+    const modalFormMenuListRef = useRef();
 
     //const onClickModalReport = () => {};
 
-    const showModal = () => {
+    const showModalMenuList = () => {
       const myMenus = [];
       const otherMenus = [
         { title: "신고하기", choice: "REPORT", },
       ];
-
-      modalRef?.current?.show(
-        <ModalDefaultMenuList modalRef={modalRef} ref={modalDefaultMenuListRef}
-          menus={(user.userRelation === "me") ? myMenus : otherMenus}
-        />,
-        async () => {
-          const { choice } = modalDefaultMenuListRef.current?.destruct();
+      showModalFormMenuList(modalRef, modalFormMenuListRef, {
+        menus: (user.userRelation === "me") ? myMenus : otherMenus,
+        callback: async (choice) => {
           switch (choice) {
             case "DELETE":
               return onClickModalDelete();
             case "REPORT":
               return;//onClickModalReport();
           }
-        }
-      );
+        },
+      });
     };
     return (
-      <button className="button button-more" onClick={showModal}>
+      <button className="button button-more" onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );

@@ -84,8 +84,8 @@ export default class UserViewModel {
     try {
       const userId = data.userId;
 
-      //data.relation = "me";   // ###
-      //data.alias = "곰돌이 푸";   // ###
+      data.relation = "me";   // ### DUMMY
+      data.alias = "곰돌이 푸";   // ### DUMMY
       const userRelation = data.relation;   // "me" | "following" | "other"
 
       return {
@@ -95,35 +95,26 @@ export default class UserViewModel {
         userColor: data.thumb.color,
         userName: (() => {
           switch (userRelation) {
-            case "me":
-              return data.nickName;
-            case "following":
-              return data.alias;
+            case "me":          return data.nickName;
+            case "following":   return data.alias;
             case "other":
-            default:
-              return data.nickName;
+            default:            return data.nickName;
           }
         })(),
         userNameDescription: (() => {
           switch (userRelation) {
-            case "me":
-              return data.email;
-            case "following":
-              return data.nickName;
+            case "me":          return data.email;
+            case "following":   return data.nickName;
             case "other":
-            default:
-              return undefined;
+            default:            return undefined;
           }
         })(),
         userNameBadge: (() => {
           switch (userRelation) {
-            case "me":
-              return "나";
-            case "following":
-              return "구독";
+            case "me":          return "나";
+            case "following":   return "구독";
             case "other":
-            default:
-              return undefined;
+            default:            return undefined;
           }
         })(),
         userRelation,

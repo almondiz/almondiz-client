@@ -41,6 +41,8 @@ export default class CommentViewModel {
 
     const commentAuthor = data.user;
     const commentAuthorId = commentAuthor.userId;
+
+    commentAuthor.relation = "me";   // ### DUMMY
     const commentAuthorRelation = commentAuthor.relation;
   
     return {
@@ -49,13 +51,10 @@ export default class CommentViewModel {
       commentAuthorEmoji: commentAuthor.thumb.emoji,
       commentAuthorName: (() => {
         switch (commentAuthorRelation) {
-          case "me":
-            return "나";
-          case "following":
-            return commentAuthor.alias;
+          case "me":          return "나";
+          case "following":   return commentAuthor.alias;
           case "other":
-          default:
-            return commentAuthor.nickName;
+          default:            return commentAuthor.nickName;
         }
       })(),
       commentAuthorRelation,

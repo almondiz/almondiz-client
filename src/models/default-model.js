@@ -22,13 +22,14 @@ export default class defaultModel {
     } catch (err) {
       console.error("[defaultModel.callApi]", api, err);
 
-      let errorMessage;
-      if (err.code === "ERR_NETWORK")
-        errorMessage = "서버와의 연결이 원활하지 않습니다.";
-      else if (err.code === "ERR_BAD_RESPONSE")
-        errorMessage = "서버에서 오류가 발생했습니다.";
-      else
-        errorMessage = err.message;
+      const errorMessage = (() => {
+        switch (err.code) {
+          case "ERR_NETWORK":         return "서버와의 연결이 원활하지 않습니다.";
+          case "ERR_BAD_RESPONSE":    return "서버에서 오류가 발생했습니다.";
+          case "ECONNABORTED":        return "서버가 시간 내로 응답하지 않았습니다.";
+          default:                    return err.message;
+        }
+      })();
       StaticComponentRefs.toastRef?.current?.error(errorMessage);
       return {};
       //return err.response.data;

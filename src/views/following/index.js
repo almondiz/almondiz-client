@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { UserViewModel } from "../../view-models";
 
 import { StaticComponentRefs } from "../../util";
-import { ModalDefaultConfirm } from "../../components/modal-default-forms";
+import { showModalFormConfirm } from "../../components/modal";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -55,20 +55,15 @@ const FollowingPage = () => {
 
   const ButtonUnfollow = ({ followee, idx }) => {
     const { modalRef } = StaticComponentRefs;
-    const modalDefaultMenuListRef = useRef();
-
-    const showModal = () => {
-      modalRef?.current?.show(
-        <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultMenuListRef} title={"정말 구독을 취소하시겠어요?"} />,
-        async () => {
-          const { choice } = modalDefaultMenuListRef.current?.destruct();
-          if (choice)   unfollow(followee, idx);
-        }
-      );
-    };
-
+    const modalFormConfirmRef = useRef();
+    const onClick = () => (
+      showModalFormConfirm(modalRef, modalFormConfirmRef, {
+        title: "정말 구독을 취소하시겠어요?",
+        callback: async (choice) => (choice && unfollow(followee, idx)),
+      })
+    );
     return (
-      <button className="button button-unfollow" onClick={showModal}>구독 취소</button>
+      <button className="button button-unfollow" onClick={onClick}>구독 취소</button>
     );
   };
 

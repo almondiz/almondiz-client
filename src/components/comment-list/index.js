@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StaticComponentRefs, Pipe } from "../../util";
-import { ModalDefaultMenuList } from "../modal-default-forms";
+import { showModalFormConfirm, showModalFormMenuList } from "../../components/modal";
 
 import "./style.scoped.scss";
 import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
@@ -69,36 +69,32 @@ const CommentUnit = ({ comment={}, root=false }) => {
   };
   const ButtonMore = ({ comment }) => {
     const { modalRef } = StaticComponentRefs;
-    const modalDefaultMenuListRef = useRef();
+    const modalFormMenuListRef = useRef();
 
     const onClickModalDelete = deleteComment;
     //const onClickModalReport = () => {};
-
-    const showModal = () => {
+    
+    const onClick = () => {
       const myCommentMenus = [
         { title: "삭제하기", choice: "DELETE", danger: true },
       ];
       const otherCommentMenus = [
         { title: "신고하기", choice: "REPORT", },
       ];
-
-      modalRef?.current?.show(
-        <ModalDefaultMenuList modalRef={modalRef} ref={modalDefaultMenuListRef}
-          menus={(comment.commentAuthorRelation === "me") ? myCommentMenus : otherCommentMenus}
-        />,
-        async () => {
-          const { choice } = modalDefaultMenuListRef.current?.destruct();
+      showModalFormMenuList(modalRef, modalFormMenuListRef, {
+        menus: (comment.commentAuthorRelation === "me") ? myCommentMenus : otherCommentMenus,
+        callback: async (choice) => {
           switch (choice) {
             case "DELETE":
               return onClickModalDelete();
             case "REPORT":
               return;//onClickModalReport();
           }
-        }
-      );
+        },
+      });
     };
     return (
-      <button className="button button-comment-more" onClick={showModal}>
+      <button className="button button-comment-more" onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );

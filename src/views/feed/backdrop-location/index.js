@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { SearchViewModel } from "../../../view-models";
 
 import { StaticComponentRefs, Frame } from "../../../util";
-import { ModalDefaultConfirm } from "../../../components/modal-default-forms";
+import { showModalFormConfirm } from "../../../components/modal";
 import Slider from "../../../components/slider";
 import NaverMap from "../../../components/naver-map";
 
@@ -266,11 +266,11 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
   const updateLocation = async (_location, isMyLocation) => {
     if (tracking) {
       if (!isMyLocation) {
-        showModalMyLocation(_location, false);
+        askUntrackMyLocation(_location);
       }
     } else {
       if (isMyLocation) {
-        showModalMyLocation(_location, true);
+        askTrackMyLocation(_location);
       } else {
         updateLocationComplete(_location, false); 
       }
@@ -283,28 +283,20 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
       setTracking(_tracking), setLocation(_location);
     }
   };
-  const modalDefaultConfirmRef = useRef();
-  const showModalMyLocation = (data, set) => {
-    const { modalRef } = StaticComponentRefs;
-    if (set) {
-      modalRef?.current?.show(
-        <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultConfirmRef} title={"계속 내 위치로 설정해 둘까요?"} />,
-        async () => {
-          const { choice } = modalDefaultConfirmRef.current?.destruct();
-          updateLocationComplete(data, choice);
-        }
-      );
-    } else {
-      modalRef?.current?.show(
-        <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultConfirmRef} title={"위치 추적을 해제하시겠어요?"} />,
-        async () => {
-          const { choice } = modalDefaultConfirmRef.current?.destruct();
-          if (choice) {
-            updateLocationComplete(data, false);
-          }
-        }
-      );
-    }
+
+  const { modalRef } = StaticComponentRefs;
+  const modalFormConfirmRef = useRef();
+  const askTrackMyLocation = data => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "계속 내 위치로 설정해 둘까요?",
+      callback: async (choice) => updateLocationComplete(data, choice),
+    });
+  };
+  const askUntrackMyLocation = data => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "위치 추적을 해제하시겠어요?",
+      callback: async (choice) => (choice && updateLocationComplete(data, false)),
+    });
   };
 
   // distance

@@ -7,7 +7,7 @@ import CommentList from "../../components/comment-list";
 import ImageSlider from "../image-slider";
 import ImageGrid from "../../components/image-grid";
 import ImageViewer from "../../components/image-viewer";
-import { ModalDefaultMenuList, ModalDefaultConfirm } from "../modal-default-forms";
+import { showModalFormMenuList, showModalFormConfirm } from "../../components/modal";
 
 import "./style.scoped.scss";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
@@ -62,36 +62,42 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
   );
   const ButtonMore = ({ post }) => {
     const { modalRef } = StaticComponentRefs;
-    const modalDefaultMenuListRef = useRef();
-    const modalDefaultConfirmRef = useRef();
+    const modalFormMenuListRef = useRef();
+    const modalFormConfirmRef = useRef();
 
     const onClickModalModify = () => modifyPost();
     const onClickModalDelete = () => {
-      modalRef?.current?.show(
-        <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultConfirmRef} title={"정말로 삭제하시겠어요?"} />,
-        async () => {
-          const { choice } = modalDefaultConfirmRef.current?.destruct();
-          if (choice)   deletePost();
-        }
-      );
-    }
+      showModalFormConfirm(modalRef, modalFormConfirmRef, {
+        title: "정말로 삭제하시겠어요?",
+        callback: async (choice) => (choice && deletePost()),
+      });
+    };
     //const onClickModalReport = () => {};
 
-    const showModal = () => {
+    const onClick = () => {
       const myPostMenus = [
         { title: "수정하기", choice: "MODIFY", },
         { title: "삭제하기", choice: "DELETE", danger: true },
       ];
       const otherPostMenus = [
-        { title: "신고하기", choice: "REPORT", },
+        { title: "구독", choice: "FOLLOW", },
+        { title: "신고하기", choice: "REPORT", danger: true },
       ];
-
-      modalRef?.current?.show(
-        <ModalDefaultMenuList modalRef={modalRef} ref={modalDefaultMenuListRef}
-          menus={(post.postAuthorRelation === "me") ? myPostMenus : otherPostMenus}
-        />,
-        async () => {
-          const { choice } = modalDefaultMenuListRef.current?.destruct();
+      const followingPostMenus = [
+        { title: "구독 취소", choice: "UNFOLLOW", },
+        { title: "신고하기", choice: "REPORT", danger: true },
+      ];
+      const menus = (() => {
+        switch (post.postAuthorRelation) {
+          case "me":          return myPostMenus;
+          case "following":   return followingPostMenus;
+          case "other":
+          default:            return otherPostMenus;
+        }
+      })();
+      showModalFormMenuList(modalRef, modalFormMenuListRef, {
+        menus,
+        callback: async (choice) => {
           switch (choice) {
             case "MODIFY":
               return onClickModalModify();
@@ -100,11 +106,11 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
             case "REPORT":
               return;//onClickModalReport();
           }
-        }
-      );
+        },
+      });
     };
     return (
-      <button className="button button-more" onClick={showModal}>
+      <button className="button button-more" onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );

@@ -56,9 +56,11 @@ export default class PostViewModel {
 
       const postAuthor = data.user;
       const postAuthorId = postAuthor.userId;
+      
+      postAuthor.relation = "me";   // ### DUMMY
       const postAuthorRelation = postAuthor.relation;
 
-      data.shop.link = "https://m.naver.com";   // ###
+      data.shop.link = "https://m.naver.com";   // ### DUMMY
     
       return {
         postId,
@@ -91,13 +93,10 @@ export default class PostViewModel {
         postAuthorEmoji: postAuthor.thumb.emoji,
         postAuthorName: (() => {
           switch (postAuthorRelation) {
-            case "me":
-              return "나";
-            case "following":
-              return postAuthor.alias;
+            case "me":          return "나";
+            case "following":   return postAuthor.alias;
             case "other":
-            default:
-              return postAuthor.nickName;
+            default:            return postAuthor.nickName;
           }
         })(),
         postAuthorRelation,
