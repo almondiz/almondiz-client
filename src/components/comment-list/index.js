@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StaticComponentRefs, Pipe } from "../../util";
+import { ModalDefaultMenuList } from "../modal-default-forms";
 
 import "./style.scoped.scss";
 import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
@@ -12,7 +13,18 @@ import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 const CommentUnit = ({ comment={}, root=false }) => {
   const navigate = useNavigate();
 
-  const commentUnitRef = useRef();
+  const { toastRef } = StaticComponentRefs;
+
+
+  const deleteComment = async () => {
+    const success = await comment.delete();
+    if (success) {
+      toastRef?.current?.log("댓글을 삭제했습니다.");
+      Pipe.get("postPage")?.refreshAllComments();
+    }
+  };
+  //const reportComment = async () => {};
+
 
   const ButtonLike = ({ comment }) => {
     const [focus, setFocus] = useState(comment.isLiked);
@@ -20,7 +32,6 @@ const CommentUnit = ({ comment={}, root=false }) => {
       const b = !focus;
       const success = await comment.like(b);
       if (success) {
-        const { toastRef } = StaticComponentRefs;
         toastRef?.current?.log(b ? "좋아요했습니다." : "좋아요가 취소되었습니다.");
         setFocus(b);
       }
@@ -44,7 +55,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
         commentUnitRef.current?.classList.remove("focus");
       };
 
-      const { commentInputController } = Pipe;
+      const commentInputController = Pipe.get("commentInput");
       if (focus)
         commentInputController?.hide();
       else
@@ -57,18 +68,43 @@ const CommentUnit = ({ comment={}, root=false }) => {
     );
   };
   const ButtonMore = ({ comment }) => {
-    const onClick = async () => {
-      const success = await comment.delete();
-      if (success) {
-        Pipe.get("page")?.refreshAllComments();
-      }
-    }
+    const { modalRef } = StaticComponentRefs;
+    const modalDefaultMenuListRef = useRef();
+
+    const onClickModalDelete = deleteComment;
+    //const onClickModalReport = () => {};
+
+    const showModal = () => {
+      const myCommentMenus = [
+        { title: "삭제하기", choice: "DELETE", danger: true },
+      ];
+      const otherCommentMenus = [
+        { title: "신고하기", choice: "REPORT", },
+      ];
+
+      modalRef?.current?.show(
+        <ModalDefaultMenuList modalRef={modalRef} ref={modalDefaultMenuListRef}
+          menus={(comment.commentAuthorRelation === "me") ? myCommentMenus : otherCommentMenus}
+        />,
+        async () => {
+          const { choice } = modalDefaultMenuListRef.current?.destruct();
+          switch (choice) {
+            case "DELETE":
+              return onClickModalDelete();
+            case "REPORT":
+              return;//onClickModalReport();
+          }
+        }
+      );
+    };
     return (
-      <button className="button button-comment-more" onClick={onClick}>
+      <button className="button button-comment-more" onClick={showModal}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );
   };
+
+  const commentUnitRef = useRef();
 
   return (
     <article className="comment-unit" data-comment-id={comment.commentId} ref={commentUnitRef}>

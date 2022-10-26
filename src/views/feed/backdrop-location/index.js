@@ -283,22 +283,22 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
       setTracking(_tracking), setLocation(_location);
     }
   };
-  const modalMyLocationRef = useRef();
+  const modalDefaultConfirmRef = useRef();
   const showModalMyLocation = (data, set) => {
     const { modalRef } = StaticComponentRefs;
     if (set) {
       modalRef?.current?.show(
-        <ModalDefaultConfirm modalRef={modalRef} ref={modalMyLocationRef} title={"계속 내 위치로 설정해 둘까요?"} />,
+        <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultConfirmRef} title={"계속 내 위치로 설정해 둘까요?"} />,
         async () => {
-          const { choice } = modalMyLocationRef.current?.destruct();
+          const { choice } = modalDefaultConfirmRef.current?.destruct();
           updateLocationComplete(data, choice);
         }
       );
     } else {
       modalRef?.current?.show(
-        <ModalDefaultConfirm modalRef={modalRef} ref={modalMyLocationRef} title={"위치 추적을 해제하시겠어요?"} />,
+        <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultConfirmRef} title={"위치 추적을 해제하시겠어요?"} />,
         async () => {
-          const { choice } = modalMyLocationRef.current?.destruct();
+          const { choice } = modalDefaultConfirmRef.current?.destruct();
           if (choice) {
             updateLocationComplete(data, false);
           }

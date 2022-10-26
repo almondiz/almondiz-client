@@ -29,7 +29,7 @@ const FloatController = () => {
 };
 
 
-const SettingsPage = () => {
+const MenuPage = () => {
   return (
     <div id="page">
       <main className="content">
@@ -115,4 +115,4 @@ const SettingsPage = () => {
   );
 };
 
-export default SettingsPage;
+export default MenuPage;

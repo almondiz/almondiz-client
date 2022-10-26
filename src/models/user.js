@@ -26,6 +26,10 @@ export default class UserModel extends DefaultModel {
   getMyAllFollowings() {
     return this.callApi(() => this.api.getMyAllFollowings());
   }
+  // DELETE /api/follow/{followId}
+  unfollow(userId) {
+    return this.callApi(() => this.api.unfollow(userId));
+  }
 
 
   /** 3. NOTIFICATION API */
@@ -33,6 +37,12 @@ export default class UserModel extends DefaultModel {
   getMyNoticeData() {
     return this.callApi(() => this.api.getMyNoticeData());
   }
+  // DELETE /api/notifications
+  popNotice(noticeId) {
+    return this.callApi(() => this.api.popNotice(noticeId));
+  }
+  
+  
 
 
 

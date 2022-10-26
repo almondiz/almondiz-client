@@ -34,6 +34,18 @@ export default class NoticeViewModel {
       isRead: data.read,    // boolean
       noticeText: data.text,
       noticeCreatedAt: data.createdAt,
+
+      pop: async () => {
+        const { res } = await this.userModel.popNotice(noticeId);
+        if (res.success) {
+          console.log(`[NoticeViewModel.pop]`, res);
+          return res.success;
+        } else {
+          console.error(`[NoticeViewModel.pop]`, res);
+          StaticComponentRefs.toastRef?.current?.error(res.msg);
+          return null;
+        }
+      },
     }
   }
   static _dummyNoticeData = [
@@ -42,12 +54,16 @@ export default class NoticeViewModel {
       isRead: true,
       noticeText: `회원님이 "소고" 음식점을 리뷰한 글의 스크랩 수가 100개를 달성했습니다.`,
       noticeCreatedAt: getTime(1638802800000),
+
+      pop: () => true,
     },
     {
       noticeId: 2,
       isRead: false,
       noticeText: `닭발 피스타치오님이 대댓글을 달았습니다.\n"고마워요 :)"`,
       noticeCreatedAt: getTime(1663155700000),
+
+      pop: () => true,
     },
   ];
 };

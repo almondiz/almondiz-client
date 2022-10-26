@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { Frame } from "../../util";
+import { StaticComponentRefs, Frame } from "../../util";
 import { PostViewModel, EditViewModel, SearchViewModel } from "../../view-models";
 
 import FrameFindShop from "./frame-find-shop";
@@ -45,6 +45,7 @@ const EditMode = ({ postId }) => {
     const success = await modifyPost();
     if (success) {
       navigate(`/me`);
+      StaticComponentRefs.toastRef?.current?.log("글을 수정했습니다.");
     }
   };
 
@@ -82,6 +83,7 @@ const CreateMode = () => {
     const success = await createPost();
     if (success) {
       navigate(`/me`);
+      StaticComponentRefs.toastRef?.current?.log("글을 게시했습니다.");
     }
   };
 
@@ -96,7 +98,6 @@ const CreateMode = () => {
       searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
     />,
   ]);
-
   return frame.view();
 };
 

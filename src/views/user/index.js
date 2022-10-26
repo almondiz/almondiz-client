@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Navigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 import store from "../../store";
 
-import { StaticComponentRefs, Frame } from "../../util";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
+import { StaticComponentRefs, Frame } from "../../util";
 import PostItem from "../../components/post-item";
+import { ModalDefaultMenuList } from "../../components/modal-default-forms";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -92,7 +93,7 @@ const UserPage = () => {
       </button>
     );
   };
-  const ButtonSettings = ({}) => {
+  const ButtonMenu = ({}) => {
     const onClick =() => navigate(`/menu`);
     return (
       <button className="button button-menu" onClick={onClick}>
@@ -100,10 +101,35 @@ const UserPage = () => {
       </button>
     );
   };
-  const ButtonMore = ({}) => {
-    const onClick =() => {};
+  const ButtonMore = ({ user }) => {
+    const { modalRef } = StaticComponentRefs;
+    const modalDefaultMenuListRef = useRef();
+
+    //const onClickModalReport = () => {};
+
+    const showModal = () => {
+      const myMenus = [];
+      const otherMenus = [
+        { title: "신고하기", choice: "REPORT", },
+      ];
+
+      modalRef?.current?.show(
+        <ModalDefaultMenuList modalRef={modalRef} ref={modalDefaultMenuListRef}
+          menus={(user.userRelation === "me") ? myMenus : otherMenus}
+        />,
+        async () => {
+          const { choice } = modalDefaultMenuListRef.current?.destruct();
+          switch (choice) {
+            case "DELETE":
+              return onClickModalDelete();
+            case "REPORT":
+              return;//onClickModalReport();
+          }
+        }
+      );
+    };
     return (
-      <button className="button button-more" onClick={onClick}>
+      <button className="button button-more" onClick={showModal}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );
@@ -121,7 +147,7 @@ const UserPage = () => {
                 <div className="brand"><Logotype /></div>
                 <div className="buttons right">
                   <ButtonNotice user={user} />
-                  <ButtonSettings />
+                  <ButtonMenu />
                 </div>
               </header>
             );
@@ -147,7 +173,7 @@ const UserPage = () => {
 
             {user.userRelation !== "me" && (
               <div className="buttons right">
-                <ButtonMore />
+                <ButtonMore user={user} />
               </div>
             )}
           </div>

@@ -23,12 +23,20 @@ export const login = body => {
 /** 2. FOLLOW API */
 // GET /api/api/followings
 export const getMyAllFollowings = () => {
-  return api.get(path.user.followings);
+  return api.get(path.follow.all);
+};
+// DELETE /api/follow/{followId}
+export const unfollow = userId => {
+  return api.delete(path.follow.one(userId));
 };
 
 
 /** 3. NOTIFICATION API */
 // GET /api/notifications
 export const getMyNoticeData = () => {
-  return api.get(path.user.notices);
+  return api.get(path.notice.all);
 }
+// DELETE /api/notifications
+export const popNotice = noticeId => {
+  return api.delete(path.notice.one(noticeId));
+};

@@ -48,9 +48,8 @@ const FloatController = ({ post, createComment }) => {
         const action = replyController ? replyController.reply : createComment;
         const success = await action(text);
         if (success) {
-          Pipe.get("page")?.refreshAllComments();
+          Pipe.get("postPage")?.refreshAllComments();
         }
-        
         commentInputController.hide();
       },
 
@@ -64,7 +63,7 @@ const FloatController = ({ post, createComment }) => {
         footerFrame.move(0);
       },
     };
-    Pipe.set("commentInputController", commentInputController, []);
+    Pipe.set("commentInput", commentInputController, []);
 
 
     const ButtonScrap = ({ post }) => {
@@ -144,7 +143,6 @@ const PostPage = () => {
   const [comments, setComments] = useState(null);
   const readAllComments = async () => {
     if (!post)  return;
-    console.log(6);
     const postAuthorId = post.postAuthorId;
     setComments(await commentViewModel.readAllComments(postId, { postAuthorId }));
   };
@@ -153,7 +151,7 @@ const PostPage = () => {
   const createComment = async (text) => (await commentViewModel.createComment(postId, text));
   /** */
 
-  Pipe.set("page", {
+  Pipe.set("postPage", {
     refreshAll: () => (readPost(), readAllComments()),
     refreshPost: readPost,
     refreshAllComments: readAllComments,

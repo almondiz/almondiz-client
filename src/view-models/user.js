@@ -84,8 +84,8 @@ export default class UserViewModel {
     try {
       const userId = data.userId;
 
-      data.relation = "me";   // ###
-      data.alias = "곰돌이 푸";   // ###
+      //data.relation = "me";   // ###
+      //data.alias = "곰돌이 푸";   // ###
       const userRelation = data.relation;   // "me" | "following" | "other"
 
       return {
@@ -185,6 +185,18 @@ export default class UserViewModel {
         userColor: data.thumb.color,
         userName: data.alias,
         userNameDescription: data.nickName,
+
+        unfollow: async () => {
+          const { res } = await this.model.unfollow(userId);
+          if (res.success) {
+            console.log(`[UserViewModel.unfollow]`, res);
+            return res.success;
+          } else {
+            console.error(`[UserViewModel.unfollow]`, res);
+            StaticComponentRefs.toastRef?.current?.error(res.msg);
+            return null;
+          }
+        },
       };
     } catch (err) {
       console.error("[UserViewModel._makeFollowData]", err, data);
@@ -199,6 +211,8 @@ export default class UserViewModel {
       userColor: "#ef9a9a",
       userName: "곰돌이푸",
       userNameDescription: "닭발 피스타치오",
+
+      unfollow: () => true,
     },
     {
       userId: 240,
@@ -206,6 +220,8 @@ export default class UserViewModel {
       userColor: "#9fa8da",
       userName: "아이조아죽겠어",
       userNameDescription: "마제멘 호두",
+
+      unfollow: () => true,
     },
   ];
 };

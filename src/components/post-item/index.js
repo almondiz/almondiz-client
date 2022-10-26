@@ -28,12 +28,12 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
   const { toastRef } = StaticComponentRefs;
 
 
-  const modifyPost = post => {
+  const modifyPost = () => {
     const { postId } = post;
     toastRef?.current?.log("수정 화면으로 이동합니다.");
     navigate(`/edit`, { state: { postId } });
   };
-  const deletePost = async (post) => {
+  const deletePost = async () => {
     const success = await post.delete();
     if (success) {
       toastRef?.current?.log("글를 삭제했습니다.");
@@ -43,7 +43,7 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
         popPost();
     }
   };
-  //const reportPost = async (post) => {};
+  //const reportPost = async () => {};
 
 
   const imageViewerRef = useRef();
@@ -65,17 +65,17 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
     const modalDefaultMenuListRef = useRef();
     const modalDefaultConfirmRef = useRef();
 
-    const onClickModalModify = () => modifyPost(post);
+    const onClickModalModify = () => modifyPost();
     const onClickModalDelete = () => {
       modalRef?.current?.show(
         <ModalDefaultConfirm modalRef={modalRef} ref={modalDefaultConfirmRef} title={"정말로 삭제하시겠어요?"} />,
         async () => {
           const { choice } = modalDefaultConfirmRef.current?.destruct();
-          if (choice)   deletePost(post);
+          if (choice)   deletePost();
         }
       );
     }
-    //const onClickModalReport = async (post) => {};
+    //const onClickModalReport = () => {};
 
     const showModal = () => {
       const myPostMenus = [
@@ -88,10 +88,9 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
 
       modalRef?.current?.show(
         <ModalDefaultMenuList modalRef={modalRef} ref={modalDefaultMenuListRef}
-          menus={(post.postAuthorRelation !== "me") ? myPostMenus : otherPostMenus}
+          menus={(post.postAuthorRelation === "me") ? myPostMenus : otherPostMenus}
         />,
         async () => {
-          console.log(1);
           const { choice } = modalDefaultMenuListRef.current?.destruct();
           switch (choice) {
             case "MODIFY":
