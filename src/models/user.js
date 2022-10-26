@@ -9,11 +9,13 @@ export default class UserModel extends DefaultModel {
   }
   // POST /api/user
   signup(body) {
+    console.log("[UserModel.signup >>]", body);
     return this.callApi(() => this.api.signup(body));
   }
   // POST /api/user/login
-  login(providerType, providerUid) {
-    return this.callApi(() => this.api.login({ providerType, providerUid }));
+  login(body) {
+    console.log("[UserModel.login >>]", body);
+    return this.callApi(() => this.api.login(body));
   }
   // GET /api/user/{userId}
   get(userId) {

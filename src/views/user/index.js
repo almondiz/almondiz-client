@@ -51,7 +51,7 @@ const UserPage = () => {
   const userViewModel = new UserViewModel();
   const [user, setUser] = useState(null);
   const getUser = async () => {
-    const myUserId = store.getState().account.myUserId;
+    const { myUserId } = store.getState().account;
     setUser((userId === myUserId) ? (await userViewModel.whoami()) : (await userViewModel.get(userId)));
   };
   useEffect(() => { getUser(); }, []);
@@ -125,7 +125,7 @@ const UserPage = () => {
       });
     };
     return (
-      <button className="button button-more" onClick={onClick}>
+      <button className="button button-more" onClick={showModalMenuList}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );

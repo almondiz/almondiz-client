@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { useNavigate, useLocation, BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import store from "./store";
 import { useDispatch } from "react-redux";
@@ -35,7 +35,7 @@ const Monitor = () => {
   const initScrollHandler = () => {
     const THRESHOLD = 5;
     let lastScrollY = window.pageYOffset;
-    const scrollDirection = store.getState().global.scrollDirection;
+    const { scrollDirection } = store.getState().global;
     const updateScrollDirection = () => {
       const scrollY = window.pageYOffset;   // same as window.scrollY
       const windowHeight = window.innerHeight;
@@ -100,31 +100,45 @@ const PostLayout = () => {
     (floatRef?.current?.setBottom(<PostBottomNav />));
     return () => (floatRef?.current?.setBottom());
   }, []);
-
   return <Outlet />;
 };
 
 
-const RequireAuth = () => {
-  const { pathname } = useLocation();
-  const { toastRef } = StaticComponentRefs;
+const Root = () => {
+  const { accessToken } = store.getState().account;
+  if (accessToken)
+    return <Navigate to="/feed" />;
+  else
+    return <Navigate to="/login" />;
+};
+const Login = () => {
+  const { accessToken } = store.getState().account;
+  if (accessToken)
+    return <Navigate to="/" />;
+  else
+    return <LoginPage />;
+};
+const Signup = () => {
+  const location = useLocation();
+  const valid = location.state?.valid;
+  if (valid)
+    return <SignupPage />;
+  else
+    return <Navigate to="/" />;
+};
 
-  if (store.getState().account.accessToken) {
-    if (pathname === `/`)
-      return <Navigate to="/feed" />;
-    else
-      return <Outlet />;
+const RequireAuth = () => {
+  const { accessToken } = store.getState().account;
+  if (accessToken) {
+    return <Outlet />;
   } else {
-    if (pathname === `/`)
-      return <Navigate to="/login" />;
-    else if (pathname !== `/login`) {
-      toastRef?.current?.log("권한이 없어 로그인 페이지로 이동합니다.");
-      return <Navigate to="/login" />;
-    }
+    const { toastRef } = StaticComponentRefs;
+    toastRef?.current?.log("권한이 없어 로그인 페이지로 이동합니다.");
+    return <Navigate to="/" />;
   }
 };
 const RedirectToMyPage = () => {
-  const myUserId = store.getState().account.myUserId;
+  const { myUserId } = store.getState().account;
 
   return <Navigate to={`/user/${myUserId}`} />;
 };
@@ -137,10 +151,10 @@ const App = () => {
       <BrowserRouter>
         {staticLayoutLoaded && (
           <Routes>
-            <Route exact path="/" element={<RequireAuth />} />
+            <Route exact path="/" element={<Root />} />
 
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
             
             <Route element={<RequireAuth />}>
               <Route element={<PostLayout />}>

@@ -66,7 +66,7 @@ const ModalFormConfirm = forwardRef(({ modalRef, title, body=<></>, acceptText="
 });
 const ERR_NO_REF_MESSSAGE = "ref가 할당되지 않았습니다.";
 export const showModalFormMenuList = (modalRef, modalMenuListRef, { title, body, menus, callback }) => {
-  if (!modalRef && !modalMenuListRef)   throw new Error(ERR_NO_REF_MESSSAGE);
+  if (!(modalRef && modalMenuListRef))  throw new Error(ERR_NO_REF_MESSSAGE);
   modalRef?.current?.show(
     <ModalFormMenuList modalRef={modalRef} ref={modalMenuListRef}
       title={title} body={body} menus={menus}
@@ -78,7 +78,7 @@ export const showModalFormMenuList = (modalRef, modalMenuListRef, { title, body,
   );
 };
 export const showModalFormConfirm = (modalRef, modalConfirmRef, { title, body, callback }) => {
-  if (!modalRef && !modalConfirmRef)   throw new Error(ERR_NO_REF_MESSSAGE);
+  if (!(modalRef && modalConfirmRef))   throw new Error(ERR_NO_REF_MESSSAGE);
   modalRef?.current?.show(
     <ModalFormConfirm modalRef={modalRef} ref={modalConfirmRef}
       title={title} body={body}

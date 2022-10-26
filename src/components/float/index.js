@@ -8,7 +8,6 @@ import "./style.scoped.scss";
 
 const HideOnScroll = ({ headerWrapRef, footerWrapRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
-
   useEffect(() => {
     const headerWrapObj = headerWrapRef.current;
     const footerWrapObj = footerWrapRef.current;

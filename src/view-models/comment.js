@@ -38,11 +38,9 @@ export default class CommentViewModel {
   }
   _makeCommentItemData(data, { postAuthorId }) {
     const commentId = data.commentId;
-
+    
     const commentAuthor = data.user;
     const commentAuthorId = commentAuthor.userId;
-
-    commentAuthor.relation = "me";   // ### DUMMY
     const commentAuthorRelation = commentAuthor.relation;
   
     return {

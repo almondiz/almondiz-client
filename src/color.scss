@@ -1,12 +1,3 @@
-/* fonts */
-html {
-  --font-family: 'Pretendard Variable', 'Pretendard',
-    -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo,
-    Helvetica Neue, Helvetica, Roboto, Noto Sans KR, Malgun Gothic, sans-serif,
-    Apple Color Emoji, Segoe UI Emoji;
-}
-
-
 /* colors */
 @mixin light-color-scheme {
   --background-color: #fff;

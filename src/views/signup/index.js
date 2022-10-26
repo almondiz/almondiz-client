@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import { StaticComponentRefs } from "../../util";
 
@@ -10,15 +10,17 @@ import { UserViewModel, SearchViewModel } from "../../view-models";
 import FrameSocial from "./frame-social";
 import FrameProfile from "./frame-profile";
 
-import { getAccountInfo, setAccessToken, setRefreshToken } from "../../store/slices/account";
+import { getAccountInfo } from "../../store/slices/account";
 
 
 const SignupPage = () => {
+  const location = useLocation();
+  const { providerType, providerUid, email } = location.state.social;
+
   const { toastRef } = StaticComponentRefs;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const account = useSelector(getAccountInfo);
 
   const [ profileThumb, setProfileThumb ] = useState(null);
   const [ profileTag, setProfileTag ] = useState(null);
@@ -27,24 +29,14 @@ const SignupPage = () => {
   /** 1. USER API */
   const userViewModel = new UserViewModel();
   const callSignup = async () => {
-    const { success, msg, data } = await userViewModel.signup({
-      providerType: account.providerType, providerUid: account.providerUid,
-      email: account.email,
-      profileId: 1,   // ### 이 필드는 뭐임?
-      tagId: profileTag.tagId,
-      nutId: profileNut.nutId,
-      thumb: { emoji: profileThumb.emoji, color: profileThumb.color },
-    });
-    if (success) {
-      toastRef?.current?.log("회원가입되었습니다.");
-
-      const { token, userId } = data;
-      const { accessToken, refreshToken } = token;
-      dispatch(setAccessToken(accessToken));
-      dispatch(setRefreshToken(refreshToken));
-      dispatch(setMyUserId(userId));
-      navigate(`/feed`);
-    }
+    const success = await userViewModel.signup(
+      { providerType, providerUid, email },   
+      {
+        tagId: profileTag.tagId, nutId: profileNut.nutId, thumb: { emoji: profileThumb.emoji, color: profileThumb.color },
+        profileId: 1,   // ### 이 필드는 뭐임?
+      },
+      { dispatch, navigate }
+    );
   };
   /** */
 
@@ -55,14 +47,14 @@ const SignupPage = () => {
   
   const frame = new Frame();
   frame.init([
-    <FrameSocial frame={frame} providerType={account.providerType} email={account.email} />,
+    <FrameSocial frame={frame} email={email} providerType={providerType} />,
     <FrameProfile
       frame={frame}
       getRandomThumb={getRandomThumb} getRandomNut={getRandomNut}
       profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
       setProfileThumb={setProfileThumb} setProfileTag={setProfileTag} setProfileNut={setProfileNut}
       searchFoodTag={searchFoodTag}
-      email={account.email} callSignup={callSignup}
+      email={email} callSignup={callSignup}
     />,
   ]);
 

@@ -48,9 +48,9 @@ const FloatController = ({ post, createComment }) => {
         const action = replyController ? replyController.reply : createComment;
         const success = await action(text);
         if (success) {
-          Pipe.get("postPage")?.refreshAllComments();
+          await Pipe.get("postPage")?.refreshAllComments();
+          commentInputController.hide();
         }
-        commentInputController.hide();
       },
 
       show: (_replyController) => {  // reply, onShowCallback, onHideCallback
@@ -152,7 +152,7 @@ const PostPage = () => {
   /** */
 
   Pipe.set("postPage", {
-    refreshAll: () => (readPost(), readAllComments()),
+    refreshAll: async () => ((await readPost()) && (await readAllComments())),
     refreshPost: readPost,
     refreshAllComments: readAllComments,
   }, [post]);

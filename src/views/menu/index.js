@@ -1,7 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import { UserViewModel } from "../../view-models";
 
 import { StaticComponentRefs } from "../../util";
+import { showModalFormConfirm } from "../../components/modal";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -30,6 +34,24 @@ const FloatController = () => {
 
 
 const MenuPage = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+
+  const { modalRef } = StaticComponentRefs;
+  const modalFormConfirmRef = useRef();
+
+  const onClickMyAllFavorites = () => {};
+  const onClickMyAllComments = () => {};
+  const onClickHomepageInformation = () => {};
+  const onClickDevelopInformation = () => {};
+  const onClickLogout = () => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "로그아웃하시겠어요?",
+      callback: async (choice) => (choice && UserViewModel.logout({ dispatch, navigate })),
+    });
+  };
+  const onClickWithdrawal = () => {};
+
   return (
     <div id="page">
       <main className="content">
@@ -39,12 +61,12 @@ const MenuPage = () => {
               <p className="title">최근 본 글</p>
             </div>
           </li>*/}
-          <li className="settings-item">
+          <li className="settings-item" onClick={onClickMyAllFavorites}>
             <div className="text-wrap">
               <p className="title">좋아한 글</p>
             </div>
           </li>
-          <li className="settings-item">
+          <li className="settings-item" onClick={onClickMyAllComments}>
             <div className="text-wrap">
               <p className="title">댓글 단 글</p>
             </div>
@@ -75,17 +97,16 @@ const MenuPage = () => {
         </ul>*/}
 
         <ul className="settings-list">
-          <li className="settings-item">
+          <li className="settings-item" onClick={onClickHomepageInformation}>
             <div className="text-wrap">
               <p className="title">공식 홈페이지</p>
             </div>
           </li>
-          <li className="settings-item">
+          <li className="settings-item" onClick={onClickDevelopInformation}>
             <div className="text-wrap">
               <p className="title">만든 사람들</p>
             </div>
           </li>
-          <br />
         </ul>
 
         <ul className="settings-list">
@@ -94,7 +115,7 @@ const MenuPage = () => {
               <p className="title">소셜 로그인 연동</p>
             </div>
           </li>*/}
-          <li className="settings-item">
+          <li className="settings-item" onClick={onClickLogout}>
             <div className="text-wrap">
               <p className="title">로그아웃</p>
             </div>
@@ -102,7 +123,7 @@ const MenuPage = () => {
         </ul>
 
         <ul className="settings-list">
-          <li className="settings-item danger">
+          <li className="settings-item danger" onClick={onClickWithdrawal}>
             <div className="text-wrap">
               <p className="title">회원 탈퇴</p>
             </div>

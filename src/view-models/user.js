@@ -1,58 +1,86 @@
 import { UserModel } from "../models";
 import { StaticComponentRefs } from "../util";
 
+import { setEmail, setProviderType, setProviderUid, setAccessToken, setRefreshToken, setMyUserId } from "../store/slices/account";
+
 
 export default class UserViewModel {
   model;
   constructor(model=(new UserModel())) { this.model = model; }
 
 
+  // log out
+  static logout({ dispatch, navigate }) {
+    UserViewModel._disconnect({ dispatch });
+    StaticComponentRefs.toastRef?.current?.log("로그아웃되었습니다.");
+
+    navigate(`/`);
+  }
+  static _disconnect({ dispatch }) {
+    dispatch(setEmail(null));
+    dispatch(setProviderType(null)), dispatch(setProviderUid(null));
+    dispatch(setAccessToken(null)), dispatch(setRefreshToken(null));
+    dispatch(setMyUserId(null));
+  }
+
+
   /** 1. USER API */
+  // POST /api/user/login
+  async login(social, { dispatch, navigate }) {
+    const res = await this.model.login(social);
+    switch (res?.success) {
+      case true:
+        UserViewModel._connect(social, res.data, { dispatch });
+        navigate(`/`);
+
+        console.log("[UserViewModel.login]", res);
+        StaticComponentRefs.toastRef?.current?.log("로그인되었습니다.");
+        return true;
+      case false:
+        switch (res.msg) {
+          case "해당 계정이 존재하지 않거나 잘못된 계정입니다.":
+            //navigate(`/signup`, { state: { valid: true, social } });
+            break;
+          case "옳지 않은 이메일입니다. 이메일 형식을 확인해주세요":
+          default:
+            break;
+        }
+      default:
+        navigate(`/signup`, { state: { valid: true, social } });  // ####
+        console.error("[UserViewModel.login]", res);
+        StaticComponentRefs.toastRef?.current?.error(res.msg);
+        return false;
+    }
+  }
   // POST /api/user
-  async signup(body) {
+  async signup(social, profile, { dispatch, navigate }) {
+    const body = { ...social, ...profile };
     const res = await this.model.signup(body);
     switch (res?.success) {
       case true:
+        UserViewModel._connect(social, res.data, { dispatch });
+        navigate(`/`);
+
         console.log("[UserViewModel.signup]", res);
-        return res;
+        StaticComponentRefs.toastRef?.current?.log("회원 가입되었습니다.");
+        return true;
       case false:
-        break;
-    }
-    return {};
-  }
-  // POST /api/user/login
-  async checkAccount({ providerType, providerUid }, goSignup, goMain) {
-    const { success, ...res } = await this.model.login(providerType, providerUid);
-    if (success) {
-      console.log("[UserViewModel.checkAccount]", res);
-      const { data } = res;
-      goMain(data);
-      return res;
-    } else {
-      console.error("[UserViewModel.checkAccount]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
-      switch (res.msg) {
-        case "해당 계정이 존재하지 않거나 잘못된 계정입니다.":
-          goSignup();
-          break;
-        case "옳지 않은 이메일입니다. 이메일 형식을 확인해주세요":
-        default:
-          break;
-      }
-      return {};
+      default:
+        console.error("[UserViewModel.signup]", res);
+        StaticComponentRefs.toastRef?.current?.log("회원 가입에 실패했습니다.");
+        return false;
     }
   }
-  /*async _login(providerType, providerUid) {
-    const { success, ...res } = await this.model.login(providerType, providerUid);
-    if (success) {
-      console.log("[UserViewModel.login]", res);
-      return res;
-    } else {
-      console.error("[UserViewModel.login]", res);
-      StaticComponentRefs.toastRef?.current?.error(res.msg);
-      return false;
-    }
-  }*/
+  static _connect(social, resData, { dispatch }) {
+    const { providerType, providerUid, email, raw } = social;
+    const { token: { accessToken, refreshToken }, userId } = resData;
+
+    if (!(providerType && providerType && email))   throw new Error();
+    if (!(accessToken && refreshToken && userId))   throw new Error();
+    dispatch(setProviderType(providerType)), dispatch(setProviderUid(providerUid)), dispatch(setEmail(email));
+    dispatch(setAccessToken(accessToken)), dispatch(setRefreshToken(refreshToken)), dispatch(setMyUserId(userId));
+  }
+
 
   // GET /api/user
   async whoami() {

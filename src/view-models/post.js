@@ -56,8 +56,6 @@ export default class PostViewModel {
 
       const postAuthor = data.user;
       const postAuthorId = postAuthor.userId;
-      
-      postAuthor.relation = "me";   // ### DUMMY
       const postAuthorRelation = postAuthor.relation;
 
       data.shop.link = "https://m.naver.com";   // ### DUMMY

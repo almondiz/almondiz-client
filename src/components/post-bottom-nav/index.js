@@ -21,7 +21,7 @@ const PostBottomNav = () => {
   const hasUnreadNotices = false;   // ### FUTURE WORKS
 
   const pathToIndex = { "/feed": 0, "/search": 1, "/scrap": 2, "/me": 3, };
-  const myUserId = store.getState().account.myUserId;
+  const { myUserId } = store.getState().account;
   pathToIndex[`/user/${myUserId}`] = 3;
 
   const [index, setIndex] = useState(null);

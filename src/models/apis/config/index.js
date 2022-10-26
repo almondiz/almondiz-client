@@ -12,7 +12,8 @@ const _api = axios.create({
 });
 
 const patchToken = (method, ...params) => {
-  return _api[method](...params, { headers: { "AUTH-TOKEN": store.getState().account.accessToken } });
+  const { accessToken } = store.getState().account;
+  return _api[method](...params, { headers: { "AUTH-TOKEN": accessToken } });
 };
 
 const api = {

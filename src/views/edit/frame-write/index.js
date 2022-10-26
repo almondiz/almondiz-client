@@ -103,8 +103,8 @@ const FrameWrite = ({
   const textRef = useRef();
   const handleResizeHeight = useCallback(() => {
     const obj = textRef.current;
-    obj.style.height = '1px';
-    obj.style.height = obj.scrollHeight + 'px';
+    obj.style.height = "1px";
+    obj.style.height = obj.scrollHeight + "px";
   }, []);
   useEffect(() => { handleResizeHeight(); }, []);
   const onPostTextChange = useCallback(e => {
