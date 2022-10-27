@@ -18,7 +18,6 @@ export const deletePost = postId => {
 export const modifyPost = (postId, body) => {
   return api.post(path.post.one(postId), body);
 };
-
 // GET /api/posts
 export const readAllPosts = () => {
   return api.get(path.post.all);

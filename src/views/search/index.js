@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { useSelector } from "react-redux";
 
 import { Frame, NoScroll } from "../../util";
-import { PostViewModel, SearchViewModel } from "../../view-models";
+import { PostViewModel, UserViewModel, SearchViewModel } from "../../view-models";
 
 import TagList, { pushTag } from "../../components/tag-list";
-import PostItem from "../../components/post-item";
+import PostList from "../../components/post-list";
 
 import "./style.scoped.scss";
 import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
@@ -14,20 +14,23 @@ import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
 import CloseIcon from "../../asset/icons/mui/close-icon";
 
 
+const PostListController = ({ tags }) => {
+  /** 4. POST API */
+  const [ posts, setPosts ] = useState([]);
+  const postViewModel = new PostViewModel();
+  const searchPosts = async (tags) => setPosts(await postViewModel.readAllPosts());
+  useEffect(() => { searchPosts(); }, []);
+  /** */
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  /** */
+
+  return (posts) && <PostList posts={posts} setPosts={setPosts} userViewModel={userViewModel} />;
+};
+
+
 const Drawer = ({ contentRef }) => {
   const scrollDirection = useSelector(state => state.global.scrollDirection);
-
-  /** 4. POST API */
-  const postViewModel = new PostViewModel();
-  const PostList = ({ tags }) => {
-    const [ posts, setPosts ] = useState([]);
-    const searchPosts = async (tags) => setPosts(await postViewModel.readAllPosts());
-    useEffect(() => { searchPosts(); }, []);
-    return posts && (
-      <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} posts={posts} setPosts={setPosts} />)}</section>
-    );
-  };
-  /** */
 
   /** 0. SEARCH API */
   const [ searchResult, setSearchResult ] = useState({});
@@ -70,7 +73,7 @@ const Drawer = ({ contentRef }) => {
         break;
       case 2:
         setTf("");
-        contentRef.current?.show(<PostList tags={tags} />);
+        contentRef.current?.show(<PostListController tags={tags} />);
         break;
     }
   };

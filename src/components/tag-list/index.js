@@ -33,7 +33,7 @@ const TagItem = ({ tag, editable, onClick }) => {
   const { tagType="food", tagId, tagName } = tag;
 
   return (
-    <div className="tag-item-wrap">
+    <li className="tag-item-wrap">
       <button className="tag-item" data-tag-type={tagType} data-tag-id={tagId} onClick={onClick}>
         <p className="name">{tagName}</p>
         {editable && (
@@ -42,7 +42,7 @@ const TagItem = ({ tag, editable, onClick }) => {
           </div>
         )}
       </button>
-    </div>
+    </li>
   );
 };
 

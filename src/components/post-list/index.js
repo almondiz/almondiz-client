@@ -1,15 +1,13 @@
-import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { UserViewModel } from "../../view-models";
-
-import { StaticComponentRefs } from "../../util";
-import TagList from "../../components/tag-list";
-import CommentList from "../../components/comment-list";
+import { StaticComponentRefs, Pipe } from "../../util";
+import TagList from "../tag-list";
+import CommentList from "../comment-list";
 import ImageSlider from "../image-slider";
-import ImageGrid from "../../components/image-grid";
-import ImageViewer from "../../components/image-viewer";
-import { showModalFormMenuList, showModalFormConfirm } from "../../components/modal";
+import ImageGrid from "../image-grid";
+import ImageViewer from "../image-viewer";
+import { showModalFormMenuList, showModalFormConfirm } from "../modal";
 
 import "./style.scoped.scss";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
@@ -20,59 +18,15 @@ import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
 // detail if posts !== null
-const PostItem = ({ post={}, comments=[], posts=null, setPosts }) => {
+const PostItem = ({ post, detail=false, comments, follow, unfollow, deletePost }) => {
   const navigate = useNavigate();
   const { toastRef } = StaticComponentRefs;
-
-  const detail = !posts;
-  const popPost = idx => {
-    if (detail)
-      navigate(-1);
-    else {
-      const _posts = [...posts];
-      _posts.splice(idx, 1);
-      setPosts(_posts);
-    }
-  };
-
-
-  /** 1. USER API */
-  const userViewModel = new UserViewModel();
-  const follow = async (alias) => {
-    const success = await userViewModel.follow(userId, alias);
-    if (success) {
-      const postAuthorName = alias;
-      const { postAuthorName: postAuthorNameDescription } = post;
-      const _post = { ...post, ...{ postAuthorRelation: "following", postAuthorName, postAuthorNameDescription } };
-      //setPost(_post);
-    }
-  };
-  const unfollow = async () => {
-    const success = await userViewModel.unfollow(userId);
-    if (success) {
-      const { postAuthorNameDescription: postAuthorName } = post;
-      const postAuthorNameDescription = undefined;
-      const _post = { ...post, ...{ userRelation: "other", postAuthorName, postAuthorNameDescription } };
-      //setUser(_user);
-    }
-  };
-  /** */
   
 
   const modifyPost = () => {
     const { postId } = post;
     toastRef?.current?.log("수정 화면으로 이동합니다.");
     navigate(`/edit`, { state: { postId } });
-  };
-  const deletePost = async () => {
-    const success = await post.delete();
-    if (success) {
-      toastRef?.current?.log("글를 삭제했습니다.");
-      if (detail)
-        navigate(-1);
-      else
-        popPost();
-    }
   };
   //const reportPost = async () => {};
 
@@ -214,7 +168,7 @@ const PostItem = ({ post={}, comments=[], posts=null, setPosts }) => {
 
 
   return (
-    <article className={`post ${!detail ? "post-item" : ""}`} data-post-id={post.postId}>
+    <article className={`post ${detail ? "post-detail" : ""}`} data-post-id={post.postId}>
       {!detail && <div className="background" onClick={() => post.goToPostPage(navigate)} />}
       {detail && <ImageViewer images={post.postImages} ref={imageViewerRef} />}
 
@@ -302,6 +256,112 @@ const PostItem = ({ post={}, comments=[], posts=null, setPosts }) => {
       }
     </article>
   );
-}
+};
 
-export default PostItem;
+
+export const PostOne = ({ post={}, setPost, userViewModel, commentViewModel }) => {
+  const navigate = useNavigate();
+  
+  /** 1. USER API */
+  const _updatePost = updatedFields => {
+    const _post = { ...post, ...updatedFields };
+    setPost(_post);
+  };
+  const follow = async (alias) => {
+    const { postAuthorId } = post;
+    const success = await userViewModel.follow(postAuthorId, alias);
+    if (success) {
+      const postAuthorName = alias;
+      const { postAuthorName: postAuthorNameDescription } = post;
+      _updatePost({ postAuthorRelation: "following", postAuthorName, postAuthorNameDescription });
+    }
+  };
+  const unfollow = async () => {
+    const { postAuthorId } = post;
+    const success = await userViewModel.unfollow(postAuthorId);
+    if (success) {
+      const { postAuthorNameDescription: postAuthorName } = post;
+      const postAuthorNameDescription = undefined;
+      _updatePost({ postAuthorRelation: "other", postAuthorName, postAuthorNameDescription });
+    }
+  };
+  const deletePost = async () => {
+    const success = await post.delete();
+    if (success) {
+      toastRef?.current?.log("글을 삭제했습니다.");
+      setPost(null);
+      navigate(-1);
+    }
+  };
+  /** */
+  /** 5-0. COMMENT API */
+  const [comments, setComments] = useState(null);
+  const readAllComments = async () => {
+    if (!post)  return;
+    const { postId, postAuthorId } = post;
+    setComments(await commentViewModel.readAllComments(postId, { postAuthorId }));
+  };
+  useEffect(() => { readAllComments(); }, [post]);
+  /** */
+
+  Pipe.set("comments", { refresh: readAllComments });
+
+  return (comments) && (
+    <PostItem
+      post={post} detail={true} comments={comments}
+      follow={follow} unfollow={unfollow} deletePost={deletePost}
+    />
+  );
+};
+const PostList = ({ posts=[], setPosts, userViewModel }) => {
+  /** 1. USER API */
+  const _updatePosts = (postAuthorId, updatedFields) => {
+    const _posts = posts.map((post, idx) => {
+      if (post.postAuthorId === postAuthorId)
+        return { ...post, ...updatedFields };
+      else
+        return post;
+    });
+    setPosts(_posts);
+  };
+  const follow = async (idx, alias) => {
+    const { postAuthorId } = posts[idx];
+    const success = await userViewModel.follow(postAuthorId, alias);
+    if (success) {
+      const postAuthorName = alias;
+      const { postAuthorName: postAuthorNameDescription } = posts[idx];
+      _updatePosts(postAuthorId, { postAuthorRelation: "following", postAuthorName, postAuthorNameDescription });
+    }
+  };
+  const unfollow = async (idx) => {
+    const { postAuthorId } = posts[idx];
+    const success = await userViewModel.unfollow(postAuthorId);
+    if (success) {
+      const { postAuthorNameDescription: postAuthorName } = posts[idx];
+      const postAuthorNameDescription = undefined;
+      _updatePosts(postAuthorId, { postAuthorRelation: "other", postAuthorName, postAuthorNameDescription });
+    }
+  };
+  const deletePost = async (idx) => {
+    const success = await posts[idx].delete();
+    if (success) {
+      toastRef?.current?.log("글을 삭제했습니다.");
+      const _posts = [...posts];
+      _posts.splice(idx, 1);
+      setPosts(_posts);
+    }
+  };
+  /** */
+
+  return (
+    <section className="post-list">
+      {posts.map((post, idx) => (
+        <PostItem key={idx}
+          post={post} detail={false}
+          follow={alias => follow(idx, alias)} unfollow={() => unfollow(idx)} deletePost={() => deletePost(idx)}
+        />
+      ))}
+    </section>
+  );
+};
+export default PostList;

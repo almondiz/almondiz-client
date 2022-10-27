@@ -10,11 +10,25 @@ export default class UserViewModel {
 
 
   // log out
-  static logout({ dispatch, navigate }) {
+  async logout({ dispatch, navigate }) {
     UserViewModel._disconnect({ dispatch });
-    StaticComponentRefs.toastRef?.current?.log("로그아웃되었습니다.");
-
-    navigate(`/`);
+    navigate(`/`, { state: { message: "로그아웃되었습니다." } });
+  }
+  // DELETE /api/user
+  async withdrawal({ dispatch, navigate }) {
+    const res = await this.model.withdrawal();
+    switch (res?.success) {
+      case true:
+        console.log("[UserViewModel.withdrawal]", res);
+        UserViewModel._disconnect({ dispatch });
+        navigate(`/`, { state: { message: "회원 탈퇴되었습니다. 이용해주셔서 감사합니다." } });
+        return true;
+      case false:
+      default:
+        console.error("[UserViewModel.login]", res);
+        StaticComponentRefs.toastRef?.current?.error("회원 탈퇴 실패했습니다.");
+        return false;
+    }
   }
   static _disconnect({ dispatch }) {
     dispatch(setEmail(null));
@@ -30,25 +44,22 @@ export default class UserViewModel {
     const res = await this.model.login(social);
     switch (res?.success) {
       case true:
-        UserViewModel._connect(social, res.data, { dispatch });
-        navigate(`/`);
-
         console.log("[UserViewModel.login]", res);
-        StaticComponentRefs.toastRef?.current?.log("로그인되었습니다.");
+        UserViewModel._connect(social, res.data, { dispatch });
+        navigate(`/`, { state: { message: "로그인되었습니다." } });
         return true;
       case false:
         switch (res.msg) {
           case "해당 계정이 존재하지 않거나 잘못된 계정입니다.":
-            //navigate(`/signup`, { state: { valid: true, social } });
+            navigate(`/signup`, { state: { valid: true, social } });    // #### 오류 코드가 제대로 안 뜨는 거 같은데? 500으로만 되는 거 같은데 뭐지
             break;
           case "옳지 않은 이메일입니다. 이메일 형식을 확인해주세요":
           default:
             break;
         }
       default:
-        navigate(`/signup`, { state: { valid: true, social } });  // ####
         console.error("[UserViewModel.login]", res);
-        StaticComponentRefs.toastRef?.current?.error(res.msg);
+        StaticComponentRefs.toastRef?.current?.error(res?.msg);
         return false;
     }
   }
@@ -58,16 +69,14 @@ export default class UserViewModel {
     const res = await this.model.signup(body);
     switch (res?.success) {
       case true:
-        UserViewModel._connect(social, res.data, { dispatch });
-        navigate(`/`);
-
         console.log("[UserViewModel.signup]", res);
-        StaticComponentRefs.toastRef?.current?.log("회원 가입되었습니다.");
+        UserViewModel._connect(social, res.data, { dispatch });
+        navigate(`/`, { state: { message: "회원 가입되었습니다." } });
         return true;
       case false:
       default:
         console.error("[UserViewModel.signup]", res);
-        StaticComponentRefs.toastRef?.current?.log("회원 가입에 실패했습니다.");
+        StaticComponentRefs.toastRef?.current?.log("회원 가입 실패했습니다.");
         return false;
     }
   }
@@ -112,7 +121,7 @@ export default class UserViewModel {
     try {
       const userId = data.userId;
 
-      data.relation = "following";   // ### DUMMY
+      //data.relation = "me";   // ### DUMMY
       //data.alias = "곰돌이 푸";   // ### DUMMY
       const userRelation = data.relation;   // "me" | "following" | "other"
 

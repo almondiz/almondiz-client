@@ -10,6 +10,10 @@ export const whoami = () => {
 export const signup = body => {
   return api.post(path.user.default, body);
 };
+// DELETE /api/user
+export const withdrawal = () => {
+  return api.delete(path.user.default);
+}
 // GET /api/user/{userId}
 export const get = userId => {
   return api.get(path.user.one(userId));

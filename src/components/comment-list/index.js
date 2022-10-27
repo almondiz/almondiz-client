@@ -10,19 +10,12 @@ import FavoriteIconFill from "../../asset/icons/mui/favorite-icon-fill";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
-const CommentUnit = ({ comment={}, root=false }) => {
+const CommentUnit = ({ comment={}, root=false, deleteComment }) => {
   const navigate = useNavigate();
 
   const { toastRef } = StaticComponentRefs;
 
 
-  const deleteComment = async () => {
-    const success = await comment.delete();
-    if (success) {
-      toastRef?.current?.log("댓글을 삭제했습니다.");
-      Pipe.get("postPage")?.refreshAllComments();
-    }
-  };
   //const reportComment = async () => {};
 
 
@@ -134,8 +127,6 @@ const CommentUnit = ({ comment={}, root=false }) => {
     </article>
   );
 };
-
-
 const CommentItem = ({ comment={}, root=false }) => {
   return (
     <li className="comment-item">
@@ -145,10 +136,24 @@ const CommentItem = ({ comment={}, root=false }) => {
   );
 };
 
-const CommentList = ({ comments=[], root=false }) => {
+
+const CommentList = ({ comments=[], setComments, root=false }) => {
+  const deleteComment = async (idx) => {
+    const success = await comments[idx].delete();
+    if (success) {
+      toastRef?.current?.log("댓글을 삭제했습니다.");
+      Pipe.get("postPage")?.refreshAllComments();
+    }
+  };
+
   return (
     <ul className={`comment-list ${root ? "root" : ""}`}>
-      {comments.map((comment, idx) => <CommentItem key={idx} comment={comment} root={root} />)}
+      {comments.map((comment, idx) => (
+        <CommentItem key={idx}
+          comment={comment} root={root}
+          deleteComment={() => deleteComment(idx)}
+        />
+      ))}
     </ul>
   );
 };

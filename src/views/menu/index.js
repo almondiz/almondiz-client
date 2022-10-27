@@ -40,6 +40,10 @@ const MenuPage = () => {
   const { modalRef } = StaticComponentRefs;
   const modalFormConfirmRef = useRef();
 
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  /** */
+
   const onClickMyAllFavorites = () => {};
   const onClickMyAllComments = () => {};
   const onClickHomepageInformation = () => {};
@@ -47,10 +51,15 @@ const MenuPage = () => {
   const onClickLogout = () => {
     showModalFormConfirm(modalRef, modalFormConfirmRef, {
       title: "로그아웃하시겠어요?",
-      callback: async (choice) => (choice && UserViewModel.logout({ dispatch, navigate })),
+      callback: async (choice) => (choice && userViewModel.logout({ dispatch, navigate })),
     });
   };
-  const onClickWithdrawal = () => {};
+  const onClickWithdrawal = () => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "회원 탈퇴를 하시겠어요?",
+      callback: async (choice) => (choice && userViewModel.withdrawal({ dispatch, navigate })),
+    });
+  };
 
   return (
     <div id="page">

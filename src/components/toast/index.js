@@ -1,5 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, forwardRef, useImperativeHandle } from "react";
 
 import { Motion } from "../../util";
 
@@ -15,6 +14,7 @@ const Toast = forwardRef((_, ref) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState("");
 
+  const ACTIVE_TIME = 3000;
   const MOTION_DELAY = 500;
   const motion = new Motion({
     "hide": () => (setVisible(false), setMessage(""), setMessageType("")),
@@ -22,12 +22,12 @@ const Toast = forwardRef((_, ref) => {
       setVisible(true), setMessage(_message), setMessageType(_messageType);
       motion.delay(100, "show");
     },
-    "show": () => motion.delay(MOTION_DELAY * 6, "hide-in"),
+    "show": () => motion.delay(ACTIVE_TIME, "hide-in"),
     "hide-in": () => motion.delay(MOTION_DELAY, "hide"),
   }, "hide");
 
-  const log = (message="") => motion.go("hide-out", [message, NORMAL]);
-  const error = (message="") => motion.go("hide-out", [message, ERROR]);
+  const log = (message="") => message && motion.go("hide-out", [message, NORMAL]);
+  const error = (message="") => message && motion.go("hide-out", [message, ERROR]);
   useImperativeHandle(ref, () => ({ log, error }));
 
   return visible && (

@@ -32,7 +32,7 @@
   
 }
 
-.post.post-item {
+.post:not(.post-detail) {
   &:first-child {
     margin-top: -1rem;
   }
@@ -63,7 +63,7 @@
     }
   }
 }
-.post:not(.post-item) {
+.post.post-detail {
   margin-top: -1rem;
   margin-bottom: -1rem;
 }

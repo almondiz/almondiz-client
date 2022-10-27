@@ -6,7 +6,7 @@ import store from "../../store";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
 import { StaticComponentRefs, Frame } from "../../util";
-import PostItem from "../../components/post-item";
+import PostList from "../../components/post-list";
 import { showModalFormConfirm, showModalFormMenuList } from "../../components/modal";
 
 import "./style.scoped.scss";
@@ -104,13 +104,6 @@ const UserPage = () => {
           </button>
         ))}
       </div>
-    );
-  };
-  const PostList = ({ posts }) => {
-    return (
-      <section className="post-list">
-        {posts.map((post, idx) => <PostItem key={idx} post={post} posts={posts} setPosts={setPosts} />)}
-      </section>
     );
   };
 
@@ -319,7 +312,9 @@ const UserPage = () => {
             </div>
           </div>
         </div>
-        <PostList posts={posts} />
+        <section className="post-list">
+          <PostList posts={posts} setPosts={setPosts} userViewModel={userViewModel} />
+        </section>
       </main>
 
       <FloatController user={user} />

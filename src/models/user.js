@@ -17,6 +17,10 @@ export default class UserModel extends DefaultModel {
     console.log("[UserModel.login >>]", body);
     return this.callApi(() => this.api.login(body));
   }
+  // DELETE /api/user
+  withdrawal() {
+    return this.callApi(() => this.api.withdrawal());
+  }
   // GET /api/user/{userId}
   get(userId) {
     return this.callApi(() => this.api.get(userId));

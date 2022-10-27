@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation, BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
+import { useLocation, BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import store from "./store";
 import { useDispatch } from "react-redux";
@@ -105,6 +105,15 @@ const PostLayout = () => {
 
 
 const Root = () => {
+  const location = useLocation();
+  useEffect(() => {
+    const message = location.state?.message;
+    if (message) {
+      const { toastRef } = StaticComponentRefs;
+      toastRef?.current?.log(message);
+    }
+  }, []);
+
   const { accessToken } = store.getState().account;
   if (accessToken)
     return <Navigate to="/feed" />;
@@ -132,9 +141,8 @@ const RequireAuth = () => {
   if (accessToken) {
     return <Outlet />;
   } else {
-    const { toastRef } = StaticComponentRefs;
-    toastRef?.current?.log("권한이 없어 로그인 페이지로 이동합니다.");
-    return <Navigate to="/" />;
+    const REDIRECT_MESSAGE = "권한이 없어 로그인 페이지로 이동합니다.";
+    return <Navigate to="/" state={{ message: REDIRECT_MESSAGE }} />;
   }
 };
 const RedirectToMyPage = () => {
