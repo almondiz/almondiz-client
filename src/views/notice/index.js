@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, getTime } from "../../util";
 import { NoticeViewModel } from "../../view-models";
+
+import { StaticComponentRefs } from "../../util";
+import { showModalFormConfirm } from "../../components/modal";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
@@ -22,9 +24,9 @@ const FloatController = ({ notices }) => {
   );
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
-    (floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setTop());
+    const { floatRef } = StaticComponentRefs;
+    (floatRef?.current?.setTop(<Top />));
+    return () => (floatRef?.current?.setTop());
   }, []);
 
   return <></>;
@@ -40,16 +42,34 @@ const NoticePage = () => {
   /** */
 
 
+  const popNotice = async (notice, idx) => {
+    const success = await notice.pop();
+    if (success) {
+      const _notices = [...notices];
+      _notices.splice(idx, 1);
+      setNotices(_notices);
+    }
+  };
+  
+  const { modalRef } = StaticComponentRefs;
+  const modalFormConfirmRef = useRef();
+  const onClickPop = (notice, idx) => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "알림을 지우시겠어요?",
+      callback: async (choice) => (choice && popNotice(notice, idx)),
+    });
+  };
+
   const NoticeList = ({ notices }) => {
     return (
       <ul className="notice-list">
         {notices.map((notice, idx) => {
           return (
-            <li key={idx} className={`notice-item ${notice.isRead ? "" : "new"}`}>
+            <li key={idx} className={`notice-item ${notice.isRead ? "" : "new"}`} onClick={() => onClickPop(notice, idx)}>
               <div className={`icon ${notice.isRead ? "" : "badge"}`}><NotificationsIconBorder /></div>
               <div className="text-wrap">
                 <p className="message">{notice.noticeText}</p>
-                <p className="time">{getTime(notice.noticeCreatedAt)}</p>
+                <p className="time">{notice.noticeCreatedAt}</p>
               </div>
             </li>
           );

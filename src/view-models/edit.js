@@ -27,19 +27,19 @@ export default class EditViewModel {
     }
   }
   // PATCH /api/post/{postId}
-  async updatePost(postId, { shop, postTags, postText, postImages }) {
+  async modifyPost(postId, { shop, postTags, postText, postImages }) {
     if ((postText = filterText(postText)) === "")   return false;
     if (!postTags.length)   return false;
 
     const postImageUrls = await this._uploadImages({ postImages });
     const body = this._createBody({ shop, postTags, postText, postImageUrls });
 
-    const { success, ...res } = await this.postModel.updatePost(postId, body);
+    const { success, ...res } = await this.postModel.modifyPost(postId, body);
     if (success) {
-      console.log("[EditViewModel.updatePost]", res);
+      console.log("[EditViewModel.modifyPost]", res);
       return success;
     } else {
-      console.error("[EditViewModel.updatePost]", res);
+      console.error("[EditViewModel.modifyPost]", res);
       StaticComponentRefs.toastRef?.current?.error(res.msg);
       return false;
     }

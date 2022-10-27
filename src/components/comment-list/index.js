@@ -1,7 +1,8 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Pipe } from "../../util";
+import { StaticComponentRefs, Pipe } from "../../util";
+import { showModalFormConfirm, showModalFormMenuList } from "../../components/modal";
 
 import "./style.scoped.scss";
 import FavoriteIconBorder from "../../asset/icons/mui/favorite-icon-border";
@@ -9,17 +10,23 @@ import FavoriteIconFill from "../../asset/icons/mui/favorite-icon-fill";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 
 
-const CommentUnit = ({ comment={}, root=false }) => {
+const CommentUnit = ({ comment={}, root=false, deleteComment }) => {
   const navigate = useNavigate();
 
-  const commentUnitRef = useRef();
+  const { toastRef } = StaticComponentRefs;
+
+
+  //const reportComment = async () => {};
+
 
   const ButtonLike = ({ comment }) => {
     const [focus, setFocus] = useState(comment.isLiked);
     const onClick = async () => {
-      const success = await comment.like(focus);
+      const b = !focus;
+      const success = await comment.like(b);
       if (success) {
-        setFocus(!focus);
+        toastRef?.current?.log(b ? "좋아요했습니다." : "좋아요가 취소되었습니다.");
+        setFocus(b);
       }
     };
     return (
@@ -41,7 +48,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
         commentUnitRef.current?.classList.remove("focus");
       };
 
-      const commentInputController = Pipe.get("commentInputController");
+      const commentInputController = Pipe.get("commentInput");
       if (focus)
         commentInputController?.hide();
       else
@@ -54,20 +61,39 @@ const CommentUnit = ({ comment={}, root=false }) => {
     );
   };
   const ButtonMore = ({ comment }) => {
-    const [focus, setFocus] = useState(false);
-    const onClick = async () => {
-      const success = await comment.delete();
-      if (success) {
-        Pipe.get("reload")?.comments();
-      }
-    }
-    //const onClick = () => setFocus(!focus);
+    const { modalRef } = StaticComponentRefs;
+    const modalFormMenuListRef = useRef();
+
+    const onClickModalDelete = deleteComment;
+    //const onClickModalReport = () => {};
+    
+    const onClick = () => {
+      const myCommentMenus = [
+        { title: "삭제하기", choice: "DELETE", danger: true },
+      ];
+      const otherCommentMenus = [
+        { title: "신고하기", choice: "REPORT", },
+      ];
+      showModalFormMenuList(modalRef, modalFormMenuListRef, {
+        menus: (comment.commentAuthorRelation === "me") ? myCommentMenus : otherCommentMenus,
+        callback: async (choice) => {
+          switch (choice) {
+            case "DELETE":
+              return onClickModalDelete();
+            case "REPORT":
+              return;//onClickModalReport();
+          }
+        },
+      });
+    };
     return (
-      <button className={`button button-comment-more ${focus ? "focus" : ""}`} onClick={onClick}>
+      <button className="button button-comment-more" onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
       </button>
     );
   };
+
+  const commentUnitRef = useRef();
 
   return (
     <article className="comment-unit" data-comment-id={comment.commentId} ref={commentUnitRef}>
@@ -80,7 +106,7 @@ const CommentUnit = ({ comment={}, root=false }) => {
         >
           <p className="emoji">{comment.commentAuthorEmoji}</p>
           <p className="name">{comment.commentAuthorName}</p>
-          {comment.isCommentAuthorPostAuthor && <p className="badge">{"글쓴이"}</p>}
+          {comment.isCommentAuthorPostAuthor && <p className="name-tag">{"글쓴이"}</p>}
         </button>
         <p className="description">{comment.commentCreatedAt}</p>
         <div className="buttons right">
@@ -101,8 +127,6 @@ const CommentUnit = ({ comment={}, root=false }) => {
     </article>
   );
 };
-
-
 const CommentItem = ({ comment={}, root=false }) => {
   return (
     <li className="comment-item">
@@ -112,10 +136,24 @@ const CommentItem = ({ comment={}, root=false }) => {
   );
 };
 
-const CommentList = ({ comments=[], root=false }) => {
+
+const CommentList = ({ comments=[], setComments, root=false }) => {
+  const deleteComment = async (idx) => {
+    const success = await comments[idx].delete();
+    if (success) {
+      toastRef?.current?.log("댓글을 삭제했습니다.");
+      Pipe.get("postPage")?.refreshAllComments();
+    }
+  };
+
   return (
     <ul className={`comment-list ${root ? "root" : ""}`}>
-      {comments.map((comment, idx) => <CommentItem key={idx} comment={comment} root={root} />)}
+      {comments.map((comment, idx) => (
+        <CommentItem key={idx}
+          comment={comment} root={root}
+          deleteComment={() => deleteComment(idx)}
+        />
+      ))}
     </ul>
   );
 };

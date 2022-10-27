@@ -60,8 +60,6 @@
   bottom: 0;
   overflow: hidden;
 
-  @include content-max-width;
-
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
@@ -74,8 +72,6 @@
   right: 0;
   top: 0;
   bottom: 0;
-
-  @include content-max-width;
 
   .tf-frame {
     padding-left: $padding-horiz;
@@ -119,7 +115,7 @@
     }
 
     .shop-list-group,
-    .location-list-group {
+    .place-list-group {
       margin-top: 1rem;
 
       &>.list {
@@ -136,7 +132,7 @@
           .description {
             color: var(--secondary-text-color);
             font-size: .8125rem;
-            margin-top: .5rem;
+            margin-top: .25rem;
           }
         }
       }
@@ -175,32 +171,6 @@
   right: 0;
   bottom: 0;
 
-  @include content-max-width;
-
-  .button-set-my-location {
-    margin-left: 1rem;
-    margin-bottom: 1rem;
-
-    height: 3rem;
-    width: 3rem;
-
-    border-radius: 100%;
-    background-color: var(--float-background-color);
-    -webkit-backdrop-filter: blur(1rem);
-    backdrop-filter: blur(1rem);
-    box-shadow: var(--float-shadow-border);
-
-    &.set {
-      .icon {
-        ::v-deep {
-          svg {
-            fill: var(--content-text-color);
-          }
-        }
-      }
-    }
-  }
-
   .bottom-item-container {
     .bottom-item,
     .bottom-item-init {
@@ -228,8 +198,8 @@
           min-width: 0;
       
           .thumb {
-            width: 2.5rem;
-            height: 2.5rem;
+            width: 2.75rem;
+            height: 2.75rem;
             margin-right: .625rem;
             border-radius: 100%;
             background-size: cover;
@@ -244,9 +214,9 @@
             }
             .title {}
             .description {
-              color: var(--secondary-text-color);
+              margin-top: .25rem;
               font-size: .8125rem;
-              margin-top: .375rem;
+              color: var(--secondary-text-color);
             }
           }
         }

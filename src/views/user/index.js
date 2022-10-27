@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from "react";
-import { useParams, useNavigate, Navigate } from "react-router-dom";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
-import { useSelector } from "react-redux";
 import store from "../../store";
 
-import { StaticComponentRefs, Frame } from "../../util";
 import { UserViewModel, PostViewModel } from "../../view-models";
 
-import PostItem from "../../components/post-item";
+import { StaticComponentRefs, Frame } from "../../util";
+import PostList from "../../components/post-list";
+import { showModalFormConfirm, showModalFormMenuList } from "../../components/modal";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
 import Logotype from "../../asset/logo/logotype";
 import NotificationsIconBorder from "../../asset/icons/mui/notifications-icon-border";
-import SettingsIconBorder from "../../asset/icons/mui/settings-icon-border";
+import MenuIcon from "../../asset/icons/mui/menu-icon";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
+import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
 
 
 const FloatController = ({ user }) => {
@@ -35,20 +36,15 @@ const FloatController = ({ user }) => {
   };
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
-    (floatRef.current?.setHeader(<Header />));
-    return () => (floatRef.current?.setHeader());
+    const { floatRef } = StaticComponentRefs;
+    (floatRef?.current?.setHeader(<Header />));
+    return () => (floatRef?.current?.setHeader());
   }, []);
 
   return <></>;
 };
 
 
-export const RedirectToMyPage = () => {
-  const myUserId = useSelector(state => state.account.myUserId);
-
-  return <Navigate to={`/user/${myUserId}`} />;
-};
 const UserPage = () => {
   const userId = parseInt(useParams().userId);
 
@@ -56,10 +52,38 @@ const UserPage = () => {
   const userViewModel = new UserViewModel();
   const [user, setUser] = useState(null);
   const getUser = async () => {
-    const myUserId = store.getState().account.myUserId;
+    const { myUserId } = store.getState().account;
     setUser((userId === myUserId) ? (await userViewModel.whoami()) : (await userViewModel.get(userId)));
   };
   useEffect(() => { getUser(); }, []);
+
+  const follow = async (alias) => {
+    const success = await userViewModel.follow(userId, alias);
+    if (success) {
+      const userName = alias;
+      const { userName: userNameDescription } = user;
+      const _user = { ...user, ...{ userRelation: "following", userName, userNameDescription } };
+      setUser(_user);
+    }
+  };
+  const changeAlias = async (alias) => {
+    const success = await userViewModel.changeAlias(userId, alias);
+    if (success) {
+      const userName = alias;
+      const { userName: userNameDescription } = user;
+      const _user = { ...user, ...{ userRelation: "following", userName, userNameDescription } };
+      setUser(_user);
+    }
+  };
+  const unfollow = async () => {
+    const success = await userViewModel.unfollow(userId);
+    if (success) {
+      const { userNameDescription: userName } = user;
+      const userNameDescription = undefined;
+      const _user = { ...user, ...{ userRelation: "other", userName, userNameDescription } };
+      setUser(_user);
+    }
+  };
   /** */
   
   /** 4. POST API */
@@ -82,13 +106,6 @@ const UserPage = () => {
       </div>
     );
   };
-  const PostList = ({ posts }) => {
-    return (
-      <section className="post-list">
-        {posts.map((post, idx) => <PostItem key={idx} post={post} />)}
-      </section>
-    );
-  };
 
   const ButtonNotice = ({ user }) => {
     const onClick =() => navigate(`/notice`);
@@ -98,16 +115,109 @@ const UserPage = () => {
       </button>
     );
   };
-  const ButtonSettings = ({}) => {
-    const onClick =() => navigate(`/settings`);
+  const ButtonMenu = ({}) => {
+    const onClick =() => navigate(`/menu`);
     return (
-      <button className="button button-settings" onClick={onClick}>
-        <div className="icon"><SettingsIconBorder /></div>
+      <button className="button button-menu" onClick={onClick}>
+        <div className="icon"><MenuIcon /></div>
       </button>
     );
   };
-  const ButtonMore = ({}) => {
-    const onClick =() => {};
+
+
+  const modalAliasContentRef = useRef();
+  const ModalAliasContent = forwardRef(({ alias="" }, ref) => {
+    // textfield
+    const TF_PLACEHOLDER = "별명 지정";
+    const [tf, setTf] = useState(alias);
+    useImperativeHandle(ref, () => ({ tf }));
+  
+    return (
+      <main className="modal-body area-alias-input">
+        <div className="tf">
+          <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+          <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
+        </div>
+        <p className="help">다음부터는 이 별명으로 보이게 됩니다.</p>
+      </main>
+    );
+  });
+
+  const { modalRef } = StaticComponentRefs;
+  const modalFormConfirmRef = useRef();
+  const modalFormMenuListRef = useRef();
+  const ButtonFollow = ({ user }) => {
+    const onClick = () => {
+      showModalFormConfirm(modalRef, modalFormConfirmRef, {
+        title: "구독 설정",
+        body: <ModalAliasContent ref={modalAliasContentRef} />,
+        callback: async (choice) => {
+          if (choice) {
+            const _alias = modalAliasContentRef.current?.tf;
+            follow(_alias);
+          }
+        },
+      });
+    };
+    return (
+      <button className="button button-follow" onClick={onClick}>
+        <p>구독</p>
+      </button>
+    );
+  };
+  const ButtonChangeAlias = ({ user }) => {
+    const alias = user.userName;    // alias if user.userRelation === "following"
+    const onClick = () => {
+      showModalFormConfirm(modalRef, modalFormConfirmRef, {
+        title: "별명 변경",
+        body: <ModalAliasContent ref={modalAliasContentRef} alias={alias} />,
+        callback: async (choice) => {
+          if (choice) {
+            const _alias = modalAliasContentRef.current?.tf;
+            changeAlias(_alias);
+          }
+        },
+      });
+    };
+    return (
+      <button className="button button-change-alias" onClick={onClick}>
+        <p>별명 변경</p>
+      </button>
+    );
+  };
+  const ButtonUnfollow = ({ user }) => {
+    const onClick = () => {
+      showModalFormConfirm(modalRef, modalFormConfirmRef, {
+        title: "정말 구독을 취소하시겠어요?",
+        callback: async (choice) => (choice && unfollow()),
+      });
+    };
+    return (
+      <button className="button button-unfollow" onClick={onClick}>
+        <p>구독 취소</p>
+      </button>
+    );
+  };
+  const ButtonMore = ({ user }) => {
+    //const onClickModalReport = () => {};
+
+    const onClick = () => {
+      const myMenus = [];
+      const otherMenus = [
+        { title: "신고하기", choice: "REPORT", },
+      ];
+      showModalFormMenuList(modalRef, modalFormMenuListRef, {
+        menus: (user.userRelation === "me") ? myMenus : otherMenus,
+        callback: async (choice) => {
+          switch (choice) {
+            case "DELETE":
+              return onClickModalDelete();
+            case "REPORT":
+              return;//onClickModalReport();
+          }
+        },
+      });
+    };
     return (
       <button className="button button-more" onClick={onClick}>
         <div className="icon"><MoreHorizIcon /></div>
@@ -127,31 +237,35 @@ const UserPage = () => {
                 <div className="brand"><Logotype /></div>
                 <div className="buttons right">
                   <ButtonNotice user={user} />
-                  <ButtonSettings />
+                  <ButtonMenu />
                 </div>
               </header>
             );
           default:
             return (
-              <header className="header">
-                <div className="buttons right">
-                  <ButtonMore />
-                </div>
-              </header>
+              <header className="header" />
             );
         }
       })()}
       <main className="body">
-        <div className="rows">
-          <div className="row row-profile" data-user-relation={user.userRelation}>
-            <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
-            <div className="text-wrap">
-              <div className="name-wrap">
-                <p className="name">{user.userName}</p>
-                {user.userNameBadge && <p className="badge">{user.userNameBadge}</p>}
+        <div className="area-profile">
+          <div className="row row-profile">
+            <div className="profile" data-user-relation={user.userRelation}>
+              <div className="thumb" style={{ backgroundColor: user.userColor }}>{user.userEmoji}</div>
+              <div className="text-wrap">
+                <div className="name-wrap">
+                  <p className="name">{user.userName}</p>
+                  {user.userNameBadge && <p className="name-tag">{user.userNameBadge}</p>}
+                </div>
+                {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
               </div>
-              {(user.userRelation !== "other") && <p className="description">{user.userNameDescription}</p>}
             </div>
+
+            {user.userRelation !== "me" && (
+              <div className="buttons right">
+                <ButtonMore user={user} />
+              </div>
+            )}
           </div>
 
           {(() => {
@@ -159,14 +273,14 @@ const UserPage = () => {
               case "following":
                 return (
                   <div className="row row-follow">
-                    <button className="button button-unfollow">구독 취소</button>
-                    <button className="button button-change-alias">별명 변경</button>
+                    <ButtonUnfollow user={user} />
+                    <ButtonChangeAlias user={user} />
                   </div>
                 );
               case "other":
                 return (
                   <div className="row row-follow">
-                    <button className="button button-follow">구독</button>
+                    <ButtonFollow user={user} />
                   </div>
                 );
             }
@@ -198,7 +312,9 @@ const UserPage = () => {
             </div>
           </div>
         </div>
-        <PostList posts={posts} />
+        <section className="post-list">
+          <PostList posts={posts} setPosts={setPosts} userViewModel={userViewModel} />
+        </section>
       </main>
 
       <FloatController user={user} />

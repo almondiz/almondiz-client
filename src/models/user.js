@@ -9,11 +9,17 @@ export default class UserModel extends DefaultModel {
   }
   // POST /api/user
   signup(body) {
+    console.log("[UserModel.signup >>]", body);
     return this.callApi(() => this.api.signup(body));
   }
   // POST /api/user/login
-  login(providerType, providerUid) {
-    return this.callApi(() => this.api.login({ providerType, providerUid }));
+  login(body) {
+    console.log("[UserModel.login >>]", body);
+    return this.callApi(() => this.api.login(body));
+  }
+  // DELETE /api/user
+  withdrawal() {
+    return this.callApi(() => this.api.withdrawal());
   }
   // GET /api/user/{userId}
   get(userId) {
@@ -22,10 +28,23 @@ export default class UserModel extends DefaultModel {
 
 
   /** 2. FOLLOW API */
+  // PATCH /api/api/follow
+  changeAlias(body) {
+    return this.callApi(() => this.api.changeAlias(body));
+  }
   // GET /api/api/followings
   getMyAllFollowings() {
     return this.callApi(() => this.api.getMyAllFollowings());
   }
+  // POST /api/follow
+  follow(body) {
+    return this.callApi(() => this.api.follow(body));
+  }
+  // DELETE /api/follow/{followId}
+  unfollow(userId) {
+    return this.callApi(() => this.api.unfollow(userId));
+  }
+
 
 
   /** 3. NOTIFICATION API */
@@ -33,6 +52,12 @@ export default class UserModel extends DefaultModel {
   getMyNoticeData() {
     return this.callApi(() => this.api.getMyNoticeData());
   }
+  // DELETE /api/notifications
+  popNotice(noticeId) {
+    return this.callApi(() => this.api.popNotice(noticeId));
+  }
+  
+  
 
 
 

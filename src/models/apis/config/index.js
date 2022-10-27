@@ -12,7 +12,8 @@ const _api = axios.create({
 });
 
 const patchToken = (method, ...params) => {
-  return _api[method](...params, { headers: { "AUTH-TOKEN": store.getState().account.accessToken } });
+  const { accessToken } = store.getState().account;
+  return _api[method](...params, { headers: { "AUTH-TOKEN": accessToken } });
 };
 
 const api = {
@@ -30,12 +31,20 @@ const path = {
     default: makePath(`user`),
     one: userId => makePath(`user/${userId}`),
     login: makePath(`user/login`),
+  },
 
-    /** 2. FOLLOW API */
-    followings: makePath(`api/followings`),
+  /** 2. FOLLOW API */
+  follow: {
+    default: makePath(`follow`),
+    all: makePath(`api/followings`),
+    one: userId => makePath(`follow/${userId}`),
+    changeAlias: makePath(`api/follow`),
+  },
 
-    /** 3. NOTIFICATION API */
-    notices: makePath(`notifications`),
+  /** 3. NOTIFICATION API */
+  notice: {
+    all: makePath(`notifications`),
+    one: noticeId => makePath(`post/${noticeId}`),
   },
   
   /** 4. POST API */
@@ -69,7 +78,7 @@ const path = {
   tag: {
     default: makePath(`tag`),
     search: tagName => makePath(`tag/like/${tagName}`),
-  }
+  },
 };
 
 export { api, path };

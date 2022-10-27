@@ -24,25 +24,21 @@ const FloatController = () => {
       <div className="button button-back" onClick={() => navigate(-1)}>
         <div className="icon"><ArrowBackIcon /></div>
       </div>
-      <h3 className="title">리뷰 작성</h3>
+      <h3 className="title">글 작성</h3>
     </nav>
   );
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
-    (floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setTop());
+    const { floatRef } = StaticComponentRefs;
+    (floatRef?.current?.setTop(<Top />));
+    return () => (floatRef?.current?.setTop());
   }, []);
 
   return <></>;
 };
 
 
-const MapDrawer = ({
-  frame, mapBottomRef,
-  setShop,
-  searchShop,
-}) => {
+const MapDrawer = ({ frame, mapBottomRef, setShop, searchShop }) => {
   const navigate = useNavigate();
   
   // search
@@ -80,7 +76,7 @@ const MapDrawer = ({
   const BottomSearchContent = ({ shop }) => {
     const onSelectShop = () => {
       setShop(shop);
-      console.log("[FrameFindShop]", shop)
+      console.log("[FrameFindShop]", shop);
       frame.next();
     };
     return (
@@ -178,11 +174,7 @@ const MapBottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindShop = ({
-  frame,
-  setShop,
-  searchShop,
-}) => {
+const FrameFindShop = ({ frame, setShop, searchShop }) => {
   const mapBottomRef = useRef();
 
   return (

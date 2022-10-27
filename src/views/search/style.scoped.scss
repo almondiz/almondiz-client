@@ -81,8 +81,6 @@
     &>* {
       pointer-events: auto;
     }
-
-    @include content-max-width;
   }
   .tf-frame.tf-frame-2 {
     pointer-events: auto;

@@ -1,4 +1,4 @@
-.post:not(.post-item) {
+.post.post-detail {
   margin-top: -1rem;
   margin-bottom: -1rem;
 }
@@ -42,7 +42,7 @@
             font-size: .9375rem;
           }
           .description {
-            margin-top: .375rem;
+            margin-top: .25rem;
             font-size: .8125rem;
             color: var(--secondary-text-color);
           }

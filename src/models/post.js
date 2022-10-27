@@ -16,8 +16,8 @@ export default class PostModel extends DefaultModel {
     return this.callApi(() => this.api.deletePost(postId));
   }
   // PATCH /api/post/{postId}
-  updatePost(postId, body) {
-    return this.callApi(() => this.api.updatePost(postId, body));
+  modifyPost(postId, body) {
+    return this.callApi(() => this.api.modifyPost(postId, body));
   }
 
   // GET /api/posts

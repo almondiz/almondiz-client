@@ -3,8 +3,7 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 import { SearchViewModel } from "../../../view-models";
 
 import { StaticComponentRefs, Frame } from "../../../util";
-import ModalMyLocation from "../modal-my-location";
-
+import { showModalFormConfirm } from "../../../components/modal";
 import Slider from "../../../components/slider";
 import NaverMap from "../../../components/naver-map";
 
@@ -79,7 +78,7 @@ const MapDrawer = forwardRef(({ mapBottomRef, updateLocation, searchPlace }, ref
       <></>
     ),
     (
-      <div className="location-list-group">
+      <div className="place-list-group">
         <ul className="list">{searchResult.map((place, idx) => <PlaceSearchItem key={idx} place={place} />)}</ul>
       </div>
     ),
@@ -220,7 +219,7 @@ const MapBottom = forwardRef(({ mapDrawerRef,
       {
         isMyLocation ?
         (
-          <button className="button button-set-my-location color-dark set" onClick={offMyLocation}>
+          <button className="button button-set-my-location set color-dark" onClick={offMyLocation}>
             <div className="icon"><MyLocationIconFill /></div>
           </button>
         ) :
@@ -237,7 +236,7 @@ const MapBottom = forwardRef(({ mapDrawerRef,
 
 
 const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
-  const hideBackdrop = () => backdropRef.current?.hide();
+  const hideBackdrop = () => backdropRef?.current?.hide();
   const destruct = () => ({ dirty });
   useImperativeHandle(ref, () => ({ destruct }));
 
@@ -267,11 +266,11 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
   const updateLocation = async (_location, isMyLocation) => {
     if (tracking) {
       if (!isMyLocation) {
-        showModalMyLocation(_location, false);
+        askUntrackMyLocation(_location);
       }
     } else {
       if (isMyLocation) {
-        showModalMyLocation(_location, true);
+        askTrackMyLocation(_location);
       } else {
         updateLocationComplete(_location, false); 
       }
@@ -284,22 +283,20 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
       setTracking(_tracking), setLocation(_location);
     }
   };
-  const modalMyLocationRef = useRef();
-  const showModalMyLocation = (data, set) => {
-    const modalRef = StaticComponentRefs.modalRef;
-    modalRef.current?.show(
-      <ModalMyLocation modalRef={modalRef} ref={modalMyLocationRef} set={set} />,
-      async () => {
-        const { choice } = modalMyLocationRef.current?.destruct();
-        if (set) {
-          updateLocationComplete(data, choice);
-        } else {
-          if (choice) {
-            updateLocationComplete(data, false);
-          }
-        }
-      }
-    );
+
+  const { modalRef } = StaticComponentRefs;
+  const modalFormConfirmRef = useRef();
+  const askTrackMyLocation = data => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "계속 내 위치로 설정해 둘까요?",
+      callback: async (choice) => updateLocationComplete(data, choice),
+    });
+  };
+  const askUntrackMyLocation = data => {
+    showModalFormConfirm(modalRef, modalFormConfirmRef, {
+      title: "위치 추적을 해제하시겠어요?",
+      callback: async (choice) => (choice && updateLocationComplete(data, false)),
+    });
   };
 
   // distance
@@ -342,7 +339,7 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
           <div className="row">
             <div className="text-wrap">
               <h3 className="title">위치로부터 <u>{newDistance}km</u> 이내</h3>
-              <p className="description">선택한 범위의 리뷰를 피드에 표시합니다.</p>
+              <p className="description">선택한 범위의 글들을 피드에 표시합니다.</p>
             </div>
             <ButtonUpdateDistance newDistance={newDistance} distance={distance} />
           </div>

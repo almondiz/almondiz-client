@@ -13,7 +13,7 @@ import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
 
 
 const FloatController = ({
-  frame, createPost,
+  isModifyMode, goBack, publishPost,
   postText, postImages, setPostImages,
 }) => {
   const navigate = useNavigate();
@@ -25,8 +25,8 @@ const FloatController = ({
       if (postImages.length < MAX_NUM_OF_IMAGES) {
         imageInputRef.current?.click();
       } else {
-        const toastRef = StaticComponentRefs.toastRef;
-        toastRef.current?.show("이미지는 최대 10개까지 업로드할 수 있습니다.");
+        const { toastRef } = StaticComponentRefs;
+        toastRef?.current?.log("이미지는 최대 10개까지 업로드할 수 있습니다.");
       }
     };
     const onImageChange = e => {
@@ -57,34 +57,29 @@ const FloatController = ({
       const [ disabled, setDisabled ] = useState(true);
       useEffect(() => { setDisabled(filterText(postText) === ""); }, [postText]);
       const onClick = async () => {
-        if (!disabled) {
-          const success = await createPost();
-          if (success) {
-            navigate(`/me`);
-          }
-        }
+        if (!disabled)  publishPost();
       };
       return <button className="button button-next" disabled={disabled} onClick={onClick}>게시</button>;
     };
     return (
       <nav className="float-top top-nav">
-        <button className="button button-back" onClick={() => frame.prev()}>
+        <button className="button button-back" onClick={goBack}>
           <div className="icon"><ArrowBackIcon /></div>
         </button>
-        <h3 className="title">리뷰 작성</h3>
+        <h3 className="title">{isModifyMode ? "글 수정" : "글 작성"}</h3>
         <ButtonPublish postText={postText} />
       </nav>
     );
   };
 
-  const floatRef = StaticComponentRefs.floatRef;
+  const { floatRef } = StaticComponentRefs;
   useEffect(() => {
-    floatRef.current?.setFooter(<Footer postImages={postImages} />);
-    return () => floatRef.current?.setFooter();
+    floatRef?.current?.setFooter(<Footer postImages={postImages} />);
+    return () => floatRef?.current?.setFooter();
   }, [postImages]);
   useEffect(() => {
-    floatRef.current?.setTop(<Top postText={postText} />);
-    return () => floatRef.current?.setTop();
+    floatRef?.current?.setTop(<Top postText={postText} />);
+    return () => floatRef?.current?.setTop();
   }, [postText]);
 
   return <></>;
@@ -93,21 +88,23 @@ const FloatController = ({
 
 // frame 2
 const FrameWrite = ({
-  frame, createPost,
+  isModifyMode=false, goBack, publishPost,
   shop,
   postTags, setPostTags,
   postText, setPostText,
   postImages, setPostImages,
   searchFoodTag, createFoodTag,
 }) => {
-  useEffect(() => { setPostTags([...shop.tags]); }, []);
+  useEffect(() => {
+    if (!isModifyMode)   setPostTags([...shop.tags]);
+  }, []);
 
   // textarea
   const textRef = useRef();
   const handleResizeHeight = useCallback(() => {
     const obj = textRef.current;
-    obj.style.height = '1px';
-    obj.style.height = obj.scrollHeight + 'px';
+    obj.style.height = "1px";
+    obj.style.height = obj.scrollHeight + "px";
   }, []);
   useEffect(() => { handleResizeHeight(); }, []);
   const onPostTextChange = useCallback(e => {
@@ -129,8 +126,8 @@ const FrameWrite = ({
 
   const backdropTagRef = useRef();
   const showBackdropTag = useCallback(() => {
-    const backdropRef = StaticComponentRefs.backdropRef;
-    backdropRef.current?.show(
+    const { backdropRef } = StaticComponentRefs;
+    backdropRef?.current?.show(
       <BackdropTag backdropRef={backdropRef} ref={backdropTagRef}
         shop={shop} postTags={postTags}
         searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
@@ -185,7 +182,7 @@ const FrameWrite = ({
 
       {useMemo(() => (
         <FloatController
-          frame={frame} createPost={createPost}
+          isModifyMode={isModifyMode} goBack={goBack} publishPost={publishPost}
           postText={postText} postImages={postImages} setPostImages={setPostImages}
         />
       ), [postText, postImages])}

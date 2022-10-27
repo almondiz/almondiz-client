@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Frame, Pipe } from "../../util";
-import { PostViewModel, CommentViewModel } from "../../view-models";
+import { StaticComponentRefs, Pipe, Frame } from "../../util";
+import { PostViewModel, UserViewModel, CommentViewModel } from "../../view-models";
 
-import PostItem from "../../components/post-item";
+import { PostOne } from "../../components/post-list";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
-import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
@@ -49,10 +48,9 @@ const FloatController = ({ post, createComment }) => {
         const action = replyController ? replyController.reply : createComment;
         const success = await action(text);
         if (success) {
-          Pipe.get("reload")?.comments();
+          await Pipe.get("comments")?.refresh();
+          commentInputController.hide();
         }
-        
-        commentInputController.hide();
       },
 
       show: (_replyController) => {  // reply, onShowCallback, onHideCallback
@@ -65,15 +63,18 @@ const FloatController = ({ post, createComment }) => {
         footerFrame.move(0);
       },
     };
-    Pipe.set("commentInputController", commentInputController);
+    Pipe.set("commentInput", commentInputController, []);
 
 
     const ButtonScrap = ({ post }) => {
       const [focus, setFocus] = useState(post.isScrapped);
       const onClick = async () => {
-        const success = await post.scrap(focus);
+        const b = !focus;
+        const success = await post.scrap(b);
         if (success) {
-          setFocus(!focus);
+          const { toastRef } = StaticComponentRefs;
+          toastRef?.current?.log(b ? "스크랩되었습니다." : "스크랩이 취소되었습니다.");
+          setFocus(b);
         }
       };
       return (
@@ -100,7 +101,7 @@ const FloatController = ({ post, createComment }) => {
       ),
       ( // comment
         <section className="float-footer-frame frame-2">
-          <div className="comment-dialog">
+          <div className="comment-input">
             <button className="button button-back" onClick={() => commentInputController.hide()}>
               <div className="icon"><ArrowBackIosIcon /></div>
             </button>
@@ -118,9 +119,9 @@ const FloatController = ({ post, createComment }) => {
   }
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
-    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
-    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
+    const { floatRef } = StaticComponentRefs;
+    (floatRef?.current?.setHeader(<Header />), floatRef?.current?.setFooter(<Footer />));
+    return () => (floatRef?.current?.setHeader(), floatRef?.current?.setFooter());
   }, []);
 
   return <></>;
@@ -136,55 +137,25 @@ const PostPage = () => {
   const readPost = async () => setPost(await postViewModel.readPost(postId));
   useEffect(() => { readPost(); }, []);
   /** */
-
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  /** */
   /** 5-0. COMMENT API */
   const commentViewModel = new CommentViewModel();
-  const [comments, setComments] = useState(null);
-  const readAllComments = async () => {
-    if (!post)  return;
-    const postAuthorId = post.postAuthorId;
-    setComments(await commentViewModel.readAllComments(postId, { postAuthorId }));
-  };
-  useEffect(() => { readAllComments(); }, [post]);
-
   const createComment = async (text) => (await commentViewModel.createComment(postId, text));
   /** */
 
-  Pipe.set("reload", {
-    //all: () => { readPost(); readComments(); },
-    //post: readPost,
-    comments: readAllComments,
-  });
+  Pipe.set("post", { refresh: readPost });
 
-
-  const navigate = useNavigate();
-
-  const ButtonMore = ({ post }) => {
-    const [focus, setFocus] = useState(false);
-    const onClick = async () => {
-      const success = await post.delete();
-      if (success) {
-        navigate(-1);
-      }
-    }
-    //const onClick = () => setFocus(!focus);
-    return (
-      <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
-        <div className="icon"><MoreHorizIcon /></div>
-      </button>
-    );
-  };
-
-
-  return (post && comments) && (
+  return (post) && (
     <div id="page">
       <header className="header">
-        <div className="right">
-          <ButtonMore post={post} />
-        </div>
+        <div className="right" />
       </header>
 
-      <main className="content"><PostItem post={post} comments={comments} detail={true} /></main>
+      <main className="content">
+        <PostOne post={post} setPost={setPost} userViewModel={userViewModel} commentViewModel={commentViewModel} />
+      </main>
 
       <FloatController post={post} createComment={createComment} />
     </div>

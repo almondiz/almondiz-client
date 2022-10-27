@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import { useLocation, BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { useLocation, BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
-import { useSelector, useDispatch } from "react-redux";
 import store from "./store";
+import { useDispatch } from "react-redux";
 import { setScrollDirection } from "./store/slices/global";
 
 import { StaticComponentRefs } from "./util";
@@ -13,12 +13,12 @@ import FeedPage from "./views/feed";
 import PostPage from "./views/post";
 import SearchPage from "./views/search";
 import ScrapPage from "./views/scrap";
-import UserPage, { RedirectToMyPage } from "./views/user";
+import UserPage from "./views/user";
 import FollowingPage from "./views/following";
 import EditPage from "./views/edit";
 import DirectPage from "./views/direct";
 import NoticePage from "./views/notice";
-import SettingsPage from "./views/settings";
+import MenuPage from "./views/menu";
 import NotFoundPage from "./views/not-found";
 
 import Float from "./components/float";
@@ -35,7 +35,7 @@ const Monitor = () => {
   const initScrollHandler = () => {
     const THRESHOLD = 5;
     let lastScrollY = window.pageYOffset;
-    const scrollDirection = useSelector(state => state.global.scrollDirection);
+    const { scrollDirection } = store.getState().global;
     const updateScrollDirection = () => {
       const scrollY = window.pageYOffset;   // same as window.scrollY
       const windowHeight = window.innerHeight;
@@ -53,7 +53,7 @@ const Monitor = () => {
     useEffect(() => {
       window.addEventListener("scroll", updateScrollDirection);                   // componentDidMount  
       return () => window.removeEventListener("scroll", updateScrollDirection);   // componentWillUnmount
-    });
+    }, []);
   };
   initScrollHandler();
 
@@ -72,7 +72,7 @@ const ScrollToTop = () => {
 };
 
 
-const StaticComponents = ({ setLoaded }) => {
+const StaticLayout = ({ setLoaded }) => {
   const floatRef = useRef();
   const backdropRef = useRef();
   const modalRef = useRef();
@@ -94,61 +94,100 @@ const StaticComponents = ({ setLoaded }) => {
     </>
   );
 };
-const PostLayout = ({ staticComponentsLoaded }) => {
+const PostLayout = () => {
   useEffect(() => {
-    if (staticComponentsLoaded) {
-      const floatRef = StaticComponentRefs.floatRef;
-      (floatRef.current?.setBottom(<PostBottomNav />));
-      return () => (floatRef.current?.setBottom());
-    }
-  }, [staticComponentsLoaded]);
-
+    const floatRef = StaticComponentRefs.floatRef;
+    (floatRef?.current?.setBottom(<PostBottomNav />));
+    return () => (floatRef?.current?.setBottom());
+  }, []);
   return <Outlet />;
 };
 
 
-const RequireAuth = () => {
-  if (store.getState().account.accessToken)
-    return <Outlet />;
+const Root = () => {
+  const location = useLocation();
+  useEffect(() => {
+    const message = location.state?.message;
+    if (message) {
+      const { toastRef } = StaticComponentRefs;
+      toastRef?.current?.log(message);
+    }
+  }, []);
+
+  const { accessToken } = store.getState().account;
+  if (accessToken)
+    return <Navigate to="/feed" />;
   else
     return <Navigate to="/login" />;
 };
+const Login = () => {
+  const { accessToken } = store.getState().account;
+  if (accessToken)
+    return <Navigate to="/" />;
+  else
+    return <LoginPage />;
+};
+const Signup = () => {
+  const location = useLocation();
+  const valid = location.state?.valid;
+  if (valid)
+    return <SignupPage />;
+  else
+    return <Navigate to="/" />;
+};
+
+const RequireAuth = () => {
+  const { accessToken } = store.getState().account;
+  if (accessToken) {
+    return <Outlet />;
+  } else {
+    const REDIRECT_MESSAGE = "권한이 없어 로그인 페이지로 이동합니다.";
+    return <Navigate to="/" state={{ message: REDIRECT_MESSAGE }} />;
+  }
+};
+const RedirectToMyPage = () => {
+  const { myUserId } = store.getState().account;
+
+  return <Navigate to={`/user/${myUserId}`} />;
+};
 
 const App = () => {
-  const [staticComponentsLoaded, setStaticComponentsLoaded] = useState(false);
+  const [staticLayoutLoaded, setStaticLayoutLoaded] = useState(false);
 
   return (
     <>
       <BrowserRouter>
-        <Routes>
-          <Route exact path="/" element={<Navigate to="/login" />} />
+        {staticLayoutLoaded && (
+          <Routes>
+            <Route exact path="/" element={<Root />} />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          
-          <Route element={<RequireAuth />}>
-            <Route element={<PostLayout staticComponentsLoaded={staticComponentsLoaded} />}>
-              <Route path="/feed" element={<FeedPage />} />
-              <Route path="/post/:postId" element={<PostPage />} />
-              <Route path="/search" element={<SearchPage />} />
-              <Route path="/user/:userId" element={<UserPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            
+            <Route element={<RequireAuth />}>
+              <Route element={<PostLayout />}>
+                <Route path="/feed" element={<FeedPage />} />
+                <Route path="/post/:postId" element={<PostPage />} />
+                <Route path="/search" element={<SearchPage />} />
+                <Route path="/user/:userId" element={<UserPage />} />
 
-              <Route path="/scrap" element={<ScrapPage />} />
-              <Route path="/me" element={<RedirectToMyPage />} />
+                <Route path="/scrap" element={<ScrapPage />} />
+                <Route path="/me" element={<RedirectToMyPage />} />
+              </Route>
+
+              <Route path="/edit" element={<EditPage />} />
+              <Route path="/direct" element={<DirectPage />} />
+
               <Route path="/following" element={<FollowingPage />} />
+              <Route path="/notice" element={<NoticePage />} />
+              <Route path="/menu" element={<MenuPage />} />
+
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
+          </Routes>
+        )}
 
-            <Route path="/edit" element={<EditPage />} />
-            <Route path="/direct" element={<DirectPage />} />
-            <Route path="/notice" element={<NoticePage />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Route>
-
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-
-        <StaticComponents setLoaded={setStaticComponentsLoaded} />
-
+        <StaticLayout setLoaded={setStaticLayoutLoaded} />
         <ScrollToTop />
         <Monitor />
       </BrowserRouter>

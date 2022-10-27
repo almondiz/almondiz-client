@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { StaticComponentRefs, Frame } from "../../../util";
@@ -12,9 +12,10 @@ import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
 import LocationSearchingIcon from "../../../asset/icons/mui/location-searching-icon";
 import MyLocationIconFill from "../../../asset/icons/mui/my-location-icon-fill";
 import ArrowBackIosIcon from "../../../asset/icons/mui/arrow-back-ios-icon";
+import LocationOnIconBorder from "../../../asset/icons/mui/location-on-icon-border";
 
 
-const FloatController = ({ frame }) => {
+const FloatController = () => {
   const navigate = useNavigate();
 
   const Top = () => (
@@ -23,21 +24,20 @@ const FloatController = ({ frame }) => {
         <div className="icon"><ArrowBackIcon /></div>
       </button>
       <h3 className="title">음식점 등록</h3>
-      <button className="button button-next" onClick={() => frame.next()}>다음</button>
     </nav>
   );
 
   useEffect(() => {
-    const floatRef = StaticComponentRefs.floatRef;
-    (floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setTop());
+    const { floatRef } = StaticComponentRefs;
+    (floatRef?.current?.setTop(<Top />));
+    return () => (floatRef?.current?.setTop());
   }, []);
 
   return <></>;
 };
 
 
-const MapDrawer = ({ mapBottomRef, searchPlace }) => {
+const MapDrawer = ({ frame, mapBottomRef, setPlace, searchPlace }) => {
   // search
   const [ searchResult, setSearchResult ] = useState([]);
   const onSearchPlace = async (tf) => {
@@ -70,16 +70,27 @@ const MapDrawer = ({ mapBottomRef, searchPlace }) => {
     }
   };
 
-  const BottomSearchContent = ({ place }) => (
-    <section className="bottom-item">
-      <div className="row">
-        {/*<h3 className="title">음식점 이름</h3>*/}
-        <div className="tf">
-          <input className="tf-box" type="text" placeholder="음식점 이름" autoFocus />
+  const BottomSearchContent = ({ place }) => {
+    const onSelectPlace = () => {
+      setPlace(place);
+      console.log("[FrameFindPlace]", place);
+      frame.next();
+    };
+    return (
+      <section className="bottom-item">
+        <div className="text-wrap">
+          <h3 className="title">{place.placeName}</h3>
+          <p className="description">{place.placeAddress}</p>
         </div>
-      </div>
-    </section>
-  );
+        <div className="buttons">
+          <button className="button button-select-place" onClick={onSelectPlace}>
+            <div className="icon"><LocationOnIconBorder /></div>
+            <p>선택</p>
+          </button>
+        </div>
+      </section>
+    );
+  };
   const PlaceSearchItem = ({ place }) => (
     <li className="item" data-place-id={place.placeId} onClick={() => moveTf(2, place)}>
       <h3 className="title">{place.placeName}</h3>
@@ -91,7 +102,7 @@ const MapDrawer = ({ mapBottomRef, searchPlace }) => {
       <></>
     ),
     (
-      <div className="location-list-group">
+      <div className="place-list-group">
         <ul className="list">{searchResult.map((place, idx) => <PlaceSearchItem key={idx} place={place} />)}</ul>
       </div>
     ),
@@ -149,20 +160,24 @@ const MapBottom = forwardRef((_, ref) => {
 
 
 // frame 1
-const FrameFindPlace = ({ frame, searchPlace }) => {
+const FrameFindPlace = ({ frame, setPlace, searchPlace }) => {
   const mapBottomRef = useRef();
 
   return (
     <>
       <main className="content">
-        <MapDrawer frame={frame} mapBottomRef={mapBottomRef} searchPlace={searchPlace} />
+        <MapDrawer
+          frame={frame} mapBottomRef={mapBottomRef}
+          setPlace={setPlace}
+          searchPlace={searchPlace}
+        />
         <div className="map-container">
           <NaverMap />
           <MapBottom ref={mapBottomRef} />
         </div>
       </main>
 
-      <FloatController frame={frame} />
+      {useMemo(() => <FloatController frame={frame} />, [])}
     </>
   )
 };

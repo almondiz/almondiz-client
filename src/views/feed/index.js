@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 
-import { PostViewModel, SearchViewModel } from "../../view-models";
+import { PostViewModel, UserViewModel, SearchViewModel } from "../../view-models";
 
 import { StaticComponentRefs } from "../../util";
-import PostItem from "../../components/post-item";
+import PostList from "../../components/post-list";
 import BackdropLocation from "./backdrop-location";
 
 import "./style.scoped.scss";
@@ -16,6 +16,9 @@ const FeedPage = () => {
   const postViewModel = new PostViewModel();
   const [posts, setPosts] = useState(null);
   const readFeedPosts = async () => setPosts(await postViewModel.readAllPosts());
+  /** */
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
   /** */
   /** 0. SEARCH API */
   const [ tracking, setTracking ] = useState(null);
@@ -35,8 +38,8 @@ const FeedPage = () => {
 
   const backdropLocationRef = useRef();
   const showBackdropLocation = () => {
-    const backdropRef = StaticComponentRefs.backdropRef;
-    backdropRef.current?.show(
+    const { backdropRef } = StaticComponentRefs;
+    backdropRef?.current?.show(
       <BackdropLocation backdropRef={backdropRef} ref={backdropLocationRef} />,
       async () => {
         const { dirty } = backdropLocationRef.current?.destruct();
@@ -63,7 +66,7 @@ const FeedPage = () => {
         </div>
       </header>
       <main className="content">
-        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
+        <PostList posts={posts} setPosts={setPosts} userViewModel={userViewModel} />
       </main>
     </div>
   );

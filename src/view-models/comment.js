@@ -38,7 +38,7 @@ export default class CommentViewModel {
   }
   _makeCommentItemData(data, { postAuthorId }) {
     const commentId = data.commentId;
-
+    
     const commentAuthor = data.user;
     const commentAuthorId = commentAuthor.userId;
     const commentAuthorRelation = commentAuthor.relation;
@@ -49,13 +49,18 @@ export default class CommentViewModel {
       commentAuthorEmoji: commentAuthor.thumb.emoji,
       commentAuthorName: (() => {
         switch (commentAuthorRelation) {
-          case "me":
-            return "나";
-          case "following":
-            return commentAuthor.alias;
+          case "me":          return "나";
+          case "following":   return commentAuthor.alias;
           case "other":
-          default:
-            return commentAuthor.nickName;
+          default:            return commentAuthor.nickName;
+        }
+      })(),
+      commentAuthorNameDescription: (() => {
+        switch (commentAuthorRelation) {
+          case "me":
+          case "following":   return data.nickName;
+          case "other":
+          default:            return undefined;
         }
       })(),
       commentAuthorRelation,
@@ -78,18 +83,23 @@ export default class CommentViewModel {
       })(),
 
 
+      /** 5-1. COMMENT LIKE API */
+      // POST /api/comment/{postId}/like
+      // DELETE /api/comment/{postId}/like
       like: async (b) => {
-        const action = this.model[b ? "unlike" : "like"].bind(this.model);
-        const { success, ...res } = await action(commentId);
+        const { success, ...res } = await (b ? this.model.like(commentId) : this.model.unlike(commentId));
         if (success) {
-          console.log("[CommentViewModel.like]", action, res);
+          console.log(`[CommentViewModel.like - ${b ? "like" : "unlike"}]`, res);
           return success;
         } else {
-          console.error("[CommentViewModel.like]", action, res);
+          console.error(`[CommentViewModel.like - ${b ? "like" : "unlike"}]`, res);
           StaticComponentRefs.toastRef?.current?.error(res.msg);
           return false;
         }
       },
+
+      /** 6-0. REPLY API */
+      // POST /api/comment/{commentId}/reply
       reply: async (text) => {
         if ((text = filterText(text)) === "")   return false;
         
@@ -105,6 +115,8 @@ export default class CommentViewModel {
         }
       },
 
+      /** 5-0. COMMENT API */
+      // DELETE /api/comment/{commentId}
       delete: async () => {
         const { success, ...res } = await this.model.deleteComment(commentId);
         if (success) {

@@ -10,6 +10,10 @@ export const whoami = () => {
 export const signup = body => {
   return api.post(path.user.default, body);
 };
+// DELETE /api/user
+export const withdrawal = () => {
+  return api.delete(path.user.default);
+}
 // GET /api/user/{userId}
 export const get = userId => {
   return api.get(path.user.one(userId));
@@ -21,14 +25,30 @@ export const login = body => {
 
 
 /** 2. FOLLOW API */
+// PATCH /api/api/follow
+export const changeAlias = body => {
+  return api.patch(path.follow.changeAlias, body);
+};
 // GET /api/api/followings
 export const getMyAllFollowings = () => {
-  return api.get(path.user.followings);
+  return api.get(path.follow.all);
+};
+// POST /api/follow
+export const follow = body => {
+  return api.post(path.follow.default, body);
+};
+// DELETE /api/follow/{followId}
+export const unfollow = userId => {
+  return api.delete(path.follow.one(userId));
 };
 
 
 /** 3. NOTIFICATION API */
 // GET /api/notifications
 export const getMyNoticeData = () => {
-  return api.get(path.user.notices);
+  return api.get(path.notice.all);
 }
+// DELETE /api/notifications
+export const popNotice = noticeId => {
+  return api.delete(path.notice.one(noticeId));
+};

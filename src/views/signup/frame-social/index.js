@@ -4,13 +4,21 @@ import { useNavigate } from "react-router-dom";
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
 import GoogleSocialImage from "../../../asset/social/google.svg";
+import NaverSocialImage from "../../../asset/social/naver.svg";
+import KakaoSocialImage from "../../../asset/social/kakao.svg";
+
 
 // frame 1
 const FrameSocial = ({ frame, providerType, email }) => {
   const navigate = useNavigate();
-  const showProviderLogo = (providerType) => {
-    if (providerType === "GOOGLE") return (<img className="social-icon google" alt="Google" src={GoogleSocialImage} />);
-  }
+  const showProviderLogo = providerType => {
+    switch (providerType) {
+      case "GOOGLE":    return <img className="social-icon google" alt="Google" src={GoogleSocialImage} />;
+      case "NAVER":     return <img className="social-icon naver" alt="Naver" src={NaverSocialImage} />;
+      case "KAKAO":     return <img className="social-icon kakao" alt="Kakao" src={KakaoSocialImage} />;
+      default:          return <div className="social-icon" alt={providerType} />;
+    }
+  };
 
   return (
     <>
