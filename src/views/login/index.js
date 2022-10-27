@@ -29,7 +29,7 @@ const LoginPage = () => {
 
   // ### BUG : Google - 시크릿 모드에서는 쿠키 설정이 안 된다며 오류가 발생. 소셜 로그인이 되지 않음
   const loginGoogle = {
-    clientId: process.env.GOOGLE_CLIENT_ID,// || process.env.GOOGLE_CLIENT_ID_NETLIFY,
+    clientId: process.env.GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID_NETLIFY,
     onSuccess: async (res) => {
       const providerType = "GOOGLE";
       console.log("[Google]", res);
@@ -38,7 +38,7 @@ const LoginPage = () => {
     },
   };
   const loginNaver = {
-    clientId: process.env.NAVER_CLIENT_ID,// || process.env.NAVER_CLIENT_ID_NETLIFY,
+    clientId: process.env.NAVER_CLIENT_ID || process.env.NAVER_CLIENT_ID_NETLIFY,
     callbackUrl: window.location.href,
     onSuccess: async (res) => {
       const providerType = "NAVER";
@@ -48,7 +48,7 @@ const LoginPage = () => {
     },
   };
   const loginKakao = {
-    clientId: process.env.KAKAO_CLIENT_ID,// || process.env.KAKAO_CLIENT_ID_NETLIFY,
+    clientId: process.env.KAKAO_CLIENT_ID || process.env.KAKAO_CLIENT_ID_NETLIFY,
     onSuccess: async (res) => {
       const providerType = "KAKAO";
       console.log("[Kakao]", res);
