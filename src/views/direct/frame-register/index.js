@@ -35,7 +35,7 @@ const FloatController = ({ frame }) => {
 
 
 // frame 2
-const FrameTag = ({
+const FrameRegister = ({
   frame,
   shop, setShop,
   searchFoodTag, createFoodTag,
@@ -68,7 +68,7 @@ const FrameTag = ({
   // tag
   const [ tags, setTags ] = useState([]);
   useEffect(() => {
-    const _shop = Object.assign({}, shop);
+    const _shop = { ...shop };
     _shop.tags = [...tags];
     setShop(_shop);
   }, [tags]);
@@ -128,4 +128,4 @@ const FrameTag = ({
   )
 };
 
-export default FrameTag;
+export default FrameRegister;

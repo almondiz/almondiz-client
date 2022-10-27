@@ -23,7 +23,7 @@ const ScrapPage = () => {
         <div className="right" />
       </header>
       <main className="content">
-        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
+        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} posts={posts} setPosts={setPosts} />)}</section>
       </main>
     </div>
   );

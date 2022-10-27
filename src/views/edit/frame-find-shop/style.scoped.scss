@@ -115,7 +115,7 @@
     }
 
     .shop-list-group,
-    .location-list-group {
+    .place-list-group {
       margin-top: 1rem;
 
       &>.list {
@@ -214,9 +214,9 @@
             }
             .title {}
             .description {
-              color: var(--secondary-text-color);
-              font-size: .8125rem;
               margin-top: .25rem;
+              font-size: .8125rem;
+              color: var(--secondary-text-color);
             }
           }
         }

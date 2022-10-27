@@ -213,11 +213,6 @@
         .button-follow,
         .button-unfollow,
         .button-change-alias {
-          font-size: .875rem;
-          font-weight: 700;
-          color: var(--background-color);
-          background-color: var(--content-text-color);
-
           height: 2rem;
 
           display: flex;
@@ -226,6 +221,13 @@
           
           border-radius: 1rem;
           padding: 0 auto;
+
+          background-color: var(--content-text-color);
+          p {
+            font-size: .875rem;
+            font-weight: 700;
+            color: var(--background-color);
+          }
         }
         .button-follow,
         .button-unfollow {
@@ -286,5 +288,21 @@
         width: 3rem;
       }
     }
+  }
+}
+
+
+.modal-body.area-alias-input {
+  .tf {
+    .tf-box {
+      text-align: center;
+    }
+  }
+  .help {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    
+    color: var(--secondary-text-color);
+    font-size: .875rem;
   }
 }

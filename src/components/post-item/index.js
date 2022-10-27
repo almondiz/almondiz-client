@@ -1,5 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { UserViewModel } from "../../view-models";
 
 import { StaticComponentRefs } from "../../util";
 import TagList from "../../components/tag-list";
@@ -13,20 +15,49 @@ import "./style.scoped.scss";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
 import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
+import CancelIconFill from "../../asset/icons/mui/cancel-icon-fill";
 import NavigateNextIcon from "../../asset/icons/mui/navigate-next-icon";
 
 
-export const popPost = (posts, setPosts, idx) => {
-  const _posts = [...posts];
-  _posts.splice(idx, 1);
-  setPosts(_posts);
-};
-
-const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
+// detail if posts !== null
+const PostItem = ({ post={}, comments=[], posts=null, setPosts }) => {
   const navigate = useNavigate();
-
   const { toastRef } = StaticComponentRefs;
 
+  const detail = !posts;
+  const popPost = idx => {
+    if (detail)
+      navigate(-1);
+    else {
+      const _posts = [...posts];
+      _posts.splice(idx, 1);
+      setPosts(_posts);
+    }
+  };
+
+
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  const follow = async (alias) => {
+    const success = await userViewModel.follow(userId, alias);
+    if (success) {
+      const postAuthorName = alias;
+      const { postAuthorName: postAuthorNameDescription } = post;
+      const _post = { ...post, ...{ postAuthorRelation: "following", postAuthorName, postAuthorNameDescription } };
+      //setPost(_post);
+    }
+  };
+  const unfollow = async () => {
+    const success = await userViewModel.unfollow(userId);
+    if (success) {
+      const { postAuthorNameDescription: postAuthorName } = post;
+      const postAuthorNameDescription = undefined;
+      const _post = { ...post, ...{ userRelation: "other", postAuthorName, postAuthorNameDescription } };
+      //setUser(_user);
+    }
+  };
+  /** */
+  
 
   const modifyPost = () => {
     const { postId } = post;
@@ -61,6 +92,31 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
     </div>
   );
   const ButtonMore = ({ post }) => {
+    const modalAliasContentRef = useRef();
+    const ModalAliasContent = forwardRef(({ alias="" }, ref) => {
+      // textfield
+      const TF_PLACEHOLDER = "별명 지정";
+      const [tf, setTf] = useState(alias);
+      useImperativeHandle(ref, () => ({ tf }));
+    
+      return (
+        <main className="modal-body area-alias-input">
+          <div className="profile" data-user-relation={post.postAuthorRelation}>
+            <div className="thumb" style={{ backgroundColor: post.postAuthorColor }}>{post.postAuthorEmoji}</div>
+            <div className="text-wrap">
+              <p className="name">{post.postAuthorName}</p>
+              {(post.postAuthorRelation !== "other") && <p className="description">{post.postAuthorNameDescription}</p>}
+            </div>
+          </div>
+          <div className="tf">
+            <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+            <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
+          </div>
+          <p className="help">다음부터는 이 별명으로 보이게 됩니다.</p>
+        </main>
+      );
+    });
+
     const { modalRef } = StaticComponentRefs;
     const modalFormMenuListRef = useRef();
     const modalFormConfirmRef = useRef();
@@ -70,6 +126,24 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
       showModalFormConfirm(modalRef, modalFormConfirmRef, {
         title: "정말로 삭제하시겠어요?",
         callback: async (choice) => (choice && deletePost()),
+      });
+    };
+    const onClickModalFollow = () => {
+      showModalFormConfirm(modalRef, modalFormConfirmRef, {
+        title: "구독 설정",
+        body: <ModalAliasContent ref={modalAliasContentRef} />,
+        callback: async (choice) => {
+          if (choice) {
+            const _alias = modalAliasContentRef.current?.tf;
+            follow(_alias);
+          }
+        },
+      });
+    };
+    const onClickModalUnfollow = () => {
+      showModalFormConfirm(modalRef, modalFormConfirmRef, {
+        title: "정말 구독을 취소하시겠어요?",
+        callback: async (choice) => (choice && unfollow()),
       });
     };
     //const onClickModalReport = () => {};
@@ -103,6 +177,10 @@ const PostItem = ({ post={}, detail=false, comments=[], popPost }) => {
               return onClickModalModify();
             case "DELETE":
               return onClickModalDelete();
+            case "FOLLOW":
+              return onClickModalFollow();
+            case "UNFOLLOW":
+              return onClickModalUnfollow();
             case "REPORT":
               return;//onClickModalReport();
           }

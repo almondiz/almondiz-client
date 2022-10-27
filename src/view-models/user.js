@@ -112,8 +112,8 @@ export default class UserViewModel {
     try {
       const userId = data.userId;
 
-      data.relation = "me";   // ### DUMMY
-      data.alias = "곰돌이 푸";   // ### DUMMY
+      data.relation = "following";   // ### DUMMY
+      //data.alias = "곰돌이 푸";   // ### DUMMY
       const userRelation = data.relation;   // "me" | "following" | "other"
 
       return {
@@ -121,6 +121,7 @@ export default class UserViewModel {
 
         userEmoji: data.thumb.emoji,
         userColor: data.thumb.color,
+        userOriginalName: data.nickName,
         userName: (() => {
           switch (userRelation) {
             case "me":          return data.nickName;
@@ -184,7 +185,7 @@ export default class UserViewModel {
       console.log("[UserViewModel.getMyAllFollowings]", res);
       const { dataList } = res;
 
-      return UserViewModel._dummyAllFollowingsData; // ###
+      //return UserViewModel._dummyAllFollowingsData; // ###
 
       return dataList.map(data => this._makeFollowingData(data));
     } else {
@@ -205,17 +206,7 @@ export default class UserViewModel {
         userName: data.alias,
         userNameDescription: data.nickName,
 
-        unfollow: async () => {
-          const { res } = await this.model.unfollow(userId);
-          if (res.success) {
-            console.log(`[UserViewModel.unfollow]`, res);
-            return res.success;
-          } else {
-            console.error(`[UserViewModel.unfollow]`, res);
-            StaticComponentRefs.toastRef?.current?.error(res.msg);
-            return null;
-          }
-        },
+        unfollow: async () => (await this.unfollow(userId)),
       };
     } catch (err) {
       console.error("[UserViewModel._makeFollowData]", err, data);
@@ -243,4 +234,40 @@ export default class UserViewModel {
       unfollow: () => true,
     },
   ];
+  
+  // POST /api/follow
+  async follow(userId, alias) {
+    const body = { followeeId: userId, alias, };
+    const { success, ...res } = await this.model.follow(body);
+    if (success) {
+      console.log(`[UserViewModel.follow]`, res);
+      return success;
+    } else {
+      console.error(`[UserViewModel.follow]`, res);
+      return false;
+    }
+  }
+  // DELETE /api/follow/{followId}
+  async unfollow(userId) {
+    const { success, ...res } = await this.model.unfollow(userId);
+    if (success) {
+      console.log(`[UserViewModel.unfollow]`, res);
+      return success;
+    } else {
+      console.error(`[UserViewModel.unfollow]`, res);
+      return false;
+    }
+  }
+  // PATCH /api/api/follow
+  async changeAlias(userId, alias) {
+    const body = { followeeId: userId, alias, };
+    const { success, ...res } = await this.model.changeAlias(body);
+    if (success) {
+      console.log(`[UserViewModel.changeAlias]`, res);
+      return success;
+    } else {
+      console.error(`[UserViewModel.changeAlias]`, res);
+      return false;
+    }
+  }
 };

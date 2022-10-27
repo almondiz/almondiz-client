@@ -76,7 +76,7 @@ const MapDrawer = ({ frame, mapBottomRef, setShop, searchShop }) => {
   const BottomSearchContent = ({ shop }) => {
     const onSelectShop = () => {
       setShop(shop);
-      console.log("[FrameFindShop]", shop)
+      console.log("[FrameFindShop]", shop);
       frame.next();
     };
     return (

@@ -164,7 +164,7 @@ const PostPage = () => {
         <div className="right" />
       </header>
 
-      <main className="content"><PostItem post={post} comments={comments} detail={true} /></main>
+      <main className="content"><PostItem post={post} comments={comments} /></main>
 
       <FloatController post={post} createComment={createComment} />
     </div>

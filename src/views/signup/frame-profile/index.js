@@ -142,20 +142,6 @@ const MenuName = ({
 };
 
 
-const ModalFormConfirmContent = ({ email, profileThumb, profileTag, profileNut }) => (
-  <main className="modal-body area-profile-confirm">
-    <div className="profile">
-      <div className="thumb" style={{ backgroundColor: profileThumb.color }}>{profileThumb.emoji}</div>
-      <div className="text-wrap">
-        <p className="name">{profileTag.tagName} {profileNut.nutName}</p>
-        <p className="email">{email}</p>
-      </div>
-    </div>
-    <p className="help">연동한 소셜 계정은 타인에게 드러나지 않습니다.</p>
-  </main>
-);
-
-
 // frame 2
 const FrameProfile = ({
   frame,
@@ -166,22 +152,35 @@ const FrameProfile = ({
   email, callSignup
 }) => {
   const ButtonConfirm = ({ profileThumb, profileTag, profileNut }) => {
+    const ModalContent = ({ email, profileThumb, profileTag, profileNut }) => (
+      <main className="modal-body area-profile-confirm">
+        <div className="profile">
+          <div className="thumb" style={{ backgroundColor: profileThumb.color }}>{profileThumb.emoji}</div>
+          <div className="text-wrap">
+            <p className="name">{profileTag.tagName} {profileNut.nutName}</p>
+            <p className="email">{email}</p>
+          </div>
+        </div>
+        <p className="help">연동한 소셜 계정은 타인에게 드러나지 않습니다.</p>
+      </main>
+    );
+
     const [ disabled, setDisabled ] = useState(true);
     useEffect(() => { setDisabled(!(profileThumb && profileTag && profileNut)); }, [profileThumb, profileTag, profileNut]);
 
     const { modalRef } = StaticComponentRefs;
     const modalFormConfirmRef = useRef();
-    const showModalProfileConfirm = () => {
+    const onClick = () => {
       if (!disabled) {
         showModalFormConfirm(modalRef, modalFormConfirmRef, {
           title: "이대로 가입하시겠어요?",
-          body: <ModalFormConfirmContent email={email} profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut} />,
+          body: <ModalContent email={email} profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut} />,
           callback: async (choice) => (choice && callSignup()),
         });
       }
     };
     return (
-      <button className="button button-next" disabled={disabled} onClick={showModalProfileConfirm}>
+      <button className="button button-next" disabled={disabled} onClick={onClick}>
         <p>다음</p>
       </button>
     );

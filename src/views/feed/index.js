@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { PostViewModel, SearchViewModel } from "../../view-models";
 
 import { StaticComponentRefs } from "../../util";
-import PostItem, { popPost } from "../../components/post-item";
+import PostItem from "../../components/post-item";
 import BackdropLocation from "./backdrop-location";
 
 import "./style.scoped.scss";
@@ -63,7 +63,7 @@ const FeedPage = () => {
         </div>
       </header>
       <main className="content">
-        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} popPost={idx => popPost(posts, setPosts, idx)} />)}</section>
+        <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} posts={posts} setPosts={setPosts} />)}</section>
       </main>
     </div>
   );

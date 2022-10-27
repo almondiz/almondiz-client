@@ -24,14 +24,23 @@ export default class UserModel extends DefaultModel {
 
 
   /** 2. FOLLOW API */
+  // PATCH /api/api/follow
+  changeAlias(body) {
+    return this.callApi(() => this.api.changeAlias(body));
+  }
   // GET /api/api/followings
   getMyAllFollowings() {
     return this.callApi(() => this.api.getMyAllFollowings());
+  }
+  // POST /api/follow
+  follow(body) {
+    return this.callApi(() => this.api.follow(body));
   }
   // DELETE /api/follow/{followId}
   unfollow(userId) {
     return this.callApi(() => this.api.unfollow(userId));
   }
+
 
 
   /** 3. NOTIFICATION API */

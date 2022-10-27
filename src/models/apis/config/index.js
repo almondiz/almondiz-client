@@ -35,10 +35,10 @@ const path = {
 
   /** 2. FOLLOW API */
   follow: {
-    default: makePath(`follow`),          // ####
+    default: makePath(`follow`),
     all: makePath(`api/followings`),
     one: userId => makePath(`follow/${userId}`),
-    modifyAlias: makePath(`api/follow`),  // ####
+    changeAlias: makePath(`api/follow`),
   },
 
   /** 3. NOTIFICATION API */

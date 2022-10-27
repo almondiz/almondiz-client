@@ -55,6 +55,14 @@ export default class CommentViewModel {
           default:            return commentAuthor.nickName;
         }
       })(),
+      commentAuthorNameDescription: (() => {
+        switch (commentAuthorRelation) {
+          case "me":
+          case "following":   return data.nickName;
+          case "other":
+          default:            return undefined;
+        }
+      })(),
       commentAuthorRelation,
       isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
       goToCommentAuthorPage: navigate => navigate(`/user/${commentAuthorId}`),
@@ -75,6 +83,9 @@ export default class CommentViewModel {
       })(),
 
 
+      /** 5-1. COMMENT LIKE API */
+      // POST /api/comment/{postId}/like
+      // DELETE /api/comment/{postId}/like
       like: async (b) => {
         const { success, ...res } = await (b ? this.model.like(commentId) : this.model.unlike(commentId));
         if (success) {
@@ -86,6 +97,9 @@ export default class CommentViewModel {
           return false;
         }
       },
+
+      /** 6-0. REPLY API */
+      // POST /api/comment/{commentId}/reply
       reply: async (text) => {
         if ((text = filterText(text)) === "")   return false;
         
@@ -101,6 +115,8 @@ export default class CommentViewModel {
         }
       },
 
+      /** 5-0. COMMENT API */
+      // DELETE /api/comment/{commentId}
       delete: async () => {
         const { success, ...res } = await this.model.deleteComment(commentId);
         if (success) {

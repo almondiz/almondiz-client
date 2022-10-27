@@ -89,12 +89,21 @@ export default class PostViewModel {
     
         postAuthorId: postAuthorId,
         postAuthorEmoji: postAuthor.thumb.emoji,
+        postAuthorColor: postAuthor.thumb.color,
         postAuthorName: (() => {
           switch (postAuthorRelation) {
             case "me":          return "나";
             case "following":   return postAuthor.alias;
             case "other":
             default:            return postAuthor.nickName;
+          }
+        })(),
+        postAuthorNameDescription: (() => {
+          switch (postAuthorRelation) {
+            case "me":
+            case "following":   return data.nickName;
+            case "other":
+            default:            return undefined;
           }
         })(),
         postAuthorRelation,
@@ -111,24 +120,29 @@ export default class PostViewModel {
         bestCommentAuthorEmoji: data.bestComment?.user.thumb.emoji,
 
 
+        /** 4-1. POST SCRAP API */
+        // POST /api/postScrap/post/{postId}/user
+        // DELETE /api/postScrap/post/{postId}
         scrap: async (b) => {
           const { success, ...res } = await (b ? this.model.scrap(postId) : this.model.unscrap(postId));
           if (success) {
-            console.log(`[postViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
+            console.log(`[PostViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
             return success;
           } else {
-            console.error(`[postViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
+            console.error(`[PostViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
             return false;
           }
         },
 
+        /** 4-0. POST API */
+        // DELETE /api/post/{postId}
         delete: async () => {
           const { success, ...res } = await this.model.deletePost(postId);
           if (success) {
-            console.log("[postViewModel.delete]", res);
+            console.log("[PostViewModel.delete]", res);
             return success;
           } else {
-            console.error("[postViewModel.delete]", res);
+            console.error("[PostViewModel.delete]", res);
             return false;
           }
         },

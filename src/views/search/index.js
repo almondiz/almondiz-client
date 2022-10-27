@@ -24,7 +24,7 @@ const Drawer = ({ contentRef }) => {
     const searchPosts = async (tags) => setPosts(await postViewModel.readAllPosts());
     useEffect(() => { searchPosts(); }, []);
     return posts && (
-      <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} />)}</section>
+      <section className="post-list">{posts.map((post, idx) => <PostItem key={idx} post={post} posts={posts} setPosts={setPosts} />)}</section>
     );
   };
   /** */

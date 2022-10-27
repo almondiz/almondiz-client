@@ -35,6 +35,9 @@ export default class NoticeViewModel {
       noticeText: data.text,
       noticeCreatedAt: data.createdAt,
 
+
+      /** 3. NOTIFICATION API */
+      // DELETE /api/notification/{notId}
       pop: async () => {
         const { res } = await this.userModel.popNotice(noticeId);
         if (res.success) {

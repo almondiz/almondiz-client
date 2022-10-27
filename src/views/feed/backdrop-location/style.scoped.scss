@@ -114,14 +114,14 @@
       margin-top: .5rem;
     }
 
-    .location-list-group {
+    .place-list-group {
       margin-top: 1rem;
 
       &>.list {
         margin-top: -.5rem;
   
         &>.item {
-          height: 5rem;
+          padding: 1rem 0;
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -189,7 +189,7 @@
     .bottom-item-init {}
     .bottom-item {
       height: fit-content;
-      min-height: 4.75rem;
+      min-height: 5rem;
       padding-top: 1.25rem;
       padding-bottom: 1.25rem;
   
@@ -242,4 +242,12 @@
       }
     }
   }
+}
+
+.place-list-group>.list>.item,
+.bottom-item {
+  height: fit-content;
+  min-height: 5rem;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 }

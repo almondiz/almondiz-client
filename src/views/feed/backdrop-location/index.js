@@ -78,7 +78,7 @@ const MapDrawer = forwardRef(({ mapBottomRef, updateLocation, searchPlace }, ref
       <></>
     ),
     (
-      <div className="location-list-group">
+      <div className="place-list-group">
         <ul className="list">{searchResult.map((place, idx) => <PlaceSearchItem key={idx} place={place} />)}</ul>
       </div>
     ),

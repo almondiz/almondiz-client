@@ -21,9 +21,17 @@ export const login = body => {
 
 
 /** 2. FOLLOW API */
+// PATCH /api/api/follow
+export const changeAlias = body => {
+  return api.patch(path.follow.changeAlias, body);
+};
 // GET /api/api/followings
 export const getMyAllFollowings = () => {
   return api.get(path.follow.all);
+};
+// POST /api/follow
+export const follow = body => {
+  return api.post(path.follow.default, body);
 };
 // DELETE /api/follow/{followId}
 export const unfollow = userId => {
