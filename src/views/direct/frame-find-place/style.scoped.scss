@@ -96,8 +96,8 @@
       pointer-events: auto;
     }
   }
-  .tf-frame.tf-frame-1,
-  .tf-frame.tf-frame-3 {
+  .tf-frame.frame-1,
+  .tf-frame.frame-3 {
     padding-left: 1rem;
     padding-right: 1rem;
 
@@ -110,7 +110,7 @@
       box-shadow: var(--float-shadow-border);
     }
   }
-  .tf-frame.tf-frame-2 {
+  .tf-frame.frame-2 {
     pointer-events: auto;
     background-color: var(--background-color);
 

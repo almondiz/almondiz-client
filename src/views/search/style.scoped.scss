@@ -82,7 +82,7 @@
       pointer-events: auto;
     }
   }
-  .tf-frame.tf-frame-2 {
+  .tf-frame.frame-2 {
     pointer-events: auto;
     background-color: var(--background-color);
 
@@ -129,7 +129,7 @@
       }
     }
   }
-  .tf-frame.tf-frame-3 {
+  .tf-frame.frame-3 {
     top: 1rem - $page-header-height;
     &.hide {
       top: 1rem - $page-header-height - $page-header-height;

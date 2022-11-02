@@ -114,7 +114,7 @@ const MenuName = ({
   ]);
   const tfFrame = new Frame([
     (
-      <section className="tf-frame tf-frame-1" >
+      <section className="tf-frame frame-1" >
         <div className="tf">
           <input className="name-first tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => moveTf(1)}/>
           <div className="name-last" onClick={onChangeNut}>
@@ -127,7 +127,7 @@ const MenuName = ({
       </section>
     ),
     (
-      <section className="tf-frame tf-frame-2">
+      <section className="tf-frame frame-2">
         <div className="tf">
           <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
           <input className="name-first tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />

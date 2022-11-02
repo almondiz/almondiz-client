@@ -85,7 +85,7 @@ const MapDrawer = forwardRef(({ mapBottomRef, updateLocation, searchPlace }, ref
   ]);
   const tfFrame = new Frame([
     (
-      <section className="tf-frame tf-frame-1">
+      <section className="tf-frame frame-1">
         <div className="tf color-light" onClick={() => moveTf(1)}>
           <div className="tf-icon"><SearchIconBorder /></div>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly />
@@ -93,7 +93,7 @@ const MapDrawer = forwardRef(({ mapBottomRef, updateLocation, searchPlace }, ref
       </section>
     ),
     (
-      <section className="tf-frame tf-frame-2">
+      <section className="tf-frame frame-2">
         <div className="tf">
           <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
@@ -103,7 +103,7 @@ const MapDrawer = forwardRef(({ mapBottomRef, updateLocation, searchPlace }, ref
       </section>
     ),
     (
-      <section className="tf-frame tf-frame-3">
+      <section className="tf-frame frame-3">
         <div className="tf color-light">
           <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
           <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => moveTf(1)} />

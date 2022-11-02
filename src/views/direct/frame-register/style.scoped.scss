@@ -140,27 +140,26 @@
           margin-top: .5rem;
         }
       }
+
+      .area-if-not-found {
+        margin-top: .5rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      
+        .title {
+          color: var(--secondary-text-color);
+          font-size: .875rem;
+        }
+      
+        .button-if-not-found {
+          @include button-default;
+      
+          z-index: 1;
+          margin-left: auto;
+        }
+      }
     }
-  }
-}
-
-
-.if-not-found {
-  margin-top: .5rem;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  .title {
-    color: var(--secondary-text-color);
-    font-size: .875rem;
-  }
-
-  .button-if-not-found {
-    @include button-default;
-
-    z-index: 1;
-    margin-left: auto;
   }
 }

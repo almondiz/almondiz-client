@@ -89,7 +89,7 @@ const FrameRegister = ({
     (
       <div className="tag-list-group">
         <ul className="list">{searchResult.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
-        <div className="if-not-found">
+        <div className="area-if-not-found">
           <h3 className="title">"{tf}" 태그를 찾나요?</h3>
           <button className="button button-if-not-found" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
         </div>

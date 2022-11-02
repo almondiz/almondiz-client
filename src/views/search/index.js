@@ -125,7 +125,7 @@ const Drawer = ({ contentRef }) => {
 
   const tfFrame = new Frame([
     (
-      <section className="tf-frame tf-frame-1">
+      <section className="tf-frame frame-1">
         <header className="header">
           <h1 className="title">Search</h1>
           <div className="right" />
@@ -163,7 +163,7 @@ const Drawer = ({ contentRef }) => {
       </section>
     ), 
     (
-      <section className="tf-frame tf-frame-2">
+      <section className="tf-frame frame-2">
         <header className="header">
           <h1 className="title">Search</h1>
           <div className="right" />
@@ -179,7 +179,7 @@ const Drawer = ({ contentRef }) => {
       </section>
     ),
     (
-      <section className={`tf-frame tf-frame-3 ${scrollDirection === 1 ? "hide" : ""}`}>
+      <section className={`tf-frame frame-3 ${scrollDirection === 1 ? "hide" : ""}`}>
         <header className="header">
           <h1 className="title">Search</h1>
           <div className="right" />

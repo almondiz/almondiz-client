@@ -73,16 +73,13 @@
       box-shadow: transparent;
       transition: box-shadow 1s ease-in-out;
     }
-    .float-bottom {
-      border-top: 1px solid var(--border-color);
-    }
   }
-}
-#float.shadow {
-  ::v-deep {
-    .float-top,
-    .float-bottom {
-      box-shadow: var(--nav-shadow-border);
+  &.shadow {
+    ::v-deep {
+      .float-top,
+      .float-bottom {
+        box-shadow: var(--nav-shadow-border);
+      }
     }
   }
 }

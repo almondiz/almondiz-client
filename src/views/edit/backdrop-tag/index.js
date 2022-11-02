@@ -65,7 +65,7 @@ const BackdropTag = forwardRef(({
       <div className="tag-list-group">
         <ul className="list">{searchResult.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
         {(searchResult.map(tag => tag.tagName).indexOf(tf) === -1) && (
-          <div className="if-not-found">
+          <div className="area-if-not-found">
             <h3 className="title">"{tf}" 태그를 찾나요?</h3>
             <button className="button button-if-not-found" onClick={() => onCreateFoodTag(tf)}>직접 등록</button>
           </div>
@@ -83,28 +83,26 @@ const BackdropTag = forwardRef(({
         </div>
       </header>
       <main className="backdrop-body">
-        <article className="post">
-          <article className="post editable">
-            <header className="header">
-              <div className="row row-shop">
-                <button className="shop">
-                  <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
-                  <div className="text-wrap">
-                    <p className="name">{shop.shopName}</p>
-                    <p className="description">{shop.shopAddress}</p>
-                  </div>
-                </button>
-              </div>
-              <nav className="row row-tags">
-                <div className="tf">
-                  <div className="tf-icon"><SellIconBorder /></div>
-                  <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
-                  <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
+        <article className="post editable">
+          <header className="header">
+            <div className="row row-shop">
+              <button className="shop">
+                <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+                <div className="text-wrap">
+                  <p className="name">{shop.shopName}</p>
+                  <p className="description">{shop.shopAddress}</p>
                 </div>
-                {tagFrame.view()}
-              </nav>
-            </header>
-          </article>
+              </button>
+            </div>
+            <nav className="row row-tags">
+              <div className="tf">
+                <div className="tf-icon"><SellIconBorder /></div>
+                <input className="tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+                <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
+              </div>
+              {tagFrame.view()}
+            </nav>
+          </header>
         </article>
       </main>
     </>
