@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import { useScript } from "../../util";
+import { useScript } from "../../asset/common/hooks";
 
 import "./style.scoped.scss";
 
@@ -58,5 +58,4 @@ const NaverMap = ({ id="map" }) => {
     <div id={id} className="map" style={mapStyle} />
   );
 };
-
 export default NaverMap;

@@ -1,5 +1,7 @@
 import { CommentModel } from "../models";
-import { StaticComponentRefs, filterText, getTime } from "../util";
+
+import { StaticComponentRefs } from "../asset/common/controllers"
+import { filterText } from "../asset/common/util";
 
 
 export default class CommentViewModel {

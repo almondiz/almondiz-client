@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { UserViewModel } from "../../view-models";
 
-import { StaticComponentRefs } from "../../util";
+import { StaticComponentRefs } from "../../asset/common/controllers";
 
 import GoogleLogin from "react-google-login";
 import { gapi } from "gapi-script";
@@ -14,9 +14,7 @@ import KakaoLogin from "react-kakao-login";
 import "./style.scoped.scss";
 import SymbolImage from "../../asset/logo/symbol.png";
 import Logotype from "../../asset/logo/logotype";
-import GoogleSocialImage from "../../asset/social/google.svg";
-import NaverSocialImage from "../../asset/social/naver.svg";
-import KakaoSocialImage from "../../asset/social/kakao.svg";
+import { GoogleSocialImage, NaverSocialImage, KakaoSocialImage } from "../../asset/icons/social";
 
 
 const LoginPage = () => {
@@ -104,5 +102,4 @@ const LoginPage = () => {
     </div>
   );
 };
-
 export default LoginPage;

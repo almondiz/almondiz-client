@@ -1,6 +1,6 @@
 import { UserModel } from "../models";
-import { StaticComponentRefs } from "../util";
 
+import { StaticComponentRefs } from "../asset/common/controllers"
 import { setEmail, setProviderType, setProviderUid, setAccessToken, setRefreshToken, setMyUserId } from "../store/slices/account";
 
 

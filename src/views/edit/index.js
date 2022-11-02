@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Frame } from "../../util";
+import { StaticComponentRefs, Frame } from "../../asset/common/controllers";
 import { PostViewModel, EditViewModel, SearchViewModel } from "../../view-models";
 
 import FrameFindShop from "./frame-find-shop";
@@ -111,5 +111,4 @@ const EditPage = () => {
     </div>
   );
 };
-
 export default EditPage;

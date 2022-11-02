@@ -5,7 +5,7 @@ import store from "../../store";
 
 import { UserViewModel, PostViewModel } from "../../view-models";
 
-import { StaticComponentRefs, Frame } from "../../util";
+import { StaticComponentRefs, Frame } from "../../asset/common/controllers";
 import PostList from "../../components/post-list";
 import { showModalFormConfirm, showModalFormMenuList } from "../../components/modal";
 
@@ -321,5 +321,4 @@ const UserPage = () => {
     </div>
   );
 };
-
 export default UserPage;

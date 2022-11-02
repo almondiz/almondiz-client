@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Pipe } from "../../util";
+import { StaticComponentRefs, Pipe } from "../../asset/common/controllers";
 import TagList from "../tag-list";
 import CommentList from "../comment-list";
 import ImageSlider from "../image-slider";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 
-import { StaticComponentRefs, Frame, Motion } from "../../../util";
+import { StaticComponentRefs, Frame, Motion } from "../../../asset/common/controllers";
 import { showModalFormConfirm } from "../../../components/modal";
 
 import "./style.scoped.scss";
@@ -215,5 +215,4 @@ const FrameProfile = ({
     </>
   );
 };
-
 export default React.memo(FrameProfile);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Frame } from "../../../util";
+import { StaticComponentRefs, Frame } from "../../../asset/common/controllers";
 
 import NaverMap from "../../../components/naver-map";
 import TagList from "../../../components/tag-list";
@@ -197,5 +197,4 @@ const FrameFindShop = ({ frame, setShop, searchShop }) => {
     </>
   )
 };
-
 export default FrameFindShop;

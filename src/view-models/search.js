@@ -1,5 +1,7 @@
 import { SearchModel } from "../models";
-import { StaticComponentRefs, filterText } from "../util";
+
+import { StaticComponentRefs } from "../asset/common/controllers"
+import { filterText } from "../asset/common/util";
 
 
 export default class SearchViewModel {

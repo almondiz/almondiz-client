@@ -1,7 +1,8 @@
 import React, { useState, useEffect, forwardRef, useImperativeHandle } from "react";
 import { useLocation } from "react-router-dom";
 
-import { Motion, NoScroll } from "../../util";
+import { Motion } from "../../asset/common/controllers";
+import { NoScroll } from "../../asset/common/components";
 
 import "./style.scoped.scss";
 
@@ -128,5 +129,4 @@ const Modal = forwardRef((_, ref) => {
     </div>
   );
 });
-
 export default Modal;

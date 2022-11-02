@@ -1,5 +1,7 @@
 import { UserModel } from "../models";
-import { StaticComponentRefs, getTime } from "../util";
+
+import { StaticComponentRefs } from "../asset/common/controllers"
+import { getTime } from "../asset/common/util";
 
 
 export default class NoticeViewModel {

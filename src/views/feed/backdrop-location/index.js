@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } f
 
 import { SearchViewModel } from "../../../view-models";
 
-import { StaticComponentRefs, Frame } from "../../../util";
+import { StaticComponentRefs, Frame } from "../../../asset/common/controllers";
 import { showModalFormConfirm } from "../../../components/modal";
 import Slider from "../../../components/slider";
 import NaverMap from "../../../components/naver-map";
@@ -350,5 +350,4 @@ const BackdropLocation = forwardRef(({ backdropRef }, ref) => {
     </>
   );
 });
-
 export default BackdropLocation;

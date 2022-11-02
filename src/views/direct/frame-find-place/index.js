@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Frame } from "../../../util";
+import { StaticComponentRefs, Frame } from "../../../asset/common/controllers";
 
 import NaverMap from "../../../components/naver-map";
 
@@ -181,5 +181,4 @@ const FrameFindPlace = ({ frame, setPlace, searchPlace }) => {
     </>
   )
 };
-
 export default FrameFindPlace;

@@ -1,5 +1,7 @@
 import { PostModel } from "../models";
-import { StaticComponentRefs, getMyLocation, getDistance, getTime } from "../util";
+
+import { StaticComponentRefs } from "../asset/common/controllers"
+import { getMyLocation, getDistance, getTime } from "../asset/common/util";
 
 
 export default class PostViewModel {

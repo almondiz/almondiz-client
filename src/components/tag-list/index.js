@@ -57,5 +57,4 @@ const TagList = ({ tags=[], small=false, onClickItem=(() => {}), editable=false,
     </ul>
   );
 };
-
 export default TagList;

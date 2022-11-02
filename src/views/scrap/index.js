@@ -30,5 +30,4 @@ const ScrapPage = () => {
     </div>
   );
 };
-
 export default ScrapPage;

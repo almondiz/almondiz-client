@@ -1,5 +1,5 @@
 import * as api from "./apis";
-import { StaticComponentRefs } from "../util";
+import { StaticComponentRefs } from "../asset/common/controllers";
 
 
 export default class defaultModel {

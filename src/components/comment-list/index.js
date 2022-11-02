@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Pipe } from "../../util";
+import { StaticComponentRefs, Pipe } from "../../asset/common/controllers";
 import { showModalFormConfirm, showModalFormMenuList } from "../../components/modal";
 
 import "./style.scoped.scss";
@@ -157,5 +157,4 @@ const CommentList = ({ comments=[], setComments, root=false }) => {
     </ul>
   );
 };
-
 export default CommentList;

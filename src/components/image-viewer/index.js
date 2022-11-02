@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 
-import { NoScroll } from "../../util";
+import { NoScroll } from "../../asset/common/components";
 
 import "./style.scoped.scss";
 import CloseIcon from "../../asset/icons/mui/close-icon";
@@ -33,5 +33,4 @@ const ImageViewer = forwardRef(({ images=[] }, ref) => {
     </div>
   );
 });
-
 export default ImageViewer;

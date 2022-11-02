@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 
 import { UserViewModel } from "../../view-models";
 
-import { StaticComponentRefs } from "../../util";
+import { StaticComponentRefs } from "../../asset/common/controllers";
 import { showModalFormConfirm } from "../../components/modal";
 
 import "./style.scoped.scss";
@@ -144,5 +144,4 @@ const MenuPage = () => {
     </div>
   );
 };
-
 export default MenuPage;

@@ -1,6 +1,6 @@
 import React, { useState, forwardRef, useImperativeHandle } from "react";
 
-import { Motion } from "../../util";
+import { Motion } from "../../asset/common/controllers";
 
 import "./style.scoped.scss";
 
@@ -40,5 +40,4 @@ const Toast = forwardRef((_, ref) => {
     </div>
   );
 });
-
 export default Toast;

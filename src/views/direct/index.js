@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Frame } from "../../util";
 import { SearchViewModel } from "../../view-models";
+
+import { StaticComponentRefs, Frame } from "../../asset/common/controllers";
 
 import FrameFindPlace from "./frame-find-place";
 import FrameRegister from "./frame-register";
@@ -45,5 +46,4 @@ const DirectPage = () => {
     <div id="page">{frame.view()}</div>
   );
 };
-
 export default DirectPage;

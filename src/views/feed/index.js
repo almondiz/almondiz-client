@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { PostViewModel, UserViewModel, SearchViewModel } from "../../view-models";
 
-import { StaticComponentRefs } from "../../util";
+import { StaticComponentRefs } from "../../asset/common/controllers";
 import PostList from "../../components/post-list";
 import BackdropLocation from "./backdrop-location";
 
@@ -71,5 +71,4 @@ const FeedPage = () => {
     </div>
   );
 };
-
 export default FeedPage;

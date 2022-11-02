@@ -3,9 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
-import GoogleSocialImage from "../../../asset/social/google.svg";
-import NaverSocialImage from "../../../asset/social/naver.svg";
-import KakaoSocialImage from "../../../asset/social/kakao.svg";
+import { GoogleSocialImage, NaverSocialImage, KakaoSocialImage } from "../../../asset/icons/social";
 
 
 // frame 1
@@ -43,5 +41,4 @@ const FrameSocial = ({ frame, providerType, email }) => {
     </>
   );
 };
-
 export default FrameSocial;

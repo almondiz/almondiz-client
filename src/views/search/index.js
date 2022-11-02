@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useSelector } from "react-redux";
 
-import { Frame, NoScroll } from "../../util";
 import { PostViewModel, UserViewModel, SearchViewModel } from "../../view-models";
 
+import { Frame } from "../../asset/common/controllers";
+import { NoScroll } from "../../asset/common/components";
 import TagList, { pushTag } from "../../components/tag-list";
 import PostList from "../../components/post-list";
 
@@ -219,6 +220,4 @@ const SearchPage = () => {
     </div>
   );
 };
-
-
 export default SearchPage;

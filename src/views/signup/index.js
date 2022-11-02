@@ -2,22 +2,18 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 
-import { StaticComponentRefs } from "../../util";
-
-import { Frame, getRandomThumb, getRandomNut } from "../../util";
 import { UserViewModel, SearchViewModel } from "../../view-models";
+
+import { Frame } from "../../asset/common/controllers";
+import { getRandomThumb, getRandomNut } from "../../asset/profile";
 
 import FrameSocial from "./frame-social";
 import FrameProfile from "./frame-profile";
-
-import { getAccountInfo } from "../../store/slices/account";
 
 
 const SignupPage = () => {
   const location = useLocation();
   const { providerType, providerUid, email } = location.state.social;
-
-  const { toastRef } = StaticComponentRefs;
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,5 +58,4 @@ const SignupPage = () => {
     <div id="page">{frame.view()}</div>
   );
 };
-
 export default SignupPage;

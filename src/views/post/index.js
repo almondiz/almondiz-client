@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { StaticComponentRefs, Pipe, Frame } from "../../util";
 import { PostViewModel, UserViewModel, CommentViewModel } from "../../view-models";
 
+import { StaticComponentRefs, Pipe, Frame } from "../../asset/common/controllers";
 import { PostOne } from "../../components/post-list";
 
 import "./style.scoped.scss";
@@ -161,5 +161,4 @@ const PostPage = () => {
     </div>
   );
 };
-
 export default PostPage;

@@ -215,5 +215,4 @@ const ImageGrid = ({ images=[], trailer, action=(() => {}), editable, setImages 
     </div>
   );
 };
-
 export default ImageGrid;

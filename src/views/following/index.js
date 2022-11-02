@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { UserViewModel } from "../../view-models";
 
-import { StaticComponentRefs } from "../../util";
+import { StaticComponentRefs } from "../../asset/common/controllers";
 import { showModalFormConfirm } from "../../components/modal";
 
 import "./style.scoped.scss";
@@ -105,5 +105,4 @@ const FollowingPage = () => {
     </div>
   );
 };
-
 export default FollowingPage;

@@ -23,5 +23,4 @@ const Slider = ({ value, setValue, min=0, max=100, step=1, ticks=[] }) => {
     </div>
   );
 };
-
 export default Slider;

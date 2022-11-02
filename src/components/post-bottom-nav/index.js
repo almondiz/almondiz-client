@@ -73,5 +73,4 @@ const PostBottomNav = () => {
     </nav>
   );
 };
-
 export default PostBottomNav;

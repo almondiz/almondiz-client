@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from "react";
 import { useSelector } from "react-redux";
 
-import { isEmptyElement, useWindowDimensions } from "../../util";
+import { isEmptyElement, useWindowDimensions } from "../../asset/common/hooks";
 
 import "./style.scoped.scss";
 
@@ -74,5 +74,4 @@ const Float = forwardRef((_, ref) => {
     </aside>
   );
 });
-
 export default Float;

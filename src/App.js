@@ -2,10 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import { useLocation, BrowserRouter, Routes, Route, Outlet, Navigate } from "react-router-dom";
 
 import store from "./store";
-import { useDispatch } from "react-redux";
-import { setScrollDirection } from "./store/slices/global";
 
-import { StaticComponentRefs } from "./util";
+import { StaticComponentRefs } from "./asset/common/controllers";
+import { ScrollToTop } from "./asset/common/components";
+import Monitor from "./components/monitor";
+import Float from "./components/float";
+import Backdrop from "./components/backdrop";
+import Modal from "./components/modal";
+import Toast from "./components/toast";
+import PostBottomNav from "./components/post-bottom-nav";
 
 import LoginPage from "./views/login";
 import SignupPage from "./views/signup";
@@ -20,56 +25,6 @@ import DirectPage from "./views/direct";
 import NoticePage from "./views/notice";
 import MenuPage from "./views/menu";
 import NotFoundPage from "./views/not-found";
-
-import Float from "./components/float";
-import Backdrop from "./components/backdrop";
-import Modal from "./components/modal";
-import Toast from "./components/toast";
-import PostBottomNav from "./components/post-bottom-nav";
-
-
-const Monitor = () => {
-  const dispatch = useDispatch();
-
-  // scroll handler
-  const initScrollHandler = () => {
-    const THRESHOLD = 5;
-    let lastScrollY = window.pageYOffset;
-    const { scrollDirection } = store.getState().global;
-    const updateScrollDirection = () => {
-      const scrollY = window.pageYOffset;   // same as window.scrollY
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.body.scrollHeight;
-      if (scrollY <= 0 || scrollY + windowHeight >= documentHeight)
-        dispatch(setScrollDirection(0));
-      else {
-        const direction = scrollY > lastScrollY ? 1 : -1;
-        if (direction !== scrollDirection && Math.abs(scrollY - lastScrollY) >= THRESHOLD)
-          dispatch(setScrollDirection(direction));
-      }
-      lastScrollY = scrollY;
-    };
-
-    useEffect(() => {
-      window.addEventListener("scroll", updateScrollDirection);                   // componentDidMount  
-      return () => window.removeEventListener("scroll", updateScrollDirection);   // componentWillUnmount
-    }, []);
-  };
-  initScrollHandler();
-
-  // gps handler
-  const initLocationHandler = () => {
-  };
-  initLocationHandler();
-
-  return <></>;
-};
-
-const ScrollToTop = () => {
-  const { pathname } = useLocation();
-  useEffect(() => { window.scrollTo(0, 0); }, [pathname]);
-  return <></>;
-};
 
 
 const StaticLayout = ({ setLoaded }) => {
@@ -151,6 +106,7 @@ const RedirectToMyPage = () => {
   return <Navigate to={`/user/${myUserId}`} />;
 };
 
+
 const App = () => {
   const [staticLayoutLoaded, setStaticLayoutLoaded] = useState(false);
 
@@ -188,11 +144,11 @@ const App = () => {
         )}
 
         <StaticLayout setLoaded={setStaticLayoutLoaded} />
-        <ScrollToTop />
         <Monitor />
+        
+        <ScrollToTop />
       </BrowserRouter>
     </>
   );
 };
-
 export default App;
