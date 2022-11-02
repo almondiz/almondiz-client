@@ -135,9 +135,10 @@
       top: 1rem - $page-header-height - $page-header-height;
     }
 
+    margin-left: -.5rem;
+    margin-right: -.5rem;
+
     .tf {
-      margin-left: -.5rem;
-      margin-right: -.5rem;
       background-color: var(--float-background-color);
       -webkit-backdrop-filter: blur(1rem);
       backdrop-filter: blur(1rem);
