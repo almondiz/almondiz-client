@@ -103,7 +103,7 @@ const generateRandomGrid = (Y, X, TILES) => {
       }
     }
   };
-  const _isFullGrown = map => {      
+  const _isFullGrown = map => {
     let x, y;
     for (x = 0; x < X; x++)
       for (y = 0; y < Y; y++)
