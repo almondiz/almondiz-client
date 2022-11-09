@@ -220,3 +220,13 @@ export const getRandomNut = () => {
   const idx = Math.floor(Math.random() * NUTS.length);
   return NUTS[idx];
 };
+
+export const getCurrentLocation = () => {
+  if('geolocation' in navigator) {
+    navigator.geolocation.getCurrentPosition(async ({ coords }) => {
+      console.log(coords.latitude, coords.longitude);
+    });
+  } else {
+    alert("현재 브라우저에서 위치정보를 가져올 수 없습니다.");
+  }
+}
