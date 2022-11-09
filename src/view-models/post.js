@@ -1,164 +1,158 @@
-import { getDistance, getTime } from "../util";
-import { UserModel } from "../models";
+import { PostModel } from "../models";
 
+import { StaticComponentRefs } from "../asset/common/controllers"
+import { getMyLocation, getDistance, getTime } from "../asset/common/util";
 
-
-import store from "../store";
 
 export default class PostViewModel {
-  constructor(model) {
-    this.model = model;
-  }
+  model;
+  constructor(model=(new PostModel())) { this.model = model; }
 
 
-  // [DEPRECATED] -> getPostByPostId(postId)
-  getData(id) {
-    const res = this.model.getData(id);
-    return this._makePostItemData(res);
-  }
-
-
-  /** GET /api/post/{postId} */
-  async getPostByPostId(postId) {
-    const { data } = await this.model.getPostByPostId(postId);
-    console.log("[PostViewModel.getPostByPostId]", data);
-
-    const myLocation = this._getMyLocation();
-    return this._makePostItemData(data, { myLocation });
-  }
-
-  /** GET /api/posts */
-  async getAllPosts() {
-    const { dataList } = await this.model.getAllPosts();
-    console.log("[PostViewModel.getAllPosts]", dataList);
-
-    const myLocation = this._getMyLocation();
-    return dataList.map(res => this._makePostItemData(res, { myLocation }));
-  }
-
-  /** GET /api/user/posts */
-  async getAllPostsByUserId(userId) {
-    const { dataList } = await this.model.getAllPostsByUserId();
-    console.log("[PostViewModel.getAllPostsByUserId]", dataList);
-
-    const myLocation = this._getMyLocation();
-    return dataList.map(res => this._makePostItemData(res, { myLocation }));
-  }
-
-
-  _getMyLocation() { return store.getState().global.location; }
-
-  _makePostItemData(post, { myLocation }) {
-    //const postModel = this.model;
-    const postId = post.postId;
-  
-    const userModel = new UserModel();
-    //const myUserId = userModel.getMyUserId();
-    const postAuthorId = post.user.userId;
-    //const postAuthor = userModel.getData(postAuthorId);
-    
-    const bestComment = post.commentCount && {          // temp
-      default: post.comments[post.bestCommentIndex],
-      authorId: bestComment.userId,
-      author: userModel.getData(bestComment.userId)
-    };
-    post.comments = this.model.data[1].comments;        // temp
-  
-    return {
-      postId: postId,
-
-      shopThumbUrl: post.shop.thumb,
-      shopName: post.shop.shopName,
-      shopAddress: post.shop.location.address.split(" ").slice(0, 3).join(" "),   // ### HMM (지번만 필요함. 서버에서 도로명 주지 않도록 해야 할 듯)
-      shopAddressDetail: post.shop.location.address,
-      shopDistance: `${getDistance(myLocation, post.shop.location)}km`,
-      goToShopPage: navigate => (window.location.href = post.shop.link),          // ### Future Works
-
-      postTags: post.tags,
-      postText: post.text,
-      postImageUrls: post.postFileImgUrls,
-      goToPostPage: navigate => navigate(`/post/${postId}`),
-  
-      postAuthorEmoji: post.user.thumb.emoji,
-      postAuthorName: post.user.nickName,                                         // ### HMM ('나'를 판별할 수 있어야 함)
-      // postAuthorName: (() => {
-      //   if (postAuthorId === myUserId)
-      //     return "나";
-      //   else
-      //     return userModel.getAlias(postAuthorId);
-      // })(),
-      postAuthorType: "other",                                                    // ### 안 고침
-      // postAuthorType: (() => {
-      //   if (postAuthorId === myUserId)
-      //     return "me";
-      //   else if (userModel.isSubscribing(postAuthorId))
-      //     return "following";
-      //   else
-      //     return "other";
-      // })(),
-      goToPostAuthorPage: navigate => navigate(`/profile/${postAuthorId}`),
-
-      postCreatedAt: "3분 전",//getTime(post.createdAt),                           // ### 안 고침 (유닉스 타임스탬프)
-      
-      scrap: post.scrap,
-      scrappedCount: post.scrappedCount,
-  
-      commentCount: post.commentCount,
-      bestCommentText: bestComment?.default?.content,                             // ### 안 고침
-      bestCommentAuthorEmoji: bestComment?.author?.profile.thumb.emoji,           // ### 안 고침
-
-      // used only in post detail page
-      comments: post.comments?.map(comment => this._makeCommentItemData(comment, { postAuthorId })),
-      //
-    };
-  }
-  _makeCommentItemData(comment, { postAuthorId }) {
-    // const navigate = useNavigate();
-
-    const commentId = comment.id;
-  
-    const userModel = new UserModel();
-    const myUserId = userModel.getMyUserId();
-    const commentAuthorId = comment.userId;
-    const commentAuthor = userModel.getData(commentAuthorId);
-  
-  
-    return {
-      commentId: commentId,
-
-      commentAuthorEmoji: commentAuthor.profile.thumb.emoji,
-      commentAuthorName: (() => {
-        if (commentAuthorId === myUserId)
-          return "나";
-        else
-          return userModel.getAlias(commentAuthorId);
-      })(),
-      commentAuthorType: (() => {
-        if (commentAuthorId === myUserId)
-          return "me";
-        else if (userModel.isSubscribing(commentAuthorId))
-          return "following";
-        else
-          return "other";
-      })(),
-      isCommentAuthorPostAuthor: (commentAuthorId === postAuthorId),
-      goToCommentAuthorPage: navigate => navigate(`/profile/${commentAuthorId}`),
-
-      commentCreatedAt: getTime(comment.createdAt),
-  
-      commentText: comment.content,
-      
-      like: (() => {
-        return (comment.liked.indexOf(myUserId) >= 0) ? true : false;
-      }),
-      commentLikedCount: comment.liked.length,
-  
-      replyComments: (() => {
-        if (comment.reply)
-          return comment.reply.map(replyComment => this._makeCommentItemData(replyComment, { postAuthorId }));
-        else
-          return null;
-      })(),
+  /** 4-0. POST API */
+  // GET /api/post/{postId}
+  async readPost(postId) {
+    const res = await this.model.readPost(postId);
+    if (res?.success) {
+      const { data } = res;
+      const myLocation = getMyLocation();
+      return this._makePostItemData(data, { myLocation });
     }
+    return {};
   }
+  // GET /api/posts
+  async readAllPosts() {
+    const res = await this.model.readAllPosts();
+    if (res?.success) {
+      const { dataList } = res;
+      const myLocation = getMyLocation();
+      return dataList.map((data) => this._makePostItemData(data, { myLocation }));
+    }
+    return [];
+  }
+  // GET /api/user/posts
+  async readAllUserPosts(userId) {
+    const res = await this.model.readAllUserPosts(userId);
+    if (res?.success) {
+      const { dataList } = res;
+      const myLocation = getMyLocation();
+      return dataList.map((data) => this._makePostItemData((data), { myLocation }));
+    } else {
+      
+    }
+    return [];
+  }
+  // GET /api/postScraps/user
+  async readAllScrappedPosts() {
+    const res = await this.model.readAllScrappedPosts();
+    if (res?.success) {
+      const { dataList } = res;
+      const myLocation = getMyLocation();
+      return dataList.map((data) => this._makePostItemData(data, { myLocation }));
+    }
+    return [];
+  }
+  _makePostItemData(data, { myLocation }) {
+    try {
+      const postId = data.postId;
+
+      const postAuthor = data.user;
+      const postAuthorId = postAuthor.userId;
+      const postAuthorRelation = postAuthor.relation;
+
+      //data.shop.link = "https://m.naver.com";   // ### DUMMY
+    
+      return {
+        postId,
+
+        shopId: data.shop.shopId,
+        shopThumbUrl: data.shop.thumb,
+        shopName: data.shop.shopName,
+        shopAddress: data.shop.location.address.split(" ").slice(0, 3).join(" "),     // ### HMM (지번만 필요함. 서버에서 도로명 주지 않도록 해야 할 듯)
+        shopAddressDetail: data.shop.location.address,
+        shopDistance: `${getDistance(myLocation, data.shop.location)}km`,
+        goToShopPage: navigate => (window.location.href = data.shop.link),            // ### FUTURE WORKS
+
+        postTags: data.tags,
+        postText: data.text,
+        postTextHead: (() => {
+          const MAX_NUM_OF_LINES = 5;
+          const lines = data.text.split("\n");
+          const linesHead = lines.splice(0, MAX_NUM_OF_LINES);
+          if (lines.length > MAX_NUM_OF_LINES) {
+            linesHead.push("...");
+          }
+          const textHead = linesHead.join("\n");
+          return textHead;
+        })(),
+
+        postImages: data.postFileImgUrls.map((url) => ({ url })),
+        goToPostPage: navigate => navigate(`/post/${postId}`),
+    
+        postAuthorId: postAuthorId,
+        postAuthorEmoji: postAuthor.thumb.emoji,
+        postAuthorColor: postAuthor.thumb.color,
+        postAuthorName: (() => {
+          switch (postAuthorRelation) {
+            case "me":          return "나";
+            case "following":   return postAuthor.alias;
+            case "other":
+            default:            return postAuthor.nickName;
+          }
+        })(),
+        postAuthorNameDescription: (() => {
+          switch (postAuthorRelation) {
+            case "me":
+            case "following":   return data.nickName;
+            case "other":
+            default:            return undefined;
+          }
+        })(),
+        postAuthorRelation,
+        goToPostAuthorPage: navigate => navigate(`/user/${postAuthorId}`),
+
+        postCreatedAt: data.createdAt,
+        //postCreatedAt: getTime(data.createdAt),
+        
+        isScrapped: data.scrap,
+        scrappedCount: data.scrappedCount,
+    
+        commentCount: data.commentCount,
+        bestCommentText: data.bestComment?.text,
+        bestCommentAuthorEmoji: data.bestComment?.user.thumb.emoji,
+
+
+        /** 4-1. POST SCRAP API */
+        // POST /api/postScrap/post/{postId}/user
+        // DELETE /api/postScrap/post/{postId}
+        scrap: async (b) => {
+          const { success, ...res } = await (b ? this.model.scrap(postId) : this.model.unscrap(postId));
+          if (success) {
+            console.log(`[PostViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
+            return success;
+          } else {
+            console.error(`[PostViewModel.scrap - ${b ? "scrap" : "unscrap"}]`, res);
+            return false;
+          }
+        },
+
+        /** 4-0. POST API */
+        // DELETE /api/post/{postId}
+        delete: async () => {
+          const { success, ...res } = await this.model.deletePost(postId);
+          if (success) {
+            console.log("[PostViewModel.delete]", res);
+            return success;
+          } else {
+            console.error("[PostViewModel.delete]", res);
+            return false;
+          }
+        },
+      };
+    } catch (err) {
+      console.error("[PostViewModel._makePostItemData]", err, data);
+      StaticComponentRefs.toastRef?.current?.error("데이터 형식이 잘못되었습니다.");
+      return {};
+    }
+  }    
 };

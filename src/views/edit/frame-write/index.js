@@ -1,145 +1,193 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Frame, getDistance } from "../../../util";
-import { PostModel } from "../../../models";
-import { PostViewModel } from "../../../view-models";
+import { StaticComponentRefs, Frame } from "../../../asset/common/controllers";
+import { filterText } from "../../../asset/common/util";
 
-import TagList, { TagController } from "../../../components/tag-list";
+import TagList from "../../../components/tag-list";
 import ImageGrid from "../../../components/image-grid";
 import BackdropTag from "../backdrop-tag";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
 import AddAPhotoBorder from "../../../asset/icons/mui/add-a-photo-icon-border";
-import { useSelector } from "react-redux";
-import { createPost } from "../../../models/apis";
 
 
-const FloatController = ({ floatRef, frame, createPost }) => {
+const FloatController = ({
+  isModifyMode, goBack, publishPost,
+  postText, postImages, setPostImages,
+}) => {
   const navigate = useNavigate();
 
-  const headerFrame = new Frame(), footerFrame = new Frame();
-  const Header = () => {
-    headerFrame.init([]);
-    return <div className="float-header">{headerFrame.view()}</div>;
-  };
-  const Footer = () => {
+  const Footer = ({ postImages }) => {
+    const imageInputRef = useRef();
+    const MAX_NUM_OF_IMAGES = 10;
+    const onAddImageButtonClick = e => {
+      if (postImages.length < MAX_NUM_OF_IMAGES) {
+        imageInputRef.current?.click();
+      } else {
+        const { toastRef } = StaticComponentRefs;
+        toastRef?.current?.log("이미지는 최대 10개까지 업로드할 수 있습니다.");
+      }
+    };
+    const onImageChange = e => {
+      setPostImages([...postImages, {
+        file: e.target.files[0],
+        url: URL.createObjectURL(e.target.files[0]),
+      }]);
+    };
+
+    const footerFrame = new Frame();
     footerFrame.init([
       ( // main
         <section className="float-footer-frame frame-1">
-          <button className="button button-add-image right" onClick={() => {}}>
+          <button className="button button-add-image right" onClick={onAddImageButtonClick}>
             <div className="icon"><AddAPhotoBorder /></div>
             <p>사진 추가</p>
           </button>
+
+          <input ref={imageInputRef} type="file" accept="image/*" name="file" onChange={onImageChange} className="input-add-image" />
         </section>
       ),
     ]);
-    return <div className="float-footer light">{footerFrame.view()}</div>;
-  }
+    return <div className="float-footer color-light">{footerFrame.view()}</div>;
+  };
 
-  const Top = () => (
-    <nav className="float-top top-nav">
-      <button className="button button-back" onClick={() => frame.walk(-3)}>
-        <div className="icon"><ArrowBackIcon /></div>
-      </button>
-      <h3 className="title">리뷰 작성</h3>
-      <button className="button button-next" onClick={() => {
-        createPost();
-        navigate(`/me`);
-      }}>게시</button>
-    </nav>
-  );
+  const Top = ({ postText }) => {
+    const ButtonPublish = ({ postText }) => {
+      const [ disabled, setDisabled ] = useState(true);
+      useEffect(() => { setDisabled(filterText(postText) === ""); }, [postText]);
+      const onClick = async () => {
+        if (!disabled)  publishPost();
+      };
+      return <button className="button button-next" disabled={disabled} onClick={onClick}>게시</button>;
+    };
+    return (
+      <nav className="float-top top-nav">
+        <button className="button button-back" onClick={goBack}>
+          <div className="icon"><ArrowBackIcon /></div>
+        </button>
+        <h3 className="title">{isModifyMode ? "글 수정" : "글 작성"}</h3>
+        <ButtonPublish postText={postText} />
+      </nav>
+    );
+  };
 
+  const { floatRef } = StaticComponentRefs;
   useEffect(() => {
-    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />), floatRef.current?.setTop(<Top />));
-    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter(), floatRef.current?.setTop());
-  }, [floatRef.current]);
+    floatRef?.current?.setFooter(<Footer postImages={postImages} />);
+    return () => floatRef?.current?.setFooter();
+  }, [postImages]);
+  useEffect(() => {
+    floatRef?.current?.setTop(<Top postText={postText} />);
+    return () => floatRef?.current?.setTop();
+  }, [postText]);
 
   return <></>;
 };
 
 
-// frame 4
-const FrameWrite = ({ frame, floatRef, backdropRef, getShopData, setContent, getTags, setTags, createPost }) => {
-  const location = useSelector(state => state.global.location);
-  const [ shopData, setShopData ] = useState({});
+// frame 2
+const FrameWrite = ({
+  isModifyMode=false, goBack, publishPost,
+  shop,
+  postTags, setPostTags,
+  postText, setPostText,
+  postImages, setPostImages,
+  searchFoodTag, createFoodTag,
+}) => {
+  useEffect(() => {
+    if (!isModifyMode)   setPostTags([...shop.tags]);
+  }, []);
 
-  const ImageGridTrailer = ({ shopData }) => (
+  // textarea
+  const textRef = useRef();
+  const handleResizeHeight = useCallback(() => {
+    const obj = textRef.current;
+    obj.style.height = "1px";
+    obj.style.height = obj.scrollHeight + "px";
+  }, []);
+  useEffect(() => { handleResizeHeight(); }, []);
+  const onPostTextChange = useCallback(e => {
+    setPostText(e.target.value);
+    handleResizeHeight();
+  }, []);
+
+  const ImageGridTrailer = useCallback(({ shop }) => (
     <div className="image-grid-trailer">
       <div className="content">
         <div className="text-wrap">
-          <p className="name">{shopData.shopName}</p>
-          <p className="address">{shopData.shopAddress}</p>
+          <p className="name">{shop.shopName}</p>
+          <p className="address">{shop.shopAddress}</p>
         </div>
       </div>
-      <div className="image" style={{ backgroundImage: `url(${shopData.shopThumbUrl})` }} />
+      <div className="image" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
     </div>
-  );
+  ), [shop]);
 
-  const textRef = useRef();
-  const handleResizeHeight = () => {
-    const obj = textRef.current;
-    obj.style.height = '1px';
-    obj.style.height = obj.scrollHeight + 'px';
-  };
-  useEffect(() => {
-    handleResizeHeight();
-    setShopData(getShopData());
-  }, []);
-  // TAG
-  const tagController = new TagController(["맥주", "호프"]);
-  useEffect(() => {
-    console.log("[FrameWrite]", tagController.tags);
-    // setTags(...)
-  }, [tagController.tags]);
-  //
-
-  const showBackdropTag = () => backdropRef.current?.show({ title: "태그 추가", content: <BackdropTag tagController={tagController} /> });
+  const backdropTagRef = useRef();
+  const showBackdropTag = useCallback(() => {
+    const { backdropRef } = StaticComponentRefs;
+    backdropRef?.current?.show(
+      <BackdropTag backdropRef={backdropRef} ref={backdropTagRef}
+        shop={shop} postTags={postTags}
+        searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
+      />,
+      async () => {
+        const { tags } = backdropTagRef.current?.destruct();
+        setPostTags([...tags]);
+      }
+    );
+  }, [postTags]);
 
   return (
     <>
       <main className="content">
         <article className="post editable">
           <header className="header">
-            <div className="row row-shop">
-              <button className="shop">
-                <div className="thumb" style={{ backgroundImage: `url(${shopData.shopThumbUrl})` }} />
-                <div className="text-wrap">
-                  <p className="name">{shopData.shopName}</p>
-                  <p className="description">{shopData.shopThumbAddress} · {getDistance(location, {
-                    lati: shopData.lati,
-                    longi: shopData.longi,
-                  })}km</p>
-                </div>
-              </button>
-            </div>
-            <nav className="row row-tags">
-              <TagList dataList={tagController.tags} small />
-              <div className="buttons right">
-                <button className="button text-button" onClick={() => showBackdropTag()}>태그 추가</button>
+            {useMemo(() => (
+              <div className="row row-shop">
+                <button className="shop">
+                  <div className="thumb" style={{ backgroundImage: `url(${shop.shopThumbUrl})` }} />
+                  <div className="text-wrap">
+                    <p className="name">{shop.shopName}</p>
+                    <p className="description">{shop.shopAddress}</p>
+                  </div>
+                </button>
               </div>
-            </nav>
+            ), [shop])}
+            {useMemo(() => (
+              <nav className="row row-tags">
+                <TagList tags={postTags} small />
+                <div className="buttons right">
+                  <button className="button button-add-tag" onClick={() => showBackdropTag()}>태그 추가</button>
+                </div>
+              </nav>
+            ), [postTags])}
           </header>
 
           <main className="body">
-            <div className="row row-text">
-              <textarea className="text" ref={textRef} onChange={({ target }) => {
-                setContent(target.value);
-                handleResizeHeight();
-              }} name="text" placeholder="내용을 입력하세요" autoFocus />
-              {/*data.postText*/}
-            </div>
-            <div className="row row-images">
-              <ImageGrid images={[]} trailer={<ImageGridTrailer shopData={[]} />} editable />
-            </div>
+            {useMemo(() => (
+              <div className="row row-text">
+                <textarea className="text" ref={textRef} value={postText} onChange={onPostTextChange} name="text" placeholder="내용을 입력하세요" autoFocus />
+              </div>
+            ), [postText])}
+            {useMemo(() => (
+              <div className="row row-images">
+                <ImageGrid images={postImages} trailer={<ImageGridTrailer shop={shop} />} editable setImages={setPostImages} />
+              </div>
+            ), [postImages])}
           </main>
         </article>
       </main>
 
-      <FloatController floatRef={floatRef} frame={frame} createPost={createPost} />
+      {useMemo(() => (
+        <FloatController
+          isModifyMode={isModifyMode} goBack={goBack} publishPost={publishPost}
+          postText={postText} postImages={postImages} setPostImages={setPostImages}
+        />
+      ), [postText, postImages])}
     </>
   )
 };
-
-export default FrameWrite;
+export default React.memo(FrameWrite);

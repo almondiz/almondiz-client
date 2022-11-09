@@ -103,7 +103,7 @@ const generateRandomGrid = (Y, X, TILES) => {
       }
     }
   };
-  const _isFullGrown = map => {      
+  const _isFullGrown = map => {
     let x, y;
     for (x = 0; x < X; x++)
       for (y = 0; y < Y; y++)
@@ -161,20 +161,30 @@ const generateRandomGrid = (Y, X, TILES) => {
 };
 
 
-const ImageGrid = ({ imageUrls=[], trailer, action=(() => {}), editable }) => {  
-  const TILES = imageUrls.length;                                   // # of tiles
+const ImageGrid = ({ images=[], trailer, action=(() => {}), editable, setImages }) => {
+  const TILES = images.length;                                      // # of tiles
   const Y = (TILES > 0) ? Math.max(2, Math.ceil(TILES / 2)) : 0;    // # of rows
   const X = 3;                                                      // # of columns
 
-  const makeCell = (src, idx) => (
+  const ButtonDelete = ({ images, setImages, idx }) => {
+    const onClick = () => {
+      const _images = [...images];
+      _images.splice(idx, 1);
+      setImages(_images);
+    };
+
+    return (
+      <button className="button button-delete" onClick={onClick}>
+        <div className="icon"><CloseIcon /></div>
+      </button>
+    );
+  };
+
+  const makeCell = (image, idx) => (
     <div key={idx} className="grid" onClick={() => action(idx)}
-      style={{ gridArea: `grid-${idx + 1}`, backgroundImage: `url(${src})` }}
+      style={{ gridArea: `grid-${idx + 1}`, backgroundImage: `url(${image.url})` }}
     >
-      {editable && (
-        <button className="button button-delete">
-          <div className="icon"><CloseIcon /></div>
-        </button>
-      )}
+      {editable && <ButtonDelete images={images} setImages={setImages} idx={idx} />}
     </div>
   );
   const makeGridStyle = hasTrailer => {
@@ -200,10 +210,9 @@ const ImageGrid = ({ imageUrls=[], trailer, action=(() => {}), editable }) => {
 
   return (
     <div className={`image-grid ${editable ? "editable" : ""}`} style={makeGridStyle(trailer ? true : false )}>
-      {imageUrls.map(makeCell)}
+      {images.map(makeCell)}
       {trailer && <div className="grid trailer" style={{ gridArea: `grid-${TILES + 1}` }}>{trailer}</div>}
     </div>
   );
 };
-
 export default ImageGrid;

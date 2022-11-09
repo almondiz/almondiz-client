@@ -1,69 +1,114 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
-import { Frame } from "../../util";
-import { EditViewModel } from "../../view-models";
+import { StaticComponentRefs, Frame } from "../../asset/common/controllers";
+import { PostViewModel, EditViewModel, SearchViewModel } from "../../view-models";
 
 import FrameFindShop from "./frame-find-shop";
-import FrameDirect from "./frame-direct";
-import FrameDirectTag from "./frame-direct-tag";
 import FrameWrite from "./frame-write";
 
-const EditPage = ({ floatRef, backdropRef }) => {
-  const frame = new Frame();
+
+const EditMode = ({ postId }) => {
+  const navigate = useNavigate();
+
+  const [ shop, setShop ] = useState(null);
+  const [ postTags, setPostTags ] = useState(null);
+  const [ postText, setPostText ] = useState(null);
+  const [ postImages, setPostImages ] = useState(null);
+
+  /** 4. POST API */
+  const postViewModel = new PostViewModel();
+  const readPost = async () => {
+    const post = await postViewModel.readPost(postId);
+    const { postTags, postText, postImages } = post;
+    const shop = {
+      shopId: post.shopId,
+      shopName: post.shopName,
+      shopAddress: post.shopAddress,
+      shopThumbUrl: post.shopThumbUrl,
+    };
+    setShop(shop), setPostTags(postTags), setPostText(postText), setPostImages(postImages);
+  };
+  useEffect(() => { readPost(); }, []);
+
   const editViewModel = new EditViewModel();
-  const [ shopData, setShopData ] = useState({});
-  const [ content, setContent ] = useState("");
-  const [ tags, setTags ] = useState([]);
+  const modifyPost = async () => (await editViewModel.modifyPost(postId, { shop, postTags, postText, postImages }));
+  /** */
 
-  useEffect(() => {
-    console.log("[EditPage]", shopData);
-    shopData.tags && setTags([...shopData.tags]);
-  }, [shopData]);
+  /** 0. SEARCH API */
+  const searchViewModel = new SearchViewModel();
+  const searchFoodTag = async (keyword) => (await searchViewModel.searchFoodTag(keyword));
+  const createFoodTag = async (tagName) => (await searchViewModel.createFoodTag(tagName));
+  /** */
 
-  const createPost = async () => {
-    await editViewModel.createPost({
-      content,
-      images: [
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20200512_270%2F1589240248177WIr4l_JPEG%2FKakaoTalk_Photo_2019-11-15-21-09-35.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20160222_124%2F1456108689766cGsT8_JPEG%2F176172516828220_1.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fldb-phinf.pstatic.net%2F20160222_65%2F1456108689887hMVWw_JPEG%2F176172516828220_2.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyMjA4MDVfMTg1%2FMDAxNjU5NjU1NjY2MDY0.9OVwKR1z4PPRPc261Bm6s7uijG0StPCpIjmpGNTN7gog.k3_zLr9zb9AO4HIUhxSAEAMHwMn-fDUtJWv6ggqm_i4g.JPEG%2Fupload_7a34a53d254c06cf9240f8ac12b01655.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_50%2F1640014951911xYfbU_JPEG%2Fupload_72846c3e27e83636fc5315a45bb4ee53.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_238%2F164001495200947VEL_JPEG%2Fupload_438a1fb5d2e2bdf650c5ccc9ae140291.jpeg",
-        "https://search.pstatic.net/common/?autoRotate=true&type=w560_sharpen&src=https%3A%2F%2Fmyplace-phinf.pstatic.net%2F20211221_245%2F1640014952265p4T4U_JPEG%2Fupload_74f2d577c28ecb075f4f90f026ffd1f1.jpeg",
-      ],
-      shopId: shopData.shopId,
-      // 태그 기능 제대로 구현 필요
-      tags: shopData.tags.map(({ tagId }) => tagId),
-      lati: shopData.lati,
-      longi: shopData.longi,
-    });
-  }
+  const publishPost = async () => {
+    const success = await modifyPost();
+    if (success) {
+      navigate(`/me`);
+      StaticComponentRefs.toastRef?.current?.log("글을 수정했습니다.");
+    }
+  };
 
-  frame.init([
-    <FrameFindShop
-      searchTags={editViewModel.searchTags}
-      setShopData={setShopData}
-      frame={frame}
-      floatRef={floatRef}
-    />,
-    <FrameDirect frame={frame} floatRef={floatRef} />,
-    <FrameDirectTag frame={frame} floatRef={floatRef} />,
-    <FrameWrite
-      frame={frame}
-      floatRef={floatRef}
-      backdropRef={backdropRef}
-      getShopData={() => shopData}
-      getTags={() => tags}
-      setContent={setContent}
-      setTags={setTags}
-      createPost={createPost}
-    />,
-  ]);
-
-  return (
-    <div id="page">{frame.view()}</div>
+  return (shop && postTags && postText && postImages) && (
+    <FrameWrite isModifyMode={true} goBack={() => navigate(-1)} publishPost={publishPost}
+      shop={shop}
+      postTags={postTags} setPostTags={setPostTags}
+      postText={postText} setPostText={setPostText}
+      postImages={postImages} setPostImages={setPostImages}
+      searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
+    />
   );
 };
+const CreateMode = () => {
+  const navigate = useNavigate();
 
+  const [ shop, setShop ] = useState({});
+  const [ postTags, setPostTags ] = useState([]);
+  const [ postText, setPostText ] = useState("");
+  const [ postImages, setPostImages ] = useState([]);  
+
+  /** 4. POST API */
+  const editViewModel = new EditViewModel();
+  const createPost = async () => (await editViewModel.createPost({ shop, postTags, postText, postImages }));
+  /** */
+
+  /** 0. SEARCH API */
+  const searchViewModel = new SearchViewModel();
+  const searchShop = async (keyword) => (await searchViewModel.searchShop(keyword));
+  const searchFoodTag = async (keyword) => (await searchViewModel.searchFoodTag(keyword));
+  const createFoodTag = async (tagName) => (await searchViewModel.createFoodTag(tagName));
+  /** */
+
+  const publishPost = async () => {
+    const success = await createPost();
+    if (success) {
+      navigate(`/me`);
+      StaticComponentRefs.toastRef?.current?.log("글을 게시했습니다.");
+    }
+  };
+
+  const frame = new Frame();
+  frame.init([
+    <FrameFindShop frame={frame} setShop={setShop} searchShop={searchShop} />,
+    <FrameWrite isModifyMode={false} goBack={() => frame.prev()} publishPost={publishPost}
+      shop={shop}
+      postTags={postTags} setPostTags={setPostTags}
+      postText={postText} setPostText={setPostText}
+      postImages={postImages} setPostImages={setPostImages}
+      searchFoodTag={searchFoodTag} createFoodTag={createFoodTag}
+    />,
+  ]);
+  return frame.view();
+};
+
+const EditPage = () => {
+  const location = useLocation();
+  const postId = location.state?.postId;    // edit mode (not create mode) if this field exists
+
+  return (
+    <div id="page">
+      {postId ? <EditMode postId={postId} /> : <CreateMode />}
+    </div>
+  );
+};
 export default EditPage;

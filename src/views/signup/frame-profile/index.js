@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 
-import { Frame, Motion } from "../../../util";
+import { StaticComponentRefs, Frame, Motion } from "../../../asset/common/controllers";
+import { showModalFormConfirm } from "../../../components/modal";
 
 import "./style.scoped.scss";
 import CancelIconFill from "../../../asset/icons/mui/cancel-icon-fill";
@@ -10,102 +10,7 @@ import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
 import RefreshIcon from "../../../asset/icons/mui/refresh-icon";
 
 
-const MenuName = ({ getRandomNut, changeNut }) => {
-  const [nut, setNut] = useState(getRandomNut());
-  const onChangeNut = () => (motion.is("stop") && motion.go("move-in"));
-  const onChangeNutStart = () => {
-    let _nut;
-    while (true) {
-      _nut = getRandomNut();
-      if (_nut.id === nut.id)
-        continue;
-      break;
-    }
-    setNut(_nut);
-  };
-  useEffect(() => { changeNut(nut.id); }, [nut])
-
-
-  const tfPlaceholder = "좋아하는 음식";
-  const [tf, setTf] = useState("");
-  useEffect(() => {
-    tagFrame.move((tfFrame.index === 1 && tf) ? 1 : 0);
-  }, [tf]);
-
-  const tfHandler = (tfFrameIndex, text="") => {
-    tfFrame.move(tfFrameIndex);
-    setTf(text);
-  };
-
-  // TAG
-  const onClickTagItem = text => {
-    setTf(text);
-    tfHandler(0, text);
-  };
-  //
-
-  // Motion
-  const MOTION_DELAY = 200;
-  const motion = new Motion({
-    "stop": () => {},
-    "move-in": () => {
-      onChangeNutStart();
-      motion.delay(MOTION_DELAY / 4, "move-out");
-    },
-    "move-out": () => {
-      motion.delay(MOTION_DELAY, "stop");
-    }
-  }, "stop");
-  //
-
-  const tagFrame = new Frame([
-    (
-      <></>
-    ),
-    (
-      <div className="tag-list-group">
-        <ul className="list">
-          <li className="item" onClick={() => onClickTagItem("떡볶이")}>떡볶이</li>
-          <li className="item" onClick={() => onClickTagItem("마라탕")}>마라탕</li>
-          <li className="item" onClick={() => onClickTagItem("제육볶음")}>제육볶음</li>
-          <li className="item" onClick={() => onClickTagItem("돈까스")}>돈까스</li>
-          <li className="item" onClick={() => onClickTagItem("김치찌개")}>김치찌개</li>
-        </ul>
-      </div>
-    ),
-  ]);
-  const tfFrame = new Frame([
-    (
-      <section className="tf-frame tf-frame-1" >
-        <div className="tf">
-          <input className="name-first tf-box" type="text" placeholder={tfPlaceholder} value={tf} readOnly onClick={() => tfHandler(1)}/>
-          <div className={`name-last ${motion.get()}`} onClick={onChangeNut}>
-            <p className="field">{nut.name}</p>
-            <button className="name-refresh-icon">
-              <div className="icon"><RefreshIcon /></div>
-            </button>
-          </div>
-        </div>
-      </section>
-    ),
-    (
-      <section className="tf-frame tf-frame-2">
-        <div className="tf">
-          <button className="tf-icon" onClick={() => tfHandler(0)}><ArrowBackIosIcon /></button>
-          <input className="name-first tf-box" type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
-          <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
-        </div>
-        {tagFrame.view()}
-      </section>
-    ),
-  ]);
-
-  return <aside className="menu-name">{tfFrame.view()}</aside>;
-};
-
-
-
-const MenuThumb = ({ getRandomThumb, changeThumb }) => {
+const MenuThumb = ({ getRandomThumb, setProfileThumb }) => {
   const [thumbs, setThumbs] = useState([null, null, null, null, null].map(() => getRandomThumb()));
   const onChangeThumb = () => (motion.is("stop") && motion.go("move"));
   const _onChangeThumbEnd = () => {
@@ -114,10 +19,10 @@ const MenuThumb = ({ getRandomThumb, changeThumb }) => {
     _thumbs.push(getRandomThumb());
     setThumbs(_thumbs);
   };
-  useEffect(() => { changeThumb(thumbs[0]); }, [thumbs])
+  useEffect(() => { setProfileThumb(thumbs[0]); }, [thumbs]);
 
-  // Motion
-  const MOTION_DELAY = 300;
+  // motion
+  const MOTION_DELAY = 500;
   const motion = new Motion({
     "stop": () => {},
     "move": () => {
@@ -125,11 +30,10 @@ const MenuThumb = ({ getRandomThumb, changeThumb }) => {
       return _onChangeThumbEnd;
     },
   }, "stop");
-  //
 
   return (
     <div className="menu-thumb" onClick={onChangeThumb}>
-      <div className={`thumbs ${motion.get()}`}>
+      <div className="thumbs" data-motion={motion.get()}>
         {motion.is("move") && <div className="thumb" style={{ backgroundColor: thumbs[4].color }}>{thumbs[4].emoji}</div>}
         <div className="thumb" style={{ backgroundColor: thumbs[3].color }}>{thumbs[3].emoji}</div>
         <div className="thumb" style={{ backgroundColor: thumbs[2].color }}>{thumbs[2].emoji}</div>
@@ -142,48 +46,173 @@ const MenuThumb = ({ getRandomThumb, changeThumb }) => {
     </div>
   );
 };
+const MenuName = ({
+  getRandomNut, setProfileTag, setProfileNut,
+  searchFoodTag,
+}) => {
+  // search
+  const [ searchResult, setSearchResult ] = useState([]);
+  const onSearchFoodTag = async (tf) => {
+    const _tags = await searchFoodTag(tf);
+    if (_tags) {
+      setSearchResult(_tags);
+    } else {
+      setSearchResult([]);
+    }
+  };
 
+  // textfield
+  const TF_PLACEHOLDER = "좋아하는 음식";
+  const [tf, setTf] = useState("");
+  useEffect(() => {
+    tagFrame.move(tf ? 1 : 0);
+    onSearchFoodTag(tf);
+  }, [tf]);
+  const moveTf = (tfFrameIndex, text="") => {
+    tfFrame.move(tfFrameIndex);
+    setTf(text);
+  };
+
+  // tag
+  const [tag, setTag] = useState();
+  const onSelectTagItem = _tag => {
+    const { tagName } = _tag;
+    moveTf(0, tagName);
+    setTf(tagName);
+    setTag(_tag);
+  };
+  useEffect(() => { setProfileTag(tag); }, [tag]);
+
+  // nut
+  const [nut, setNut] = useState(getRandomNut());
+  const onChangeNut = () => {
+    let _nut;
+    while (true) {
+      _nut = getRandomNut();
+      if (_nut.nutId === nut.nutId)
+        continue;
+      break;
+    }
+    setNut(_nut);
+  };
+  useEffect(() => { setProfileNut(nut); }, [nut]);
+
+  const TagSearchItem = ({ tag }) => (
+    <li className="item" data-tag-type={tag.tagType} data-tag-id={tag.tagId} onClick={() => onSelectTagItem(tag)}>
+      {tag.tagName}
+    </li>
+  );
+  const tagFrame = new Frame([
+    (
+      <></>
+    ),
+    (
+      <div className="tag-list-group">
+        <ul className="list">{searchResult.map((tag, idx) => <TagSearchItem key={idx} tag={tag} />)}</ul>
+      </div>
+    ),
+  ]);
+  const tfFrame = new Frame([
+    (
+      <section className="tf-frame frame-1" >
+        <div className="tf">
+          <input className="name-first tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} readOnly onClick={() => moveTf(1)}/>
+          <div className="name-last" onClick={onChangeNut}>
+            <p className="field">{nut.nutName}</p>
+            <button className="name-refresh-icon">
+              <div className="icon"><RefreshIcon /></div>
+            </button>
+          </div>
+        </div>
+      </section>
+    ),
+    (
+      <section className="tf-frame frame-2">
+        <div className="tf">
+          <button className="tf-icon" onClick={() => moveTf(0)}><ArrowBackIosIcon /></button>
+          <input className="name-first tf-box" type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+          <button className={`tf-clear-button ${tf ? "" : "hide"}`} onClick={() => setTf("")}><CancelIconFill /></button>
+        </div>
+        {tagFrame.view()}
+      </section>
+    ),
+  ]);
+
+  return <aside className="menu-name">{tfFrame.view()}</aside>;
+};
 
 
 // frame 2
 const FrameProfile = ({
   frame,
-  changeProfile,
-  changeNut,
-  changeTag,
-  getProfile,
-  getNut,
-  getTag,
-  getRandomProfile,
-  getRandomNut,
+  getRandomThumb, getRandomNut,
+  profileThumb, profileTag, profileNut,
+  setProfileThumb, setProfileTag, setProfileNut,
+  searchFoodTag,
+  email, callSignup
 }) => {
+  const ButtonConfirm = ({ profileThumb, profileTag, profileNut }) => {
+    const ModalContent = ({ email, profileThumb, profileTag, profileNut }) => (
+      <main className="modal-body area-profile-confirm">
+        <div className="profile">
+          <div className="thumb" style={{ backgroundColor: profileThumb.color }}>{profileThumb.emoji}</div>
+          <div className="text-wrap">
+            <p className="name">{profileTag.tagName} {profileNut.nutName}</p>
+            <p className="email">{email}</p>
+          </div>
+        </div>
+        <p className="help">연동한 소셜 계정은 타인에게 드러나지 않습니다.</p>
+      </main>
+    );
+
+    const [ disabled, setDisabled ] = useState(true);
+    useEffect(() => { setDisabled(!(profileThumb && profileTag && profileNut)); }, [profileThumb, profileTag, profileNut]);
+
+    const { modalRef } = StaticComponentRefs;
+    const modalFormConfirmRef = useRef();
+    const onClick = () => {
+      if (!disabled) {
+        showModalFormConfirm(modalRef, modalFormConfirmRef, {
+          title: "이대로 가입하시겠어요?",
+          body: <ModalContent email={email} profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut} />,
+          callback: async (choice) => (choice && callSignup()),
+        });
+      }
+    };
+    return (
+      <button className="button button-next" disabled={disabled} onClick={onClick}>
+        <p>다음</p>
+      </button>
+    );
+  };
+
   return (
     <>
-      <nav className="top-nav">
-        <button className="button button-back" onClick={() => frame.prev()}>
-          <div className="icon"><ArrowBackIcon /></div>
-        </button>
-        <h3 className="title">프로필 생성</h3>
-      </nav>
-      
-      <main className="content">
-        <div className="menu-thumb-group">
-          <MenuThumb getRandomThumb={getRandomProfile} changeThumb={changeProfile} />
-          <h5 className="description">이모지</h5>
-        </div>
-        <div className="menu-name-group">
-          <MenuName getRandomNut={getRandomNut} changeNut={changeNut} />
-          <h5 className="description">닉네임</h5>
-        </div>
-      </main>
+      {useMemo(() => (
+        <nav className="top-nav">
+          <button className="button button-back" onClick={() => frame.prev()}>
+            <div className="icon"><ArrowBackIcon /></div>
+          </button>
+          <h3 className="title">프로필 생성</h3>
+        </nav>
+      ), [])}
+      {useMemo(() => (
+        <main className="content">
+          <div className="menu-thumb-group">
+            <MenuThumb getRandomThumb={getRandomThumb} setProfileThumb={setProfileThumb} />
+            <h5 className="description">이모지</h5>
+          </div>
+          <div className="menu-name-group">
+            <MenuName getRandomNut={getRandomNut} setProfileTag={setProfileTag} setProfileNut={setProfileNut} searchFoodTag={searchFoodTag} />
+            <h5 className="description">닉네임</h5>
+          </div>
+        </main>
+      ), [])}
       <footer className="footer">
-        <p className="help">한번 정한 프로필은 나중에 바꿀 수 없습니다.</p>
-        <button className="button button-next" onClick={() => frame.next()}>
-          <p>다음</p>
-        </button>
+        <p className="help">한번 선택한 프로필은 이후 변경할 수 없습니다.</p>
+        <ButtonConfirm profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut} />
       </footer>
     </>
   );
 };
-
-export default FrameProfile;
+export default React.memo(FrameProfile);

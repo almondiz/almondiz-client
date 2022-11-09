@@ -4,6 +4,8 @@
   display: grid;
   gap: .125rem;
 
+  transition: all .3s ease-in-out;
+
   &>.grid {
     background-size: cover;
     background-position: center;
@@ -20,7 +22,6 @@
         position: relative;
 
         &>.content {
-          z-index: 1;
           position: absolute;
           top: 0;
           bottom: 0;
@@ -35,9 +36,13 @@
           background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, .5));
 
           .text-wrap {
+            &,
+            &>* {
+              @include text-nowrap;
+            }
             p {
               color: #fff;
-              text-shadow: 0 1px 2px rgba(0, 0, 0, 1);
+              text-shadow: 0 1px .125rem rgba(0, 0, 0, 1);
             }
             .name {
               font-size: 1.25rem;
@@ -51,7 +56,7 @@
             margin-right: -1rem;
             
             svg {
-              filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 1));
+              filter: drop-shadow(0 1px .125rem rgba(0, 0, 0, 1));
               height: 2.5rem;
               width: 2.5rem;
               fill: #fff;
@@ -59,6 +64,7 @@
           }
         }
         &>.image {
+          z-index: -1;
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
@@ -86,9 +92,10 @@
   &.editable {
     &>.grid {
       &>.button-delete {
-        background-color: rgba(255, 255, 255, .5);
-        -webkit-backdrop-filter: blur(.5rem);
-        backdrop-filter: blur(.5rem);
+        box-shadow: 0 1px .25rem rgba(0, 0, 0, .5);
+        background-color: rgba(255, 255, 255, .875);
+        -webkit-backdrop-filter: blur(1rem);
+        backdrop-filter: blur(1rem);
   
         border-radius: 100%;
   
@@ -103,7 +110,7 @@
             svg {
               height: 1.125rem;
               width: 1.125rem;
-              fill: #212121;
+              fill: rgba(0, 0, 0, .625);
             }
           }
         }

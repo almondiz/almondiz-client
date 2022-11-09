@@ -2,29 +2,52 @@ import DefaultModel from "./default-model";
 
 
 export default class PostModel extends DefaultModel {
-  /** GET /api/post/{postId} */
-  getPostByPostId(postId) {
-    return this.callApi(() => this.api.getPostByPostId(postId));
-  }
-
-  /** GET /api/posts */
-  getAllPosts() {
-    return this.callApi(() => this.api.getAllPosts());
-  }
-
-  /** GET /api/user/posts */
-  getAllPostsByUserId(postId) {
-    return this.callApi(() => this.api.getAllPostsByUserId(postId));
-  }
-
+  /** 4-0. POST API */
+  // POST /api/post
   createPost(body) {
     return this.callApi(() => this.api.createPost(body));
   }
+  // GET /api/post/{postId}
+  readPost(postId) {
+    return this.callApi(() => this.api.readPost(postId));
+  }
+  // DELETE /api/post/{postId}
+  deletePost(postId) {
+    return this.callApi(() => this.api.deletePost(postId));
+  }
+  // PATCH /api/post/{postId}
+  modifyPost(postId, body) {
+    return this.callApi(() => this.api.modifyPost(postId, body));
+  }
+
+  // GET /api/posts
+  readAllPosts() {
+    return this.callApi(() => this.api.readAllPosts());
+  }
+  // GET /api/user/posts
+  readAllUserPosts(userId) {
+    return this.callApi(() => this.api.readAllUserPosts(userId));
+  }
+
+  /** 4-1. POST SCRAP API */
+  // POST /api/postScrap/post/{postId}/user
+  scrap(postId) {
+    return this.callApi(() => this.api.scrap(postId));
+  }
+  // DELETE /api/postScrap/post/{postId}
+  unscrap(postId) {
+    return this.callApi(() => this.api.unscrap(postId));
+  }
+  // GET /api/postScraps/user
+  readAllScrappedPosts() {
+    return this.callApi(() => this.api.readAllScrappedPosts());
+  }
 
 
 
+  
   // [DEPRECATED]
-  data = {
+  /*data = {
     1: {
       id: 1,
       createdAt: 1660993200000,
@@ -94,11 +117,5 @@ export default class PostModel extends DefaultModel {
       bestCommentIndex: 0,
       scrapped: [1, 4],             // 이 글을 스크랩하는 사용자들 (userId)
     },
-  };
-  getData(id) { return this.data[id]; }
-  getCommentCount(id) {
-    let count = 0;
-    this.data[id].comments.map(comment => count += 1 + comment.reply.length);
-    return count;
-  }
+  };*/
 };

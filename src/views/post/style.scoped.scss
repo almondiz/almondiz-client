@@ -13,10 +13,11 @@
     align-items: center;
 
     &>.title {
+      @include text-nowrap;
       font-size: 1.75rem;
-      color: var(--primary-text-color);
     }
     &>.right {
+      flex-shrink: 0;
       display: flex;
       align-items: center;
 
@@ -39,16 +40,14 @@
     }    
   }
 }
-
-
 #float {
   .float-header {
     &-frame.frame-1 {
-      .button-back {      
+      .button-back {
         background-color: var(--float-background-color);
-        -webkit-backdrop-filter: blur(.5rem);
-        backdrop-filter: blur(.5rem);
-        box-shadow: var(--float-shadow-color);
+        -webkit-backdrop-filter: blur(1rem);
+        backdrop-filter: blur(1rem);
+        box-shadow: var(--float-shadow-border);
         border-radius: 1.5rem;
     
         display: flex;
@@ -56,8 +55,6 @@
         align-items: center;
 
         height: 3rem;
-      }
-      .button-back {
         width: 3rem;
       }
     }
@@ -67,9 +64,9 @@
       .button-comment,
       .button-scrap {
         background-color: var(--float-background-color);
-        -webkit-backdrop-filter: blur(.5rem);
-        backdrop-filter: blur(.5rem);
-        box-shadow: var(--float-shadow-color);
+        -webkit-backdrop-filter: blur(1rem);
+        backdrop-filter: blur(1rem);
+        box-shadow: var(--float-shadow-border);
         border-radius: 1.5rem;
 
         display: flex;
@@ -91,14 +88,14 @@
       }
     }
     &-frame.frame-2 {
-      &>.comment-dialog {
+      &>.comment-input {
         height: 3rem;
         width: 100%;
         
         background-color: var(--float-background-color);
-        -webkit-backdrop-filter: blur(.5rem);
-        backdrop-filter: blur(.5rem);
-        box-shadow: var(--float-shadow-color);
+        -webkit-backdrop-filter: blur(1rem);
+        backdrop-filter: blur(1rem);
+        box-shadow: var(--float-shadow-border);
         border-radius: 1.5rem;
 
         position: relative;
@@ -121,15 +118,15 @@
         .comment-input-box {
           position: absolute;
           left: 3rem;
-          right: .375rem;
-          top: .375rem;
-          bottom: .375rem;
+          right: .25rem;
+          top: .25rem;
+          bottom: .25rem;
 
-          height: 2.25rem;
-          border-radius: 1.125rem;
+          height: 2.5rem;
+          border-radius: 1.25rem;
 
           background-color: var(--border-color);
-          box-shadow: var(--shadow-to-border-color);
+          box-shadow: var(--shadow-to-border);
 
           display: flex;
           align-items: center;

@@ -1,85 +1,56 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate, useLocation } from "react-router-dom";
 
-import { Frame, getRandomProfile, getRandomNutList, getRandomNut } from "../../util";
-import { UserModel } from "../../models";
-import { UserViewModel } from "../../view-models";
+import { UserViewModel, SearchViewModel } from "../../view-models";
+
+import { Frame } from "../../asset/common/controllers";
+import { getRandomThumb, getRandomNut } from "../../asset/profile";
 
 import FrameSocial from "./frame-social";
 import FrameProfile from "./frame-profile";
-import FrameConfirm from "./frame-confirm";
-
-import { getAccountInfo, setAccessToken, setRefreshToken } from "../../store/slices/account";
 
 
 const SignupPage = () => {
+  const location = useLocation();
+  const { providerType, providerUid, email } = location.state.social;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const account = useSelector(getAccountInfo);
 
-  const [ tagId, setTagId ] = useState(1);
-  const [ nutId, setNutId ] = useState(1);
-  const [ profile, setProfile ] = useState({ color: "", emoji: "" });
-  const [ errorMessage, setErrorMessage ] = useState(null);
+  const [ profileThumb, setProfileThumb ] = useState(null);
+  const [ profileTag, setProfileTag ] = useState(null);
+  const [ profileNut, setProfileNut ] = useState(null);
 
-  const changeNut = (id) => setNutId(id);
-  const changeProfile = (profile) => setProfile(profile);
-  // 음식 태그는 아직 미구현
-  const changeTag = (id) => setTagId(id || 1);
-
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
   const callSignup = async () => {
-    const userViewModel = new UserViewModel(new UserModel());
-    const { success, msg, data } = await userViewModel.signup({
-      email: account.email,
-      providerType: account.providerType,
-      providerUid: account.providerUid,
-      profileId: 1,
-      // 추후 Tag가 생긴다면 변경 필요
-      tagId: 1,
-      nutId,
-      thumb: {
-        color: profile.color,
-        emoji: profile.emoji
+    const success = await userViewModel.signup(
+      { providerType, providerUid, email },   
+      {
+        tagId: profileTag.tagId, nutId: profileNut.nutId, thumb: { emoji: profileThumb.emoji, color: profileThumb.color },
+        profileId: 1,   // ### 이 필드는 뭐임?
       },
-    });
-    if (!success) {
-      setErrorMessage(msg);
-      return;
-    }
-    dispatch(setAccessToken(data.accessToken));
-    dispatch(setRefreshToken(data.refreshToken));
-    navigate("/feed");
+      { dispatch, navigate }
+    );
   };
+  /** */
+
+  /** 0. SEARCH API */
+  const searchViewModel = new SearchViewModel();
+  const searchFoodTag = async (tagName) => (await searchViewModel.searchFoodTag(tagName));
+  /** */
   
   const frame = new Frame();
   frame.init([
-    <FrameSocial
-      frame={frame}
-      email={account.email}
-      providerType={account.providerType}
-    />,
+    <FrameSocial frame={frame} email={email} providerType={providerType} />,
     <FrameProfile
       frame={frame}
-      changeNut={changeNut}
-      changeProfile={changeProfile}
-      changeTag={changeTag}
-      getTagId={() => tagId}
-      getNutId={() => nutId}
-      getProfileId={() => profile}
-      getRandomProfile={getRandomProfile}
-      getRandomNutList={getRandomNutList}
-
-      getRandomNut={getRandomNut}
-    />,
-    <FrameConfirm
-      frame={frame}
-      callSignup={callSignup}
-      profile={profile}
-      email={account.email}
-      tagId={tagId}
-      nutId={nutId}
-      getRandomNutList={getRandomNutList}
+      getRandomThumb={getRandomThumb} getRandomNut={getRandomNut}
+      profileThumb={profileThumb} profileTag={profileTag} profileNut={profileNut}
+      setProfileThumb={setProfileThumb} setProfileTag={setProfileTag} setProfileNut={setProfileNut}
+      searchFoodTag={searchFoodTag}
+      email={email} callSignup={callSignup}
     />,
   ]);
 
@@ -87,5 +58,4 @@ const SignupPage = () => {
     <div id="page">{frame.view()}</div>
   );
 };
-
 export default SignupPage;

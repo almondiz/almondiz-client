@@ -45,9 +45,8 @@
     align-items: center;
   
     .help {
-      margin-bottom: 1.125rem;
+      margin-bottom: 1rem;
 
-      user-select: none;
       color: var(--secondary-text-color);
       font-size: .875rem;
   
@@ -59,16 +58,19 @@
     .button-next {
       width: calc(100% - 6rem);
 
-      height: 3rem;
-      border-radius: 1.5rem;
+      height: 2.5rem;
+      border-radius: 1.25rem;
       background-color: var(--content-text-color);
+      &[disabled] {
+        background-color: var(--tertiary-text-color);
+      }
 
       display: flex;
       justify-content: center;
       align-items: center;
 
       p {
-        font-size: 1rem;
+        font-size: .9375rem;
         font-weight: 700;
         color: var(--background-color);
         letter-spacing: $sparse-letter;
@@ -93,6 +95,7 @@
     width: 5rem;
   
     border-radius: 100%;
+    background-color: var(--border-color);
 
     &.google {
       border: 3px solid #ddd;

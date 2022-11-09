@@ -1,14 +1,12 @@
 #float {
   .float-bottom {
     background-color: var(--float-background-color);
-    -webkit-backdrop-filter: blur(.5rem);
-    backdrop-filter: blur(.5rem);
-    box-shadow: var(--nav-shadow-color);
-
-    border-top: 1px solid transparent;
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
+    border-top: 1px solid var(--border-color);
+    
     position: relative;
     &>.border {
-      z-index: 1;
       position: absolute;
       top: -1px;
       left: 0;

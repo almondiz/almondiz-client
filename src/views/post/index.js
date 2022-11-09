@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { Frame, Pipe } from "../../util";
-import { PostModel } from "../../models";
-import { PostViewModel } from "../../view-models";
+import { PostViewModel, UserViewModel, CommentViewModel } from "../../view-models";
 
-import PostItem from "../../components/post-item";
+import { StaticComponentRefs, Pipe, Frame } from "../../asset/common/controllers";
+import { PostOne } from "../../components/post-list";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../asset/icons/mui/arrow-back-icon";
-import MoreHorizIcon from "../../asset/icons/mui/more-horiz-icon";
 import ChatBubbleIconBorder from "../../asset/icons/mui/chat-bubble-icon-border";
 import BookmarkIconBorder from "../../asset/icons/mui/bookmark-icon-border";
 import BookmarkIconFill from "../../asset/icons/mui/bookmark-icon-fill";
@@ -17,7 +15,7 @@ import ArrowBackIosIcon from "../../asset/icons/mui/arrow-back-ios-icon";
 import SendIconBorder from "../../asset/icons/mui/send-icon-border";
 
 
-const FloatController = ({ floatRef, data }) => {
+const FloatController = ({ post, createComment }) => {
   const navigate = useNavigate();
 
   const headerFrame = new Frame(), footerFrame = new Frame();
@@ -31,44 +29,54 @@ const FloatController = ({ floatRef, data }) => {
         </section>
       ),
     ]);
-    return <div className="float-header light">{headerFrame.view()}</div>;
+    return <div className="float-header color-light">{headerFrame.view()}</div>;
   };
   const Footer = () => {
-    const tfPlaceholder = "댓글 입력";
+    const TF_PLACEHOLDER = "댓글 입력";
     const [tf, setTf] = useState("");
 
-
-    const [repliedCommentUnit, setRepliedCommentUnit] = useState(null);
+    const [replyController, setReplyController] = useState(null);
     useEffect(() => {
-      repliedCommentUnit && repliedCommentUnit.onShow();
-      return () => (repliedCommentUnit && repliedCommentUnit.onHide());
-    }, [repliedCommentUnit]);
+      replyController && replyController.onShowCallback();
+      return () => (replyController && replyController.onHideCallback());
+    }, [replyController]);
 
-    const commentDialog = {
-      send: () => {
-        if (repliedCommentUnit)
-          console.log("[Post.commentDialog]", `${repliedCommentUnit.repliedCommentId}에게 답글 : ${tf}`);
-        else
-          console.log("[Post.commentDialog]", `댓글 : ${tf}`);
-        commentDialog.hide();
+    const commentInputController = {
+      send: async () => {
+        if (!post)  return;
+        const text = tf;
+        const action = replyController ? replyController.reply : createComment;
+        const success = await action(text);
+        if (success) {
+          await Pipe.get("comments")?.refresh();
+          commentInputController.hide();
+        }
       },
 
-      show: (_repliedCommentUnit) => {  // repliedCommentId, onShow, onHide
-        setRepliedCommentUnit(_repliedCommentUnit);
+      show: (_replyController) => {  // reply, onShowCallback, onHideCallback
+        setReplyController(_replyController);
         footerFrame.move(1);
       },
       hide: () => {
-        setRepliedCommentUnit(null);
+        setReplyController(null);
         setTf("");
         footerFrame.move(0);
       },
     };
-    Pipe.set("commentDialog", commentDialog);
+    Pipe.set("commentInput", commentInputController, []);
 
 
-    const ButtonScrap = ({ data }) => {
-      const [focus, setFocus] = useState(data.scrap);
-      const onClick = () => setFocus(!focus);
+    const ButtonScrap = ({ post }) => {
+      const [focus, setFocus] = useState(post.isScrapped);
+      const onClick = async () => {
+        const b = !focus;
+        const success = await post.scrap(b);
+        if (success) {
+          const { toastRef } = StaticComponentRefs;
+          toastRef?.current?.log(b ? "스크랩되었습니다." : "스크랩이 취소되었습니다.");
+          setFocus(b);
+        }
+      };
       return (
         <button className={`button button-scrap ${focus ? "focus" : ""}`} onClick={onClick}>
           <div className="icon">{focus ? <BookmarkIconFill /> : <BookmarkIconBorder />}</div>
@@ -81,79 +89,76 @@ const FloatController = ({ floatRef, data }) => {
       ( // main
         <section className="float-footer-frame frame-1">
           <div className="buttons">
-            <button className="button button-comment" onClick={() => commentDialog.show()}>
+            <button className="button button-comment" onClick={() => commentInputController.show()}>
               <div className="icon"><ChatBubbleIconBorder /></div>
               <p>댓글 쓰기</p>
             </button>
           </div>
           <div className="buttons right">
-            <ButtonScrap data={data} />
+            <ButtonScrap post={post} />
           </div>
         </section>
       ),
       ( // comment
         <section className="float-footer-frame frame-2">
-          <div className="comment-dialog">
-            <button className="button button-back" onClick={() => commentDialog.hide()}>
+          <div className="comment-input">
+            <button className="button button-back" onClick={() => commentInputController.hide()}>
               <div className="icon"><ArrowBackIosIcon /></div>
             </button>
             <div className="comment-input-box">
-              <input type="text" placeholder={tfPlaceholder} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
+              <input type="text" placeholder={TF_PLACEHOLDER} value={tf} onChange={e => setTf(e.target.value)} autoFocus />
             </div>
-            <button className="button button-comment-send" onClick={() => commentDialog.send()}>
+            <button className="button button-comment-send" onClick={() => commentInputController.send()}>
               <div className="icon"><SendIconBorder /></div>
             </button>
           </div>
         </section>
       ),
     ]);
-    return <div className="float-footer light">{footerFrame.view()}</div>;
+    return <div className="float-footer color-light">{footerFrame.view()}</div>;
   }
 
   useEffect(() => {
-    (floatRef.current?.setHeader(<Header />), floatRef.current?.setFooter(<Footer />));
-    return () => (floatRef.current?.setHeader(), floatRef.current?.setFooter());
-  }, [floatRef.current]);
+    const { floatRef } = StaticComponentRefs;
+    (floatRef?.current?.setHeader(<Header />), floatRef?.current?.setFooter(<Footer />));
+    return () => (floatRef?.current?.setHeader(), floatRef?.current?.setFooter());
+  }, []);
 
   return <></>;
 };
 
 
-const PostPage = ({ floatRef }) => {
-  const { postId } = useParams();
+const PostPage = () => {
+  const postId = parseInt(useParams().postId);
 
-  /** POST API */
-  const postViewModel = new PostViewModel(new PostModel());
-  const [data, setData] = useState([]);
-  const getPostByPostId = async () => { setData(await postViewModel.getPostByPostId(postId)); };
-  useEffect(() => { getPostByPostId(); }, []);
+  /** 4. POST API */
+  const postViewModel = new PostViewModel();
+  const [post, setPost] = useState(null);
+  const readPost = async () => setPost(await postViewModel.readPost(postId));
+  useEffect(() => { readPost(); }, []);
+  /** */
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  /** */
+  /** 5-0. COMMENT API */
+  const commentViewModel = new CommentViewModel();
+  const createComment = async (text) => (await commentViewModel.createComment(postId, text));
   /** */
 
+  Pipe.set("post", { refresh: readPost });
 
-  const ButtonMore = ({ data }) => {
-    const [focus, setFocus] = useState(false);
-    const onClick = () => setFocus(!focus);
-    return (
-      <button className={`button button-more ${focus ? "focus" : ""}`} onClick={onClick}>
-        <div className="icon"><MoreHorizIcon /></div>
-      </button>
-    );
-  };
-
-
-  return (
+  return (post) && (
     <div id="page">
       <header className="header">
-        <div className="right">
-          <ButtonMore />
-        </div>
+        <div className="right" />
       </header>
 
-      <main className="content"><PostItem data={data} detail={true} /></main>
+      <main className="content">
+        <PostOne post={post} setPost={setPost} userViewModel={userViewModel} commentViewModel={commentViewModel} />
+      </main>
 
-      <FloatController floatRef={floatRef} data={data} />
+      <FloatController post={post} createComment={createComment} />
     </div>
   );
 };
-
 export default PostPage;

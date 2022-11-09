@@ -1,53 +1,74 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useRef } from "react";
 
-import { PostModel } from "../../models";
-import { PostViewModel } from "../../view-models";
+import { PostViewModel, UserViewModel, SearchViewModel } from "../../view-models";
 
-import PostItem from "../../components/post-item";
-import BackdropLocation from "../backdrop-location";
+import { StaticComponentRefs } from "../../asset/common/controllers";
+import PostList from "../../components/post-list";
+import BackdropLocation from "./backdrop-location";
 
 import "./style.scoped.scss";
 import LocationSearchingIcon from "../../asset/icons/mui/location-searching-icon";
+import MyLocationIconFill from "../../asset/icons/mui/my-location-icon-fill";
 
 
-const FeedPage = ({ backdropRef }) => {
-  /** POST API */
-  const postViewModel = new PostViewModel(new PostModel());
-  const [dataList, setDataList] = useState([]);
-  const getAllPosts = async () => { setDataList(await postViewModel.getAllPosts()); };
-  useEffect(() => { getAllPosts(); }, []);
+const FeedPage = () => {
+  /** 4. POST API */
+  const postViewModel = new PostViewModel();
+  const [posts, setPosts] = useState(null);
+  const readFeedPosts = async () => setPosts(await postViewModel.readAllPosts());
   /** */
-
-
-  const addressTokens = (() => {
-    const location = useSelector(state => state.global.location);
+  /** 1. USER API */
+  const userViewModel = new UserViewModel();
+  /** */
+  /** 0. SEARCH API */
+  const [ tracking, setTracking ] = useState(null);
+  const [ addressTokens, setAddressTokens ] = useState(null);
+  const searchViewModel = new SearchViewModel();
+  const readAddress = async () => {
+    const data = await searchViewModel.getPreferedLocationSet();
+    const { tracking, location, distance } = data;
     const address = location.address.split(" ");
-    return [ address.slice(0, -1).join(" "), address[address.length - 1] ];   // [ "수원 영통구", "원천동" ]
-  })();
+    const addressTokens = [ address.slice(0, -1).join(" "), address[address.length - 1] ];   // [ "수원 영통구", "원천동" ]
+    setAddressTokens(addressTokens);
+    setTracking(tracking);
+  };
+  /** */
+  useEffect(() => { readFeedPosts(), readAddress(); }, []);
 
-  const showBackdropLocation = () => backdropRef.current?.show({ title: "위치 설정", content: <BackdropLocation />, });
+
+  const backdropLocationRef = useRef();
+  const showBackdropLocation = () => {
+    const { backdropRef } = StaticComponentRefs;
+    backdropRef?.current?.show(
+      <BackdropLocation backdropRef={backdropRef} ref={backdropLocationRef} />,
+      async () => {
+        const { dirty } = backdropLocationRef.current?.destruct();
+        if (dirty) {    // refresh page if dirty is true
+          readFeedPosts(), readAddress();
+        }
+      }
+    );
+  };
 
 
-  return (
+  return (posts && addressTokens) && (
     <div id="page">
       <header className="header">
         <h1 className="title">Feed</h1>
         <div className="buttons right">
-          <button className="button button-location" onClick={() => showBackdropLocation()}>
+          <button className="button button-location" onClick={showBackdropLocation}>
             <div className="text-wrap">
               <p className="description">{addressTokens[0]}</p>
               <h3 className="title">{addressTokens[1]}</h3>
             </div>
-            <div className="icon"><LocationSearchingIcon /></div>
+            <div className="icon">{tracking ? <MyLocationIconFill /> : <LocationSearchingIcon />}</div>
           </button>
         </div>
       </header>
       <main className="content">
-        <section className="post-list">{dataList.map((data, idx) => <PostItem key={idx} data={data} />)}</section>
+        <PostList posts={posts} setPosts={setPosts} userViewModel={userViewModel} />
       </main>
     </div>
   );
 };
-
 export default FeedPage;

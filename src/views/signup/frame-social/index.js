@@ -3,14 +3,20 @@ import { useNavigate } from "react-router-dom";
 
 import "./style.scoped.scss";
 import ArrowBackIcon from "../../../asset/icons/mui/arrow-back-icon";
-import GoogleSocialImage from "../../../asset/social/google.svg";
+import { GoogleSocialImage, NaverSocialImage, KakaoSocialImage } from "../../../asset/icons/social";
+
 
 // frame 1
-const FrameSocial = ({ frame, email, providerType }) => {
+const FrameSocial = ({ frame, providerType, email }) => {
   const navigate = useNavigate();
-  const showProviderLogo = (providerType) => {
-    if (providerType === "GOOGLE") return (<img className="social-icon google" alt="Google" src={GoogleSocialImage} />);
-  }
+  const showProviderLogo = providerType => {
+    switch (providerType) {
+      case "GOOGLE":    return <img className="social-icon google" alt="Google" src={GoogleSocialImage} />;
+      case "NAVER":     return <img className="social-icon naver" alt="Naver" src={NaverSocialImage} />;
+      case "KAKAO":     return <img className="social-icon kakao" alt="Kakao" src={KakaoSocialImage} />;
+      default:          return <div className="social-icon" alt={providerType} />;
+    }
+  };
 
   return (
     <>
@@ -27,7 +33,7 @@ const FrameSocial = ({ frame, email, providerType }) => {
         <p className="email">{email}</p>
       </main>
       <footer className="footer">
-        <p className="help">다른 계정으로 <button onClick={() => navigate(-1)}>로그인 또는 회원 가입</button></p>
+        <p className="help">다른 계정으로 <button onClick={() => navigate(`/login`)}>로그인 또는 회원 가입</button></p>
         <button className="button button-next" onClick={() => frame.next()}>
           <p>다음</p>
         </button>
@@ -35,5 +41,4 @@ const FrameSocial = ({ frame, email, providerType }) => {
     </>
   );
 };
-
 export default FrameSocial;

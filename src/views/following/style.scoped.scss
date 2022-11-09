@@ -1,0 +1,123 @@
+#page {
+  &>.content {
+    padding-top: $float-bottom-height + 1rem;
+    padding-bottom: $float-bottom-height + 1rem;
+  }
+}
+#float {
+  .float-top {
+    background-color: var(--float-background-color);
+    -webkit-backdrop-filter: blur(1rem);
+    backdrop-filter: blur(1rem);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &>.title {
+      font-size: 1rem;
+  
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    &>.button-back {
+      .icon {
+        height: 3rem;
+        width: 3rem;
+      }
+
+      position: absolute;
+      left: .5rem;
+    }
+  }
+}
+
+
+.following-list {
+  .following-item + .following-item {
+    margin-top: .5rem;
+  }
+  .following-item {
+    height: 4rem;
+    padding-left: $padding-horiz;
+    padding-right: $padding-horiz;
+
+    display: flex;
+    align-items: center;
+
+    position: relative;
+    &>.link {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+    }
+
+    &>.row.row-profile {
+      width: 100%;
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .profile {
+        display: flex;
+        align-items: center;
+
+        .thumb {
+          width: 3rem;
+          height: 3rem;
+          margin-right: .625rem;
+          border-radius: 100%;
+
+          user-select: none;
+          overflow: hidden;
+          background-color: var(--border-color);
+          background-size: 75%;
+          background-position: center;
+          background-repeat: no-repeat;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 2.25rem;
+          line-height: 3rem;
+
+          flex-shrink: 0;
+        }
+        .text-wrap {
+          &,
+          &>* {
+            @include text-nowrap;
+          }
+          .name {
+            @include text-nowrap;
+            font-size: 1rem;
+            font-weight: 700;
+          }
+          .description {
+            margin-top: .1825rem;
+            font-size: .8125rem;
+            color: var(--secondary-text-color);
+          }
+        }
+      }
+      .button-unfollow {
+        z-index: 1;
+        
+        font-size: .75rem;
+        font-weight: 700;
+        color: var(--background-color);
+        background-color: var(--content-text-color);
+
+        height: 1.5rem;
+        border-radius: .75rem;
+        padding: 0 .75rem;
+
+        margin-left: auto;
+      }
+    }
+  }
+}

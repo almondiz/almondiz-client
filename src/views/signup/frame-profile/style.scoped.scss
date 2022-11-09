@@ -45,9 +45,8 @@
     align-items: center;
   
     .help {
-      margin-bottom: 1.125rem;
+      margin-bottom: 1rem;
 
-      user-select: none;
       color: var(--secondary-text-color);
       font-size: .875rem;
   
@@ -59,16 +58,19 @@
     .button-next {
       width: calc(100% - 6rem);
 
-      height: 3rem;
-      border-radius: 1.5rem;
+      height: 2.5rem;
+      border-radius: 1.25rem;
       background-color: var(--content-text-color);
+      &[disabled] {
+        background-color: var(--tertiary-text-color);
+      }
 
       display: flex;
       justify-content: center;
       align-items: center;
 
       p {
-        font-size: 1rem;
+        font-size: .9375rem;
         font-weight: 700;
         color: var(--background-color);
         letter-spacing: $sparse-letter;
@@ -87,7 +89,6 @@
     align-items: center;
   
     .description {
-      user-select: none;
       font-size: .9375rem;
       color: var(--secondary-text-color);
       margin-top: .875rem;
@@ -98,7 +99,7 @@
     .menu-thumb {
       margin-bottom: -.25rem;
       
-      height: 10rem;
+      height: 9rem;
       width: 6rem;
       position: relative;
 
@@ -107,9 +108,9 @@
         flex-direction: column;
         align-items: center;
 
-        &.move {
+        &[data-motion=move] {
           .thumb {
-            transition: all .3s ease;
+            transition: all .5s ease-in-out;
           }
         }
 
@@ -126,6 +127,8 @@
         }
 
         .thumb:nth-child(1) {   // move-in candidate
+          margin-top: -1rem;
+
           z-index: 0;
           height: 2rem;
           width: 2rem;
@@ -141,7 +144,7 @@
           line-height: 3rem;
           font-size: 2.25rem;
           margin-bottom: -1.5rem;
-          opacity: .3;
+          opacity: 1;
         }
         .thumb:nth-child(3) {
           z-index: 2;
@@ -150,7 +153,7 @@
           line-height: 4rem;
           font-size: 3rem;
           margin-bottom: -1.5rem;
-          opacity: .6;
+          opacity: 1;
         }
         .thumb:nth-child(4) {
           z-index: 3;
@@ -224,10 +227,10 @@
           pointer-events: auto;
         }
 
-        transition: background-color .3s ease;
+        transition: background-color .3s ease-in-out;
     
         .tf {
-          transition: background-color .3s ease;
+          transition: background-color .3s ease-in-out;
           
           .name-first.tf-box,
           .name-last {
@@ -245,11 +248,8 @@
             display: flex;
             align-items: center;
 
-            &.move-in {
+            &:active {
               background-color: var(--border-color);
-            }
-            &.move-out {
-              transition: background-color .3s ease;
             }
         
             .field {
@@ -259,7 +259,6 @@
         
               font-size: .9375rem;
               text-align: center;
-              user-select: none;
             }
         
             .name-refresh-icon {
@@ -282,7 +281,7 @@
           }
         }
       }
-      .tf-frame.tf-frame-1 {
+      .tf-frame.frame-1 {
         .tf {
           border: 2px solid var(--content-text-color);
           background-color: transparent;
@@ -298,7 +297,7 @@
           }
         }
       }
-      .tf-frame.tf-frame-2 {
+      .tf-frame.frame-2 {
         pointer-events: auto;
         background-color: var(--background-color);
     
@@ -320,7 +319,7 @@
               display: flex;
               justify-content: center;
     
-              height: 2.5rem;
+              height: 3rem;
               border-bottom: 1px solid var(--border-color);
     
               display: flex;
@@ -330,5 +329,59 @@
         }
       }
     }
+  }
+}
+
+
+.modal-body.area-profile-confirm {
+  .profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .thumb {
+      height: 5rem;
+      width: 5rem;
+      border-radius: 100%;
+
+      user-select: none;
+      overflow: hidden;
+      background-color: var(--border-color);
+      background-size: 75%;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3.75rem;
+      line-height: 5rem;
+    }
+    .text-wrap {
+      margin-top: .75rem;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .name {
+        width: fit-content;
+        font-size: 1.375rem;
+
+        display: flex;
+        align-items: center;
+      }
+      .email {
+        margin-top: .25rem;
+        font-size: .9375rem;
+        color: var(--secondary-text-color);
+      }
+    }
+  }
+  .help {
+    margin-top: 2rem;
+    margin-bottom: 0;
+    
+    color: var(--secondary-text-color);
+    font-size: .875rem;
   }
 }

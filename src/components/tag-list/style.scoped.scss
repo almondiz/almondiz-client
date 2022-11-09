@@ -4,58 +4,44 @@
   align-items: center;
 
   flex-wrap: wrap;
-  margin-left: -.125rem;
-  margin-right: -.125rem;
-  margin-top: -.25rem;
-  margin-bottom: -.25rem;
-  .tag-item {
-    flex-shrink: 0;
 
-    margin-left: .125rem;
-    margin-right: .125rem;
-    margin-top: .25rem;
-    margin-bottom: .25rem;
-  }
-
-  margin-left: -.125rem;
-  margin-right: -.125rem;
-  margin-top: -.25rem;
-  margin-bottom: -.25rem;
-  .tag-item {
-    flex-shrink: 0;
-
-    margin-left: .125rem;
-    margin-right: .125rem;
-    margin-top: .25rem;
-    margin-bottom: .25rem;
-  }
-
-  .tag-item {
-    height: 1.75rem;
-    padding: 0 .625rem;
-    border: 1px solid var(--secondary-text-color);
-    border-radius: 1rem;
-
+  padding: .5rem 0;     // min-height: 3.5rem
+  margin: 0 -.1875rem;
+  .tag-item-wrap {
     display: flex;
     align-items: center;
+    height: 2.5rem;
+    padding: 0 .1875rem;
 
-    .name {
-      color: var(--secondary-text-color);
-      font-size: .875rem;
-    }
+    flex-shrink: 0;
 
-    &[data-tag-type=region] {
-      background-color: var(--secondary-text-color);
-      border: none;
+    .tag-item {
+      height: 1.75rem;
+      padding: 0 .625rem;
+      border: 1px solid var(--secondary-text-color);
+      border-radius: 1rem;
+  
+      display: flex;
+      align-items: center;
   
       .name {
-        color: var(--background-color);
+        color: var(--secondary-text-color);
+        font-size: .875rem;
       }
-      .tag-delete-button {
-        .icon {
-          ::v-deep {
-            svg {
-              fill: var(--background-color);
+  
+      &[data-tag-type=region] {
+        background-color: var(--secondary-text-color);
+        border: none;
+    
+        .name {
+          color: var(--background-color);
+        }
+        .tag-delete-button {
+          .icon {
+            ::v-deep {
+              svg {
+                fill: var(--background-color);
+              }
             }
           }
         }
@@ -64,12 +50,19 @@
   }
 
   &.small {
-    .tag-item {
-      height: 1.375rem;
-      padding: 0 .4375rem;
-  
-      .name {
-        font-size: .8125rem;
+    padding: .375rem 0;      // min-height: 2.5rem
+    margin: 0 -.125rem;
+    .tag-item-wrap {
+      height: 1.75rem;
+      padding: 0 .125rem;
+      
+      .tag-item {
+        height: 1.375rem;
+        padding: 0 .4375rem;
+    
+        .name {
+          font-size: .8125rem;
+        }
       }
     }
   }
@@ -77,11 +70,12 @@
   &.editable {
     .tag-delete-button {
       margin-right: -.5rem;
-      
-      height: 1.25rem;
-      width: 1.25rem;
 
+      height: 100%;
+      width: 1.25rem;
       .icon {
+        height: 100%;
+        width: 100%;
         ::v-deep {
           svg {
             height: .75rem;

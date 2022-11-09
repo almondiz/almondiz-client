@@ -44,7 +44,7 @@
     top: -1px;
     bottom: -1px;
 
-    transition: all .3s ease;
+    transition: background-color .3s ease-in-out;
   }
 
   &.focus {
@@ -72,6 +72,8 @@
       }
       &>.header {
         .profile {
+          flex-shrink: 0;
+
           height: 2.5rem;
           display: flex;
           align-items: center;
@@ -81,28 +83,35 @@
             font-size: 1.125rem;
           }
           .name {
+            @include text-nowrap;
+
             font-size: .875rem;
             display: flex;
             align-items: center;
           }
-          &[data-after]::after {
-            content: attr(data-after);
+          .name-tag {
+            height: 1.25rem;
             font-size: .625rem;
             color: var(--secondary-text-color);
             border: 1px solid var(--secondary-text-color);
             border-radius: 1rem;
             padding: .1875rem .3125rem;
             margin-left: .3125rem;
+
+            display: flex;
+            align-items: center;
           }
 
-          &[data-user-type=me],
-          &[data-user-type=following] {
+          &[data-user-relation=me],
+          &[data-user-relation=following] {
             .name {
               font-weight: 700;
             }
           }
         }
         .description {
+          @include text-nowrap;
+
           margin-left: .75rem;
           font-size: .8125rem;
           color: var(--secondary-text-color);

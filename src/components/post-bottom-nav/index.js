@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import { UserModel, NoticeModel } from "../../models";
+import store from "../../store";
 
 import "./style.scoped.scss";
 import ExploreIconFill from "../../asset/icons/mui/explore-icon-fill";
@@ -18,16 +18,14 @@ import AddIcon from "../../asset/icons/mui/add-icon";
 const PostBottomNav = () => {
   const navigate = useNavigate();
 
-  const { pathname } = useLocation();
-
-  const userModel = new UserModel();
-  const myUserId = userModel.getMyUserId();
-  const hasUnreadNotices = userModel.hasUnreadNotices(new NoticeModel());
-
-  const [index, setIndex] = useState(null);
+  const hasUnreadNotices = false;   // ### FUTURE WORKS
 
   const pathToIndex = { "/feed": 0, "/search": 1, "/scrap": 2, "/me": 3, };
-  pathToIndex[`/profile/${myUserId}`] = 3;
+  const { myUserId } = store.getState().account;
+  pathToIndex[`/user/${myUserId}`] = 3;
+
+  const [index, setIndex] = useState(null);
+  const { pathname } = useLocation();
   useEffect(() => { setIndex(pathToIndex[pathname]); }, [pathname]);
 
   const paths = [ "/feed", "/search", "/scrap", "/me", ];
@@ -45,7 +43,7 @@ const PostBottomNav = () => {
   ];
 
   const makeButton = idx => {
-    const focus = idx === index;
+    const focus = (idx === index);
     const Icon = icons[idx][focus ? 1 : 0];
     return (
       <button className="button" onClick={() => navigate(paths[idx])}>
@@ -75,5 +73,4 @@ const PostBottomNav = () => {
     </nav>
   );
 };
-
 export default PostBottomNav;

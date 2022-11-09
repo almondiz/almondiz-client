@@ -2,9 +2,68 @@ import DefaultModel from "./default-model";
 
 
 export default class UserModel extends DefaultModel {
-  static myUserId = 1;
+  /** 1. USER API */
+  // GET /api/user
+  whoami() {
+    return this.callApi(() => this.api.whoami());
+  }
+  // POST /api/user
+  signup(body) {
+    console.log("[UserModel.signup >>]", body);
+    return this.callApi(() => this.api.signup(body));
+  }
+  // POST /api/user/login
+  login(body) {
+    console.log("[UserModel.login >>]", body);
+    return this.callApi(() => this.api.login(body));
+  }
+  // DELETE /api/user
+  withdrawal() {
+    return this.callApi(() => this.api.withdrawal());
+  }
+  // GET /api/user/{userId}
+  get(userId) {
+    return this.callApi(() => this.api.get(userId));
+  }
 
-  data = {
+
+  /** 2. FOLLOW API */
+  // PATCH /api/api/follow
+  changeAlias(body) {
+    return this.callApi(() => this.api.changeAlias(body));
+  }
+  // GET /api/api/followings
+  getMyAllFollowings() {
+    return this.callApi(() => this.api.getMyAllFollowings());
+  }
+  // POST /api/follow
+  follow(body) {
+    return this.callApi(() => this.api.follow(body));
+  }
+  // DELETE /api/follow/{followId}
+  unfollow(userId) {
+    return this.callApi(() => this.api.unfollow(userId));
+  }
+
+
+
+  /** 3. NOTIFICATION API */
+  // GET /api/notifications
+  getMyNoticeData() {
+    return this.callApi(() => this.api.getMyNoticeData());
+  }
+  // DELETE /api/notifications
+  popNotice(noticeId) {
+    return this.callApi(() => this.api.popNotice(noticeId));
+  }
+  
+  
+
+
+
+  
+  // [DEPRECATED]
+  /*data = {
     1: {
       id: 1,
 
@@ -90,37 +149,5 @@ export default class UserModel extends DefaultModel {
 
       notices: [],
     },
-  };
-
-  getSubscribingCount(id=this.getMyUserId()) { return Object.keys(this.data[id].subscribing).length; }
-  getSubscribedCount(postModel, id=this.getMyUserId()) {
-    let count = 0;
-    this.data[id].posts.map(postId => count += postModel.getData(postId).scrapped.length);
-    return count;
-  }
-
-  getMyUserId() { return UserModel.myUserId; }
-
-  isSubscribing(dst, src=this.getMyUserId()) {
-    return this.data[src].subscribing.hasOwnProperty(dst);
-  }
-  getAlias(dst, src=this.getMyUserId()) {
-    if (this.isSubscribing(dst, src))
-      return this.data[src].subscribing[dst];
-    return this.data[dst].profile.name;
-  }
-
-  hasUnreadNotices(noticeModel, id=this.getMyUserId()) {
-    const notices = this.data[id].notices;
-    for (let i = 0; i < notices.length; i++)
-      if (!noticeModel.getData(notices[i]).isRead[id])
-        return true;
-    return false;
-  }
-
-  getData(id=this.getMyUserId()) { return this.data[id]; }
-  getMyData() { return this.data[this.getMyUserId()]; }
-
-  signup(body) { return this.callApi(() => this.api.signup(body)); }
-  login(providerType, providerUid) { return this.callApi(() => this.api.login({ providerType, providerUid })); }
+  };*/
 };

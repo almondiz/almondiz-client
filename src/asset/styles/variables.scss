@@ -1,0 +1,42 @@
+$font-family: "Pretendard Variable", "Pretendard",
+  -apple-system, BlinkMacSystemFont, Apple SD Gothic Neo,
+  Helvetica Neue, Helvetica, Roboto, Noto Sans KR, Malgun Gothic, sans-serif,
+  Apple Color Emoji, Segoe UI Emoji;
+
+  
+$page-header-height: 5rem;
+$float-bottom-height: 3rem;
+$padding-horiz: 1.5rem;
+
+$sparse-letter: .125rem;
+
+$content-max-width: 720px;
+
+
+@mixin text-nowrap {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@mixin content-max-width {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: $content-max-width;
+}
+
+@mixin button-default {
+  display: flex;
+  align-items: center;
+  color: var(--background-color);
+  background-color: var(--content-text-color);
+
+  flex-shrink: 0;
+  
+  font-size: .75rem;
+  font-weight: 700;
+
+  height: 1.5rem;
+  border-radius: .75rem;
+  padding: 0 .75rem;
+}

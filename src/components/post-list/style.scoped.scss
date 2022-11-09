@@ -1,0 +1,320 @@
+.post .buttons {
+  display: flex;
+  align-items: center;
+
+  .button + .button {
+    margin-left: .5rem;
+  }
+  .button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    height: 2.5rem;
+    min-width: 2.5rem;
+  
+    p {
+      font-size: .8125rem;
+      color: var(--secondary-text-color);
+    }
+    .icon {
+      height: 1.25rem;
+      width: 1.25rem;
+      ::v-deep {
+        svg {
+          height: 1.25rem;
+          width: 1.25rem;
+          fill: var(--secondary-text-color);
+        }
+      }
+    }
+  }
+  
+}
+
+.post:not(.post-detail) {
+  &:first-child {
+    margin-top: -1rem;
+  }
+  &:last-child {
+    margin-bottom: -1rem;
+  }
+  & + & {
+    border-top: 1px solid var(--border-color);
+  }
+
+  position: relative;
+  &>.background {
+    z-index: 0;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+  }
+  button,
+  a {
+    z-index: 1;
+  }
+  ::v-deep {
+    button,
+    a {
+      z-index: 1;
+    }
+  }
+}
+.post.post-detail {
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+}
+.post {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  display: flex;
+  flex-direction: column;
+  
+  .row {
+    padding-left: $padding-horiz;
+    padding-right: $padding-horiz;
+    display: flex;
+    align-items: center;
+  }
+  &>.header {
+    .row.row-shop {
+      height: 3.5rem;
+
+      .shop {
+        display: flex;
+        align-items: center;
+
+        min-width: 0;
+    
+        .thumb {
+          width: 2.5rem;
+          height: 2.5rem;
+          margin-right: .625rem;
+          border-radius: 100%;
+          background-size: cover;
+          background-color: var(--border-color);
+          flex-shrink: 0;
+        }
+    
+        .text-wrap {
+          &,
+          &>* {
+            @include text-nowrap;
+          }
+          .name {
+            font-size: .9375rem;
+          }
+          .description {
+            margin-top: .25rem;
+            font-size: .8125rem;
+            color: var(--secondary-text-color);
+          }
+        }
+      }
+      .button-more {
+        margin-right: -.625rem;
+      }
+    }
+    .row.row-tags {
+      height: fit-content;
+      min-height: 2.5rem;
+    }
+  }
+  &>.body {
+    .row.row-text {
+      padding-top: .5rem;
+      padding-bottom: .5rem;
+
+      .text {
+        color: var(--primary-text-color);
+        font-size: .875rem;
+        line-height: 1.5;
+      }
+    }
+    .row.row-images {
+      margin: 0;
+      padding: 0;
+      margin-top: .75rem;
+      background-color: var(--border-color);
+    }
+  }
+  &>.footer {
+    .row.row-profile,
+    .row.row-counts {
+      height: 3rem;
+    }
+    .row.row-profile {
+      background-color: var(--border-color);
+
+      .profile {
+        @include text-nowrap;
+        
+        height: 2.5rem;
+        display: flex;
+        align-items: center;
+  
+        .emoji {
+          margin-right: .375rem;
+          font-size: 1.125rem;
+        }
+        .name {
+          @include text-nowrap;
+
+          font-size: .875rem;
+        }
+        .name-tag {
+          height: 1.25rem;
+          font-size: .625rem;
+          color: var(--secondary-text-color);
+          border: 1px solid var(--secondary-text-color);
+          border-radius: 1rem;
+          padding: .125rem .3125rem;
+          margin-left: .3125rem;
+
+          display: flex;
+          align-items: center;
+        }
+
+        &[data-user-relation=me],
+        &[data-user-relation=following] {
+          .name {
+            font-weight: 700;
+          }
+        }
+      }
+      .description {
+        @include text-nowrap;
+        
+        margin-left: .75rem;
+        font-size: .8125rem;
+        color: var(--secondary-text-color);
+      }
+      .buttons {
+        padding-left: .75rem;
+        .button-scrap {
+          justify-content: flex-end;
+          &>p {
+            margin-left: .3125rem;
+          }
+          &.focus {
+            &>p {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+    .row.row-counts {
+      .description {
+        flex-shrink: 0;
+
+        font-size: .8125rem;
+        color: var(--secondary-text-color);
+      }
+      .best-comment {
+        overflow: hidden;
+
+        margin-left: .75rem;
+        border-left: 1px solid var(--border-color);
+        padding-left: .75rem;
+
+        display: flex;
+        align-items: center;
+      
+        .emoji {
+          flex-shrink: 0;
+          
+          margin-right: .4375rem;
+          font-size: 1.125rem;
+        }
+        .text {
+          @include text-nowrap;
+
+          font-size: .8125rem;
+        }
+      }
+    }
+    .row.row-comments {
+      margin: 0;
+      padding: 0;
+
+      margin-top: .5rem;
+
+      padding-left: $padding-horiz;
+      padding-right: $padding-horiz;
+    }
+  }
+}
+
+
+.modal-body {
+  .area-alias-input {
+    .profile {
+      padding-right: 1rem;
+
+      display: flex;
+      align-items: center;
+
+      .thumb {
+        width: 3rem;
+        height: 3rem;
+        margin-right: .625rem;
+        border-radius: 100%;
+
+        user-select: none;
+        overflow: hidden;
+        background-color: var(--border-color);
+        background-size: 75%;
+        background-position: center;
+        background-repeat: no-repeat;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 2.25rem;
+        line-height: 3rem;
+
+        flex-shrink: 0;
+      }
+      .text-wrap {
+        &,
+        &>* {
+          @include text-nowrap;
+        }
+        .name {
+          @include text-nowrap;
+          font-size: 1rem;
+        }
+        .description {
+          margin-top: .1825rem;
+          font-size: .8125rem;
+          color: var(--secondary-text-color);
+        }
+        &[data-user-relation=following] {
+          .text-wrap {
+            .name {
+              font-weight: 700;
+            }
+          }
+        }
+      }
+    }
+    .tf {
+      margin-top: 2rem;
+
+      .tf-box {
+        text-align: center;
+      }
+    }
+    .help {
+      margin-top: 1.5rem;
+      margin-bottom: 0;
+      
+      color: var(--secondary-text-color);
+      font-size: .875rem;
+    }
+  }
+}
