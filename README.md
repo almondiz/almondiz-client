@@ -1,7 +1,5 @@
 # almondiz-client
 
-*Last updated on Jan 3, 2023*
-
 This is a manual helps you to test the current progress of our product.
 
 
