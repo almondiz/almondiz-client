@@ -3,7 +3,7 @@ import store from "../../../store";
 
 const getBaseUrl = (env) => {
   return env === "development"
-    ? "http://34.64.88.206:8080/"
+    ? "http://3.37.200.10:8080/"
     : "prod api url"
 };
 const _api = axios.create({
